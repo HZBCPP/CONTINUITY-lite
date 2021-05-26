@@ -624,19 +624,16 @@ with Tee(log_file):
 		os.mkdir(OUT_LABELS)
 
 
-	
-
 
 	if INTEGRATE_SC_DATA:  
 		print("*****************************************")
 		print("Integration of subcortical data ")
 		print("*****************************************")
 
-
 		if subcorticals_region_names == []: 
-		#Open parcellation table file with subcortical regions:
-		with open(PARCELLATION_TABLE) as data_file:    
-			data = json.load(data_file)
+			#Open parcellation table file with subcortical regions:
+			with open(PARCELLATION_TABLE) as data_file:
+				data = json.load(data_file)
 
 			data_region_find = False
 			for seed in data:
@@ -644,12 +641,8 @@ with Tee(log_file):
 					subcorticals_region_names.append(seed['name'])
 
 
-
-
 		# Copy to have only regions with good KWM and SALT files
-		subcorticals_list_names_checked = subcorticals_region_names
-		subcorticals_list_labels_checked = subcorticals_region_labels
-
+		subcorticals_list_names_checked, subcorticals_list_labels_checked = (subcorticals_region_names, subcorticals_region_labels )
 			
 		# Check if all elements in subcorticals_region_names are referenced in the parcellation table with subcortical data:
 		for region in subcorticals_region_names:  
@@ -663,13 +656,11 @@ with Tee(log_file):
 				if seed['name'] == region: 
 					data_region_find = True
 
-
 			# Check if the label !=0
 			if INTEGRATE_SC_DATA_by_generated_sc_surf:
 				index = subcorticals_list_names_checked.index(region)
-				if subcorticals_list_labels_checked[index] == 0 : 
+				if subcorticals_list_labels_checked[index] == 0: 
 					data_region_find = False
-
 
 			# After check all the json file: 
 			if data_region_find == False:
@@ -680,8 +671,6 @@ with Tee(log_file):
 					subcorticals_list_labels_checked = subcorticals_region_labels.remove(index)
 
 				subcorticals_list_names_checked = subcorticals_list_names_checked.remove(region)
-
-
 
 
 
@@ -710,18 +699,13 @@ with Tee(log_file):
 				number_of_points = 1002 # new input param ? 
 				create_kwm_files(OUT_FOLDER, subcorticals_list_labels_checked, subcorticals_list_names_checked, number_of_points)
 
-
 				# Update the localization of subcortical surfaces: 
 				SALTDir = os.path.join(OUT_FOLDER, 'my_SALT') 
+				KWMDir = os.path.join(OUT_FOLDER, 'my_KWM') 
 			
 			else: 
 				print("ERROR: You have to provide one label per subcortical regions (0 if you don't want to integrate this region)")
-				exit()
-		
-				
-
-
-
+				break
 
 
 		print("*****************************************")
@@ -732,21 +716,15 @@ with Tee(log_file):
 		new_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'new_parcellation_table' )
 		shutil.copy(PARCELLATION_TABLE, new_parcellation_table)
 
-
-
-		# Only region with info in parcellation table
-		subcorticals_list_names_checked_with_surfaces = []
-
 		# For each region label the SALT file with the Atlas label value. Create SPHARM surface labeled with the new atlas label. 
+		subcorticals_list_names_checked_with_surfaces = []
 		for region in subcorticals_list_names_checked:
 
 			#​The KWM files are intermediate .txt files for labeling the vertices on the respective subcortical SPHARM surfaces with a parcellation specific label number.
 			KWMFile = os.path.join(KWMDir,region + "_1002_KWM.txt")
 			SPHARMSurf = os.path.join(SALTDir, ID + "-T1_SkullStripped_scaled_label_" + region + "_pp_surfSPHARM.vtk")
 
-
 			if not os.path.exists(SPHARMSurf) or not os.path.exists(KWMFile) : 
-				
 				# Delete info of this region in the new-parcellation-table:
 				with open(new_parcellation_table, 'r') as data_file:
 				    data = json.load(data_file)
@@ -758,11 +736,9 @@ with Tee(log_file):
 
 				with open(new_parcellation_table, 'w') as data_file:
 					data = json.dump(data, data_file, indent = 2)
-			
 
 			else: 
 				subcorticals_list_names_checked_with_surfaces.append(region)
-
 
 				# Create SPHARM surface labeled: 
 				SPHARMSurfL = os.path.join(OUT_LABELS, ID + "-T1_SkullStripped_scaled_label_" + region +"_pp_SPHARM_labeled.vtk")
@@ -781,7 +757,6 @@ with Tee(log_file):
 		print("*****************************************")
 
 		outputSurface = os.path.join(OUT_LABELS, ID + "-" + NAME_PARCELLATION_TABLE + "_Labeled_Subcorticals_Combined_T1Space.vtk")
-
 		
 		if NAME_PARCELLATION_TABLE == 'Destrieux': 
 			print("*****************************************")
@@ -790,7 +765,6 @@ with Tee(log_file):
 
 			compute_point_destrieux(new_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
 		
-
 
 		if os.path.exists( outputSurface ):
 			print("OutputSurface file found: Skipping combine the labeled subcorticals ")
