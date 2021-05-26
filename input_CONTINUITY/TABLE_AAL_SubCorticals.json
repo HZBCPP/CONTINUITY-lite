@@ -1,0 +1,1262 @@
+[
+  {
+    "VisuOrder": 78,
+    "MatrixRow": 0,
+    "name": "Precentral_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -38.65,
+      -5.68,
+      50.94
+    ],
+    "labelValue": "1",
+    "AAL_ID": 1,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 1,
+    "MatrixRow": 1,
+    "name": "Precentral_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      41.37,
+      -8.21,
+      52.09
+    ],
+    "labelValue": "2",
+    "AAL_ID": 2,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 77,
+    "MatrixRow": 2,
+    "name": "Frontal_Sup_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -18.45,
+      34.81,
+      42.2
+    ],
+    "labelValue": "3",
+    "AAL_ID": 3,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 2,
+    "MatrixRow": 3,
+    "name": "Frontal_Sup_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      21.9,
+      31.12,
+      43.82
+    ],
+    "labelValue": "4",
+    "AAL_ID": 4,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 76,
+    "MatrixRow": 4,
+    "name": "Frontal_Sup_Orb_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -16.56,
+      47.32,
+      -13.31
+    ],
+    "labelValue": "5",
+    "AAL_ID": 5,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 3,
+    "MatrixRow": 5,
+    "name": "Frontal_Sup_Orb_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      18.49,
+      48.1,
+      -14.02
+    ],
+    "labelValue": "6",
+    "AAL_ID": 6,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 75,
+    "MatrixRow": 6,
+    "name": "Frontal_Mid_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -33.43,
+      32.73,
+      35.46
+    ],
+    "labelValue": "7",
+    "AAL_ID": 7,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 4,
+    "MatrixRow": 7,
+    "name": "Frontal_Mid_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      37.59,
+      33.06,
+      34.04
+    ],
+    "labelValue": "8",
+    "AAL_ID": 8,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 74,
+    "MatrixRow": 8,
+    "name": "Frontal_Mid_Orb_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -30.65,
+      50.43,
+      -9.62
+    ],
+    "labelValue": "9",
+    "AAL_ID": 9,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 5,
+    "MatrixRow": 9,
+    "name": "Frontal_Mid_Orb_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      33.18,
+      52.59,
+      -10.73
+    ],
+    "labelValue": "10",
+    "AAL_ID": 10,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 73,
+    "MatrixRow": 10,
+    "name": "Frontal_Inf_Oper_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -48.43,
+      12.73,
+      19.02
+    ],
+    "labelValue": "11",
+    "AAL_ID": 11,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 6,
+    "MatrixRow": 11,
+    "name": "Frontal_Inf_Oper_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      50.2,
+      14.98,
+      21.41
+    ],
+    "labelValue": "12",
+    "AAL_ID": 12,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 72,
+    "MatrixRow": 12,
+    "name": "Frontal_Inf_Tri_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -45.58,
+      29.91,
+      13.99
+    ],
+    "labelValue": "13",
+    "AAL_ID": 13,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 7,
+    "MatrixRow": 13,
+    "name": "Frontal_Inf_Tri_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      50.33,
+      30.16,
+      14.17
+    ],
+    "labelValue": "14",
+    "AAL_ID": 14,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 71,
+    "MatrixRow": 14,
+    "name": "Frontal_Inf_Orb_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -35.98,
+      30.71,
+      -12.11
+    ],
+    "labelValue": "15",
+    "AAL_ID": 15,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 8,
+    "MatrixRow": 15,
+    "name": "Frontal_Inf_Orb_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      41.22,
+      32.23,
+      -11.91
+    ],
+    "labelValue": "16",
+    "AAL_ID": 16,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 70,
+    "MatrixRow": 16,
+    "name": "Rolandic_Oper_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -47.16,
+      -8.48,
+      13.95
+    ],
+    "labelValue": "17",
+    "AAL_ID": 17,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 9,
+    "MatrixRow": 17,
+    "name": "Rolandic_Oper_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      52.65,
+      -6.25,
+      14.63
+    ],
+    "labelValue": "18",
+    "AAL_ID": 18,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 69,
+    "MatrixRow": 18,
+    "name": "Supp_Motor_Area_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -5.32,
+      4.85,
+      61.38
+    ],
+    "labelValue": "19",
+    "AAL_ID": 19,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 10,
+    "MatrixRow": 19,
+    "name": "Supp_Motor_Area_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      8.62,
+      0.17,
+      61.85
+    ],
+    "labelValue": "20",
+    "AAL_ID": 20,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 68,
+    "MatrixRow": 20,
+    "name": "Olfactory_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -8.06,
+      15.05,
+      -11.46
+    ],
+    "labelValue": "21",
+    "AAL_ID": 21,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 11,
+    "MatrixRow": 21,
+    "name": "Olfactory_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      10.43,
+      15.91,
+      -11.26
+    ],
+    "labelValue": "22",
+    "AAL_ID": 22,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 67,
+    "MatrixRow": 22,
+    "name": "Frontal_Sup_Medial_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -4.8,
+      49.17,
+      30.89
+    ],
+    "labelValue": "23",
+    "AAL_ID": 23,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 12,
+    "MatrixRow": 23,
+    "name": "Frontal_Sup_Medial_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      9.1,
+      50.84,
+      30.22
+    ],
+    "labelValue": "24",
+    "AAL_ID": 24,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 66,
+    "MatrixRow": 24,
+    "name": "Frontal_Med_Orb_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -5.17,
+      54.06,
+      -7.4
+    ],
+    "labelValue": "25",
+    "AAL_ID": 25,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 13,
+    "MatrixRow": 25,
+    "name": "Frontal_Med_Orb_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      8.16,
+      51.67,
+      -7.13
+    ],
+    "labelValue": "26",
+    "AAL_ID": 26,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 65,
+    "MatrixRow": 26,
+    "name": "Rectus_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -5.08,
+      37.07,
+      -18.14
+    ],
+    "labelValue": "27",
+    "AAL_ID": 27,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 14,
+    "MatrixRow": 27,
+    "name": "Rectus_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      8.35,
+      35.64,
+      -18.04
+    ],
+    "labelValue": "28",
+    "AAL_ID": 28,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 64,
+    "MatrixRow": 28,
+    "name": "Insula_L",
+    "VisuHierarchy": "seed.left.frontal.",
+    "coord": [
+      -35.13,
+      6.65,
+      3.44
+    ],
+    "labelValue": "29",
+    "AAL_ID": 29,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 15,
+    "MatrixRow": 29,
+    "name": "Insula_R",
+    "VisuHierarchy": "seed.right.frontal.",
+    "coord": [
+      39.02,
+      6.25,
+      2.08
+    ],
+    "labelValue": "30",
+    "AAL_ID": 30,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 63,
+    "MatrixRow": 30,
+    "name": "Cingulum_Ant_L",
+    "VisuHierarchy": "seed.left.cingulate.",
+    "coord": [
+      -4.04,
+      35.4,
+      13.95
+    ],
+    "labelValue": "31",
+    "AAL_ID": 31,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 16,
+    "MatrixRow": 31,
+    "name": "Cingulum_Ant_R",
+    "VisuHierarchy": "seed.right.cingulate.",
+    "coord": [
+      8.46,
+      37.01,
+      15.84
+    ],
+    "labelValue": "32",
+    "AAL_ID": 32,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 62,
+    "MatrixRow": 32,
+    "name": "Cingulum_Mid_L",
+    "VisuHierarchy": "seed.left.cingulate.",
+    "coord": [
+      -5.48,
+      -14.92,
+      41.57
+    ],
+    "labelValue": "33",
+    "AAL_ID": 33,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 17,
+    "MatrixRow": 33,
+    "name": "Cingulum_Mid_R",
+    "VisuHierarchy": "seed.right.cingulate.",
+    "coord": [
+      8.02,
+      -8.83,
+      39.79
+    ],
+    "labelValue": "34",
+    "AAL_ID": 34,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 61,
+    "MatrixRow": 34,
+    "name": "Cingulum_Post_L",
+    "VisuHierarchy": "seed.left.cingulate.",
+    "coord": [
+      -4.85,
+      -42.92,
+      24.67
+    ],
+    "labelValue": "35",
+    "AAL_ID": 35,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 18,
+    "MatrixRow": 35,
+    "name": "Cingulum_Post_R",
+    "VisuHierarchy": "seed.right.cingulate.",
+    "coord": [
+      7.44,
+      -41.81,
+      21.87
+    ],
+    "labelValue": "36",
+    "AAL_ID": 36,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 36,
+    "name": "Hippocampus_L",
+    "VisuHierarchy": "seed.left.",
+    "coord": [
+      -25.03,
+      -20.74,
+      -10.13
+    ],
+    "labelValue": "37",
+    "AAL_ID": 37,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 37,
+    "name": "Hippocampus_R",
+    "VisuHierarchy": "seed.right.",
+    "coord": [
+      29.23,
+      -19.78,
+      -10.33
+    ],
+    "labelValue": "38",
+    "AAL_ID": 38,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": 60,
+    "MatrixRow": 38,
+    "name": "Parahippocampus_L",
+    "VisuHierarchy": "seed.left.temporal.",
+    "coord": [
+      -21.17,
+      -15.95,
+      -20.7
+    ],
+    "labelValue": "39",
+    "AAL_ID": 39,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 19,
+    "MatrixRow": 39,
+    "name": "Parahippocampus_R",
+    "VisuHierarchy": "seed.right.temporal.",
+    "coord": [
+      25.38,
+      -15.15,
+      -20.47
+    ],
+    "labelValue": "40",
+    "AAL_ID": 40,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 40,
+    "name": "Amygdala_L",
+    "VisuHierarchy": "seed.left.",
+    "coord": [
+      -23.27,
+      -0.67,
+      -17.14
+    ],
+    "labelValue": "41",
+    "AAL_ID": 41,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 41,
+    "name": "Amygdala_R",
+    "VisuHierarchy": "seed.right.",
+    "coord": [
+      27.32,
+      0.64,
+      -17.5
+    ],
+    "labelValue": "42",
+    "AAL_ID": 42,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": 45,
+    "MatrixRow": 42,
+    "name": "Calcarine_L",
+    "VisuHierarchy": "seed.left.occipital.",
+    "coord": [
+      -7.14,
+      -78.67,
+      6.44
+    ],
+    "labelValue": "43",
+    "AAL_ID": 43,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 34,
+    "MatrixRow": 43,
+    "name": "Calcarine_R",
+    "VisuHierarchy": "seed.right.occipital.",
+    "coord": [
+      15.99,
+      -73.15,
+      9.4
+    ],
+    "labelValue": "44",
+    "AAL_ID": 44,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 44,
+    "MatrixRow": 44,
+    "name": "Cuneus_L",
+    "VisuHierarchy": "seed.left.occipital.",
+    "coord": [
+      -5.93,
+      -80.13,
+      27.22
+    ],
+    "labelValue": "45",
+    "AAL_ID": 45,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 35,
+    "MatrixRow": 45,
+    "name": "Cuneus_R",
+    "VisuHierarchy": "seed.right.occipital.",
+    "coord": [
+      13.51,
+      -79.36,
+      28.23
+    ],
+    "labelValue": "46",
+    "AAL_ID": 46,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 43,
+    "MatrixRow": 46,
+    "name": "Lingual_L",
+    "VisuHierarchy": "seed.left.occipital.",
+    "coord": [
+      -14.62,
+      -67.56,
+      -4.63
+    ],
+    "labelValue": "47",
+    "AAL_ID": 47,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 36,
+    "MatrixRow": 47,
+    "name": "Lingual_R",
+    "VisuHierarchy": "seed.right.occipital.",
+    "coord": [
+      16.29,
+      -66.93,
+      -3.87
+    ],
+    "labelValue": "48",
+    "AAL_ID": 48,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 42,
+    "MatrixRow": 48,
+    "name": "Occipital_Sup_L",
+    "VisuHierarchy": "seed.left.occipital.",
+    "coord": [
+      -16.54,
+      -84.26,
+      28.17
+    ],
+    "labelValue": "49",
+    "AAL_ID": 49,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 37,
+    "MatrixRow": 49,
+    "name": "Occipital_Sup_R",
+    "VisuHierarchy": "seed.right.occipital.",
+    "coord": [
+      24.29,
+      -80.85,
+      30.59
+    ],
+    "labelValue": "50",
+    "AAL_ID": 50,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 41,
+    "MatrixRow": 50,
+    "name": "Occipital_Mid_L",
+    "VisuHierarchy": "seed.left.occipital.",
+    "coord": [
+      -32.39,
+      -80.73,
+      16.11
+    ],
+    "labelValue": "51",
+    "AAL_ID": 51,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 38,
+    "MatrixRow": 51,
+    "name": "Occipital_Mid_R",
+    "VisuHierarchy": "seed.right.occipital.",
+    "coord": [
+      37.39,
+      -79.7,
+      19.42
+    ],
+    "labelValue": "52",
+    "AAL_ID": 52,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 40,
+    "MatrixRow": 52,
+    "name": "Occipital_Inf_L",
+    "VisuHierarchy": "seed.left.occipital.",
+    "coord": [
+      -36.36,
+      -78.29,
+      -7.84
+    ],
+    "labelValue": "53",
+    "AAL_ID": 53,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 39,
+    "MatrixRow": 53,
+    "name": "Occipital_Inf_R",
+    "VisuHierarchy": "seed.right.occipital.",
+    "coord": [
+      38.16,
+      -81.99,
+      -7.61
+    ],
+    "labelValue": "54",
+    "AAL_ID": 54,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 59,
+    "MatrixRow": 54,
+    "name": "Fusiform_L",
+    "VisuHierarchy": "seed.left.temporal.",
+    "coord": [
+      -31.16,
+      -40.3,
+      -20.23
+    ],
+    "labelValue": "55",
+    "AAL_ID": 55,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 20,
+    "MatrixRow": 55,
+    "name": "Fusiform_R",
+    "VisuHierarchy": "seed.right.temporal.",
+    "coord": [
+      33.97,
+      -39.1,
+      -20.18
+    ],
+    "labelValue": "56",
+    "AAL_ID": 56,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 52,
+    "MatrixRow": 56,
+    "name": "Postcentral_L",
+    "VisuHierarchy": "seed.left.parietal.",
+    "coord": [
+      -42.46,
+      -22.63,
+      48.92
+    ],
+    "labelValue": "57",
+    "AAL_ID": 57,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 27,
+    "MatrixRow": 57,
+    "name": "Postcentral_R",
+    "VisuHierarchy": "seed.right.parietal.",
+    "coord": [
+      41.43,
+      -25.49,
+      52.55
+    ],
+    "labelValue": "58",
+    "AAL_ID": 58,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 51,
+    "MatrixRow": 58,
+    "name": "Parietal_Sup_L",
+    "VisuHierarchy": "seed.left.parietal.",
+    "coord": [
+      -23.45,
+      -59.56,
+      58.96
+    ],
+    "labelValue": "59",
+    "AAL_ID": 59,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 28,
+    "MatrixRow": 59,
+    "name": "Parietal_Sup_R",
+    "VisuHierarchy": "seed.right.parietal.",
+    "coord": [
+      26.11,
+      -59.18,
+      62.06
+    ],
+    "labelValue": "60",
+    "AAL_ID": 60,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 50,
+    "MatrixRow": 60,
+    "name": "Parietal_Inf_L",
+    "VisuHierarchy": "seed.left.parietal.",
+    "coord": [
+      -42.8,
+      -45.82,
+      46.74
+    ],
+    "labelValue": "61",
+    "AAL_ID": 61,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 29,
+    "MatrixRow": 61,
+    "name": "Parietal_Inf_R",
+    "VisuHierarchy": "seed.right.parietal.",
+    "coord": [
+      46.46,
+      -46.29,
+      49.54
+    ],
+    "labelValue": "62",
+    "AAL_ID": 62,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 49,
+    "MatrixRow": 62,
+    "name": "SupraMarginal_L",
+    "VisuHierarchy": "seed.left.parietal.",
+    "coord": [
+      -55.79,
+      -33.64,
+      30.45
+    ],
+    "labelValue": "63",
+    "AAL_ID": 63,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 30,
+    "MatrixRow": 63,
+    "name": "SupraMarginal_R",
+    "VisuHierarchy": "seed.right.parietal.",
+    "coord": [
+      57.61,
+      -31.5,
+      34.48
+    ],
+    "labelValue": "64",
+    "AAL_ID": 64,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 48,
+    "MatrixRow": 64,
+    "name": "Angular_L",
+    "VisuHierarchy": "seed.left.parietal.",
+    "coord": [
+      -44.14,
+      -60.82,
+      35.59
+    ],
+    "labelValue": "65",
+    "AAL_ID": 65,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 31,
+    "MatrixRow": 65,
+    "name": "Angular_R",
+    "VisuHierarchy": "seed.right.parietal.",
+    "coord": [
+      45.51,
+      -59.98,
+      38.63
+    ],
+    "labelValue": "66",
+    "AAL_ID": 66,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 47,
+    "MatrixRow": 66,
+    "name": "Precuneus_L",
+    "VisuHierarchy": "seed.left.parietal.",
+    "coord": [
+      -7.24,
+      -56.07,
+      48.01
+    ],
+    "labelValue": "67",
+    "AAL_ID": 67,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 32,
+    "MatrixRow": 67,
+    "name": "Precuneus_R",
+    "VisuHierarchy": "seed.right.parietal.",
+    "coord": [
+      9.98,
+      -56.05,
+      43.77
+    ],
+    "labelValue": "68",
+    "AAL_ID": 68,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 46,
+    "MatrixRow": 68,
+    "name": "Paracentral_Lobule_L",
+    "VisuHierarchy": "seed.left.parietal.",
+    "coord": [
+      -7.63,
+      -25.36,
+      70.07
+    ],
+    "labelValue": "69",
+    "AAL_ID": 69,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 33,
+    "MatrixRow": 69,
+    "name": "Paracentral_Lobule_R",
+    "VisuHierarchy": "seed.right.parietal.",
+    "coord": [
+      7.48,
+      -31.59,
+      68.09
+    ],
+    "labelValue": "70",
+    "AAL_ID": 70,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 70,
+    "name": "Caudate_L",
+    "VisuHierarchy": "seed.left.",
+    "coord": [
+      -11.46,
+      11,
+      9.24
+    ],
+    "labelValue": "71",
+    "AAL_ID": 71,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 71,
+    "name": "Caudate_R",
+    "VisuHierarchy": "seed.right.",
+    "coord": [
+      14.84,
+      12.07,
+      9.42
+    ],
+    "labelValue": "72",
+    "AAL_ID": 72,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 72,
+    "name": "Putamen_L",
+    "VisuHierarchy": "seed.left.",
+    "coord": [
+      -23.91,
+      3.86,
+      2.4
+    ],
+    "labelValue": "73",
+    "AAL_ID": 73,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 73,
+    "name": "Putamen_R",
+    "VisuHierarchy": "seed.right.",
+    "coord": [
+      27.78,
+      4.91,
+      2.46
+    ],
+    "labelValue": "74",
+    "AAL_ID": 74,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 74,
+    "name": "Pallidum_L",
+    "VisuHierarchy": "seed.left.",
+    "coord": [
+      -17.75,
+      -0.03,
+      0.21
+    ],
+    "labelValue": "75",
+    "AAL_ID": 75,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 75,
+    "name": "Pallidum_R",
+    "VisuHierarchy": "seed.right.",
+    "coord": [
+      21.2,
+      0.18,
+      0.23
+    ],
+    "labelValue": "76",
+    "AAL_ID": 76,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 76,
+    "name": "Thalamus_L",
+    "VisuHierarchy": "seed.left.",
+    "coord": [
+      -10.85,
+      -17.56,
+      7.98
+    ],
+    "labelValue": "77",
+    "AAL_ID": 77,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": -1,
+    "MatrixRow": 77,
+    "name": "Thalamus_R",
+    "VisuHierarchy": "seed.right.",
+    "coord": [
+      13,
+      -17.55,
+      8.09
+    ],
+    "labelValue": "78",
+    "AAL_ID": 78,
+    "subcortical": true
+  },
+  {
+    "VisuOrder": 58,
+    "MatrixRow": 78,
+    "name": "Heschl_L",
+    "VisuHierarchy": "seed.left.temporal.",
+    "coord": [
+      -41.99,
+      -18.88,
+      9.98
+    ],
+    "labelValue": "79",
+    "AAL_ID": 79,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 21,
+    "MatrixRow": 79,
+    "name": "Heschl_R",
+    "VisuHierarchy": "seed.right.temporal.",
+    "coord": [
+      45.86,
+      -17.15,
+      10.41
+    ],
+    "labelValue": "80",
+    "AAL_ID": 80,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 57,
+    "MatrixRow": 80,
+    "name": "Temporal_Sup_L",
+    "VisuHierarchy": "seed.left.temporal.",
+    "coord": [
+      -53.16,
+      -20.68,
+      7.13
+    ],
+    "labelValue": "81",
+    "AAL_ID": 81,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 22,
+    "MatrixRow": 81,
+    "name": "Temporal_Sup_R",
+    "VisuHierarchy": "seed.right.temporal.",
+    "coord": [
+      58.15,
+      -21.78,
+      6.8
+    ],
+    "labelValue": "82",
+    "AAL_ID": 82,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 56,
+    "MatrixRow": 82,
+    "name": "Temporal_Pole_Sup_L",
+    "VisuHierarchy": "seed.left.temporal.",
+    "coord": [
+      -39.88,
+      15.14,
+      -20.18
+    ],
+    "labelValue": "83",
+    "AAL_ID": 83,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 23,
+    "MatrixRow": 83,
+    "name": "Temporal_Pole_Sup_R",
+    "VisuHierarchy": "seed.right.temporal.",
+    "coord": [
+      48.25,
+      14.75,
+      -16.86
+    ],
+    "labelValue": "84",
+    "AAL_ID": 84,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 55,
+    "MatrixRow": 84,
+    "name": "Temporal_Mid_L",
+    "VisuHierarchy": "seed.left.temporal.",
+    "coord": [
+      -55.52,
+      -33.8,
+      -2.2
+    ],
+    "labelValue": "85",
+    "AAL_ID": 85,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 24,
+    "MatrixRow": 85,
+    "name": "Temporal_Mid_R",
+    "VisuHierarchy": "seed.right.temporal.",
+    "coord": [
+      57.47,
+      -37.23,
+      -1.47
+    ],
+    "labelValue": "86",
+    "AAL_ID": 86,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 54,
+    "MatrixRow": 86,
+    "name": "Temporal_Pole_Mid_L",
+    "VisuHierarchy": "seed.left.temporal.",
+    "coord": [
+      -36.32,
+      14.59,
+      -34.08
+    ],
+    "labelValue": "87",
+    "AAL_ID": 87,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 25,
+    "MatrixRow": 87,
+    "name": "Temporal_Pole_Mid_R",
+    "VisuHierarchy": "seed.right.temporal.",
+    "coord": [
+      44.22,
+      14.55,
+      -32.23
+    ],
+    "labelValue": "88",
+    "AAL_ID": 88,
+    "subcortical": false
+  },
+  {
+    "VisuOrder": 53,
+    "MatrixRow": 88,
+    "name": "Temporal_Inf_L",
+    "VisuHierarchy": "seed.left.temporal.",
+    "coord": [
+      -49.77,
+      -28.05,
+      -23.17
+    ],
+    "labelValue": "89",
+    "AAL_ID": 89,
+    "subcortical": false   
+  },
+  {
+    "VisuOrder": 26,
+    "MatrixRow": 89,
+    "name": "Temporal_Inf_R",
+    "VisuHierarchy": "seed.right.temporal.",
+    "coord": [
+      53.69,
+      -31.07,
+      -22.32
+    ],
+    "labelValue": "90",
+    "AAL_ID": 90,
+    "subcortical": false
+  }
+]

@@ -1,0 +1,3815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TabWidget</class>
+ <widget class="QTabWidget" name="TabWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1131</width>
+    <height>631</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <weight>50</weight>
+    <bold>false</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>CONTINUITY QC</string>
+  </property>
+  <property name="currentIndex">
+   <number>1</number>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <property name="tabsClosable">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="quality_control_tab">
+   <attribute name="title">
+    <string>Registration QC </string>
+   </attribute>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>1111</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Open Slicer without automically load specific files:</string>
+    </property>
+    <widget class="QPushButton" name="open_slicer_only_pushButton">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>30</y>
+       <width>471</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="text">
+      <string>Open Slicer (without specific setting)</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="layoutWidget_51">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>191</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_69">
+     <item>
+      <widget class="QLabel" name="label_58">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Path to Slicer:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="slicer_path_pushButton">
+       <property name="text">
+        <string>Browser...</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTextEdit" name="slicer_textEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>911</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>1111</width>
+      <height>361</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>If the registration was done with the CONTINUITY tool: </string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="layoutWidget_5">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>32</y>
+       <width>381</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_9">
+      <item>
+       <widget class="QLabel" name="label_42">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+          <underline>true</underline>
+         </font>
+        </property>
+        <property name="text">
+         <string>Output folder of CONTINUITY directory:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="output_file_pushButton">
+        <property name="text">
+         <string>Browser...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QTextEdit" name="OUTPUT_path_textEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>691</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>1091</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Slicer with specific parameters (View Controllers: three by three slice):</string>
+     </property>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>1071</width>
+        <height>95</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Red:    </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Red_comboBox">
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Yellow:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Yellow_comboBox">
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Green:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Green_comboBox">
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Slice4:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Slice4_comboBox">
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Slice5: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Slice5_comboBox">
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Slice6:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Slice6_comboBox">
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Slice7:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Slice7_comboBox">
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Slice8: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Slice8_comboBox">
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Slice9:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="Slice9_comboBox">
+           <item>
+            <property name="text">
+             <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>T2 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>FA</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="open_slicer_pushButton">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>160</y>
+        <width>471</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Open Slicer with this specific setting</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="tab">
+   <attribute name="title">
+    <string>Connectivity visualization</string>
+   </attribute>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>1111</width>
+      <height>581</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>3</number>
+    </property>
+    <property name="tabBarAutoHide">
+     <bool>false</bool>
+    </property>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Setup connectivity visualization</string>
+     </attribute>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>1091</width>
+        <height>261</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Setup connectivity folder</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QLabel" name="label_39">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+             <underline>true</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>Connectivity matrix : output of probtrackx2 </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="connectivity_matrix_pushButton">
+           <property name="text">
+            <string>Browser...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_22">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="connectivity_matrix_textEdit">
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_40">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+             <underline>true</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>Description table with subcortical regions (json):</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="parcellation_table_pushButton">
+           <property name="text">
+            <string>Browser...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_20">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="parcellation_table_textEdit">
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Normalization of the connectivity matrix</string>
+     </attribute>
+     <widget class="QGroupBox" name="normalize_matrix_groupBox">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>0</y>
+        <width>661</width>
+        <height>541</height>
+       </rect>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::ImhNone</set>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>20</y>
+        <width>430</width>
+        <height>58</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Select type of normalization: </string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="type_of_normalization_comboBox">
+         <property name="currentText">
+          <string>Row region normalization</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Row region normalization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>No normalization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Whole normalization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Row column normalization</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Select type of symmetrization: </string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="type_of_symmetrization_comboBox">
+         <item>
+          <property name="text">
+           <string>Average</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Maximum</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Minimum</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QTabWidget" name="tabWidget_7">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>160</y>
+        <width>421</width>
+        <height>381</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab_19">
+       <attribute name="title">
+        <string>Colormap</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget_7">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>300</y>
+          <width>401</width>
+          <height>42</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_51">
+           <property name="text">
+            <string>Min value in the connectivity matrix: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="min_a_norm_label">
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
+           <property name="tabletTracking">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_52">
+           <property name="text">
+            <string>Max value in the connectivity matrix: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="max_a_norm_label">
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
+           <property name="tabletTracking">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QCheckBox" name="vmin_vmax_percentage_checkBox">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>40</y>
+          <width>361</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>vmin and vmax as percentage of data range 
+that the colormap covers</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="vmin_vmax_real_values_checkBox">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>90</y>
+          <width>351</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>vmin = min value in the connectivity matrix 
+vmax = max value in the connectivity matrix</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="vmin_vmax_regions_checkBox">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>140</y>
+          <width>341</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>vmin = min of the connectivity matrix 
+vmax = 1/n(n-1)  (with n: number of region)</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_47">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>381</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Select your type of range for the colormap: </string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="error_label">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>260</y>
+          <width>401</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>190</y>
+          <width>231</width>
+          <height>60</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_24">
+           <property name="text">
+            <string>vmin:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="vmin_normalize_matrix_spinBox">
+           <property name="inputMethodHints">
+            <set>Qt::ImhNone</set>
+           </property>
+           <property name="decimals">
+            <number>12</number>
+           </property>
+           <property name="maximum">
+            <double>10000000.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_25">
+           <property name="text">
+            <string>vmax:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="vmax_normalize_matrix_spinBox">
+           <property name="font">
+            <font>
+             <strikeout>false</strikeout>
+            </font>
+           </property>
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
+           <property name="tabletTracking">
+            <bool>true</bool>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="inputMethodHints">
+            <set>Qt::ImhFormattedNumbersOnly|Qt::ImhPreferLowercase</set>
+           </property>
+           <property name="wrapping">
+            <bool>false</bool>
+           </property>
+           <property name="decimals">
+            <number>12</number>
+           </property>
+           <property name="maximum">
+            <double>100000000.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_20">
+       <attribute name="title">
+        <string>Save</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget_10">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>401</width>
+          <height>191</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_12">
+         <item row="3" column="0">
+          <widget class="QPushButton" name="save_normalize_matrix_pushButton">
+           <property name="text">
+            <string>Save</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QTextEdit" name="path_normalize_matrix_textEdit">
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_39">
+           <item>
+            <widget class="QLabel" name="label_63">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>Configuration folder:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="normalize_matrix_pushButton">
+             <property name="text">
+              <string>Browser...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_52">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="1">
+          <spacer name="horizontalSpacer_53">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QTextEdit" name="save_normalize_matrix_textEdit">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>230</y>
+          <width>401</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Path for the output image here&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>100</y>
+        <width>211</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Display normalize matrix</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>Circle connectome</string>
+     </attribute>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>460</y>
+        <width>301</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Left-click on a node to show only connections to that node. &lt;br /&gt;Right-click shows all connections&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="circle_connectome_groupBox">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>-80</y>
+        <width>881</width>
+        <height>671</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="tabletTracking">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QGroupBox{
+	background-color : transparent;
+	color : transparent;
+	border : 0px rgb(166, 166, 166)
+}</string>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="display_circle_connectome_pushButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>221</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Display circle connectome</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="wait_label">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>10</y>
+        <width>71</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QTabWidget" name="tabWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>301</width>
+        <height>391</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>2</number>
+      </property>
+      <widget class="QWidget" name="tab_21">
+       <attribute name="title">
+        <string>Clicked node</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>12</y>
+          <width>281</width>
+          <height>341</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <widget class="QLabel" name="clicked_nodes_label">
+           <property name="text">
+            <string>Node clicked: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="clicked_nodes_label_2">
+           <property name="text">
+            <string>Node associated: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextEdit" name="nodes_associated_plainTextEdit">
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_23">
+       <attribute name="title">
+        <string>All nodes</string>
+       </attribute>
+       <widget class="QListWidget" name="all_nodes_listWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>281</width>
+          <height>341</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_22">
+       <attribute name="title">
+        <string>Matrix</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>11</y>
+          <width>281</width>
+          <height>171</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>Select type of normalization: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="type_of_normalization_circle_comboBox">
+           <property name="currentText">
+            <string>Row region normalization</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>Row region normalization</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>No normalization</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Whole normalization</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Row column normalization</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Select type of symmetrization: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="type_of_symmetrization_circle_comboBox">
+           <item>
+            <property name="text">
+             <string>Average</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Maximum</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Minimum</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_6">
+       <attribute name="title">
+        <string>Lines &amp; text</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox_8">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>281</width>
+          <height>201</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>n_line strongest connection</string>
+        </property>
+        <widget class="QTextEdit" name="fig_file_textEdit_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>261</width>
+           <height>71</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Percentage of strongest connection (strenght= abs(connectivity_matrix) drawn&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>100</y>
+           <width>261</width>
+           <height>91</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="QLabel" name="label_18">
+            <property name="text">
+             <string>Lines displayed (%): </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="n_lines_spinBox">
+            <property name="maximum">
+             <double>100.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>10.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="nb_line_label">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>220</y>
+          <width>191</width>
+          <height>124</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_11">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_19">
+           <property name="text">
+            <string>Line width:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="linewidth_spinBox">
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>2.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_37">
+           <property name="text">
+            <string>Fontsize names:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="textwidth_spinBox">
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_41">
+           <property name="text">
+            <string>Padding: </string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="padding_spinBox">
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_38">
+           <property name="text">
+            <string>Node width:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QDoubleSpinBox" name="nodelinewidth_spinBox">
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.500000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_9">
+       <attribute name="title">
+        <string>Colormap lines</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox_7">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>281</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Data lines</string>
+        </property>
+        <widget class="QTextEdit" name="row_region_textEdit_3">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>261</width>
+           <height>91</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;By default (0 to 100), the colormap covers the complete value range of the supplied data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>130</y>
+           <width>231</width>
+           <height>121</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <widget class="QLabel" name="label_20">
+            <property name="text">
+             <string>Minimum percentage (vmin):</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="vmin_connectome_spinBox">
+            <property name="maximum">
+             <double>100.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_21">
+            <property name="text">
+             <string>Maximum percentage (vmax):</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDoubleSpinBox" name="vmax_connectome_spinBox">
+            <property name="maximum">
+             <double>100.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>100.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_8">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>290</y>
+          <width>164</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Colormap:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="colormap_connectome_comboBox">
+           <item>
+            <property name="text">
+             <string>hot</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>spring</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>summer</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>autumn</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>winter</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>pink</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_8">
+       <attribute name="title">
+        <string>Node features</string>
+       </attribute>
+       <widget class="QTabWidget" name="tabWidget_6">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>281</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="tab_16">
+         <attribute name="title">
+          <string>Strength</string>
+         </attribute>
+         <widget class="QTextEdit" name="row_region_textEdit_5">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>261</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Strength: weight variant of the degree: sum of all neighboring link weights.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_17">
+         <attribute name="title">
+          <string>Degree</string>
+         </attribute>
+         <widget class="QTextEdit" name="row_region_textEdit_6">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>10</y>
+            <width>271</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Degree of each node: number of neighbors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_6">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>160</y>
+          <width>281</width>
+          <height>60</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_23">
+           <property name="text">
+            <string>Max percentage (vmax):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="vmax_colorbar_spinBox">
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>Min percentage (vmin):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="vmin_colorbar_spinBox">
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="colormap_circle_groupBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>230</y>
+          <width>281</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Colormap associated</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>281</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="label_34">
+           <property name="text">
+            <string>Node features displayed: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="node_features_comboBox">
+           <item>
+            <property name="text">
+             <string>Strength</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Degree</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_7">
+       <attribute name="title">
+        <string>Save</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>281</width>
+          <height>201</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_10">
+         <item row="3" column="0">
+          <widget class="QPushButton" name="save_circle_connectome_pushButton">
+           <property name="text">
+            <string>Save</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <layout class="QHBoxLayout" name="horizontalLayout_37">
+           <item>
+            <widget class="QLabel" name="label_61">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>Configuration folder:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="fig_file_pushButton">
+             <property name="text">
+              <string>Browser...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_48">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="1">
+          <spacer name="horizontalSpacer_49">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QTextEdit" name="fig_file_textEdit">
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QTextEdit" name="save_circle_connectome_textEdit">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>220</y>
+          <width>281</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Path for the output image here&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <zorder>circle_connectome_groupBox</zorder>
+     <zorder>textEdit</zorder>
+     <zorder>display_circle_connectome_pushButton</zorder>
+     <zorder>wait_label</zorder>
+     <zorder>tabWidget_2</zorder>
+    </widget>
+    <widget class="QWidget" name="tab_5">
+     <attribute name="title">
+      <string>Brain connectome</string>
+     </attribute>
+     <widget class="QTabWidget" name="tabWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>1091</width>
+        <height>501</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab_12">
+       <attribute name="title">
+        <string>Brain connectome in 2D</string>
+       </attribute>
+       <widget class="QPushButton" name="display_brain_connectome_pushButton">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>10</y>
+          <width>221</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Display brain connectome</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="brain_connectome_groupBox">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>10</y>
+          <width>771</width>
+          <height>451</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QTabWidget" name="tabWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>130</y>
+          <width>291</width>
+          <height>331</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <property name="tabBarAutoHide">
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="tab_10">
+         <attribute name="title">
+          <string>Slices visualization</string>
+         </attribute>
+         <widget class="QGroupBox" name="groupBox_12">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>0</y>
+            <width>271</width>
+            <height>81</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Slice axial</string>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>11</x>
+             <y>31</y>
+             <width>251</width>
+             <height>40</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QLabel" name="num_slice_axial_label">
+              <property name="text">
+               <string>Slice:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="num_slice_axial_horizontalSlider">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>146</number>
+              </property>
+              <property name="value">
+               <number>95</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_13">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>90</y>
+            <width>271</width>
+            <height>111</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Slice sagittal</string>
+          </property>
+          <widget class="QCheckBox" name="sagittal_left_checkBox">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>80</y>
+             <width>261</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Sagittal left (default: sagittal right)</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>251</width>
+             <height>40</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QLabel" name="num_slice_sagittal_label">
+              <property name="text">
+               <string>Slice:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="num_slice_sagittal_horizontalSlider">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>146</number>
+              </property>
+              <property name="value">
+               <number>95</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_14">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>210</y>
+            <width>271</width>
+            <height>81</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Slice coronal</string>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>251</width>
+             <height>40</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QLabel" name="num_slice_coronal_label">
+              <property name="text">
+               <string>Slice:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="num_slice_coronal_horizontalSlider">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>146</number>
+              </property>
+              <property name="value">
+               <number>95</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_11">
+         <attribute name="title">
+          <string>Colorbar lines</string>
+         </attribute>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>0</y>
+            <width>271</width>
+            <height>91</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Colorbar axial</string>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>31</y>
+             <width>251</width>
+             <height>60</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="min_colorbar_axial_brain_connectome_doubleSpinBox">
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.100000000000000</double>
+              </property>
+              <property name="value">
+               <double>5.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="max_colorbar_axial_brain_connectome_doubleSpinBox">
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.100000000000000</double>
+              </property>
+              <property name="value">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_27">
+              <property name="text">
+               <string>Max (%): </string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_26">
+              <property name="text">
+               <string>Min (%):</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_11">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>100</y>
+            <width>271</width>
+            <height>91</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Colorbar sagittal</string>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>251</width>
+             <height>60</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_28">
+              <property name="text">
+               <string>Min (%):</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_29">
+              <property name="text">
+               <string>Max (%): </string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="max_colorbar_sagittal_brain_connectome_doubleSpinBox">
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.100000000000000</double>
+              </property>
+              <property name="value">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="min_colorbar_sagittal_brain_connectome_doubleSpinBox">
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.100000000000000</double>
+              </property>
+              <property name="value">
+               <double>5.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_13">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_11">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>200</y>
+            <width>271</width>
+            <height>91</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Colorbar coronal</string>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>251</width>
+             <height>60</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="min_colorbar_coronal_brain_connectome_doubleSpinBox">
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.100000000000000</double>
+              </property>
+              <property name="value">
+               <double>5.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_31">
+              <property name="text">
+               <string>Max (%): </string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_30">
+              <property name="text">
+               <string>Min (%):</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="max_colorbar_coronal_brain_connectome_doubleSpinBox">
+              <property name="maximum">
+               <double>100.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.100000000000000</double>
+              </property>
+              <property name="value">
+               <double>100.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_16">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QCheckBox" name="plot_unconnected_points_CheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>211</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Show unconnected points</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_13">
+       <attribute name="title">
+        <string>Brain connectome in 3D</string>
+       </attribute>
+       <widget class="QPushButton" name="display_brain_connectome_3D_pushButton">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>10</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Display brain connectome in 3D </string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="brain_connectome_3D_groupBox">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>10</y>
+          <width>771</width>
+          <height>451</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="plot_unconnected_points_3D_CheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>211</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Show unconnected points</string>
+        </property>
+       </widget>
+       <widget class="QTabWidget" name="tabWidget_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>220</y>
+          <width>291</width>
+          <height>221</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab_14">
+         <attribute name="title">
+          <string>Lines, points and opacity</string>
+         </attribute>
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>71</x>
+            <y>11</y>
+            <width>149</width>
+            <height>92</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_35">
+             <property name="text">
+              <string>Point size:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QDoubleSpinBox" name="point_size_3D_spinBox">
+             <property name="singleStep">
+              <double>0.100000000000000</double>
+             </property>
+             <property name="value">
+              <double>7.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_36">
+             <property name="text">
+              <string>Linewidth:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QDoubleSpinBox" name="linewidth_3D_spinBox">
+             <property name="singleStep">
+              <double>0.100000000000000</double>
+             </property>
+             <property name="value">
+              <double>2.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_45">
+             <property name="text">
+              <string>Opacity</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QDoubleSpinBox" name="opacity_3D_spinBox">
+             <property name="singleStep">
+              <double>0.100000000000000</double>
+             </property>
+             <property name="value">
+              <double>0.800000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_15">
+         <attribute name="title">
+          <string>Colorbar</string>
+         </attribute>
+         <widget class="QWidget" name="layoutWidget_12">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>10</y>
+            <width>147</width>
+            <height>60</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_32">
+             <property name="text">
+              <string>Min (%):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QDoubleSpinBox" name="min_colorbar_brain_3D_connectome_doubleSpinBox">
+             <property name="minimum">
+              <double>0.000000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>100.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.100000000000000</double>
+             </property>
+             <property name="value">
+              <double>5.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_33">
+             <property name="text">
+              <string>Max (%): </string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QDoubleSpinBox" name="max_colorbar_brain_3D_connectome_doubleSpinBox">
+             <property name="maximum">
+              <double>100.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.100000000000000</double>
+             </property>
+             <property name="value">
+              <double>100.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>91</y>
+            <width>271</width>
+            <height>88</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QLabel" name="label_43">
+             <property name="text">
+              <string>Min value in the connectivity matrix: </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="min_a_3D_label">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_44">
+             <property name="text">
+              <string>Max value in the connectivity matrix: </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="max_a_3D_label">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>133</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>View: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="view_3D_comboBox">
+           <item>
+            <property name="text">
+             <string>Axial</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Sagittal</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Coronal</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>10</y>
+        <width>421</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_14">
+       <item>
+        <widget class="QLabel" name="label_16">
+         <property name="text">
+          <string>Select type of normalization: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="type_of_normalization_brain_comboBox">
+         <property name="currentText">
+          <string>Row region normalization</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Row region normalization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>No normalization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Whole normalization</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Row column normalization</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_17">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>10</y>
+        <width>419</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_20">
+       <item>
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>Select type of symmetrization: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="type_of_symmetrization_brain_comboBox">
+         <item>
+          <property name="text">
+           <string>Average</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Maximum</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Minimum</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_18">
+     <attribute name="title">
+      <string>Fibers</string>
+     </attribute>
+     <widget class="QGroupBox" name="Layout_vtk_fiber_groupBox">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>0</y>
+        <width>661</width>
+        <height>541</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_21">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>130</y>
+        <width>421</width>
+        <height>241</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Select fiber: </string>
+      </property>
+      <widget class="QPushButton" name="selected_file_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>190</y>
+         <width>89</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Display</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>265</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_40">
+        <item>
+         <widget class="QLabel" name="label_64">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+            <underline>true</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>Configuration file:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="select_vtk_file_pushButton">
+          <property name="text">
+           <string>Browser...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_54">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QTextEdit" name="select_vtk_file_textEdit">
+       <property name="geometry">
+        <rect>
+         <x>12</x>
+         <y>64</y>
+         <width>399</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="html">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>output_file_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>OUTPUT_path_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>363</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>open_slicer_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>open_slicer_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>347</x>
+     <y>344</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>open_slicer_only_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>open_slicer_only()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>347</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Red_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>194</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Green_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>781</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Slice4_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>486</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Slice5_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>488</x>
+     <y>486</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Slice6_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>780</x>
+     <y>486</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Slice7_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>519</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Slice8_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>488</x>
+     <y>519</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Slice9_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>780</x>
+     <y>519</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Yellow_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_controllers_params_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>489</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>display_circle_connectome_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>plot_circle_connectome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>194</x>
+     <y>250</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>display_brain_connectome_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>display_brain_connectome_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>display_brain_connectome_3D_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>create_brain_connectome_3D_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>909</x>
+     <y>273</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>num_slice_axial_horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>background_axial_brain_connectome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>258</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>num_slice_coronal_horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>background_coronal_brain_connectome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>183</x>
+     <y>517</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>num_slice_sagittal_horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>background_sagittal_brain_connectome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>183</x>
+     <y>387</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>view_3D_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>view_3D()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>126</x>
+     <y>450</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>save_circle_connectome_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>save_circle_connectome_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>394</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>parcellation_table_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>parcellation_table_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>429</x>
+     <y>234</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>point_size_3D_spinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>update_points_size()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>222</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>select_vtk_file_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>select_vtk_file_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>213</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selected_file_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>selected_file_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plot_unconnected_points_3D_CheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>update_3D_connectome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>208</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vmin_vmax_percentage_checkBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>checkBox_vmin_vmax_cliked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>312</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vmin_vmax_real_values_checkBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>checkBox_vmin_vmax_cliked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>372</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vmin_vmax_regions_checkBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>checkBox_vmin_vmax_cliked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>437</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vmin_normalize_matrix_spinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>display_normalize_matrix_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>171</x>
+     <y>440</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vmax_normalize_matrix_spinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>display_normalize_matrix_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>440</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>type_of_normalization_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>display_normalize_matrix_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>342</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>type_of_symmetrization_comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>display_normalize_matrix_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>342</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>display_normalize_matrix_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>229</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>save_normalize_matrix_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>save_normalize_matrix_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>76</x>
+     <y>444</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fig_file_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>fig_file_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>233</x>
+     <y>382</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slicer_path_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>slicer_path_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>max_colorbar_brain_3D_connectome_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>update_3D_connectome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>391</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>linewidth_3D_spinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>update_lines_size()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>222</x>
+     <y>391</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>min_colorbar_brain_3D_connectome_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>update_3D_connectome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>opacity_3D_spinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>updata_opacity()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>222</x>
+     <y>424</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>314</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>normalize_matrix_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>connectivity_matrix_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>234</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>connectivity_matrix_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>get_connectivity_matrix_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>398</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slicer_path_button_clicked()</slot>
+  <slot>OUTPUT_path_button_clicked()</slot>
+  <slot>open_slicer_clicked()</slot>
+  <slot>open_slicer_only()</slot>
+  <slot>view_controllers_params_clicked()</slot>
+  <slot>plot_circle_connectome()</slot>
+  <slot>fig_file_pushButton_clicked()</slot>
+  <slot>n_lines_spinBox_valueChanged()</slot>
+  <slot>connectivity_matrix_pushButton_clicked()</slot>
+  <slot>parcellation_table_pushButton_clicked()</slot>
+  <slot>display_connectivity_matrix_pushButton_clicked()</slot>
+  <slot>whole_pushButton_clicked()</slot>
+  <slot>save_normalize_matrix_pushButton_clicked()</slot>
+  <slot>normalize_matrix_pushButton_clicked()</slot>
+  <slot>download_row_region_pushButton_clicked()</slot>
+  <slot>row_column_pushButton_clicked()</slot>
+  <slot>download_row_column_pushButton_clicked()</slot>
+  <slot>display_connectivity_matrix_normalization_pushButton_clicked()</slot>
+  <slot>param_circle_connectome_valueChanged()</slot>
+  <slot>colormap_connectome_comboBox_currentTextChange()</slot>
+  <slot>connectivity_matrix_no_pushButton_clicked()</slot>
+  <slot>download_connectivity_matrix_no_pushButton_clicked()</slot>
+  <slot>display_brain_connectome_pushButton_clicked()</slot>
+  <slot>create_brain_connectome_3D_pushButton_clicked()</slot>
+  <slot>num_slice_horizontalSlider_valueChanged()</slot>
+  <slot>min_max_colorbar_brain_connectome_doubleSpinBox_valueChanged()</slot>
+  <slot>display_normalize_matrix_pushButton_clicked()</slot>
+  <slot>background_axial_brain_connectome()</slot>
+  <slot>background_sagittal_brain_connectome()</slot>
+  <slot>background_coronal_brain_connectome()</slot>
+  <slot>view_3D()</slot>
+  <slot>save_circle_connectome_pushButton_clicked()</slot>
+  <slot>linewidth_3D_spinBox_valueChanged()</slot>
+  <slot>select_vtk_file_pushButton_clicked()</slot>
+  <slot>selected_file_clicked()</slot>
+  <slot>update_3D_connectome()</slot>
+  <slot>update_points_size()</slot>
+  <slot>update_lines_size()</slot>
+  <slot>checkBox_vmin_vmax_cliked()</slot>
+  <slot>uptate_colormap_connectivity_matrix()</slot>
+  <slot>update_cirlcle_connectome()</slot>
+  <slot>updata_opacity()</slot>
+  <slot>track_click()</slot>
+  <slot>get_connectivity_matrix_pushButton_clicked()</slot>
+ </slots>
+</ui>
