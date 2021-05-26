@@ -444,7 +444,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         # Get the number of separation required = number of different 'VisuHierarchy' label:  "VisuHierarchy": "seed.left."
         global label_names
-        list_VisuHierarchy, label_names, VisuOrder_associated, VisuHierarchy_associated = ([], [],[],[])
+        list_VisuHierarchy, label_names, VisuOrder_associated, VisuHierarchy_associated = ([], [], [], [])
         number_of_subcortical_regions = 0 
 
         for key in table_json_object:
@@ -477,10 +477,8 @@ class Ui_visu(QtWidgets.QTabWidget):
             index = list_VisuHierarchy.index(key["VisuHierarchy"])
             list_of_list_VisuHierarchy[index].append(key["name"])
 
-
         # Sort regions by VisuHierarchy number: 
         sorted_indices = np.argsort( VisuOrder_associated)
-        
 
         # Build 'node_order' and 'VisuHierarchy_order'
         global node_order
@@ -524,12 +522,10 @@ class Ui_visu(QtWidgets.QTabWidget):
             else: 
                 name_boundaries.append("")
 
-
         # Create a circular layout:
         global node_angles
         node_angles = circular_layout(label_names, node_order, start_pos=90, group_boundaries=list_boundaries)
     
-
 
         # *****************************************
         # Get the normalize connectivity matrix
@@ -1071,16 +1067,16 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             if self.plot_unconnected_points_CheckBox.isChecked(): 
                 # Plot points for axial view: 
-                cax1 = self.ax1.plot(x, y, 'brown', marker=".", markersize=8) 
+                cax1 = self.ax1.plot(x, y, 'brown', marker=".", markersize=8, gid="test point axial") 
 
                 # Plot points for sagittal view:
                 if self.sagittal_left_checkBox.isChecked():
-                    cax2 = self.ax2.plot(y_sagittal_left, z_sagittal_left, 'brown', marker=".", markersize=8) #sagittal left
+                    cax2 = self.ax2.plot(y_sagittal_left, z_sagittal_left, 'brown', marker=".", markersize=8, gid="test point sagittal left") #sagittal left
                 else:
-                    cax2 = self.ax2.plot(y_sagittal_right, z_sagittal_right, 'brown', marker=".", markersize=8) #sagittal right
+                    cax2 = self.ax2.plot(y_sagittal_right, z_sagittal_right, 'brown', marker=".", markersize=8,gid="test point sagittal right") #sagittal right
 
                 # Plot points for coronal view:
-                cax3 = self.ax3.plot(x, z , 'brown', marker=".", markersize=8) 
+                cax3 = self.ax3.plot(x, z , 'brown', marker=".", markersize=8, gid="test point coronal") 
 
 
         # *****************************************
@@ -1139,12 +1135,12 @@ class Ui_visu(QtWidgets.QTabWidget):
                     y_values = [point1[1], point2[1]]
 
                     # Display lines for axial view: 
-                    cax1 = self.ax1.plot(x_values, y_values, lw=1.5, color= plt.cm.RdBu(norm_axial(my_norm)))
+                    cax1 = self.ax1.plot(x_values, y_values, lw=1.5, color= plt.cm.RdBu(norm_axial(my_norm)), gid="test lines  axial")
 
                     if not self.plot_unconnected_points_CheckBox.isChecked(): 
                         # Plot connected points for axial view: 
-                        cax1 = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8) 
-                        cax1 = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8) 
+                        cax1 = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid="test points axial ") 
+                        cax1 = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid="test points axial ") 
                     
                 # Specific threshold for coronal lines (give by the range of the colorbar):
                 if my_norm <= vmax_coronal and my_norm >= vmin_coronal:
@@ -1155,12 +1151,12 @@ class Ui_visu(QtWidgets.QTabWidget):
                     z_values = [point1[2], point2[2]]
 
                     # Display lines for coronal view: 
-                    cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)))
+                    cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), gid="test lines coronal")
 
                     if not self.plot_unconnected_points_CheckBox.isChecked(): 
                         # Plot points for coronal view:
-                        cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8)
-                        cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8) 
+                        cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="test point coronal")
+                        cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid="test point coronal") 
 
                 # Specific threshold for sagittal slice (give by the range of the colorbar):
                 if my_norm <= vmax_sagittal and my_norm >= vmin_sagittal:
@@ -1173,12 +1169,12 @@ class Ui_visu(QtWidgets.QTabWidget):
                         z_values_sagittal_left = [point1_sagittal_left[2], point2_sagittal_left[2]]
 
                         # Display lines for sagittal left view: 
-                        cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm))) 
+                        cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), gid="test lines sagittal") 
 
                         if not self.plot_unconnected_points_CheckBox.isChecked(): 
                             # Plot points for sagittal left  view:
-                            cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8) #sagittal left
-                            cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8) #sagittal left
+                            cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, gid="test point left sagittal" ) #sagittal left
+                            cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, gid="test point left sagittal") #sagittal left
 
                     else: 
                         point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
@@ -1188,12 +1184,12 @@ class Ui_visu(QtWidgets.QTabWidget):
                         z_values_sagittal_right = [point1_sagittal_right[2], point2_sagittal_right[2]]
 
                         # Display lines for sagittal right view: 
-                        cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm))) 
+                        cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), gid="test lines right sagittal") 
                         
                         if not self.plot_unconnected_points_CheckBox.isChecked(): 
-                            # Plot points for sagittal left  view:
-                            cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8) #sagittal right
-                            cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8) #sagittal right
+                            # Plot points for sagittal right  view:
+                            cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, gid="test point right sagittal") #sagittal right
+                            cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, gid="test point right sagittal") #sagittal right
                                 
 
         # *****************************************
@@ -1217,6 +1213,60 @@ class Ui_visu(QtWidgets.QTabWidget):
         print("End display brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
      
+        self.fig_brain_connectome.canvas.mpl_connect('motion_notify_event', self.on_plot_hover)           
+        #plt.show()
+
+
+    def on_plot_hover(self, event):
+        # Iterating over each data member plotted
+        for curve in self.ax1.get_lines():
+            # Searching which data member corresponds to current mouse position
+            if curve.contains(event)[0]:
+                print("axial lines  %s" % curve.get_gid())
+
+        for curve in self.ax2.get_lines():
+            # Searching which data member corresponds to current mouse position
+            if curve.contains(event)[0]:
+                print("sagittal lines %s" % curve.get_gid())
+
+
+        for curve in self.ax3.get_lines():
+            # Searching which data member corresponds to current mouse position
+            if curve.contains(event)[0]:
+                print("coronal lines   %s" % curve.get_gid())
+
+
+
+
+        for curve in self.ax1.get_points():
+            # Searching which data member corresponds to current mouse position
+            if curve.contains(event)[0]:
+                print("axial points  %s" % curve.get_gid())
+
+        for curve in self.ax2.get_points():
+            # Searching which data member corresponds to current mouse position
+            if curve.contains(event)[0]:
+                print("sagittal points %s" % curve.get_gid())
+
+
+        for curve in self.ax3.get_points():
+            # Searching which data member corresponds to current mouse position
+            if curve.contains(event)[0]:
+                print("coronal points   %s" % curve.get_gid())
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
@@ -1312,7 +1362,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         balloonWidget = vtk.vtkBalloonWidget()
         balloonWidget.SetRepresentation(balloonRep)
     
-
         # Setup output view:
         output = reader.GetOutput()
         output_port = reader.GetOutputPort()
@@ -1333,7 +1382,6 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         #balloonWidget.AddBalloon(actor, 'This is the brain surface', None)
         self.ren.AddActor(actor) #brain surfaces
-
 
 
         # *****************************************
@@ -1375,7 +1423,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                     list_points.append(point)
 
     
-
         # Set 1 if the point is connected and 0 otherwise
         list_visibility_point = []
 
@@ -1423,7 +1470,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             pointPolyData.SetPoints(points)
             pointPolyData.SetVerts(vertices)
 
-
             # *****************************************
             # Points colors
             # *****************************************
@@ -1454,10 +1500,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             # Add point to renderer
             balloonWidget.AddBalloon(actor_point, 'This is ' + str(list_name[i]) , None)
             self.ren.AddActor(actor_point) 
-
-
-
-
 
 
         # *****************************************
@@ -1561,8 +1603,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                 balloonWidget.AddBalloon(actor_lines, 'This is the line between ' + str(list_name[i]) + " and " + str(list_name[j]), None)
                 self.ren.AddActor(actor_lines)    
 
-
-
         # Add the color map:
         scalarBar = vtk.vtkScalarBarActor()
         scalarBar.SetNumberOfLabels(8)
@@ -1572,7 +1612,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         # Set color of the background: 
         namedColors = vtk.vtkNamedColors()
         self.ren.SetBackground(namedColors.GetColor3d("SlateGray")) 
-
 
 
         # *****************************************
@@ -1597,8 +1636,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.iren.Initialize()
 
         print("End display 3D brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-
-
 
 
 
@@ -1670,8 +1707,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                     list_color.append(my_color)
 
         # Update actor:
-        #actors = vtk.vtkPropCollection() 
-        actors = self.ren.GetActors()#GetViewProps()
+        actors = self.ren.GetActors()
         actors.InitTraversal()
 
         iNumberOfActors = actors.GetNumberOfItems()
@@ -1697,7 +1733,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                                                     list_color[i-1 - len(list_visibility_point)][1], 
                                                     list_color[i-1 - len(list_visibility_point)][2])
 
-
         actors_2D = self.ren.GetActors2D()
         actors_2D.InitTraversal()
         iNumberOfActors_2D = actors_2D.GetNumberOfItems()
@@ -1709,8 +1744,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.ren.ResetCamera()
         self.ren.GetActiveCamera().Zoom(1.3)
         self.iren.Initialize()
-
-        print("end update 3D connectome")
 
 
     
@@ -1733,8 +1766,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.ren.ResetCamera()
         self.ren.GetActiveCamera().Zoom(1.3)
         self.iren.Initialize()
-
-        print("end size point update")
 
 
     
@@ -1760,9 +1791,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.ren.ResetCamera()
         self.ren.GetActiveCamera().Zoom(1.3)
         self.iren.Initialize()
-
-        print("end size line update")
-        
+   
 
 
     # *****************************************
@@ -1782,8 +1811,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.ren.ResetCamera()
         self.ren.GetActiveCamera().Zoom(1.3)
         self.iren.Initialize()
-
-        print("end opacity update")
 
 
 
