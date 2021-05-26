@@ -705,7 +705,7 @@ with Tee(log_file):
 			
 			else: 
 				print("ERROR: You have to provide one label per subcortical regions (0 if you don't want to integrate this region)")
-				break
+				exit()
 
 
 		print("*****************************************")
