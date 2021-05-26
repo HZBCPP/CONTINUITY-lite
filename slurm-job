@@ -1,0 +1,10 @@
+#!/bin/zsh 
+ #SBATCH -p general 
+ #SBATCH -N 1 
+ #SBATCH --mem 5120 
+ #SBATCH -n 1 
+ #SBATCH -t 7-00:00:00 
+ #SBATCH --mail-type=end 
+ #SBATCH --mail-user=elodie@email.unc.edu 
+ module add python 
+ python3 CONTINUITY_completed_script.py './CONTINUITY_ARGS/args_main_CONTINUITY.json'
