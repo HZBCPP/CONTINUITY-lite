@@ -7,11 +7,9 @@ import subprocess
 from termcolor import colored
 import time
 import datetime
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QCheckBox, QGridLayout, QLabel, QTableWidgetItem, QMessageBox, QInputDialog, QLineEdit
 from PyQt5.QtCore import Qt
-
-from PyQt5 import QtGui
 
 from main_CONTINUITY import * 
 from CONTINUITY_functions import *
@@ -412,7 +410,7 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
-    # Functions activate if a NO registration cortical left button is clicked
+    # Functions activate if a NO registration cortical left or right button is clicked
     # *****************************************  
 
     def NO_registration_cortical_labeled_left_Button_clicked(self):
@@ -421,12 +419,7 @@ class Ui(QtWidgets.QTabWidget):
             self.NO_registration_cortical_label_left_textEdit.setText(fileName)
             json_user_object['Parameters']["cortical_label_left"]["value"] = fileName
             Ui.update_user_json_file() 
-       
 
-
-    # *****************************************
-    # Functions activate if a NO registration cortical right button is clicked
-    # *****************************************  
 
     def NO_registration_cortical_labeled_right_Button_clicked(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
@@ -462,7 +455,6 @@ class Ui(QtWidgets.QTabWidget):
             self.question_SALT_pushButton.setStyleSheet( "background-color: blue")
             self.question_KWM_pushButton.setStyleSheet( "background-color: blue")
 
-
             list_regions_name, list_subcortical = ([], [])
             
             with open(json_user_object['Arguments']["PARCELLATION_TABLE"]["value"]) as data_file:    
@@ -477,10 +469,8 @@ class Ui(QtWidgets.QTabWidget):
                      list_subcortical.append(0)
                     
 
-            # Clear the list: 
+            # Clear the list and add all names:
             self.sc_regions_names_listWidget.clear()
-
-            # Add all names: 
             self.sc_regions_names_listWidget.addItems(list_regions_name)
 
             # Set parameters: 
@@ -494,7 +484,6 @@ class Ui(QtWidgets.QTabWidget):
                     item.setForeground(QtGui.QColor("green"))
                     sc.append(list_regions_name[i])
                     text += str(list_regions_name[i]) + '\n'
-
                 else:
                     item.setCheckState(not Qt.Checked)
 
@@ -535,7 +524,7 @@ class Ui(QtWidgets.QTabWidget):
         self.Subcortical_regions_textEdit.setText(text)
 
         self.sc_regions_names_listWidget.blockSignals(False) 
-        print(sc)
+        
 
 
     # *****************************************
@@ -552,7 +541,6 @@ class Ui(QtWidgets.QTabWidget):
             self.question_SALT_pushButton.setStyleSheet( "background-color: blue")
             self.question_KWM_pushButton.setStyleSheet( "background-color: blue")
             self.INTEGRATE_SC_DATA_by_generated_sc_surf_groupBox.setChecked(False)
-
         else: 
             self.INTEGRATE_SC_DATA_by_generated_sc_surf_groupBox.setChecked(True)
 
@@ -600,10 +588,7 @@ class Ui(QtWidgets.QTabWidget):
     def KWM_button_clicked(self):
         DirName= QtWidgets.QFileDialog.getExistingDirectory(self)
         if DirName:
-            # Modify Qt interface
             self.KWMDir_textEdit.setText(DirName) 
-
-            # Modify .json
             json_user_object['Arguments']["KWMDir"]["value"] = DirName
             Ui.update_user_json_file() 
 
@@ -621,7 +606,6 @@ class Ui(QtWidgets.QTabWidget):
                                                                              json_user_object['Arguments']["KWMDir"]["value"],
                                                                              json_user_object['Arguments']["ID"]["value"],
                                                                              json_user_object['Parameters']["subcorticals_region_names"]["value"])
-
             region_only_SALTDir, region_only_KWMDir = ([], [])
 
             # Compare lists to extract common regions: 
@@ -636,29 +620,21 @@ class Ui(QtWidgets.QTabWidget):
             # Concatenate all regions without copie: 
             all_sc_region = sorted(list_sc_region_SALT + region_only_KWMDir)
 
-
             # Add color code explanation
             self.color_sc_textEdit.setText('<font color="green">Checkbox in green</font>: file for this region in the SALT and KWM directory \n' + 
                                            '<font color="red">Checkbox in red</font>: file for this region only in the KWM directory \n' + '\n'
                                            '<font color="purple">Checkbox in purple</font>: file for this region only in the SALT directory') 
-            # Clear the list: 
+            # Clear the list and add all names
             self.list_sc_listWidget.clear()
-
-            # Add all names: 
             self.list_sc_listWidget.addItems(all_sc_region)
 
             # Set parameters: 
             for i in range(self.list_sc_listWidget.count()):
                 item = self.list_sc_listWidget.item(i) 
 
-                if item.text() not in region_only_SALTDir and item.text() not in region_only_KWMDir:
-                    item.setForeground(QtGui.QColor("green"))
-
-                elif item.text() in region_only_SALTDir:
-                    item.setForeground(QtGui.QColor("purple"))
-
-                else:
-                    item.setForeground(QtGui.QColor("red"))
+                if (item.text() not in region_only_SALTDir) and (item.text() not in region_only_KWMDir):  item.setForeground(QtGui.QColor("green"))
+                elif item.text() in region_only_SALTDir:                                                  item.setForeground(QtGui.QColor("purple"))
+                else:                                                                                     item.setForeground(QtGui.QColor("red"))
                 
                 
     # *****************************************
@@ -718,8 +694,6 @@ class Ui(QtWidgets.QTabWidget):
             item = self.sc_regions_labels_listWidget.item(i) 
 
         # Set a signal to do something if the user click on a region: 
-
-     
         self.sc_regions_labels_listWidget.itemDoubleClicked.connect(self.subcortical_label_changed , type= Qt.UniqueConnection)   
 
     
@@ -739,7 +713,6 @@ class Ui(QtWidgets.QTabWidget):
         if okPressed: 
             try: # test if text is a number
                 text_int = int(text)
-
                 self.error_label.setText('')
 
                 json_user_object['Parameters']["subcorticals_region_labels"]["value"][index] = text_int
@@ -1065,7 +1038,7 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
-    # NO registration: open file system and write the DWI bvecs path in user information json file
+    # NO registration: open file system and write the DWI bvecs and bvals and parcellation table path in user information json file
     # *****************************************
 
     def no_registration_DWI_bvecs_pushButton(self):
@@ -1076,11 +1049,6 @@ class Ui(QtWidgets.QTabWidget):
             Ui.update_user_json_file()
 
 
-
-    # *****************************************
-    # NO registration: open file system and write the DWI bvals path in user information json file
-    # *****************************************
-
     def no_registration_DWI_bvals_pushButton(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
         if fileName:
@@ -1088,11 +1056,6 @@ class Ui(QtWidgets.QTabWidget):
             json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = fileName
             Ui.update_user_json_file()
 
-
-
-    # *****************************************
-    # NO registration: open file system and write the parcellation table path in user information json file
-    # *****************************************
 
     def no_registration_parcellation_table_button_clicked(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
@@ -1214,7 +1177,6 @@ class Ui(QtWidgets.QTabWidget):
             if self.optimisation_with_tcksift2_checkBox.isChecked():
                 self.optimisation_with_tcksift2_checkBox.isChecked(False)
                 json_user_object['Parameters']["optimisation_with_tcksift2"]["value"] = False
-
         Ui.update_user_json_file()
 
 
@@ -1230,8 +1192,6 @@ class Ui(QtWidgets.QTabWidget):
             if self.filtering_with_tcksift_checkBox.isChecked():
                 self.filtering_with_tcksift_checkBox.isChecked(False)
                 json_user_object['Parameters']["filtering_with_tcksift"]["value"] = False
-
-
         Ui.update_user_json_file()
 
 
@@ -1300,7 +1260,6 @@ class Ui(QtWidgets.QTabWidget):
 
     def save_config_file_pushButton_clicked(self):
         shutil.copy(user_json_filename, json_user_object['Parameters']["json_config_file"]["value"]) 
-        print("copy done")
 
 
 
@@ -1347,22 +1306,14 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
-    # START TRACTOGRAPHY 
+    # START TRACTOGRAPHY locally or remotly
     # *****************************************
 
     def start_tractography_button_clicked(self):
-        # Display the begin time
         now = datetime.datetime.now()
         self.start_time_label.setText(now.strftime("Script running since: %Hh:%Mmin , %m-%d-%Y"))
-
-        # Run 4 scripts to do the tractogrphy
         CONTINUITY(user_json_filename)
 
-
-
-    # *****************************************
-    # Start tractography on longleaf
-    # *****************************************
 
     def start_tractography_remotely_pushButton_clicked(self):
         cluster("./slurm-job", json_user_object['Parameters']["cluster_command_line"]["value"])

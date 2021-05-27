@@ -697,7 +697,7 @@ with Tee(log_file):
 
 
 				number_of_points = 1002 # new input param ? 
-				create_kwm_files(OUT_FOLDER, subcorticals_list_labels_checked, subcorticals_list_names_checked, number_of_points)
+				create_kwm_files(OUT_FOLDER, new_parcellation_table, subcorticals_list_names_checked, number_of_points)
 
 				# Update the localization of subcortical surfaces: 
 				SALTDir = os.path.join(OUT_FOLDER, 'my_SALT') 
@@ -1036,7 +1036,7 @@ with Tee(log_file):
 		os.remove(os.path.join(OutSurfaceName,"seeds.txt"))
 
 	# Create a text file listing all path of label surfaces created by ExtractLabelSurfaces
-	run_command("Write seed list", [sys.executable, writeSeedListScript, OutSurfaceName, overlapName, new_parcellation_table])
+	run_command("Write seed list", [sys.executable, writeSeedListScript, OutSurfaceName, new_parcellation_table])
 
 
 	
@@ -1123,10 +1123,6 @@ with Tee(log_file):
 
 
 
-
-
-
-
 	# *****************************************
 	# Tractography with MRtrix 
 	# *****************************************
@@ -1142,17 +1138,12 @@ with Tee(log_file):
 		# *****************************************
 
 		add = ""
-		if filtering_with_tcksift:
-			add = '_tcksif'
-
-		if optimisation_with_tcksift2: 
-			add = '_tcksif2'
-
+		if filtering_with_tcksift:     add = '_tcksif'
+		if optimisation_with_tcksift2: add = '_tcksif2'
 
 		OUT_MRTRIX = os.path.join(OUT_TRACTOGRAPHY, tractography_model + add) 
 		if not os.path.exists(OUT_MRTRIX):
 			os.mkdir(OUT_MRTRIX)
-
 
 		# *****************************************
 		# Response function estimation: Estimate response function(s) for spherical deconvolution
@@ -1162,7 +1153,6 @@ with Tee(log_file):
 		if os.path.exists(Response_function_estimation_txt):
 		    print("Response function estimation already compute ")
 		else: 
-			print("Compute Response function estimation")
 			command = [MRtrixPath + "/dwi2response",'tournier', DiffusionData, # input
 												   				Response_function_estimation_txt, #output
 												                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
@@ -1177,7 +1167,6 @@ with Tee(log_file):
 		if os.path.exists(FOD_nii):
 		    print("Fibre Orientation Distribution estimation already compute")
 		else: 
-			print("Compute Fibre Orientation Distribution estimation")
 			run_command("FOD estimation", [MRtrixPath + "/dwi2fod", 'csd',
 								    						        DiffusionData, # input
 								    								Response_function_estimation_txt, # input
@@ -1598,10 +1587,6 @@ with Tee(log_file):
 		np.savetxt(connectome_mrtrix, connectome.astype(float),  fmt='%f', delimiter='  ')
 
 		
-
-
-
-
 
 
 
