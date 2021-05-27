@@ -30,9 +30,7 @@ with open(user_json_filename, "r") as user_Qt_file:
 # *****************************************
 
 if __name__ == '__main__':
-
-    print("Open Slicer with a python script")
-
+    
     if os.path.exists( "./CONTINUITY_QC/python_script_for_Slicer.py"):
     	command = [json_user_object['Executables']["slicer"]["value"], "--python-script", "./CONTINUITY_QC/python_script_for_Slicer.py", user_json_filename] 
     else:

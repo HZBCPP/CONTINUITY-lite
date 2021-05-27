@@ -10,7 +10,6 @@ from csv import reader, DictReader
 from interface_functions import *
 from CONTINUITY_functions import *
 
-
 ##########################################################################################################################################
 
      # CONTINUITY : connectivity tools which include subcortical regions as seed and target for connectivity 
@@ -79,10 +78,6 @@ if __name__ == '__main__':
 
             with open(user_filename, "w+") as user_file: 
                 user_file.write(json.dumps(data_user, indent=4)) 
-
-
-    # Write a csv file (just for testing)  
-    #write_csv_file("./csv_CONTINUITY.csv", default_config_filename)
     
 
     # *****************************************
@@ -103,7 +98,6 @@ if __name__ == '__main__':
 
                     with open(user_filename, "w+") as user_file: 
                         user_file.write(json.dumps(data_user, indent=4)) 
-
 
         # Find and write localisation of executables            
         executable_path(default_config_filename, user_filename)
@@ -130,13 +124,11 @@ if __name__ == '__main__':
                 print(str(list_of_args_required)[1:-1] ,"required for CONTINUITY script")
                 sys.exit()  
 
-
             # Run CONTINUITY script 
             if not args["cluster"]:  # Run localy: -noGUI  
                 CONTINUITY(user_filename)
             else: # run in longleaf: -noGUI -cluster 
                 cluster("./slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
-
 
 
         # *****************************************
@@ -170,7 +162,6 @@ if __name__ == '__main__':
                         cluster("./slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
 
         
-
     # *****************************************
     # Run CONTINUITY thanks to an interface (default)
     # *****************************************

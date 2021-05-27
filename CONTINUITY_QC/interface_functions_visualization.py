@@ -48,12 +48,12 @@ class Ui_visu(QtWidgets.QTabWidget):
     def __init__(self):
         super(Ui_visu, self).__init__()
     
-        if os.path.exists('./CONTINUITY_QC/interface_visualization.ui'):      # if you open the second interface with the first interface
+        if os.path.exists('./CONTINUITY_QC/interface_visualization.ui'):  # if you open the second interface with the first interface
             uic.loadUi('./CONTINUITY_QC/interface_visualization.ui', self)
-        else:                                                                   # if you open the second interface alone
+        else:                                                             # if you open the second interface alone
             uic.loadUi('./interface_visualization.ui', self)
 
-        # Write default values on interface    
+        # Write default values on interface:    
         self.setup_default_values()
 
         self.show()
@@ -67,16 +67,14 @@ class Ui_visu(QtWidgets.QTabWidget):
     def setup_default_values(self):
         # Open json files: 
         global user_json_filename
+        user_json_filename = "../CONTINUITY_ARGS/args_main_CONTINUITY.json"
         if os.path.exists("./CONTINUITY_ARGS/args_main_CONTINUITY.json"): # if you open the second interface with the first interface
             user_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json"
-        else: 
-            user_json_filename = "../CONTINUITY_ARGS/args_main_CONTINUITY.json"
-
+       
         global default_json_filename
+        default_json_filename = "../CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
         if os.path.exists("./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json"):  # if you open the second interface with the first interface
             default_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
-        else:
-            default_json_filename = "../CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
  
         
         # Json file which contains values given by the user: 
@@ -181,7 +179,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.slicer_textEdit.setText(fileName)
             json_user_object['Executables']["slicer"]["value"] = fileName
             Ui_visu.update_user_json_file()
-
 
 
 
@@ -441,7 +438,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         with open(os.path.join(self.parcellation_table_textEdit.toPlainText()), "r") as table_json_file:
             table_json_object = json.load(table_json_file)
 
-
         # Get the number of separation required = number of different 'VisuHierarchy' label:  "VisuHierarchy": "seed.left."
         global label_names
         list_VisuHierarchy, label_names, VisuOrder_associated, VisuHierarchy_associated = ([], [], [], [])
@@ -590,8 +586,8 @@ class Ui_visu(QtWidgets.QTabWidget):
             for line in connectivity_matrix:
                 j = 0 
                 for val in line:
-                    instrength = waytotal_column[j]      #is = sum(CIJ,1);    % instrength = column sum of CIJ: the instrength is the sum of inward link weights 
-                    outstrength = waytotal_line[i]       #os = sum(CIJ,2);    % outstrength = row sum of CIJ:   the outstrength is the sum of outward link weights
+                    instrength = waytotal_column[j]   #is = sum(CIJ,1);    % instrength = column sum of CIJ: the instrength is the sum of inward link weights 
+                    outstrength = waytotal_line[i]    #os = sum(CIJ,2);    % outstrength = row sum of CIJ:   the outstrength is the sum of outward link weights
                     list_val.append(instrength + outstrength) #str = is+os;   % strength = instrength+outstrength
                     j=j+1
                 i=i+1
@@ -646,13 +642,10 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.canvas = FigureCanvas(self.fig)
         self.Layoutcircle.addWidget(self.canvas)
 
-        global n_lines
+        global n_lines,node_angles_copy, axes 
         n_lines = int( (self.n_lines_spinBox.value()/100) * number_total_line)
-
-        global node_angles_copy
         node_angles_copy = node_angles
 
-        global axes
         fig, axes = plot_connectivity_circle(connectivity_matrix, label_names, 
                                              n_lines = n_lines,linewidth = self.linewidth_spinBox.value(),
                                              vmin = (self.vmin_connectome_spinBox.value() / 100), vmax = (self.vmax_connectome_spinBox.value() / 100),
@@ -698,20 +691,16 @@ class Ui_visu(QtWidgets.QTabWidget):
                       rotation=angle_deg, rotation_mode='anchor', horizontalalignment=ha, verticalalignment='center', color='white')
                
         self.fig.canvas.draw()
-        
 
-        global indices
+        global indices, con_thresh, con_abs_util
         indices = np.tril_indices(len(label_names), -1)
         connectivity_matrix_modif = connectivity_matrix
         connectivity_matrix_modif = connectivity_matrix_modif[indices]
 
-        global con_thresh
         con_thresh = np.sort(np.abs(connectivity_matrix_modif).ravel())[-n_lines ]
 
         # Get the connections which we are drawing and sort by connection strength this will allow to draw the strongest connections first
         con_abs = np.abs(connectivity_matrix_modif)
-
-        global con_abs_util
         con_abs_util = np.abs(connectivity_matrix)
         con_draw_idx = np.where(con_abs >= con_thresh)[0]
         
@@ -729,9 +718,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         global my_fig
         my_fig = self.fig
-
         self.all_nodes_listWidget.clear()
-
 
         while i < len(VisuHierarchy_order):   
             current_elem = VisuHierarchy_order[i]
@@ -753,7 +740,6 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
        
     def get_item(self, item):
-
         self.all_nodes_listWidget.blockSignals(True)
         
         Ui_visu.display_nodes(self, item.text(),update_manually_fig=True, 
@@ -768,18 +754,15 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
 
     def get_nodes(self, event, fig=None, axes=None, indices=None, n_nodes=0, node_angles=None, ylim=[9, 10]):
-
         # Convert to radian  
         node_angles = node_angles * np.pi / 180
         node_angles_copy_event = node_angles
-
 
         # *****************************************
         # Left click
         # *****************************************
 
         if event.button == 1:  
-
             # Click must be near node radius
             if event.ydata != "None": 
                 if not ylim[0] <= event.ydata <= ylim[1]:
@@ -798,7 +781,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
 
         elif event.button == 3: 
-
             # Remove previous node label: 
             loop = len(axes.texts)
             for i in range(loop):
@@ -822,8 +804,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.clicked_nodes_label.setText("")
             self.nodes_associated_plainTextEdit.setPlainText("")
 
-            print('end right click')
-
 
 
     # *****************************************
@@ -831,7 +811,6 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
 
     def display_nodes(self, selected_node, update_manually_fig=False, fig=None, axes=None, indices=None, n_nodes=0, node_angles=None):
-
         # Convert to radian  
         node_angles = node_angles * np.pi / 180
         node_angles_copy_event = node_angles
@@ -887,7 +866,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                 patches[ii].set_visible(node in [x, y])
 
         fig.canvas.draw()
-        print('end left click')
 
 
 
@@ -1105,12 +1083,12 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
 
         # Colorbar vmin and vmaw used to setup the normalization of each color: 
-        vmin_axial    = self.min_colorbar_axial_brain_connectome_doubleSpinBox.value() / 100
-        vmax_axial    = self.max_colorbar_axial_brain_connectome_doubleSpinBox.value() / 100
+        vmin_axial    = self.min_colorbar_axial_brain_connectome_doubleSpinBox.value()    / 100
+        vmax_axial    = self.max_colorbar_axial_brain_connectome_doubleSpinBox.value()    / 100
         vmin_sagittal = self.min_colorbar_sagittal_brain_connectome_doubleSpinBox.value() / 100
         vmax_sagittal = self.max_colorbar_sagittal_brain_connectome_doubleSpinBox.value() / 100
-        vmin_coronal  = self.min_colorbar_coronal_brain_connectome_doubleSpinBox.value() / 100
-        vmax_coronal  = self.max_colorbar_coronal_brain_connectome_doubleSpinBox.value() / 100
+        vmin_coronal  = self.min_colorbar_coronal_brain_connectome_doubleSpinBox.value()  / 100
+        vmax_coronal  = self.max_colorbar_coronal_brain_connectome_doubleSpinBox.value()  / 100
 
         # To normalize colors:
         norm_axial    = mpl.colors.Normalize(vmin=vmin_axial,    vmax=vmax_axial)
@@ -1237,37 +1215,6 @@ class Ui_visu(QtWidgets.QTabWidget):
 
 
 
-
-        for curve in self.ax1.get_points():
-            # Searching which data member corresponds to current mouse position
-            if curve.contains(event)[0]:
-                print("axial points  %s" % curve.get_gid())
-
-        for curve in self.ax2.get_points():
-            # Searching which data member corresponds to current mouse position
-            if curve.contains(event)[0]:
-                print("sagittal points %s" % curve.get_gid())
-
-
-        for curve in self.ax3.get_points():
-            # Searching which data member corresponds to current mouse position
-            if curve.contains(event)[0]:
-                print("coronal points   %s" % curve.get_gid())
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
@@ -1353,7 +1300,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.vtkWidget = QVTKRenderWindowInteractor(self)
         self.Layout_brain_connectome_3D.addWidget(self.vtkWidget)
 
-
         # Create the widget
         balloonRep = vtk.vtkBalloonRepresentation()
         balloonRep.SetBalloonLayoutToImageRight()
@@ -1422,7 +1368,6 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                     list_points.append(point)
 
-    
         # Set 1 if the point is connected and 0 otherwise
         list_visibility_point = []
 
@@ -1445,9 +1390,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         else: 
             list_visibility_point = [1] * np.shape(a)[0]
 
-
-        # Loop for points:
-        #map(Ui_visu.loop_for_points, list_points) #9s with map (10s without)
 
         for i in range(len(list_x)): 
             # *****************************************
@@ -1520,17 +1462,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             my_color = my_color[:-1] # R G B 
             colorLookupTable.SetTableValue(i, my_color[0], my_color[1], my_color[2], 1)
 
-        # Create each lines and add a specific color: 
-        '''
-        list_index = []
-        for index, x in np.ndenumerate(a):
-            list_index.append(index)
-        
-        map(Ui_visu.loop_for_lines, a.flatten(), list_index)
-
-        #map(lambda row: map(Ui_visu.loop_for_lines, row), a)
-        '''
-
         for i in range(np.shape(a)[0]):
             for j in range(np.shape(a)[1]):                
 
@@ -1566,14 +1497,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                 # Add color:
                 my_color = [0.0, 0.0, 0.0]
                 colorLookupTable.GetColor(my_norm, my_color)
-
-                # Change line to tube: 
-                '''
-                tubes = vtk.vtkTubeFilter()
-                tubes.SetInputData(linesPolyData)
-                tubes.SetRadius(self.linewidth_3D_spinBox.value())
-                tubes.Update()
-                '''
        
                 # Create the mapper per line:
                 mapper_lines = vtk.vtkPolyDataMapper()  
@@ -1634,9 +1557,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.ren.ResetCamera()
         self.ren.GetActiveCamera().Zoom(1.3)
         self.iren.Initialize()
-
         print("End display 3D brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-
 
 
     # *****************************************
@@ -1683,10 +1604,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         else: 
             list_visibility_point = [1] * np.shape(a)[0]
 
-        
+
         # Compute the list with all atribute to know with lines to hidde: 
         list_visibility_lines,list_color  = ([],[])
-
         for i in range(np.shape(a)[0]):
             for j in range(np.shape(a)[1]):                
 
@@ -1711,7 +1631,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         actors.InitTraversal()
 
         iNumberOfActors = actors.GetNumberOfItems()
-       
         for i in range(iNumberOfActors): 
             if i == 0: 
                 actors.GetNextProp().VisibilityOn() # skip brain surfaces actor which is the first actor
@@ -1738,7 +1657,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         iNumberOfActors_2D = actors_2D.GetNumberOfItems()
         for i in range(iNumberOfActors_2D):
             actors_2D.GetNextProp().SetLookupTable(colorLookupTable1)
-
 
         # Update visualization
         self.ren.ResetCamera()
@@ -1915,20 +1833,15 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.select_vtk_file_textEdit.setText(fileName) 
 
 
-
-
-
-
-
-
-
-
+  
+# *****************************************
+# AddObserver for the 3D connectome
+# *****************************************
 
 class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
 
     def __init__(self, parent=None):
         self.AddObserver("LeftButtonPressEvent", self.leftButtonPressEvent)
-
         self.LastPickedActor = None
         self.LastPickedProperty = vtk.vtkProperty()
 
@@ -1941,7 +1854,6 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
         # get the new
         self.NewPickedActor = picker.GetActor()
 
-
         # If something was selected
         if self.NewPickedActor:
 
@@ -1952,20 +1864,12 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
             # Save the property of the picked actor so that we can
             # restore it next time
             self.LastPickedProperty.DeepCopy(self.NewPickedActor.GetProperty())
-
-            print(self.NewPickedActor.GetProperty())
         
             # save the last picked actor
             self.LastPickedActor = self.NewPickedActor
 
         self.OnLeftButtonDown()
         return
-
-
-
-
-
-
 
 
     '''
@@ -2006,141 +1910,4 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
 
         interactor.Initialize()
         interactor.Start()
-    '''             
-
-
-
-
-
-
-
-
-    '''
-    def loop_for_points(point):
-        # *****************************************
-        # Creates points thanks to parcellation table 
-        # *****************************************
-
-        # Create the polydata where we will store all the geometric data (points and lines):
-        pointPolyData = vtk.vtkPolyData()
-
-        # Create points and the topology of the point (a vertex):
-        points = vtk.vtkPoints()
-        vertices = vtk.vtkCellArray()
-
-        # Add all point: 
-        id = points.InsertNextPoint(point[0],point[1],point[2])#list_x[i],list_y[i],list_z[i]
-        vertices.InsertNextCell(1)
-        vertices.InsertCellPoint(id)
-
-        # Add the points to the polydata container:
-        pointPolyData.SetPoints(points)
-        pointPolyData.SetVerts(vertices)
-
-
-        # *****************************************
-        # Points colors
-        # *****************************************
-
-        # Setup colors parameters for point:
-        colors = vtk.vtkUnsignedCharArray()
-        colors.SetNumberOfComponents(3)
-
-        # Add color: 
-        colors.InsertNextTypedTuple((0,0,255))
-        
-        # Add color points to the polydata container: 
-        pointPolyData.GetPointData().SetScalars(colors)
-
-        # Create the mapper for point:
-        mapper_points = vtk.vtkPolyDataMapper()  
-        mapper_points.SetInputData(pointPolyData)
-
-        # Create the actor for points:
-        actor_point = vtk.vtkActor()
-        actor_point.SetMapper(mapper_points)
-        actor_point.GetProperty().SetPointSize(self.point_size_3D_spinBox.value())
-        actor_point.GetProperty().SetRenderPointsAsSpheres(1)
-
-        # Set visibility: 
-        actor_point.SetVisibility(list_visibility_point[i])                
-
-        # Add point to renderer
-        self.ren.AddActor(actor_point) 
-
-
-
-
-
-    def loop_for_lines(element, index):  #index: (0,0) and element replace a[i,j]
-        i = index[0]
-        j = index[1]
-
-        # Normalize the value in connectivity matrix: 
-        my_norm = (element - mmin) / (mmax - mmin) # value between 0 to 1 
-    
-        # Create a container and store the lines in it: 
-        lines = vtk.vtkCellArray()
-
-        # Create the polydata where we will store all the geometric data (points and lines):
-        linesPolyData = vtk.vtkPolyData()
-
-        # To access to 2 points: 
-        two_points = vtk.vtkPoints()
-        two_points.InsertNextPoint(list_x[i],list_y[i],list_z[i])
-        two_points.InsertNextPoint(list_x[j],list_y[j],list_z[j])
-
-        linesPolyData.SetPoints(two_points)
-
-        # Create each lines: 
-        line = vtk.vtkLine()
-        line.GetPointIds().SetId(0,0)
-        line.GetPointIds().SetId(1,1)
-        lines.InsertNextCell(line)
-
-        # Add the lines to the polydata container:
-        linesPolyData.SetLines(lines)
-
-        # Setup colors parameters for lines: 
-        colors_line = vtk.vtkUnsignedCharArray()
-        colors_line.SetNumberOfComponents(3)
-
-        # Add color:
-        my_color = [0.0, 0.0, 0.0]
-        colorLookupTable.GetColor(my_norm, my_color)
-
-        # Change line to tube: 
-        tubes = vtk.vtkTubeFilter()
-        tubes.SetInputData(linesPolyData)
-        tubes.SetRadius(self.linewidth_3D_spinBox.value())
-        tubes.Update()
-
-        # Create the mapper per line:
-        mapper_lines = vtk.vtkPolyDataMapper()  
-        mapper_lines.SetInputData(tubes.GetOutput())   
-     
-        mapper_lines.SetScalarModeToUseCellData()
-        mapper_lines.SetColorModeToMapScalars()
-        mapper_lines.Update()   
-
-        mapper_lines.SetLookupTable(colorLookupTable)
-        mapper_lines.SetScalarRange(vmin_3D, vmax_3D)
-        mapper_lines.Update()  
-
-        # Create one actor per line:
-        actor_lines = vtk.vtkActor()
-        actor_lines.SetMapper(mapper_lines)
-        actor_lines.GetProperty().SetColor(my_color[0], my_color[1], my_color[2])
-
-        # To be coherent with the range of colorbar: 
-        actor_lines.SetVisibility(0)
-        if my_norm > vmin_3D and my_norm < vmax_3D:
-            actor_lines.SetVisibility(1)
-
-        # Add to the renderer:
-        self.ren.AddActor(actor_lines)    
-    '''
-
-
-
-    
+    ''

@@ -36,8 +36,6 @@ def run_command(text_printed, command):
 
 
 
-
-
 # *************************************************************************************
 # Extract name of subcortical regions
 # *************************************************************************************
@@ -48,7 +46,6 @@ def extract_name_sc_region(SALTDir, KWMDir , ID, list_sc_name):
 
     (_, _, filenames) = next(os.walk(SALTDir))
     for entry in filenames:
-
         for region in list_sc_name: 
             if entry.find(region) != -1: 
                 list_sc_region_SALT.append(region)
@@ -56,18 +53,11 @@ def extract_name_sc_region(SALTDir, KWMDir , ID, list_sc_name):
 
     (_, _, filenames) = next(os.walk(KWMDir))
     for entry in filenames:
-
         for region in list_sc_name: 
             if entry.find(region) != -1: 
                 list_sc_region_KWM.append(region)
 
     return list_sc_region_SALT, list_sc_region_KWM
-
-
-
-
-
-
 
 
 
@@ -155,38 +145,7 @@ def executable_path(default_filename, user_filename):
 # *************************************************************************************
 
 def CONTINUITY(user_filename):
-    run_command("CONTINUITY script", [sys.executable, "./CONTINUITY_completed_script.py", user_filename ])
-
-
-
-# *************************************************************************************
-# Write a csv file
-# *************************************************************************************
-
-def write_csv_file(csv_filename, user_filename):
-    with open(csv_filename, mode='w') as csv_file:
-        with open(user_filename) as user_file:
-            data_user = json.load(user_file)
-
-        # Extract field name: name of each column
-        fieldnames = []
-        list_data = ["ID", "DWI_DATA", "T1_DATA", "BRAINMASK", "PARCELLATION_TABLE", "WM_L_Surf", "WM_R_Surf","OUT_PATH"]
-
-        for categories, infos in data_user.items():
-            for key in infos:
-                if key in list_data:
-                    fieldnames.append(key)
-        writer = csv.DictWriter(csv_file, delimiter=',', fieldnames=fieldnames)
-
-        # Write data
-        line = "{"
-        for categories, infos in data_user.items():
-            for key in infos:
-                if key in list_data:
-                    line += "'" + key + "' : '" + data_user[categories][key]['default'] + "',"
-        line += "}"
-        writer.writeheader()
-        writer.writerow( eval(line) )       
+    run_command("CONTINUITY script", [sys.executable, "./CONTINUITY_completed_script.py", user_filename ])     
 
 
 
@@ -195,9 +154,6 @@ def write_csv_file(csv_filename, user_filename):
 # *************************************************************************************
 
 def cluster(slurm_job_filename, cluster_command_line):  
-    print("Cluster: run script in longleaf")
-    print(cluster_command_line)
-
     # Open and write the command line given by the user:
     slurm_job_file = open(slurm_job_filename, 'w') 
     slurm_job_file.write(cluster_command_line) 
@@ -219,7 +175,7 @@ def KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, NAME_PARCELLATION_TABLE):
     polyIn = vtk.vtkPolyDataReader() 
     polyIn.SetFileName(SPHARMSurf)
     polyIn.Update()
-    polydataAtt = polyIn.GetOutput() #vtkPolyData
+    polydataAtt = polyIn.GetOutput() 
 
     # Start parsing KWMeshVisu file
     KWM_file = open(KWMFile, 'r')     
@@ -374,7 +330,7 @@ def polydatamerge_ascii(fiberFile1, fiberFile2, fiberOutput):
 
 
 # *************************************************************************************
-# Sum by line
+# Sum by line, column and all 
 # *************************************************************************************
 
 def sum_line(matrix):
@@ -387,11 +343,6 @@ def sum_line(matrix):
     return waytotal_line
 
 
-
-# *************************************************************************************
-# Sum by column
-# *************************************************************************************
-
 def sum_column(matrix):
     waytotal_column = []
     for i in range(len(matrix[0])):
@@ -401,11 +352,6 @@ def sum_column(matrix):
         waytotal_column.append(sum_column)
     return waytotal_column
 
-
-
-# *************************************************************************************
-# Sum all
-# *************************************************************************************
 
 def sum_all(matrix):
     waytotal = 0
@@ -488,8 +434,7 @@ def row_column_normalization(matrix):
         a.append( [ float(x) for x in line.split('  ') if x != "\n" ] )  
 
     # Sum of each column and each line: 
-    waytotal_column = sum_column(a)
-    waytotal_line   = sum_line(a)
+    waytotal_column, waytotal_line  = (sum_column(a), sum_line(a))
 
     i=0
     for line in a:
@@ -598,7 +543,6 @@ def save_connectivity_matrix(type_of_normalization, a, OutputDir, subject, overl
 
     # Save
     fig.savefig(os.path.join(OutputDir, 'Connectivity_matrix_normalized_' + type_of_normalization + '.pdf'), format='pdf')
-    print("connectivity matrix for", type_of_normalization ,"normalization saved")   
 
 
 
@@ -617,7 +561,7 @@ def compute_radius_of_each_seed(line):
     seed_region_data.readline() # "!ascii - generated by CreateLabelFiles project "
 
     # Get the number of points:
-    second_line = seed_region_data.readline() # " 2170    4121 "   --> first number: number of point    --> second number: number of polygon
+    second_line = seed_region_data.readline() # " 2170 4121 " --> first number: number of point    --> second number: number of polygon
     second_line = second_line.strip('\n')  
     second_line_nb = second_line.split(" ")
     number_point = int(second_line_nb[0])
@@ -670,7 +614,6 @@ def compute_radius_of_each_seed(line):
         i += 1 
 
     seed_region_data.close()
-
     return list_radius, number_point_end
 
 
@@ -680,8 +623,6 @@ def compute_radius_of_each_seed(line):
 # *************************************************************************************
 
 def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_with_surfaces, KWMDir, SALTDir, ID):
-    print('subcorticals_list_checked_with_surfaces', subcorticals_list_checked_with_surfaces)
-
     # KWM file for left and right surfaces:
     left_KWM  = './CONTINUITY_QC/Destrieux_points/Atlas_Left_Destrieux.KWM.txt'
     right_KWM = './CONTINUITY_QC/Destrieux_points/Atlas_Right_Destrieux.KWM.txt'
@@ -690,7 +631,7 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
     left  = './CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_left_hires.vtk'
     right = './CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_right_hires.vtk'
 
-    # Output: 
+    # Outputs: 
     left_out  = './CONTINUITY_QC/Destrieux_points/surface_destrieux_left.vtk'
     right_out = './CONTINUITY_QC/Destrieux_points/surface_destrieux_rigth.vtk'
 
@@ -767,7 +708,7 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
 
     # Add left AND right data: scalar and then gravity center 
     scalar_sorted_without_duplicate_all = scalar_sorted_without_duplicate1 + scalar_sorted_without_duplicate2
-    gravity_center_of_each_Region_all = gravity_center_of_each_Region1 + gravity_center_of_each_Region2
+    gravity_center_of_each_Region_all   = gravity_center_of_each_Region1   + gravity_center_of_each_Region2
 
 
     # *****************************************
@@ -820,8 +761,6 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
                 scalar_sorted_without_duplicate_all.append(int(scalar))
                 gravity_center_of_each_Region_all.append(gravity_center_of_this_Region)
 
-    print('scalar_sorted_without_duplicate_all',scalar_sorted_without_duplicate_all)
-        
 
     # *****************************************
     # Update parcellation table: 
@@ -832,12 +771,14 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
         data = json.load(data_file)
 
     for key in data: 
-        
         # Get the index of the scalar of this region to be able to find the corresponding cordinates: 
-        index_scalar = scalar_sorted_without_duplicate_all.index( int(key['labelValue']) ) 
+        try: # 12182 label not here
+            index_scalar = scalar_sorted_without_duplicate_all.index( int(key['labelValue']) ) 
 
-        # Update the cordiantes of this region :
-        key["coord"] = gravity_center_of_each_Region_all[index_scalar]
+            # Update the cordiantes of this region :
+            key["coord"] = gravity_center_of_each_Region_all[index_scalar]
+        except:
+            key["coord"] = [0,0,0]
 
     # Write :
     with open(new_parcellation_table, 'w') as txtfile:
@@ -846,16 +787,11 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
 
 
 # *************************************************************************************
-# Generating subcortical surfaces: generate SALT dir ?
+# Generating subcortical surfaces: generate SALT files  Script from Maria: RunSPHARM-PDM_8Year.script  
 # *************************************************************************************
 
 def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, LabelNames, 
-                                    SegPostProcessCLPPath, GenParaMeshCLPPath, ParaToSPHARMMeshCLPPath, 
-                                    sx,sy,sz, nb_iteration_GenParaMeshCLP, spharmDegree, subdivLevel): 
-
-    # Script from Maria: RunSPHARM-PDM_8Year.script  
-    # Image with labels: labeled_image: id-T1_SkullStripped_scaled_label.nrrd
-    # Labels of subcortical: The number of the labels depends on the input label segmentation .nrrd file 
+                                    SegPostProcessCLPPath, GenParaMeshCLPPath, ParaToSPHARMMeshCLPPath, sx,sy,sz, nb_iteration_GenParaMeshCLP, spharmDegree, subdivLevel): 
 
     # Output folder of subcortical surfaces: 
     OutputDir = os.path.join(OUT_FOLDER, 'my_SALT') 
@@ -877,8 +813,6 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
             if os.path.exists(PPtarget):
                 print('SegPostProcessCLP already done')
             else: 
-                print('Do SegPostProcessCLP ') 
-
                 # Processing of Binary Labels: it ensures spherical topology of the segmentation
                 command = [SegPostProcessCLPPath, labeled_image, # Input image to be filtered (Tissue segmentation file)
                                                   PPtarget, # Output filtered
@@ -886,7 +820,6 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
                                                   '--rescale', #Enforced spacing in x,y and z direction before any processing
                                                   '--space ' + str(sx) +',' + str(sy) + ',' + str(sz)  ] #x,y and z directions
                 run_command("SegPostProcessCLP", command) 
-
 
 
             # *****************************************
@@ -899,7 +832,6 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
             if os.path.exists(Paratarget):
                 print('GenParaMeshCLP already done')
             else: 
-                print('Do GenParaMeshCLP')
                 genparamesh_log = os.path.join(OutputDir, ID + '-T1_SkullStripped_scaled_label_' + LabelNames[index] + '_pp_genparamesh.txt')
                 Euler_txt       = os.path.join(OutputDir, ID + '-T1_SkullStripped_scaled_label_' + LabelNames[index] + '_pp_Euler.txt')
 
@@ -929,12 +861,9 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
                     # ParaToSPHARMMeshCLP
                     # ***************************************** 
 
-                    print('Do ParaToSPHARMMeshCLP ')
-
                     Surftarget_prefix = os.path.join(OutputDir, ID + '-T1_SkullStripped_scaled_label_' + LabelNames[index] +'_pp_surf')
 
                     # Compute SPHARM coefs and associated Mesh : The output is a series of SPHARM coefficients and SPHARM-PDM meshes, 
-                    #one set in the original coordinate system, one in the first order ellipsoid aligned coordinate system and one in the Procrustes aligned coordinate system.
                     command = [ParaToSPHARMMeshCLPPath, Paratarget, #input para mesh dataset
                                                         Surftarget, #input surface mesh dataset
                                                         Surftarget_prefix, #Output Directory and base filename
@@ -948,15 +877,11 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
                 else: 
                     print('Error calcullating ',SurfVTKtarget)
 
-
-
         else: #Labels[index] == 0: 
             print("this region will be ignore: ", LabelNames[index])
 
-
         index +=  + 1
         print('******************************************************')
-
 
 
 
@@ -964,7 +889,7 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
 # Create KWM files
 # *************************************************************************************
 
-def create_kwm_files(OUT_FOLDER, Labels, LabelNames, number_of_points): 
+def create_kwm_files(OUT_FOLDER, new_parcellation_table, LabelNames, number_of_points): 
 
     # Output folder of subcortical surfaces: 
     OutputDir = os.path.join(OUT_FOLDER, 'my_KWM') 
@@ -973,26 +898,30 @@ def create_kwm_files(OUT_FOLDER, Labels, LabelNames, number_of_points):
 
     for region in range(len(LabelNames)): 
 
-        # Open to 'write and read'
-    
-        name_file =  str(LabelNames[region]) + "_" + str(number_of_points) + "_KWM.txt"
-        complete_name = os.path.join(OutputDir, name_file)
-        print(complete_name)
+        # Open new_parcellation_table json file to update the coordinates of each region :
+        with open(new_parcellation_table) as data_file:    
+            data = json.load(data_file)
 
+        for key in data: 
+            if LabelNames[region] == key['name']:
 
-        file = open(complete_name,"w")
+                # Open to 'write and read'
+                name_file =  str(LabelNames[region]) + "_" + str(number_of_points) + "_KWM.txt"
+                complete_name = os.path.join(OutputDir, name_file)
 
-        # First line: 'NUMBER_OF_POINTS=1002'
-        file.write("NUMBER_OF_POINTS=" + str(number_of_points) + "\n" )
+                file = open(complete_name,"w")
 
-        # Second line: 'DIMENSION=1'
-        file.write("DIMENSION=1 \n" )
+                # First line: 'NUMBER_OF_POINTS=1002'
+                file.write("NUMBER_OF_POINTS=" + str(number_of_points) + "\n" )
 
-        # Third line: 'TYPE=Scalar'
-        file.write("TYPE=Scalar \n" )
+                # Second line: 'DIMENSION=1'
+                file.write("DIMENSION=1 \n" )
 
-        # Loop to write the label of this region * the number of point (number_of_point lines)
-        for i in range(number_of_points):
-            file.write(str(Labels[region]) + "\n" )
+                # Third line: 'TYPE=Scalar'
+                file.write("TYPE=Scalar \n" )
 
-        print('KWM file compute for region: ', region )
+                # Loop to write the label of this region * the number of point (number_of_point lines)
+                for i in range(number_of_points):
+                    file.write(str(key['labelValue']) + "\n" )
+
+                print('KWM file compute for region: ', LabelNames[region] )
