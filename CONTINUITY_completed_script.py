@@ -613,13 +613,11 @@ with Tee(log_file):
 	print("Script 3: Label_Combine_WARPtoDWISpace_SALTSubcort")
 	print("**********************************************************************************")
 
-	NAME_PARCELLATION_TABLE = labelSetName
-
 	# *****************************************
 	# OUTPUT
 	# *****************************************
 
-	OUT_LABELS = os.path.join(OUT_SALT, "Labels_" + NAME_PARCELLATION_TABLE)
+	OUT_LABELS = os.path.join(OUT_SALT, "Labels_" + labelSetName)
 	if not os.path.exists(OUT_LABELS):
 		os.mkdir(OUT_LABELS)
 
@@ -635,7 +633,6 @@ with Tee(log_file):
 			with open(PARCELLATION_TABLE) as data_file:
 				data = json.load(data_file)
 
-			data_region_find = False
 			for seed in data:
 				if seed['subcortical']:
 					subcorticals_region_names.append(seed['name'])
@@ -657,23 +654,29 @@ with Tee(log_file):
 					data_region_find = True
 
 			# Check if the label !=0
+			'''
 			if INTEGRATE_SC_DATA_by_generated_sc_surf:
 				index = subcorticals_list_names_checked.index(region)
 				if subcorticals_list_labels_checked[index] == 0: 
 					data_region_find = False
+			'''
 
 			# After check all the json file: 
 			if data_region_find == False:
 				print(" NO information about ", region, "in your parcellation table with subcortical data")
 				
+				'''
 				if INTEGRATE_SC_DATA_by_generated_sc_surf:
 					print( "OR the label for this region = 0: this region won't be integrate ")
 					subcorticals_list_labels_checked = subcorticals_region_labels.remove(index)
+				'''
 
 				subcorticals_list_names_checked = subcorticals_list_names_checked.remove(region)
 
+		print("subcorticals_list_names_checked", subcorticals_list_names_checked)
 
 
+		'''
 		if INTEGRATE_SC_DATA_by_generated_sc_surf:
 
 			print("*****************************************")
@@ -697,7 +700,7 @@ with Tee(log_file):
 
 
 				number_of_points = 1002 # new input param ? 
-				create_kwm_files(OUT_FOLDER, new_parcellation_table, subcorticals_list_names_checked, number_of_points)
+				create_kwm_files(OUT_FOLDER, PARCELLATION_TABLE, subcorticals_list_names_checked, number_of_points)
 
 				# Update the localization of subcortical surfaces: 
 				SALTDir = os.path.join(OUT_FOLDER, 'my_SALT') 
@@ -706,6 +709,7 @@ with Tee(log_file):
 			else: 
 				print("ERROR: You have to provide one label per subcortical regions (0 if you don't want to integrate this region)")
 				exit()
+		'''
 
 
 		print("*****************************************")
@@ -748,17 +752,18 @@ with Tee(log_file):
 				else: 
 					print("For", region, "region: creation SPHARM surface labeled file")
 				    # Applies the label in the KWM file to the SPHARM surface: 
-					KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, NAME_PARCELLATION_TABLE)
+					KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, labelSetName)
 
+		print("subcorticals_list_names_checked_with_surfaces",subcorticals_list_names_checked_with_surfaces)
 
 
 		print("*****************************************")
 		print("Combine the labeled subcorticals")
 		print("*****************************************")
 
-		outputSurface = os.path.join(OUT_LABELS, ID + "-" + NAME_PARCELLATION_TABLE + "_Labeled_Subcorticals_Combined_T1Space.vtk")
+		outputSurface = os.path.join(OUT_LABELS, ID + "-" + labelSetName + "_Labeled_Subcorticals_Combined_T1Space.vtk")
 		
-		if NAME_PARCELLATION_TABLE == 'Destrieux': 
+		if labelSetName == 'Destrieux': 
 			print("*****************************************")
 			print("Compute one point per region")
 			print("*****************************************")
@@ -786,8 +791,10 @@ with Tee(log_file):
 				polydatamerge(outputSurface, toAdd, outputSurface)
 
 
+
+
 		print("Move combining subcortical surfaces in DWISpace")
-		subsAllDWISpace = os.path.join(OUT_SURFACE, "stx_" + ID + "_" + NAME_PARCELLATION_TABLE + "_Labeled_Subcorticals_Combined_DWISpace.vtk" ) 
+		subsAllDWISpace = os.path.join(OUT_SURFACE, "stx_" + ID + "_" + labelSetName + "_Labeled_Subcorticals_Combined_DWISpace.vtk" ) 
 
 		if os.path.exists(subsAllDWISpace):
 			print("Labeled subcorticals combined DWISpace file: Found Skipping Transformation into DWISpace")
@@ -796,7 +803,6 @@ with Tee(log_file):
 			#                              , landmark file ,input        , displacement file       , output in DWI space
 			command=[pathPOLY_TRANSTOOL_EXE, "--fiber_file",outputSurface, "-D", ConcatedWarp, "-o", subsAllDWISpace, "--inverty", "--invertx"]
 			run_command("POLY_TRANSTOOL_EXE: combining sc data transform into DWISpace", command)
-
 
 
 	print("*****************************************")
@@ -808,42 +814,42 @@ with Tee(log_file):
 		if not DO_REGISTRATION:
 			# Outputs:
 			RSL_WM_L_Surf_NON_REGISTRATION_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
-			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
+			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_" + labelSetName + ".vtk")
 			RSL_WM_R_Surf_NON_REGISTRATION_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
-			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
+			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + labelSetName + ".vtk")
 		
 			print("NON_REGISTRATION: Label the left cortical surface")
 			if os.path.exists( RSL_WM_L_Surf_NON_REGISTRATION_labeled ):
 				print("NON_REGISTRATION: WM left labeled file found: Skipping Labelization of the left cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_L_Surf_NON_REGISTRATION, RSL_WM_L_Surf_NON_REGISTRATION_labeled, cortical_label_left, NAME_PARCELLATION_TABLE)  
+				KWMtoPolyData(RSL_WM_L_Surf_NON_REGISTRATION, RSL_WM_L_Surf_NON_REGISTRATION_labeled, cortical_label_left, labelSetName)  
 				 
 
 			print("NON_REGISTRATION: Label the right cortical surface")
 			if os.path.exists( RSL_WM_R_Surf_NON_REGISTRATION_labeled ):
 				print("NON_REGISTRATION: WM right labeled file found: Skipping Labelization of the right cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_R_Surf_NON_REGISTRATION, RSL_WM_R_Surf_NON_REGISTRATION_labeled, cortical_label_right, NAME_PARCELLATION_TABLE)  		
+				KWMtoPolyData(RSL_WM_R_Surf_NON_REGISTRATION, RSL_WM_R_Surf_NON_REGISTRATION_labeled, cortical_label_right, labelSetName)  		
 
 
 		else: 
 			# Outputs:
 			RSL_WM_L_Surf_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
-			           "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
+			           "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_" + labelSetName + ".vtk")
 			RSL_WM_R_Surf_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
-			           "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
+			           "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + labelSetName + ".vtk")
 			
 			print("Label the left cortical surface")
 			if os.path.exists( RSL_WM_L_Surf_labeled ):
 				print("WM left labeled file found: Skipping Labelization of the left cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_L_Surf, RSL_WM_L_Surf_labeled, cortical_label_left, NAME_PARCELLATION_TABLE)  
+				KWMtoPolyData(RSL_WM_L_Surf, RSL_WM_L_Surf_labeled, cortical_label_left, labelSetName)  
 				 
 			print("Label the right cortical surface")
 			if os.path.exists( RSL_WM_R_Surf_labeled ):
 				print("WM right labeled file found: Skipping Labelization of the right cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_R_Surf, RSL_WM_R_Surf_labeled, cortical_label_right, NAME_PARCELLATION_TABLE)  
+				KWMtoPolyData(RSL_WM_R_Surf, RSL_WM_R_Surf_labeled, cortical_label_right, labelSetName)  
 
 			# Add SURFACE in INPUTDATA folder for visualization 
 			shutil.copy(RSL_WM_L_Surf_labeled, OUT_INPUTDATA)
@@ -870,7 +876,7 @@ with Tee(log_file):
 	print("*****************************************")
 
 	# Create cortical.vtk: 
-	SURFACE = os.path.join(OUT_SURFACE, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + ".vtk")
+	SURFACE = os.path.join(OUT_SURFACE, "stx_" + ID + "_T1_CombinedSurface_white_" + labelSetName + ".vtk")
 
 	if not DO_REGISTRATION:
 		if os.path.exists(SURFACE):
@@ -882,6 +888,8 @@ with Tee(log_file):
 			else:
 				shutil.copy(SURFACE_USER, SURFACE)
 				SURFACE = SURFACE_USER
+
+
 	else: 
 		if os.path.exists(SURFACE):
 			print("Combine cortical file: Found Skipping combining cortical left and right surface ")
@@ -900,7 +908,7 @@ with Tee(log_file):
 		print("*****************************************")
 
 		# Output of the next command: 
-		outputSurfaceFullMerge = os.path.join(OUT_INPUT_CONTINUITY_DWISPACE, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + 
+		outputSurfaceFullMerge = os.path.join(OUT_INPUT_CONTINUITY_DWISPACE, "stx_" + ID + "_T1_CombinedSurface_white_" + labelSetName + 
 			                                                                                                                       "_WithSubcorticals.vtk") 
 		if os.path.exists(outputSurfaceFullMerge):
 			print("Combine cortical and subcortical file: Found Skipping combining cortical and sc")
@@ -1007,7 +1015,7 @@ with Tee(log_file):
 								  	    	 "--labelNameInfo", labelListNamePath, 
 								  	    	 "--labelNumberInfo", labelListNumberPath, 
 								  	    	 "--useTranslationTable", "--labelTranslationTable", new_parcellation_table, 
-								  	    	 "-a", labelSetName, 
+								  	    	 "-a",labelSetName, 
 								  	    	 "--vtkLabelFile", str(EXTRA_SURFACE_COLOR), 
 								  	    	 "--createSurfaceLabelFiles", 
 								  	    	 "--vtkFile", SURFACE,
