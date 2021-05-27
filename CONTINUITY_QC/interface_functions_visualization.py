@@ -18,6 +18,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import matplotlib as mpl
+from matplotlib.widgets import Cursor
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 import mne
 from mne.viz import circular_layout, plot_connectivity_circle
@@ -299,22 +301,23 @@ class Ui_visu(QtWidgets.QTabWidget):
         ax_matrix.set_ylabel('Targets')
 
         # Title:
-        start = 'Connectivity matrix for ' + json_user_object['Arguments']["ID"]["value"] + "\n  "
-        self.fig_normalize_matrix.suptitle(start + self.type_of_normalization_comboBox.currentText() + "  and symmetrization by " 
-                                                 + self.type_of_symmetrization_comboBox.currentText() +'\n' +end_name, fontsize=10)
+        #start = 'Connectivity matrix for ' + json_user_object['Arguments']["ID"]["value"] + "\n  "
+        #self.fig_normalize_matrix.suptitle(start +end_name, fontsize=10)
+        self.fig_normalize_matrix.set_zorder(1)
 
         # Specific normalization: 
-        if self.type_of_normalization_comboBox.currentText()   == "No normalization":         a = no_normalization(matrix)
-        elif self.type_of_normalization_comboBox.currentText() == "Whole normalization":      a = whole_normalization(matrix)
-        elif self.type_of_normalization_comboBox.currentText() == "Row region normalization": a = row_region_normalization(matrix)
-        elif self.type_of_normalization_comboBox.currentText() == "Row column normalization": a = row_column_normalization(matrix)
+        global a_matrix 
+        if self.type_of_normalization_comboBox.currentText()   == "No normalization":         a_matrix = no_normalization(matrix)
+        elif self.type_of_normalization_comboBox.currentText() == "Whole normalization":      a_matrix = whole_normalization(matrix)
+        elif self.type_of_normalization_comboBox.currentText() == "Row region normalization": a_matrix = row_region_normalization(matrix)
+        elif self.type_of_normalization_comboBox.currentText() == "Row column normalization": a_matrix = row_column_normalization(matrix)
 
         # Specific symmetrization: 
-        if self.type_of_symmetrization_comboBox.currentText()   == "Average": a = average_symmetrization(a)
-        elif self.type_of_symmetrization_comboBox.currentText() == "Maximum": a = maximum_symmetrization(a)
-        elif self.type_of_symmetrization_comboBox.currentText() == "Minimum": a = minimum_symmetrization(a)
+        if self.type_of_symmetrization_comboBox.currentText()   == "Average": a_matrix = average_symmetrization(a_matrix)
+        elif self.type_of_symmetrization_comboBox.currentText() == "Maximum": a_matrix = maximum_symmetrization(a_matrix)
+        elif self.type_of_symmetrization_comboBox.currentText() == "Minimum": a_matrix = minimum_symmetrization(a_matrix)
 
-        min_a, max_a  = (np.min(a), np.max(a))
+        min_a, max_a  = (np.min(a_matrix), np.max(a_matrix))
 
         self.min_a_norm_label.setText(str(min_a))
         self.max_a_norm_label.setText(str("{:e}".format(max_a)))
@@ -335,7 +338,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                 check_before_display = False
 
         elif self.vmin_vmax_regions_checkBox.isChecked():
-            nb = np.shape(a)[0] #number of regions
+            nb = np.shape(a_matrix)[0] #number of regions
             max_region_display = float(1/(nb*(nb-1)))  
              
             if not(self.vmax_normalize_matrix_spinBox.value() <=  max_region_display and self.vmin_normalize_matrix_spinBox.value() >= min_a):
@@ -349,20 +352,27 @@ class Ui_visu(QtWidgets.QTabWidget):
         if check_before_display:
             self.error_label.setText(' ')
 
-            cax = ax_matrix.imshow(a, interpolation='nearest', vmin = self.vmin_normalize_matrix_spinBox.value(), vmax = self.vmax_normalize_matrix_spinBox.value())
-            self.fig_normalize_matrix.colorbar(cax)
+            im = ax_matrix.imshow(a_matrix, interpolation='nearest', vmin = self.vmin_normalize_matrix_spinBox.value(), 
+                                                                      vmax = self.vmax_normalize_matrix_spinBox.value())
 
-            from matplotlib.widgets import Cursor
+            divider = make_axes_locatable(ax_matrix)
+            cax = divider.new_vertical(size="3%", pad=0.7, pack_start=True)
+            self.fig_normalize_matrix.add_axes(cax)
+            self.fig_normalize_matrix.colorbar(im, cax=cax, orientation="horizontal")
+
+
+            
             # Defining the cursor
-            cursor = Cursor(ax_matrix, horizOn=True, vertOn=True, useblit=True, color = 'r', linewidth = 1)
+            cursor = Cursor(ax_matrix, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
 
             # Creating an annotating box
             global annot
-            annot = ax_matrix.annotate("", xy=(0,0), xytext=(-40,40),textcoords="offset points",
-                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2),
+            annot = ax_matrix.annotate("", xy=(0,0), xytext=(-20,-50), xycoords='data',textcoords="offset points",
+                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1),
                     arrowprops=dict(arrowstyle='fancy'))
-            annot.set_visible(False)
 
+            annot.set_visible(False)
+           
             global my_fig_matrix, lhor, lver
             my_fig_matrix = self.fig_normalize_matrix
             lhor = ax_matrix.axhline(0)
@@ -370,6 +380,31 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             lhor.set_ydata(-1)
             lver.set_xdata(-1)
+
+
+            # Get the parcellation table with Cortical and Subcortical regions: 
+            with open(os.path.join(self.parcellation_table_textEdit.toPlainText()), "r") as table_json_file:
+                table_json_object = json.load(table_json_file)
+
+            # Get data points for connected and unconnected points: 
+            global list_name_matrix
+            list_name_unordered, list_MatrixRow, list_name_matrix = ([], [], [])
+           
+            for key in table_json_object:    
+                list_name_unordered.append(key["name"])
+                list_MatrixRow.append(key["MatrixRow"])
+
+            # Sort regions by VisuHierarchy number: 
+            sorted_indices = np.argsort(list_MatrixRow)
+            
+
+            for i in range(len(list_MatrixRow)):
+                index = sorted_indices[i]
+                list_name_matrix.append(list_name_unordered[index])
+
+
+            self.fig_normalize_matrix.tight_layout(pad=0)            
+
             self.fig_normalize_matrix.canvas.mpl_connect('button_press_event', self.cursor_mouse_move)
 
 
@@ -385,20 +420,26 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         if event.button == 1:  
             x, y = event.xdata, event.ydata
+            numrows, numcols = len(a_matrix[0]), len(a_matrix[1])
 
+            col = int(x+0.5)
+            row = int(y+0.5)
+
+            if col>=0 and col<numcols and row>=0 and row<numrows:
+                z = a_matrix[row][col]
+                
             annot.xy = (x,y)
-            text = "({:.2g}, {:.2g})".format(x,y)
+            text = "Column " + str(col) + ": " + str(list_name_matrix[col]) + " \nRow " + str(row) + ": " + str(list_name_matrix[row]) + " \nValue: " + str(z) 
+            text_small = "Col: " + str(list_name_matrix[col]) + " \nRow: " + str(list_name_matrix[row])
 
-            annot.set_text(text)
+            annot.set_text(text_small)
             annot.set_visible(True)
-
 
             # update the line positions
             lhor.set_ydata(y)
             lver.set_xdata(x)
 
-            #ax_matrix.text(0.7, 0.9, '', transform=ax_matrix.transAxes).set_text('x=%1.2f, y=%1.2f' % (x, y))
-            print('x=%1.2f, y=%1.2f' % (x, y))
+            self.label_matrix.setText(text)
 
             self.fig_normalize_matrix.canvas.draw()
 
@@ -1268,6 +1309,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             # Searching which data member corresponds to current mouse position
             if curve.contains(event)[0]:
                 print("axial lines  %s" % curve.get_gid())
+
 
         for curve in self.ax2.get_lines():
             # Searching which data member corresponds to current mouse position
