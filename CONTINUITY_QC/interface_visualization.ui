@@ -845,7 +845,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>12</x>
-        <y>20</y>
+        <y>10</y>
         <width>430</width>
         <height>58</height>
        </rect>
@@ -917,13 +917,13 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>200</y>
+        <y>150</y>
         <width>421</width>
-        <height>341</height>
+        <height>391</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_19">
        <attribute name="title">
@@ -933,7 +933,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>260</y>
+          <y>310</y>
           <width>401</width>
           <height>42</height>
          </rect>
@@ -1060,7 +1060,7 @@ vmax = 1/n(n-1)  (with n: number of region)</string>
           <x>10</x>
           <y>260</y>
           <width>401</width>
-          <height>31</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="text">
@@ -1273,14 +1273,30 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="pushButton">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>100</y>
-        <width>211</width>
-        <height>41</height>
+        <x>10</x>
+        <y>80</y>
+        <width>181</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="text">
        <string>Display normalize matrix</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_matrix">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>80</y>
+        <width>231</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
       </property>
      </widget>
     </widget>
