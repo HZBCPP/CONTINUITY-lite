@@ -293,9 +293,10 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.Layout_normalize_matrix.addWidget(self.canvas)
 
         # Add figure and axes:
-        ax = self.fig_normalize_matrix.add_subplot(1,1,1)
-        ax.set_xlabel('Seeds')
-        ax.set_ylabel('Targets')
+        global ax_matrix
+        ax_matrix = self.fig_normalize_matrix.add_subplot(1,1,1)
+        ax_matrix.set_xlabel('Seeds')
+        ax_matrix.set_ylabel('Targets')
 
         # Title:
         start = 'Connectivity matrix for ' + json_user_object['Arguments']["ID"]["value"] + "\n  "
@@ -347,11 +348,77 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         if check_before_display:
             self.error_label.setText(' ')
-            cax = ax.imshow(a, interpolation='nearest', vmin = self.vmin_normalize_matrix_spinBox.value(), vmax = self.vmax_normalize_matrix_spinBox.value())
+
+            cax = ax_matrix.imshow(a, interpolation='nearest', vmin = self.vmin_normalize_matrix_spinBox.value(), vmax = self.vmax_normalize_matrix_spinBox.value())
             self.fig_normalize_matrix.colorbar(cax)
 
+            from matplotlib.widgets import Cursor
+            # Defining the cursor
+            cursor = Cursor(ax_matrix, horizOn=True, vertOn=True, useblit=True, color = 'r', linewidth = 1)
+
+            # Creating an annotating box
+            global annot
+            annot = ax_matrix.annotate("", xy=(0,0), xytext=(-40,40),textcoords="offset points",
+                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2),
+                    arrowprops=dict(arrowstyle='fancy'))
+            annot.set_visible(False)
+
+            global my_fig_matrix, lhor, lver
+            my_fig_matrix = self.fig_normalize_matrix
+            lhor = ax_matrix.axhline(0)
+            lver = ax_matrix.axvline(0)
+
+            lhor.set_ydata(-1)
+            lver.set_xdata(-1)
+            self.fig_normalize_matrix.canvas.mpl_connect('button_press_event', self.cursor_mouse_move)
 
 
+
+    def cursor_mouse_move(self,event):
+       
+        if not event.inaxes:
+            return
+
+        # *****************************************
+        # Left click
+        # *****************************************
+
+        if event.button == 1:  
+            x, y = event.xdata, event.ydata
+
+            annot.xy = (x,y)
+            text = "({:.2g}, {:.2g})".format(x,y)
+
+            annot.set_text(text)
+            annot.set_visible(True)
+
+
+            # update the line positions
+            lhor.set_ydata(y)
+            lver.set_xdata(x)
+
+            #ax_matrix.text(0.7, 0.9, '', transform=ax_matrix.transAxes).set_text('x=%1.2f, y=%1.2f' % (x, y))
+            print('x=%1.2f, y=%1.2f' % (x, y))
+
+            self.fig_normalize_matrix.canvas.draw()
+
+
+        # *****************************************
+        # Left click
+        # *****************************************
+  
+
+        elif event.button == 3: 
+            print("test")
+
+            annot.set_visible(False)
+
+            lhor.set_ydata(-1)
+            lver.set_xdata(-1)
+
+            self.fig_normalize_matrix.canvas.draw()
+
+            
     # *****************************************
     # Select the path to GET the connectivity matrix
     # ***************************************** 
@@ -1872,42 +1939,57 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
         return
 
 
-    '''
-        # Display a vtk file WITHOUT Qt interface
-        file_name = "./input_CONTINUITY/stx_T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_ITKspace.vtk"
 
-        # Read the source file.
-        import vtk
-        reader = vtk.vtkPolyDataReader()
-        reader.SetFileName(file_name)
-        reader.Update()  # Needed because of GetScalarRange
-        output = reader.GetOutput()
-        output_port = reader.GetOutputPort()
-        scalar_range = output.GetScalarRange()
 
-        # Create the mapper that corresponds the objects of the vtk file
-        # into graphics elements
-        mapper = vtkDataSetMapper()
-        mapper.SetInputConnection(output_port)
-        mapper.SetScalarRange(scalar_range)
+'''
+class Formatter(object):
+    def __init__(self, im):
+        self.im = im
+    def __call__(self, x, y):
+        z = self.im.get_array()[int(y), int(x)]
+        return 'x={:.01f}, y={:.01f}, z={:.01f}'.format(x, y, z)
+'''
 
-        # Create the Actor
-        actor = vtkActor()
-        actor.SetMapper(mapper)
 
-        # Create the Renderer
-        renderer = vtkRenderer()
-        renderer.AddActor(actor)
-        renderer.SetBackground(1, 1, 1) # Set background 
 
-        # Create the RendererWindow
-        renderer_window = vtkRenderWindow()
-        renderer_window.AddRenderer(renderer)
 
-        # Create the RendererWindowInteractor and display the vtk_file
-        interactor = vtkRenderWindowInteractor()
-        interactor.SetRenderWindow(renderer_window)
 
-        interactor.Initialize()
-        interactor.Start()
-    ''
+'''
+    # Display a vtk file WITHOUT Qt interface
+    file_name = "./input_CONTINUITY/stx_T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_ITKspace.vtk"
+
+    # Read the source file.
+    import vtk
+    reader = vtk.vtkPolyDataReader()
+    reader.SetFileName(file_name)
+    reader.Update()  # Needed because of GetScalarRange
+    output = reader.GetOutput()
+    output_port = reader.GetOutputPort()
+    scalar_range = output.GetScalarRange()
+
+    # Create the mapper that corresponds the objects of the vtk file
+    # into graphics elements
+    mapper = vtkDataSetMapper()
+    mapper.SetInputConnection(output_port)
+    mapper.SetScalarRange(scalar_range)
+
+    # Create the Actor
+    actor = vtkActor()
+    actor.SetMapper(mapper)
+
+    # Create the Renderer
+    renderer = vtkRenderer()
+    renderer.AddActor(actor)
+    renderer.SetBackground(1, 1, 1) # Set background 
+
+    # Create the RendererWindow
+    renderer_window = vtkRenderWindow()
+    renderer_window.AddRenderer(renderer)
+
+    # Create the RendererWindowInteractor and display the vtk_file
+    interactor = vtkRenderWindowInteractor()
+    interactor.SetRenderWindow(renderer_window)
+
+    interactor.Initialize()
+    interactor.Start()
+'''
