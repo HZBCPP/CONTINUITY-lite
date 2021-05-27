@@ -673,8 +673,6 @@ with Tee(log_file):
 
 				subcorticals_list_names_checked = subcorticals_list_names_checked.remove(region)
 
-		print("subcorticals_list_names_checked", subcorticals_list_names_checked)
-
 
 		'''
 		if INTEGRATE_SC_DATA_by_generated_sc_surf:
@@ -754,14 +752,7 @@ with Tee(log_file):
 				    # Applies the label in the KWM file to the SPHARM surface: 
 					KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, labelSetName)
 
-		print("subcorticals_list_names_checked_with_surfaces",subcorticals_list_names_checked_with_surfaces)
 
-
-		print("*****************************************")
-		print("Combine the labeled subcorticals")
-		print("*****************************************")
-
-		outputSurface = os.path.join(OUT_LABELS, ID + "-" + labelSetName + "_Labeled_Subcorticals_Combined_T1Space.vtk")
 		
 		if labelSetName == 'Destrieux': 
 			print("*****************************************")
@@ -770,6 +761,12 @@ with Tee(log_file):
 
 			compute_point_destrieux(new_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
 		
+
+		print("*****************************************")
+		print("Combine the labeled subcorticals")
+		print("*****************************************")
+
+		outputSurface = os.path.join(OUT_LABELS, ID + "-" + labelSetName + "_Labeled_Subcorticals_Combined_T1Space.vtk")
 
 		if os.path.exists( outputSurface ):
 			print("OutputSurface file found: Skipping combine the labeled subcorticals ")
