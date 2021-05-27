@@ -679,7 +679,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>1</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -917,9 +917,9 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>160</y>
+        <y>200</y>
         <width>421</width>
-        <height>381</height>
+        <height>341</height>
        </rect>
       </property>
       <property name="currentIndex">
@@ -933,7 +933,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>300</y>
+          <y>260</y>
           <width>401</width>
           <height>42</height>
          </rect>
@@ -1246,7 +1246,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>230</y>
+          <y>220</y>
           <width>401</width>
           <height>81</height>
          </rect>
