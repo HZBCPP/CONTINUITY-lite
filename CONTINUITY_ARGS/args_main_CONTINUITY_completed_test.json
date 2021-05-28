@@ -49,10 +49,15 @@
             "help": "Parcellation table (.json)",
             "default": "./input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
         },
+        "PARCELLATION_TABLE_NAME": {
+            "type": "str",
+            "help": "Parcellation table name",
+            "default": "Destrieux"
+        },
         "labelSetName": {
             "type": "str",
             "help": "Labelset name in vtk surface file",
-            "default": "Destrieux"
+            "default": "colour"
         },
         "WM_L_Surf": {
             "type": "str",
@@ -278,8 +283,8 @@
         },
         "nb_fibers": {
             "type": "int",
-            "help": "Bedpostx: number of fibers",
-            "default": 2000
+            "help": "Bedpostx: number of fibers: 2",
+            "default": 2
         },
         "nb_fiber_per_seed": {
             "type": "int",
