@@ -27,7 +27,18 @@ if __name__ == '__main__':
     parser.add_argument('-csv_file'               , nargs='?', type=str, help="csv file with data information for one or several subject") 
 
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
-    default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #args_setup.json"
+    #default_config_filename = "./CONTINUITY_ARGS/args_setup.json"
+
+    #TEST: 
+    #default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #args_setup.json"
+
+    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
+    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" 
+    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix.json" 
+    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix1.json" 
+    default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix2.json"
+
+
     with open(default_config_filename) as default_file: 
         data_default = json.load(default_file)
 
@@ -65,7 +76,14 @@ if __name__ == '__main__':
         data_default = json.load(default_file)    
 
     # User file
-    user_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json" 
+    #user_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json" 
+    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
+    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_no_create_SALT.json" 
+    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix.json" 
+    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix1.json" 
+    user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix2.json" 
+
+
     with open(user_filename) as user_file:
         global data_user
         data_user = json.load(user_file)

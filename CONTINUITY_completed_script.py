@@ -1336,6 +1336,7 @@ with Tee(log_file):
 			else:
 				print("Compute tractography with for region " + number_region )	
 
+				
 				# Add seed coordinates for this region:
 				for element in  list_coord_seeds[0 : number_point-1]: 
 
@@ -1365,8 +1366,9 @@ with Tee(log_file):
 
 					# Add common parameters: 
 					command.append('-select') #default 1000
+					command.append(5000)
 					command.append('-max_attempts_per_seed')
-					command.append(1)
+					command.append(1000)
 					#command.append(nb_fibers) #=2000
 					
 					command.append('-fslgrad')
@@ -1390,7 +1392,7 @@ with Tee(log_file):
 						output_track_tckgen_tck = output_track_tckgen_tck_seed
 					else:
 						polydatamerge(output_track_tckgen_tck_seed, output_track_tckgen_tck, output_track_tckgen_tck)
-
+				
 					
 
 				'''
@@ -1418,7 +1420,7 @@ with Tee(log_file):
 
 				# Add common parameters: 
 				#command.append('-select')
-				#command.append(nb_fibers) #=2000
+				#command.append(nb_fibers) #=2 !
 				
 				command.append('-fslgrad')
 				command.append(os.path.join(OUT_DIFFUSION, "bvecs"))
