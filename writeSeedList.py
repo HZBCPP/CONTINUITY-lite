@@ -8,15 +8,15 @@ parser.add_argument("subject_dir", help = "Subject directorie", type = str)
 parser.add_argument("jsonFile", help = "JsonFile", type = str)
 args = parser.parse_args()
 
-def main(args.subject_dir , args.jsonFile ):
-	DIR_Surfaces = os.path.join(args.subject_dir, 'labelSurfaces')
+def main(subject_dir , jsonFile ):
+	DIR_Surfaces = os.path.join(subject_dir, 'labelSurfaces')
 
 	#Open Json file and parse 
-	with open(args.jsonFile) as data_file:    
+	with open(jsonFile) as data_file:    
 	    data = json.load(data_file)
 
 	#Create file for seedList
-	seedPath = args.subject_dir + '/seeds.txt'
+	seedPath = subject_dir + '/seeds.txt'
 	seedList = open(seedPath, 'w')
 
 	#Put all MatrixRow to -1 
@@ -34,7 +34,7 @@ def main(args.subject_dir , args.jsonFile ):
 	seedList.close()
 
 	#Update JSON file 
-	with open(args.jsonFile, 'w') as txtfile:
+	with open(jsonFile, 'w') as txtfile:
 	    json.dump(data, txtfile, indent = 2)
 
 

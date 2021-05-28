@@ -726,7 +726,7 @@ with Tee(log_file):
 			KWMFile = os.path.join(KWMDir,region + "_1002_KWM.txt")
 			SPHARMSurf = os.path.join(SALTDir, ID + "-T1_SkullStripped_scaled_label_" + region + "_pp_surfSPHARM.vtk")
 
-			if not os.path.exists(SPHARMSurf) or not os.path.exists(KWMFile) : 
+			if not os.path.exists(SPHARMSurf) or not os.path.exists(KWMFile): 
 				# Delete info of this region in the new-parcellation-table:
 				with open(new_parcellation_table, 'r') as data_file:
 				    data = json.load(data_file)
@@ -738,6 +738,7 @@ with Tee(log_file):
 
 				with open(new_parcellation_table, 'w') as data_file:
 					data = json.dump(data, data_file, indent = 2)
+
 
 			else: 
 				subcorticals_list_names_checked_with_surfaces.append(region)
@@ -751,6 +752,19 @@ with Tee(log_file):
 					print("For", region, "region: creation SPHARM surface labeled file")
 				    # Applies the label in the KWM file to the SPHARM surface: 
 					KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, labelSetName)
+
+
+		# Brainstem
+		with open(new_parcellation_table, 'r') as data_file:
+			   data = json.load(data_file)
+
+		for i in range(len(data)):
+			if data[i]['name'] == 'Brainstem': 
+				data.pop(i)
+				break
+
+		with open(new_parcellation_table, 'w') as data_file:
+			data = json.dump(data, data_file, indent = 2)
 
 
 		
