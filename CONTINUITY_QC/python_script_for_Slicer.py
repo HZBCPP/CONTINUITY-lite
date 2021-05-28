@@ -29,8 +29,8 @@ print("Execution of python script for Slicer")
 # DATA
 # *****************************************
 
-ID = json_user_object['Arguments']['ID']['value']
-NAME_PARCELLATION_TABLE = json_user_object['Arguments']['labelSetName']['value']
+ID = "T0054-1-1-6yr" #sjson_user_object['Arguments']['ID']['value']
+NAME_PARCELLATION_TABLE = "Destrieux" #json_user_object['Arguments']['labelSetName']['value']
 input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
 
 #find datas for B0_BiasCorrect
