@@ -1102,10 +1102,31 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
         # Extract data points in connectivity matrix and display points
         # *****************************************
-        
+
         # Get the parcellation table with Cortical and Subcortical regions: 
         with open(os.path.join(self.parcellation_table_textEdit.toPlainText()), "r") as table_json_file:
             table_json_object = json.load(table_json_file)
+
+        # Get data points for connected and unconnected points: 
+        global list_name_2D_connectome
+        list_name_unordered, list_coord_unordered, list_MatrixRow, list_name_2D_connectome, list_coord_2D_connectome = ([], [], [], [], [])
+       
+        for key in table_json_object:    
+            list_name_unordered.append(key["name"])
+            list_coord_unordered.append(key["coord"])
+            list_MatrixRow.append(key["MatrixRow"])
+
+
+        # Sort regions by VisuHierarchy number: 
+        sorted_indices = np.argsort(list_MatrixRow)
+        
+
+        for i in range(len(list_MatrixRow)):
+            index = sorted_indices[i]
+            list_name_2D_connectome.append(list_name_unordered[index])
+            list_coord_2D_connectome.append(list_coord_unordered[index])
+
+
 
         list_x               , list_y               , list_z                = ([], [], [])
         list_x_sagittal_left , list_y_sagittal_left , list_z_sagittal_left  = ([], [], [])
@@ -1113,11 +1134,11 @@ class Ui_visu(QtWidgets.QTabWidget):
         list_x_coronal       , list_y_coronal       , list_z_coronal        = ([], [], [])
         
         # Extract data point for each view (axial, sagittal, coronal)
-        for key in table_json_object:   
+        for element in list_coord_2D_connectome:   
             # Header of nrrd-file: array([146, 190, 165])
-            x = -(key["coord"][0]) + 146/2
-            y = -(key["coord"][1]) + 165/2
-            z = -(key["coord"][2]) + 190/2
+            x = -(element[0]) + 146/2
+            y = -(element[1]) + 165/2
+            z = -(element[2]) + 190/2
 
             # Axial and coronal:
             list_x.append(x)
@@ -1158,7 +1179,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                 # Plot points for sagittal view:
                 if self.sagittal_left_checkBox.isChecked():
-                    cax2 = self.ax2.plot(y_sagittal_left, z_sagittal_left, 'brown', marker=".", markersize=8, gid="test point sagittal left") #sagittal left
+                    cax2 = self.ax2.plot(y_sagittal_left, z_sagittal_left, 'brown', marker=".", markersize=8, gid="test point sagittal left" ) #sagittal left
                 else:
                     cax2 = self.ax2.plot(y_sagittal_right, z_sagittal_right, 'brown', marker=".", markersize=8,gid="test point sagittal right") #sagittal right
 
@@ -1242,7 +1263,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                     if not self.plot_unconnected_points_CheckBox.isChecked(): 
                         # Plot points for coronal view:
-                        cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="test point coronal")
+                        cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="test point coronal" )
                         cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid="test point coronal") 
 
                 # Specific threshold for sagittal slice (give by the range of the colorbar):
@@ -1300,11 +1321,14 @@ class Ui_visu(QtWidgets.QTabWidget):
         print("End display brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
      
-        self.fig_brain_connectome.canvas.mpl_connect('motion_notify_event', self.on_plot_hover)           
+        self.fig_brain_connectome.canvas.mpl_connect('button_press_event', self.click_2D_connectome)           
         #plt.show()
 
 
-    def on_plot_hover(self, event):
+
+
+
+    def click_2D_connectome(self, event):
         # Iterating over each data member plotted
         for curve in self.ax1.get_lines():
             # Searching which data member corresponds to current mouse position
