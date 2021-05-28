@@ -65,7 +65,7 @@ class Ui(QtWidgets.QTabWidget):
         global user_json_filename
         #user_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json"
 
-        user_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json" 
+        user_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" 
         #user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_create_SALT.json" #args_setup.json"
         #user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_no_create_SALT.json" #args_setup.json"
         #user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix.json" #args_setup.json"
@@ -73,8 +73,8 @@ class Ui(QtWidgets.QTabWidget):
         #user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix2.json" #args_setup.json"
 
 
-        default_json_filename = "./CONTINUITY_ARGS/args_setup.json"
-        #default_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
+
+        default_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
         #default_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" #args_setup.json"
         #default_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" #args_setup.json"
         #default_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix.json" #args_setup.json"

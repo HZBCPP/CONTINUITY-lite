@@ -74,9 +74,9 @@ class Ui_visu(QtWidgets.QTabWidget):
             user_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json"
        
         global default_json_filename
-        default_json_filename = "../CONTINUITY_ARGS/args_setup.json"
-        if os.path.exists("./CONTINUITY_ARGS/args_setup.json"):  # if you open the second interface with the first interface
-            default_json_filename = "./CONTINUITY_ARGS/args_setup.json" #./CONTINUITY_ARGS/args_setup.json"
+        default_json_filename = "../CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
+        if os.path.exists("./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json"):  # if you open the second interface with the first interface
+            default_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
  
         
         # Json file which contains values given by the user: 
