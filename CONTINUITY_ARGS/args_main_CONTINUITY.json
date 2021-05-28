@@ -48,7 +48,7 @@
         "PARCELLATION_TABLE": {
             "type": "str",
             "help": "Parcellation table (.json)",
-            "value": "./input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
+            "value": "/home/elodie/Desktop/CONTINUITY/input_CONTINUITY/TABLE_AAL_SubCorticals.json"
         },
         "labelSetName": {
             "type": "str",
@@ -408,7 +408,7 @@
         "slicer": {
             "type": "str",
             "help": "Path to slicer",
-            "value": "/home/elodie/Downloads/Slicer-4.11.20200930-linux-amd64/Slicer"
+            "value": "False"
         },
         "fsl": {
             "type": "str",
@@ -445,7 +445,7 @@
         "Red": {
             "type": "str",
             "help": "red param for view controllers in Slicer",
-            "value": "labeled_image"
+            "value": "B0"
         },
         "Yellow": {
             "type": "str",
