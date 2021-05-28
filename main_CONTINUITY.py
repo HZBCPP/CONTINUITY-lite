@@ -27,10 +27,10 @@ if __name__ == '__main__':
     parser.add_argument('-csv_file'               , nargs='?', type=str, help="csv file with data information for one or several subject") 
 
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
-    default_config_filename = "./CONTINUITY_ARGS/args_setup.json"
+    #default_config_filename = "./CONTINUITY_ARGS/args_setup.json"
 
     #TEST: 
-    #default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #args_setup.json"
+    default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #args_setup.json"
 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" 
