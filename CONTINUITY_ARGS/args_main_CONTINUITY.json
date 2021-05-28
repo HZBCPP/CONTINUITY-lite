@@ -13,12 +13,12 @@
         "ID": {
             "type": "str",
             "help": "Job name",
-            "value": "T0054-1-1-6yr"
+            "value": "subject"
         },
         "DWI_DATA": {
             "type": "str",
             "help": "DWI Image (.nrrd)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr_42_DWI-Trio_QCed_VC.nrrd"
+            "value": ""
         },
         "DWI_DATA_bvecs": {
             "type": "str",
@@ -33,42 +33,42 @@
         "T1_DATA": {
             "type": "str",
             "help": "T1 (.nrrd)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd"
+            "value": ""
         },
         "T2_DATA": {
             "type": "str",
             "help": "T2 (.nrrd)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-T2_SkullStripped_scaled.nrrd"
+            "value": ""
         },
         "BRAINMASK": {
             "type": "str",
             "help": "Brain mask in DWI space (.nrrd)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-brainmask.nrrd"
+            "value": ""
         },
         "PARCELLATION_TABLE": {
             "type": "str",
             "help": "Parcellation table (.json)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
+            "value": ""
         },
         "PARCELLATION_TABLE_NAME": {
             "type": "str",
             "help": "Parcellation table name",
-            "value": "Destrieux"
+            "value": ""
         },
         "labelSetName": {
             "type": "str",
             "help": "Labelset name in vtk surface file",
-            "value": "colour"
+            "value": ""
         },
         "WM_L_Surf": {
             "type": "str",
             "help": "Path to WM_L_Surf data",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/stx_T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_ITKspace.vtk"
+            "value": ""
         },
         "WM_R_Surf": {
             "type": "str",
             "help": "Path to WM_R_Surf data",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/stx_T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_ITKspace.vtk"
+            "value": ""
         },
         "SURFACE_USER": {
             "type": "str",
@@ -88,17 +88,17 @@
         "SALTDir": {
             "type": "str",
             "help": "Path to SALT directory",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/SALT"
+            "value": ""
         },
         "labeled_image": {
             "type": "str",
             "help": "labeled_image",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-T1_SkullStripped_scaled_label.nrrd"
+            "value": ""
         },
         "KWMDir": {
             "type": "str",
             "help": "Set where the labels are stored with specific parcellation",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/TxtLabels_Destrieux"
+            "value": ""
         }
     },
     "Parameters": {
@@ -110,7 +110,7 @@
         "tractography_model": {
             "type": "str",
             "help": "Tractography model: FSL, MRtrix or DIPY",
-            "value": "MRtrix (default: IFOD2) "
+            "value": "FSL"
         },
         "filtering_with_tcksift": {
             "type": "bool",
@@ -165,20 +165,7 @@
         "subcorticals_region_names": {
             "type": "list",
             "help": "List of subcortical regions names(name as in the parcellation table) (optional if 'subcortical' parameter in your parcellation table) ",
-            "value": [
-                "sub_rh_gp",
-                "sub_rh_put",
-                "sub_rh_thal",
-                "sub_rh_hippo",
-                "sub_rh_caud",
-                "sub_rh_amy",
-                "sub_lh_gp",
-                "sub_lh_put",
-                "sub_lh_thal",
-                "sub_lh_hippo",
-                "sub_lh_caud",
-                "sub_lh_amy"
-            ]
+            "value": []
         },
         "subcorticals_region_labels": {
             "type": "list",
@@ -201,12 +188,12 @@
         "cortical_label_left": {
             "type": "str",
             "help": "cortical_label_left",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/Atlas_Left_Destrieux.KWM.txt"
+            "value": ""
         },
         "cortical_label_right": {
             "type": "str",
             "help": "cortical_label_right",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/Atlas_Right_Destrieux.KWM.txt"
+            "value": ""
         },
         "UPSAMPLING_DWI": {
             "type": "bool",
@@ -356,94 +343,94 @@
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
-            "value": "/BAND/USERS/elodie/testing/output_CONTINUITY_MRTRIX1"
+            "value": "/home/elodie/Desktop/output_CONTINUITY"
         }
     },
     "Executables": {
         "unu": {
             "type": "str",
             "help": "Path to Unu",
-            "value": "/tools/bin_linux64/unu"
+            "value": "False"
         },
         "N4BiasFieldCorrection": {
             "type": "str",
             "help": "Path to N4BiasFieldCorrection",
-            "value": "/tools/bin_linux64/N4BiasFieldCorrection"
+            "value": "False"
         },
         "BRAINSFit": {
             "type": "str",
             "help": "Path to BRAINSFit",
-            "value": "/tools/bin_linux64/BRAINSFit"
+            "value": "False"
         },
         "dtiprocess": {
             "type": "str",
             "help": "Path to Dtiprocess",
-            "value": "/tools/bin_linux64/dtiprocess"
+            "value": "False"
         },
         "dtiestim": {
             "type": "str",
             "help": "Path to Dtiestim",
-            "value": "/tools/bin_linux64/dtiestim"
+            "value": "False"
         },
         "ANTS": {
             "type": "str",
             "help": "Path to ANTS:",
-            "value": "/tools/bin_linux64/ANTS"
+            "value": "False"
         },
         "ITKTransformTools_v1": {
             "type": "str",
             "help": "Path to ITKTransformTools_v1.2.3",
-            "value": "/tools/bin_linux64/ITKTransformTools_v1.2.3"
+            "value": "False"
         },
         "polydatatransform_v1": {
             "type": "str",
             "help": "Path to polydatatransform_v1.2.1",
-            "value": "/tools/bin_linux64/polydatatransform_v1.2.1"
+            "value": "False"
         },
         "WarpImageMultiTransform": {
             "type": "str",
             "help": "Path to WarpImageMultiTransform",
-            "value": "/tools/bin_linux64/WarpImageMultiTransform"
+            "value": "False"
         },
         "DWIConvert": {
             "type": "str",
             "help": "Path to DWIConvert",
-            "value": "/tools/bin_linux64/DWIConvert"
+            "value": "False"
         },
         "slicer": {
             "type": "str",
             "help": "Path to slicer",
-            "value": "/tools/Slicer4/Slicer-4.10.2-2019-07-11-linux-amd64/Slicer"
+            "value": "/home/elodie/Downloads/Slicer-4.11.20200930-linux-amd64/Slicer"
         },
         "fsl": {
             "type": "str",
             "help": "Path to FSL",
-            "value": "/tools/FSL/fsl-6.0.3/bin"
+            "value": "False"
         },
         "ExtractLabelSurfaces": {
             "type": "str",
             "help": "Path to ExtractLabelSurfaces",
-            "value": "/tools/bin_linux64/ExtractLabelSurfaces"
+            "value": "False"
         },
         "MRtrix": {
             "type": "str",
             "help": "Path to MRtrix",
-            "value": "/home/elodie/anaconda3/bin"
+            "value": "False"
         },
         "SegPostProcessCLP": {
             "type": "str",
             "help": "Path to SegPostProcessCLP",
-            "value": "/tools/bin_linux64/SegPostProcessCLP"
+            "value": "False"
         },
         "GenParaMeshCLP": {
             "type": "str",
             "help": "Path to GenParaMeshCLP",
-            "value": "/tools/bin_linux64/GenParaMeshCLP"
+            "value": "False"
         },
         "ParaToSPHARMMeshCLP": {
             "type": "str",
             "help": "Path to ParaToSPHARMMeshCLP",
-            "value": "/tools/bin_linux64/ParaToSPHARMMeshCLP"
+            "value": "False"
         }
     },
     "View_Controllers": {
