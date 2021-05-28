@@ -366,13 +366,21 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
-    # Open file system and write the white matter right surface path in user information json file
+    # Open file system and write in user information json file
     # *****************************************
 
     def labelsetname_valuechanged(self):
         json_user_object['Arguments']["labelSetName"]["value"] = self.labelset_lineEdit.text()
         Ui.update_user_json_file()
 
+
+    def name_parcellation_table_no_registration(self): 
+        json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"] = self.parcellation_table_name_no_registration_lineEdit.text()
+        Ui.update_user_json_file()
+
+    def name_parcellation_table(self): 
+        json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"] = self.parcellation_table_name_lineEdit.text()
+        Ui.update_user_json_file()
 
 
     # *****************************************
