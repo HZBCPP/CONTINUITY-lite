@@ -20,7 +20,7 @@
    <string>CONTINUITY QC</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -243,6 +243,11 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <property name="text">
+             <string>labeled image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>AD</string>
             </property>
            </item>
@@ -288,6 +293,11 @@ p, li { white-space: pre-wrap; }
            <item>
             <property name="text">
              <string>B0</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>labeled image</string>
             </property>
            </item>
            <item>
@@ -341,6 +351,11 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <property name="text">
+             <string>labeled image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>AD</string>
             </property>
            </item>
@@ -377,6 +392,11 @@ p, li { white-space: pre-wrap; }
            <item>
             <property name="text">
              <string>T1 registered</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>labeled image</string>
             </property>
            </item>
            <item>
@@ -430,6 +450,11 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <property name="text">
+             <string>labeled image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>B0</string>
             </property>
            </item>
@@ -479,6 +504,11 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <property name="text">
+             <string>labeled image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>B0</string>
             </property>
            </item>
@@ -515,6 +545,11 @@ p, li { white-space: pre-wrap; }
            <item>
             <property name="text">
              <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>labeled image</string>
             </property>
            </item>
            <item>
@@ -568,6 +603,11 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <property name="text">
+             <string>labeled image</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
              <string>B0</string>
             </property>
            </item>
@@ -613,6 +653,11 @@ p, li { white-space: pre-wrap; }
            <item>
             <property name="text">
              <string>AD</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>labeled image</string>
             </property>
            </item>
            <item>

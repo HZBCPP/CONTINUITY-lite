@@ -708,6 +708,9 @@ with Tee(log_file):
 				print("ERROR: You have to provide one label per subcortical regions (0 if you don't want to integrate this region)")
 				exit()
 		'''
+		
+		# Add labeled_image in INPUTDATA folder for visualization 
+		shutil.copy(labeled_image, OUT_INPUTDATA) 
 
 
 		print("*****************************************")

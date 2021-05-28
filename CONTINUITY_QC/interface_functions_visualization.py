@@ -218,7 +218,7 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
 
     def convert_name_data(Qt_param):
-        dict_param = {"B0":"B0", "T1 registered":"T1_registered", "T2 registered":"T2_registered", "FA":"FA", "AD":"AD"}
+        dict_param = {"B0":"B0", "T1 registered":"T1_registered", "T2 registered":"T2_registered", "FA":"FA", "AD":"AD", "labeled image":"labeled_image"}
         return dict_param[Qt_param]
 
 
@@ -229,6 +229,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
     def update_param(self, comboBox_name):
         json_user_object['View_Controllers'][comboBox_name]["value"] = Ui_visu.convert_name_data( eval("self." + comboBox_name + "_comboBox.currentText()")) 
+        print(eval("self." + comboBox_name + "_comboBox.currentText()"))
         Ui_visu.update_user_json_file()
 
 

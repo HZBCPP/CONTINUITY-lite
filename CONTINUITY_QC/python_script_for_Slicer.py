@@ -60,6 +60,10 @@ if not os.path.exists(FA):
 	FA = os.path.join( input_path, ID +"_DTI_FA_original.nrrd")
 
 
+# Find data for labeled image: 
+labeled_image = os.path.join( input_path, ID + "-T1_SkullStripped_scaled_label.nrrd")
+
+
 # Find data for surface: 
 registered_combine_surface         = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CONTINUITY/', ID, "InputDataForSlicer", "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + ".vtk")
 registered_combine_surface_with_sc = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CONTINUITY/', ID, "InputDataForSlicer", "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + "_WithSubcorticals.vtk")
@@ -76,14 +80,18 @@ surface_right_labeled = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CO
 						+ "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
 
 
+
+
 # *****************************************
 # Load data in Slicer (no show)
 # *****************************************
 if os.path.exists(B0):            loadedVolumeNode_B0            = slicer.util.loadVolume(B0,            properties={'name': 'B0',            'show': False})
 if os.path.exists(B0_with_biais): loadedVolumeNode_B0_with_biais = slicer.util.loadVolume(B0_with_biais, properties={'name': 'B0_with_biais', 'show': False})
 if os.path.exists(T1_registered): loadedVolumeNode_T1_registered = slicer.util.loadVolume(T1_registered, properties={'name': 'T1_registered', 'show': False})
-if os.path.exists(AD):            loadedVolumeNode_AD            = slicer.util.loadVolume(AD,            properties={'name': 'AD' ,           'show': False})
-if os.path.exists(FA):            loadedVolumeNode_FA            = slicer.util.loadVolume(FA,            properties={'name': 'FA' ,           'show': False})
+if os.path.exists(AD):            loadedVolumeNode_AD            = slicer.util.loadVolume(AD,            properties={'name': 'AD',            'show': False})
+if os.path.exists(FA):            loadedVolumeNode_FA            = slicer.util.loadVolume(FA,            properties={'name': 'FA',            'show': False})
+if os.path.exists(labeled_image): loadedVolumeNode_labeled_image = slicer.util.loadVolume(labeled_image, properties={'name': 'labeled_image', 'show': False})
+
 
 if os.path.exists(registered_combine_surface):         loadedVolumeNode_registered_combine_surface         = slicer.util.loadModel(registered_combine_surface)
 if os.path.exists(registered_combine_surface_with_sc): loadedVolumeNode_registered_combine_surface_with_sc = slicer.util.loadModel(registered_combine_surface_with_sc)
