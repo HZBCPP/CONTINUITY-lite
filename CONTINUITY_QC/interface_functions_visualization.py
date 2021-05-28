@@ -1147,14 +1147,10 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             # Sagittal left:
             if x>= 146/2 : 
-                y_sagittal_left = -y + 190
-                z_sagittal_left = z
                 list_x_sagittal_left.append(x)   
-                list_y_sagittal_left.append(y_sagittal_left)
-                list_z_sagittal_left.append(z_sagittal_left)
+                list_y_sagittal_left.append(-y + 190)
+                list_z_sagittal_left.append(z)
 
-                y_sagittal_right = float('nan')
-                z_sagittal_right = float('nan')
                 list_x_sagittal_right.append(float('nan'))
                 list_y_sagittal_right.append(float('nan'))
                 list_z_sagittal_right.append(float('nan'))
@@ -1167,24 +1163,10 @@ class Ui_visu(QtWidgets.QTabWidget):
                 list_y_sagittal_left.append(float('nan'))    
                 list_z_sagittal_left.append(float('nan'))
 
-                y_sagittal_right = y
-                z_sagittal_right = z
                 list_x_sagittal_right.append(x)    
                 list_y_sagittal_right.append(y) 
                 list_z_sagittal_right.append(z)
 
-            if self.plot_unconnected_points_CheckBox.isChecked(): 
-                # Plot points for axial view: 
-                cax1 = self.ax1.plot(x, y, 'brown', marker=".", markersize=8, gid="test point axial") 
-
-                # Plot points for sagittal view:
-                if self.sagittal_left_checkBox.isChecked():
-                    cax2 = self.ax2.plot(y_sagittal_left, z_sagittal_left, 'brown', marker=".", markersize=8, gid="test point sagittal left" ) #sagittal left
-                else:
-                    cax2 = self.ax2.plot(y_sagittal_right, z_sagittal_right, 'brown', marker=".", markersize=8,gid="test point sagittal right") #sagittal right
-
-                # Plot points for coronal view:
-                cax3 = self.ax3.plot(x, z , 'brown', marker=".", markersize=8, gid="test point coronal") 
 
 
         # *****************************************
@@ -1243,12 +1225,13 @@ class Ui_visu(QtWidgets.QTabWidget):
                     y_values = [point1[1], point2[1]]
 
                     # Display lines for axial view: 
-                    cax1 = self.ax1.plot(x_values, y_values, lw=1.5, color= plt.cm.RdBu(norm_axial(my_norm)), gid="test lines  axial")
+                    index = list_coord_2D_connectome.index([])
+                    cax1 = self.ax1.plot(x_values, y_values, lw=1.5, color= plt.cm.RdBu(norm_axial(my_norm)), gid=" lines axial")
 
                     if not self.plot_unconnected_points_CheckBox.isChecked(): 
                         # Plot connected points for axial view: 
-                        cax1 = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid="test points axial ") 
-                        cax1 = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid="test points axial ") 
+                        cax1 = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid=" points axial ") 
+                        cax1 = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid=" points axial ") 
                     
                 # Specific threshold for coronal lines (give by the range of the colorbar):
                 if my_norm <= vmax_coronal and my_norm >= vmin_coronal:
@@ -1259,12 +1242,12 @@ class Ui_visu(QtWidgets.QTabWidget):
                     z_values = [point1[2], point2[2]]
 
                     # Display lines for coronal view: 
-                    cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), gid="test lines coronal")
+                    cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), gid=" lines coronal")
 
                     if not self.plot_unconnected_points_CheckBox.isChecked(): 
                         # Plot points for coronal view:
-                        cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="test point coronal" )
-                        cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid="test point coronal") 
+                        cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid=" point coronal" )
+                        cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid=" point coronal") 
 
                 # Specific threshold for sagittal slice (give by the range of the colorbar):
                 if my_norm <= vmax_sagittal and my_norm >= vmin_sagittal:
@@ -1277,12 +1260,12 @@ class Ui_visu(QtWidgets.QTabWidget):
                         z_values_sagittal_left = [point1_sagittal_left[2], point2_sagittal_left[2]]
 
                         # Display lines for sagittal left view: 
-                        cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), gid="test lines sagittal") 
+                        cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), gid=" lines sagittal") 
 
                         if not self.plot_unconnected_points_CheckBox.isChecked(): 
                             # Plot points for sagittal left  view:
-                            cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, gid="test point left sagittal" ) #sagittal left
-                            cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, gid="test point left sagittal") #sagittal left
+                            cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, gid=" point left sagittal" ) #sagittal left
+                            cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, gid=" point left sagittal") #sagittal left
 
                     else: 
                         point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
@@ -1292,12 +1275,12 @@ class Ui_visu(QtWidgets.QTabWidget):
                         z_values_sagittal_right = [point1_sagittal_right[2], point2_sagittal_right[2]]
 
                         # Display lines for sagittal right view: 
-                        cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), gid="test lines right sagittal") 
+                        cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), gid=" lines right sagittal") 
                         
                         if not self.plot_unconnected_points_CheckBox.isChecked(): 
                             # Plot points for sagittal right  view:
-                            cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, gid="test point right sagittal") #sagittal right
-                            cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, gid="test point right sagittal") #sagittal right
+                            cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, gid=" point right sagittal") #sagittal right
+                            cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, gid=" point right sagittal") #sagittal right
                                 
 
         # *****************************************
