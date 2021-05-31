@@ -54,11 +54,8 @@ class Ui_visu(QtWidgets.QTabWidget):
         default_json_filename = sys.argv[1]
         user_json_filename = sys.argv[2]
 
-        print("default_json_filename", default_json_filename)
-        print("user_json_filename",user_json_filename)
-
-
-
+        #print("default_json_filename", default_json_filename)
+        #print("user_json_filename",user_json_filename)
     
         if os.path.exists('./CONTINUITY_QC/interface_visualization.ui'):  # if you open the second interface with the first interface
             uic.loadUi('./CONTINUITY_QC/interface_visualization.ui', self)
@@ -360,8 +357,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             cax = divider.new_vertical(size="3%", pad=0.7, pack_start=True)
             self.fig_normalize_matrix.add_axes(cax)
             self.fig_normalize_matrix.colorbar(im, cax=cax, orientation="horizontal")
-
-
             
             # Defining the cursor
             cursor = Cursor(ax_matrix, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
@@ -374,8 +369,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             annot.set_visible(False)
            
-            global my_fig_matrix, lhor, lver
-            my_fig_matrix = self.fig_normalize_matrix
+            global lhor, lver
             lhor = ax_matrix.axhline(0)
             lver = ax_matrix.axvline(0)
 
@@ -440,7 +434,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             lhor.set_ydata(y)
             lver.set_xdata(x)
 
-            self.label_matrix.setText(text)
+            self.label_matrix.setText('<font color= "green">' + text + '</font>')
 
             self.fig_normalize_matrix.canvas.draw()
 
@@ -1055,17 +1049,20 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.Layout_brain_connectome.itemAt(i).widget().setParent(None)
         
         # Create figure:
-        self.fig_brain_connectome = plt.figure(num=None)
+        self.fig_brain_connectome = plt.figure(num=None)#, constrained_layout=True)
         self.canvas = FigureCanvas(self.fig_brain_connectome)
         self.Layout_brain_connectome.addWidget(self.canvas)
         
         # Set title:
-        outputfilename = 'Brain connectome of subject ' + json_user_object['Arguments']["ID"]["value"] + ' (connectivity matrix normalized (row-region))'
-        self.fig_brain_connectome.suptitle(outputfilename, fontsize=10)
-
+        #outputfilename = 'Brain connectome of subject ' + json_user_object['Arguments']["ID"]["value"] + ' (connectivity matrix normalized (row-region))'
+        #self.fig_brain_connectome.suptitle(outputfilename, fontsize=10)
         self.ax1 = self.fig_brain_connectome.add_subplot(1,3,1) #axial
         self.ax2 = self.fig_brain_connectome.add_subplot(1,3,2) #sagittal left or right
         self.ax3 = self.fig_brain_connectome.add_subplot(1,3,3) #coronal
+
+        self.ax1.set_axis_off()
+        self.ax2.set_axis_off()
+        self.ax3.set_axis_off()
 
         # Set subtitles: 
         self.ax1.title.set_text("Axial")
@@ -1127,8 +1124,8 @@ class Ui_visu(QtWidgets.QTabWidget):
             list_coord_2D_connectome.append(list_coord_unordered[index])
 
 
-
         list_x               , list_y               , list_z                = ([], [], [])
+        list_x_original      , list_y_original      , list_z_original       = ([], [], [])
         list_x_sagittal_left , list_y_sagittal_left , list_z_sagittal_left  = ([], [], [])
         list_x_sagittal_right, list_y_sagittal_right, list_z_sagittal_right = ([], [], [])
         list_x_coronal       , list_y_coronal       , list_z_coronal        = ([], [], [])
@@ -1136,14 +1133,20 @@ class Ui_visu(QtWidgets.QTabWidget):
         # Extract data point for each view (axial, sagittal, coronal)
         for element in list_coord_2D_connectome:   
             # Header of nrrd-file: array([146, 190, 165])
-            x = -(element[0]) + 146/2
-            y = -(element[1]) + 165/2
-            z = -(element[2]) + 190/2
+            x = float("{:.2f}".format(-(element[0]) + 146/2))
+            y = float("{:.2f}".format(-(element[1]) + 165/2))
+            z = float("{:.2f}".format(-(element[2]) + 190/2))
 
             # Axial and coronal:
             list_x.append(x)
             list_y.append(y)
             list_z.append(z)
+
+            list_x_original.append(float("{:.2f}".format(-x + 146/2 )))
+            list_y_original.append(float("{:.2f}".format(-y + 165/2 )))
+            list_z_original.append(float("{:.2f}".format(-z + 190/2 )))
+
+
 
             # Sagittal left:
             if x>= 146/2 : 
@@ -1210,78 +1213,168 @@ class Ui_visu(QtWidgets.QTabWidget):
         # Min and max of the connectivity matrix: 
         mmin, mmax = (np.min(a),np.max(a))
 
+
+
+        # LINES
+        global cax1, cax2, cax3
         for i in range(np.shape(a)[0]):
             for j in range(np.shape(a)[1]):
 
-                # Normalize:
-                my_norm = (a[i,j] - mmin) / (mmax - mmin) #value between 0 to 1 
-       
-                # Specific threshold for axial lines (give by the range of the colorbar):
-                if my_norm <= vmax_axial and my_norm >= vmin_axial:
+                if i <= j: 
+
+                    # Normalize:
+                    my_norm = (a[i,j] - mmin) / (mmax - mmin) #value between 0 to 1 
                     point1 = [list_x[i], list_y[i],list_z[i]]
                     point2 = [list_x[j], list_y[j],list_z[j]]
 
                     x_values = [point1[0], point2[0]]
                     y_values = [point1[1], point2[1]]
-
-                    # Display lines for axial view: 
-                    index = list_coord_2D_connectome.index([])
-                    cax1 = self.ax1.plot(x_values, y_values, lw=1.5, color= plt.cm.RdBu(norm_axial(my_norm)), gid=" lines axial")
-
-                    if not self.plot_unconnected_points_CheckBox.isChecked(): 
-                        # Plot connected points for axial view: 
-                        cax1 = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid=" points axial ") 
-                        cax1 = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid=" points axial ") 
-                    
-                # Specific threshold for coronal lines (give by the range of the colorbar):
-                if my_norm <= vmax_coronal and my_norm >= vmin_coronal:
-                    point1 = [list_x[i], list_y[i],list_z[i]]
-                    point2 = [list_x[j], list_y[j],list_z[j]]
-
-                    x_values = [point1[0], point2[0]]
                     z_values = [point1[2], point2[2]]
 
-                    # Display lines for coronal view: 
-                    cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), gid=" lines coronal")
-
-                    if not self.plot_unconnected_points_CheckBox.isChecked(): 
-                        # Plot points for coronal view:
-                        cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid=" point coronal" )
-                        cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid=" point coronal") 
-
-                # Specific threshold for sagittal slice (give by the range of the colorbar):
-                if my_norm <= vmax_sagittal and my_norm >= vmin_sagittal:
-
-                    if self.sagittal_left_checkBox.isChecked():
-                        point1_sagittal_left = [list_x_sagittal_left[i], list_y_sagittal_left[i],list_z_sagittal_left[i]]
-                        point2_sagittal_left = [list_x_sagittal_left[j], list_y_sagittal_left[j],list_z_sagittal_left[j]]
-
-                        y_values_sagittal_left = [point1_sagittal_left[1], point2_sagittal_left[1]]
-                        z_values_sagittal_left = [point1_sagittal_left[2], point2_sagittal_left[2]]
-
-                        # Display lines for sagittal left view: 
-                        cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), gid=" lines sagittal") 
-
-                        if not self.plot_unconnected_points_CheckBox.isChecked(): 
-                            # Plot points for sagittal left  view:
-                            cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, gid=" point left sagittal" ) #sagittal left
-                            cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, gid=" point left sagittal") #sagittal left
-
-                    else: 
-                        point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
-                        point2_sagittal_right = [list_x_sagittal_right[j], list_y_sagittal_right[j],list_z_sagittal_right[j]]
-
-                        y_values_sagittal_right = [point1_sagittal_right[1], point2_sagittal_right[1]]
-                        z_values_sagittal_right = [point1_sagittal_right[2], point2_sagittal_right[2]]
-
-                        # Display lines for sagittal right view: 
-                        cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), gid=" lines right sagittal") 
+                    point1_original = [list_x_original[i], list_y_original[i], list_z_original[i]]
+                    point2_original = [list_x_original[j], list_y_original[j], list_z_original[j]]
                         
-                        if not self.plot_unconnected_points_CheckBox.isChecked(): 
-                            # Plot points for sagittal right  view:
-                            cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, gid=" point right sagittal") #sagittal right
-                            cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, gid=" point right sagittal") #sagittal right
-                                
+                    name_region1 = list_name_2D_connectome[list_coord_2D_connectome.index(point1_original)]
+                    name_region2 = list_name_2D_connectome[list_coord_2D_connectome.index(point2_original)]
+
+
+                    # Specific threshold for axial lines (give by the range of the colorbar):
+                    if my_norm <= vmax_axial and my_norm >= vmin_axial:
+
+                        # Display lines for axial view: 
+                        cax1, = self.ax1.plot(x_values, y_values, lw=1.5, color= plt.cm.RdBu(norm_axial(my_norm)), 
+                                                         marker = '.'  ,gid="Lines between: " + name_region1 + " and " + name_region2)
+                        
+            
+                    # Specific threshold for coronal lines (give by the range of the colorbar):
+                    if my_norm <= vmax_coronal and my_norm >= vmin_coronal:
+
+                        # Display lines for coronal view: 
+                        cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), 
+                                                        marker = '.'  ,gid="Lines between: " + name_region1 + " and " + name_region2)
+
+                    
+
+                       # Specific threshold for sagittal slice (give by the range of the colorbar):
+                    if my_norm <= vmax_sagittal and my_norm >= vmin_sagittal:
+
+                        if self.sagittal_left_checkBox.isChecked():
+                            point1_sagittal_left = [list_x_sagittal_left[i], list_y_sagittal_left[i],list_z_sagittal_left[i]]
+                            point2_sagittal_left = [list_x_sagittal_left[j], list_y_sagittal_left[j],list_z_sagittal_left[j]]
+
+                            y_values_sagittal_left = [point1_sagittal_left[1], point2_sagittal_left[1]]
+                            z_values_sagittal_left = [point1_sagittal_left[2], point2_sagittal_left[2]]
+
+                            # Display lines for sagittal left view: 
+                            cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
+                                                             marker = '.'  , gid="Lines between: " + name_region1 + " and " + name_region2)
+                           
+                        else: 
+                            point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
+                            point2_sagittal_right = [list_x_sagittal_right[j], list_y_sagittal_right[j],list_z_sagittal_right[j]]
+
+                            y_values_sagittal_right = [point1_sagittal_right[1], point2_sagittal_right[1]]
+                            z_values_sagittal_right = [point1_sagittal_right[2], point2_sagittal_right[2]]
+
+                            # Display lines for sagittal right view:
+                            cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
+                                                             marker = '.'  ,gid="Lines between: " + name_region1 + " and " + name_region2)
+
+
+
+        # POINTS
+        for i in range(np.shape(a)[0]):
+
+            point1_original = [list_x_original[i], list_y_original[i], list_z_original[i]]
+            point2_original = [list_x_original[j], list_y_original[j], list_z_original[j]]
+                        
+            name_region1 = list_name_2D_connectome[list_coord_2D_connectome.index(point1_original)]
+            name_region2 = list_name_2D_connectome[list_coord_2D_connectome.index(point2_original)]
+
+            is_connected_axial, is_connected_coronal, is_connected_sagittal = (False, False, False)
+
+            for j in range(np.shape(a)[1]):
+
+                if i <= j: 
+                    # Normalize:
+                    my_norm = (a[i,j] - mmin) / (mmax - mmin) #value between 0 to 1 
+    
+                    # Specific threshold for axial lines (give by the range of the colorbar):
+                    if my_norm <= vmax_axial and my_norm >= vmin_axial:
+                        is_connected_axial = True
+
+                    # Specific threshold for coronal lines (give by the range of the colorbar):
+                    if my_norm <= vmax_coronal and my_norm >= vmin_coronal:
+                        is_connected_coronal = True
+
+                    # Specific threshold for sagittal slice (give by the range of the colorbar):
+                    if my_norm <= vmax_sagittal and my_norm >= vmin_sagittal:
+                        is_connected_sagittal = True
+                            
+
+
+            if is_connected_axial: 
+                # Display points for axial view: 
+                cax1, = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid="Point: " + name_region1) 
+                cax1, = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid="Point: " + name_region2) 
+
+
+            elif not is_connected_axial and self.plot_unconnected_points_CheckBox.isChecked(): 
+                # Plot connected points for axial view: 
+                cax1, = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid="Point unconnected: " + name_region1) 
+                cax1, = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid="Point unconnected: " + name_region2) 
+                        
+
+            if is_connected_coronal:
+                # Plot points for coronal view:
+                cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="Point: " + name_region1)
+                cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid="Point: " + name_region2) 
+                            
+            elif not is_connected_coronal and self.plot_unconnected_points_CheckBox.isChecked(): 
+                # Plot points for coronal view:
+                cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="Point unconnected: " + name_region1)
+                cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid="Point unconnected: " + name_region2) 
+
+
+
+            point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
+            point2_sagittal_right = [list_x_sagittal_right[j], list_y_sagittal_right[j],list_z_sagittal_right[j]]
+
+            y_values_sagittal_right = [point1_sagittal_right[1], point2_sagittal_right[1]]
+            z_values_sagittal_right = [point1_sagittal_right[2], point2_sagittal_right[2]]
+
+            if is_connected_sagittal: 
+                # Display the considering point
+                if self.sagittal_left_checkBox.isChecked():
+                    # Plot points for sagittal left view:
+                    cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, 
+                                                                                gid="Point:" + name_region1 ) #sagittal left
+                    cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, 
+                                                                                gid="Point: " + name_region2) #sagittal left
+
+                else:
+                    # Plot points for sagittal right view:
+                    cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, 
+                                                                        gid="Point: " + name_region1) #sagittal right
+                    cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, 
+                                                                            gid="Point: " + name_region2) #sagittal right
+
+
+            elif not is_connected_sagittal and self.plot_unconnected_points_CheckBox.isChecked(): 
+                if self.sagittal_left_checkBox.isChecked():
+                    # Plot points for sagittal left  view:
+                    cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, 
+                                                                                gid="Point unconnected:" + name_region1 ) #sagittal left
+                    cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, 
+                                                                                gid="Point unconnected: " + name_region2) #sagittal left
+
+                else: 
+                    # Plot points for sagittal right  view:
+                    cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, 
+                                                                            gid="Point unconnected: " + name_region1) #sagittal right
+                    cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, 
+                                                                            gid="Point unconnected: " + name_region2) #sagittal right
+
 
         # *****************************************
         # Setup and display colorbar
@@ -1292,44 +1385,107 @@ class Ui_visu(QtWidgets.QTabWidget):
         p1 = self.ax2.get_position().get_points().flatten()
         p2 = self.ax3.get_position().get_points().flatten()
       
-        ax1_cbar = self.fig_brain_connectome.add_axes([p0[0], 0.07, p0[2]-p0[0]-0.03, 0.03])  #add_axes([xmin,ymin,dx,dy]) 
-        ax2_cbar = self.fig_brain_connectome.add_axes([p1[0], 0.07, p1[2]-p1[0]-0.03, 0.03])  
-        ax3_cbar = self.fig_brain_connectome.add_axes([p2[0], 0.07, p2[2]-p2[0]-0.03, 0.03]) 
+        ax1_cbar = self.fig_brain_connectome.add_axes([p0[0], p1[1] - 0.15, p0[2]-p0[0]-0.03, 0.03])  #add_axes([xmin,ymin,dx,dy]) 
+        ax2_cbar = self.fig_brain_connectome.add_axes([p1[0], p1[1] - 0.15, p1[2]-p1[0]-0.03, 0.03])  
+        ax3_cbar = self.fig_brain_connectome.add_axes([p2[0], p1[1] - 0.15, p2[2]-p2[0]-0.03, 0.03]) 
 
         # Display colorbar
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_axial,    cmap=plt.cm.RdBu), cax=ax1_cbar, orientation='horizontal')
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_sagittal, cmap=plt.cm.RdBu), cax=ax2_cbar, orientation='horizontal')
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_coronal,  cmap=plt.cm.RdBu), cax=ax3_cbar, orientation='horizontal')
 
+
         print("End display brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
-     
+
+        # Defining the cursor
+        cursor1 = Cursor(self.ax1, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
+        cursor2 = Cursor(self.ax2, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
+        cursor3 = Cursor(self.ax3, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
+
+
+        # Creating an annotating box
+        global annots, lhors, lvers
+        annots, lhors, lvers = ([], [], [])
+    
+        for ax in [self.ax1, self.ax2, self.ax3]:
+            global annot
+            annot = ax.annotate("", xy=(0,0), xytext=(-20,-30), xycoords='data',textcoords="offset points",
+                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1),arrowprops=dict(arrowstyle='fancy'))
+            annot.set_visible(False)
+
+            lhor, lver = (ax.axhline(0), ax.axvline(0))
+            lhor.set_ydata(-1)
+            lver.set_xdata(-1)
+
+            annots.append(annot)
+            lhors.append(lhor)
+            lvers.append(lver)
+ 
+
         self.fig_brain_connectome.canvas.mpl_connect('button_press_event', self.click_2D_connectome)           
-        #plt.show()
 
 
 
 
+    def click_2D_connectome(self,event):
+       
+        if not event.inaxes:
+            return
 
-    def click_2D_connectome(self, event):
-        # Iterating over each data member plotted
-        for curve in self.ax1.get_lines():
-            # Searching which data member corresponds to current mouse position
-            if curve.contains(event)[0]:
-                print("axial lines  %s" % curve.get_gid())
+        # *****************************************
+        # Left click
+        # *****************************************
+        #https://stackoverflow.com/questions/7908636/is-it-possible-to-make-labels-appear-when-hovering-mouse-over-a-point-in-matplot
+        
+        list_axes = [self.ax1, self.ax2, self.ax3]
+
+        if event.button == 1:  
+           for ax in list_axes:
+                if event.inaxes == ax:
+                
+                    x, y = event.xdata, event.ydata
+                    annots[list_axes.index(ax)].xy = (x,y)
+                    
+                    #print(ax.get_lines()) #<a list of 491 Line2D objects>
+
+                    for line in ax.get_lines():
+                        #print(line.contains(event)) #(False, {'ind': array([], dtype=int64)})           (True, {'ind': array([1])})
 
 
-        for curve in self.ax2.get_lines():
-            # Searching which data member corresponds to current mouse position
-            if curve.contains(event)[0]:
-                print("sagittal lines %s" % curve.get_gid())
+                        if line.contains(event)[0]:
+                            if line.get_gid() != None: 
 
+                                text = "%s" % line.get_gid()
+                                print(text)
 
-        for curve in self.ax3.get_lines():
-            # Searching which data member corresponds to current mouse position
-            if curve.contains(event)[0]:
-                print("coronal lines   %s" % curve.get_gid())
+                                self.text_connectome.setText('<font color= "green">' + text + '</font>')
 
+                                annots[list_axes.index(ax)].set_text(text)
+                                annots[list_axes.index(ax)].set_visible(True)
+
+                                lhors[list_axes.index(ax)].set_ydata(y)
+                                lvers[list_axes.index(ax)].set_xdata(x)
+
+                                self.fig_brain_connectome.canvas.draw()
+
+                       
+        # *****************************************
+        # Left click
+        # *****************************************
+  
+
+        elif event.button == 3: 
+            for ax in list_axes:
+                if event.inaxes == ax:
+
+                    annots[list_axes.index(ax)].set_visible(False)
+
+                    lhors[list_axes.index(ax)].set_ydata(-1)
+                    lvers[list_axes.index(ax)].set_xdata(-1)
+
+                    self.fig_brain_connectome.canvas.draw()
+        
 
 
     # **************************************************************************************************************************************************

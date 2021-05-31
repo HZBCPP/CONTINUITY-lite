@@ -28,8 +28,6 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 
 
-
-
 	user_filename = args.user_json_filename
 	default_config_filename = args.default_config_filename
 

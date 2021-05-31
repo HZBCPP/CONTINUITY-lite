@@ -27,7 +27,6 @@ class Ui(QtWidgets.QTabWidget):
         default_json_filename = sys.argv[1]
         user_json_filename = sys.argv[2]
 
-
         super(Ui, self).__init__()
         uic.loadUi('interface_tab.ui', self)
 
