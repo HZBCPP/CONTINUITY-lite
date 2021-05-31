@@ -33,9 +33,9 @@ ID = json_user_object['Arguments']['ID']['value']
 NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME']['value']
 input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
 
-print(ID)
-print(NAME_PARCELLATION_TABLE)
-print(input_path)
+#print(ID)
+#print(NAME_PARCELLATION_TABLE)
+#print(input_path)
 
 #find datas for B0_BiasCorrect
 B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_resample.nrrd")

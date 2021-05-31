@@ -48,7 +48,7 @@
         "PARCELLATION_TABLE": {
             "type": "str",
             "help": "Parcellation table (.json)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
+            "value": "/home/elodie/Desktop/input_CONTINUITY/TABLE_AAL_SubCorticals.json"
         },
         "PARCELLATION_TABLE_NAME": {
             "type": "str",
@@ -356,7 +356,7 @@
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
-            "value": "/home/elodie/Desktop/output_CONTINUITY"
+            "value": "/BAND/USERS/elodie/testing/output_CONTINUITY"
         }
     },
     "Executables": {
@@ -413,7 +413,7 @@
         "slicer": {
             "type": "str",
             "help": "Path to slicer",
-            "value": "/home/elodie/Downloads/Slicer-4.11.20200930-linux-amd64/Slicer"
+            "value": "False"
         },
         "fsl": {
             "type": "str",

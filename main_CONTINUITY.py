@@ -30,7 +30,7 @@ if __name__ == '__main__':
     #default_config_filename = "./CONTINUITY_ARGS/args_setup.json"
 
     #TEST: 
-    default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #args_setup.json"
+    default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" 
 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" 
