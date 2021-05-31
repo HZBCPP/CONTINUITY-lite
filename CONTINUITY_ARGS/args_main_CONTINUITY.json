@@ -13,12 +13,12 @@
         "ID": {
             "type": "str",
             "help": "Job name",
-            "value": "subject"
+            "value": "T0054-1-1-6yr"
         },
         "DWI_DATA": {
             "type": "str",
             "help": "DWI Image (.nrrd)",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr_42_DWI-Trio_QCed_VC.nrrd"
         },
         "DWI_DATA_bvecs": {
             "type": "str",
@@ -33,42 +33,42 @@
         "T1_DATA": {
             "type": "str",
             "help": "T1 (.nrrd)",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd"
         },
         "T2_DATA": {
             "type": "str",
             "help": "T2 (.nrrd)",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-T2_SkullStripped_scaled.nrrd"
         },
         "BRAINMASK": {
             "type": "str",
             "help": "Brain mask in DWI space (.nrrd)",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-brainmask.nrrd"
         },
         "PARCELLATION_TABLE": {
             "type": "str",
             "help": "Parcellation table (.json)",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
         },
         "PARCELLATION_TABLE_NAME": {
             "type": "str",
             "help": "Parcellation table name",
-            "value": ""
+            "value": "Destrieux"
         },
         "labelSetName": {
             "type": "str",
             "help": "Labelset name in vtk surface file",
-            "value": ""
+            "value": "colour"
         },
         "WM_L_Surf": {
             "type": "str",
             "help": "Path to WM_L_Surf data",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/stx_T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_ITKspace.vtk"
         },
         "WM_R_Surf": {
             "type": "str",
             "help": "Path to WM_R_Surf data",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/stx_T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_ITKspace.vtk"
         },
         "SURFACE_USER": {
             "type": "str",
@@ -88,17 +88,17 @@
         "SALTDir": {
             "type": "str",
             "help": "Path to SALT directory",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/SALT"
         },
         "labeled_image": {
             "type": "str",
             "help": "labeled_image",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-T1_SkullStripped_scaled_label.nrrd"
         },
         "KWMDir": {
             "type": "str",
             "help": "Set where the labels are stored with specific parcellation",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/TxtLabels_Destrieux"
         }
     },
     "Parameters": {
@@ -165,7 +165,20 @@
         "subcorticals_region_names": {
             "type": "list",
             "help": "List of subcortical regions names(name as in the parcellation table) (optional if 'subcortical' parameter in your parcellation table) ",
-            "value": []
+            "value": [
+                "sub_rh_gp",
+                "sub_rh_put",
+                "sub_rh_thal",
+                "sub_rh_hippo",
+                "sub_rh_caud",
+                "sub_rh_amy",
+                "sub_lh_gp",
+                "sub_lh_put",
+                "sub_lh_thal",
+                "sub_lh_hippo",
+                "sub_lh_caud",
+                "sub_lh_amy"
+            ]
         },
         "subcorticals_region_labels": {
             "type": "list",
@@ -188,12 +201,12 @@
         "cortical_label_left": {
             "type": "str",
             "help": "cortical_label_left",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/Atlas_Left_Destrieux.KWM.txt"
         },
         "cortical_label_right": {
             "type": "str",
             "help": "cortical_label_right",
-            "value": ""
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/Atlas_Right_Destrieux.KWM.txt"
         },
         "UPSAMPLING_DWI": {
             "type": "bool",
@@ -343,7 +356,7 @@
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
-            "value": "/BAND/USERS/elodie/testing/output_CONTINUITY"
+            "value": "/home/elodie/Desktop/output_CONTINUITY"
         }
     },
     "Executables": {
@@ -400,7 +413,7 @@
         "slicer": {
             "type": "str",
             "help": "Path to slicer",
-            "value": "False"
+            "value": "/home/elodie/Downloads/Slicer-4.11.20200930-linux-amd64/Slicer"
         },
         "fsl": {
             "type": "str",

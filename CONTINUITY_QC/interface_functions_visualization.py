@@ -54,6 +54,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         default_json_filename = sys.argv[1]
         user_json_filename = sys.argv[2]
 
+        print("default_json_filename", default_json_filename)
+        print("user_json_filename",user_json_filename)
+
 
 
     

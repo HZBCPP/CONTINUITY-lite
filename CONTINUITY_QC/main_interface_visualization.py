@@ -22,8 +22,8 @@ if __name__ == '__main__':
 	# *****************************************
 
 	parser = argparse.ArgumentParser(description='CONTINUITY script for visualization interface')
-	parser.add_argument("user_json_filename", help = "File with all parameters given by the user", type = str) 
 	parser.add_argument("default_config_filename", help = "File with all efault parameters", type = str) 
+	parser.add_argument("user_json_filename", help = "File with all parameters given by the user", type = str) 
 
 	args = parser.parse_args()
 

@@ -30,8 +30,12 @@ print("Execution of python script for Slicer")
 # *****************************************
 
 ID = json_user_object['Arguments']['ID']['value']
-NAME_PARCELLATION_TABLE = json_user_object['Arguments']['labelSetName']['value']
+NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME']['value']
 input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
+
+print(ID)
+print(NAME_PARCELLATION_TABLE)
+print(input_path)
 
 #find datas for B0_BiasCorrect
 B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_resample.nrrd")
@@ -65,18 +69,16 @@ labeled_image = os.path.join( input_path, ID + "-T1_SkullStripped_scaled_label.n
 
 
 # Find data for surface: 
-registered_combine_surface         = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CONTINUITY/', ID, "InputDataForSlicer", "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + ".vtk")
-registered_combine_surface_with_sc = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CONTINUITY/', ID, "InputDataForSlicer", "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + "_WithSubcorticals.vtk")
+registered_combine_surface         = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + ".vtk")
+registered_combine_surface_with_sc = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + "_WithSubcorticals.vtk")
 
-surface_left  = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CONTINUITY/', ID, "InputDataForSlicer", "stx_" + ID 
-							+ "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace.vtk")
-surface_right = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CONTINUITY/', ID, "InputDataForSlicer", "stx_" + ID 
-							+ "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace.vtk")
+surface_left  = os.path.join( input_path, "stx_" + ID + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace.vtk")
+surface_right = os.path.join( input_path, "stx_" + ID + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace.vtk")
 
-surface_left_labeled  = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CONTINUITY/', ID, "InputDataForSlicer", "stx_" + ID 
+surface_left_labeled  = os.path.join( input_path, "stx_" + ID 
 					    + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
 
-surface_right_labeled = os.path.join( '/home/elodie/Desktop/CONTINUITY/output_CONTINUITY/', ID, "InputDataForSlicer", "stx_" + ID 
+surface_right_labeled = os.path.join(input_path, "stx_" + ID 
 						+ "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
 
 
