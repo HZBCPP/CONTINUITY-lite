@@ -27,12 +27,12 @@ if __name__ == '__main__':
     parser.add_argument('-csv_file'               , nargs='?', type=str, help="csv file with data information for one or several subject") 
 
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
-    #default_config_filename = "./CONTINUITY_ARGS/args_setup.json"
+    default_config_filename = "./CONTINUITY_ARGS/args_setup.json"
 
     #TEST: 
     #default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #args_setup.json"
 
-    default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
+    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix1.json" 
@@ -186,6 +186,14 @@ if __name__ == '__main__':
 
     else: 
         print("PyQt5 CONTINUITY interface")
+
+        qt_args = []
+        qt_args.append(sys.argv[-1])
+        qt_args.append(default_config_filename)
+        qt_args.append(user_filename)
+        sys.argv = qt_args
+
+        #print(qt_args)
         app = QtWidgets.QApplication(sys.argv)
         window = Ui()
         app.exec_()

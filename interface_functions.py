@@ -22,11 +22,17 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def __init__(self):
+
+        global default_json_filename, user_json_filename
+        default_json_filename = sys.argv[1]
+        user_json_filename = sys.argv[2]
+
+
         super(Ui, self).__init__()
         uic.loadUi('interface_tab.ui', self)
 
         # write default values on interface:  
-        Ui.setup_default_values(self)
+        Ui.setup_default_values(self, default_json_filename, user_json_filename)
 
         self.show()
 
@@ -60,28 +66,7 @@ class Ui(QtWidgets.QTabWidget):
     # Setup default value (locating in args_setup.json) in the interface 
     # *****************************************
 
-    def setup_default_values(self):
-        # Arguments filename
-        global user_json_filename
-        #user_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json"
-
-        #user_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" 
-        user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_create_SALT.json" #args_setup.json"
-        #user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_no_create_SALT.json" #args_setup.json"
-        #user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix.json" #args_setup.json"
-        #user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix1.json" #args_setup.json"
-        #user_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix2.json" #args_setup.json"
-
-
-
-        #default_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
-        default_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" #args_setup.json"
-        #default_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" #args_setup.json"
-        #default_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix.json" #args_setup.json"
-        #default_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix1.json" #args_setup.json"
-        #default_json_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix2.json" #args_setup.json"
-
-
+    def setup_default_values(self, default_json_filename, user_json_filename):
 
         # Json file which contains values given by the user: 
         with open(user_json_filename, "r") as user_Qt_file:
@@ -1359,7 +1344,7 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def open_visualisation_button_clicked(self):
-        Ui.run_command("Open visualization interface", [sys.executable, "./CONTINUITY_QC/main_interface_visualization.py"])
+        Ui.run_command("Open visualization interface", [sys.executable, "./CONTINUITY_QC/main_interface_visualization.py", user_json_filename, default_json_filename])
 
     def open_slicer_first_interface_button_clicked(self):
         Ui.run_command("Open slicer with the first interface", [sys.executable, "./CONTINUITY_QC/slicer_QC.py", user_json_filename])

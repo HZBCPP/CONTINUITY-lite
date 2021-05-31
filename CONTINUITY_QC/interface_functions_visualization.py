@@ -49,6 +49,13 @@ class Ui_visu(QtWidgets.QTabWidget):
 
     def __init__(self):
         super(Ui_visu, self).__init__()
+
+        global default_json_filename, user_json_filename
+        default_json_filename = sys.argv[1]
+        user_json_filename = sys.argv[2]
+
+
+
     
         if os.path.exists('./CONTINUITY_QC/interface_visualization.ui'):  # if you open the second interface with the first interface
             uic.loadUi('./CONTINUITY_QC/interface_visualization.ui', self)
@@ -56,7 +63,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             uic.loadUi('./interface_visualization.ui', self)
 
         # Write default values on interface:    
-        self.setup_default_values()
+        Ui_visu.setup_default_values(self, default_json_filename, user_json_filename )
 
         self.show()
 
@@ -66,18 +73,8 @@ class Ui_visu(QtWidgets.QTabWidget):
     # Setup default value
     # *****************************************
 
-    def setup_default_values(self):
+    def setup_default_values(self, default_json_filename, user_json_filename):
         # Open json files: 
-        global user_json_filename
-        user_json_filename = "../CONTINUITY_ARGS/args_main_CONTINUITY.json"
-        if os.path.exists("./CONTINUITY_ARGS/args_main_CONTINUITY.json"): # if you open the second interface with the first interface
-            user_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json"
-       
-        global default_json_filename
-        default_json_filename = "../CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
-        if os.path.exists("./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json"):  # if you open the second interface with the first interface
-            default_json_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" #./CONTINUITY_ARGS/args_setup.json"
- 
         
         # Json file which contains values given by the user: 
         with open(user_json_filename, "r") as user_Qt_file:
