@@ -356,7 +356,7 @@
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
-            "value": "/BAND/USERS/elodie/testing/output_CONTINUITY"
+            "value": "/BAND/USERS/elodie/testing/output_CONTINUITY_create_SALT"
         }
     },
     "Executables": {
