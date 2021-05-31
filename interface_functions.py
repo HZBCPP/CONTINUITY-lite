@@ -1344,7 +1344,7 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def open_visualisation_button_clicked(self):
-        Ui.run_command("Open visualization interface", [sys.executable, "./CONTINUITY_QC/main_interface_visualization.py", user_json_filename, default_json_filename])
+        Ui.run_command("Open visualization interface", [sys.executable, "./CONTINUITY_QC/main_interface_visualization.py", default_json_filename, user_json_filename])
 
     def open_slicer_first_interface_button_clicked(self):
         Ui.run_command("Open slicer with the first interface", [sys.executable, "./CONTINUITY_QC/slicer_QC.py", user_json_filename])
