@@ -1385,18 +1385,14 @@ class Ui_visu(QtWidgets.QTabWidget):
         p1 = self.ax2.get_position().get_points().flatten()
         p2 = self.ax3.get_position().get_points().flatten()
       
-        ax1_cbar = self.fig_brain_connectome.add_axes([p0[0], p1[1] - 0.15, p0[2]-p0[0]-0.03, 0.03])  #add_axes([xmin,ymin,dx,dy]) 
-        ax2_cbar = self.fig_brain_connectome.add_axes([p1[0], p1[1] - 0.15, p1[2]-p1[0]-0.03, 0.03])  
-        ax3_cbar = self.fig_brain_connectome.add_axes([p2[0], p1[1] - 0.15, p2[2]-p2[0]-0.03, 0.03]) 
+        ax1_cbar = self.fig_brain_connectome.add_axes([p0[0]-0.07, p1[1] - 0.30, p0[2]-p0[0], 0.05])  #add_axes([xmin,ymin,dx,dy]) 
+        ax2_cbar = self.fig_brain_connectome.add_axes([p1[0]-0.01, p1[1] - 0.30, p1[2]-p1[0], 0.05])  
+        ax3_cbar = self.fig_brain_connectome.add_axes([p2[0]+0.05, p1[1] - 0.30, p2[2]-p2[0], 0.05]) 
 
         # Display colorbar
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_axial,    cmap=plt.cm.RdBu), cax=ax1_cbar, orientation='horizontal')
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_sagittal, cmap=plt.cm.RdBu), cax=ax2_cbar, orientation='horizontal')
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_coronal,  cmap=plt.cm.RdBu), cax=ax3_cbar, orientation='horizontal')
-
-
-        print("End display brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-
 
         # Defining the cursor
         cursor1 = Cursor(self.ax1, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
@@ -1422,23 +1418,27 @@ class Ui_visu(QtWidgets.QTabWidget):
             lhors.append(lhor)
             lvers.append(lver)
  
+        self.fig_brain_connectome.tight_layout(pad=0.2)            
+        self.fig_brain_connectome.canvas.mpl_connect('button_press_event', self.click_2D_connectome)     
 
-        self.fig_brain_connectome.canvas.mpl_connect('button_press_event', self.click_2D_connectome)           
+        print("End display brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+      
 
 
-
+    # *****************************************
+    # Display name of region for the 2D connectome
+    # ***************************************** 
 
     def click_2D_connectome(self,event):
        
         if not event.inaxes:
             return
 
-        # *****************************************
-        # Left click
-        # *****************************************
-        #https://stackoverflow.com/questions/7908636/is-it-possible-to-make-labels-appear-when-hovering-mouse-over-a-point-in-matplot
-        
         list_axes = [self.ax1, self.ax2, self.ax3]
+
+        # *****************************************
+        # Right click
+        # *****************************************
 
         if event.button == 1:  
            for ax in list_axes:
@@ -1447,17 +1447,11 @@ class Ui_visu(QtWidgets.QTabWidget):
                     x, y = event.xdata, event.ydata
                     annots[list_axes.index(ax)].xy = (x,y)
                     
-                    #print(ax.get_lines()) #<a list of 491 Line2D objects>
-
                     for line in ax.get_lines():
-                        #print(line.contains(event)) #(False, {'ind': array([], dtype=int64)})           (True, {'ind': array([1])})
-
-
                         if line.contains(event)[0]:
                             if line.get_gid() != None: 
 
                                 text = "%s" % line.get_gid()
-                                print(text)
 
                                 self.text_connectome.setText('<font color= "green">' + text + '</font>')
 
@@ -1473,12 +1467,10 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
         # Left click
         # *****************************************
-  
 
         elif event.button == 3: 
             for ax in list_axes:
                 if event.inaxes == ax:
-
                     annots[list_axes.index(ax)].set_visible(False)
 
                     lhors[list_axes.index(ax)].set_ydata(-1)
