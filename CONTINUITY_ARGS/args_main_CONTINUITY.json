@@ -48,7 +48,7 @@
         "PARCELLATION_TABLE": {
             "type": "str",
             "help": "Parcellation table (.json)",
-            "value": "/home/elodie/Desktop/input_CONTINUITY/TABLE_AAL_SubCorticals.json"
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
         },
         "PARCELLATION_TABLE_NAME": {
             "type": "str",
@@ -363,87 +363,87 @@
         "unu": {
             "type": "str",
             "help": "Path to Unu",
-            "value": "False"
+            "value": "/tools/bin_linux64/unu"
         },
         "N4BiasFieldCorrection": {
             "type": "str",
             "help": "Path to N4BiasFieldCorrection",
-            "value": "False"
+            "value": "/tools/bin_linux64/N4BiasFieldCorrection"
         },
         "BRAINSFit": {
             "type": "str",
             "help": "Path to BRAINSFit",
-            "value": "False"
+            "value": "/tools/bin_linux64/BRAINSFit"
         },
         "dtiprocess": {
             "type": "str",
             "help": "Path to Dtiprocess",
-            "value": "False"
+            "value": "/tools/bin_linux64/dtiprocess"
         },
         "dtiestim": {
             "type": "str",
             "help": "Path to Dtiestim",
-            "value": "False"
+            "value": "/tools/bin_linux64/dtiestim"
         },
         "ANTS": {
             "type": "str",
             "help": "Path to ANTS:",
-            "value": "False"
+            "value": "/tools/bin_linux64/ANTS"
         },
         "ITKTransformTools_v1": {
             "type": "str",
             "help": "Path to ITKTransformTools_v1.2.3",
-            "value": "False"
+            "value": "/tools/bin_linux64/ITKTransformTools_v1.2.3"
         },
         "polydatatransform_v1": {
             "type": "str",
             "help": "Path to polydatatransform_v1.2.1",
-            "value": "False"
+            "value": "/tools/bin_linux64/polydatatransform_v1.2.1"
         },
         "WarpImageMultiTransform": {
             "type": "str",
             "help": "Path to WarpImageMultiTransform",
-            "value": "False"
+            "value": "/tools/bin_linux64/WarpImageMultiTransform"
         },
         "DWIConvert": {
             "type": "str",
             "help": "Path to DWIConvert",
-            "value": "False"
+            "value": "/tools/bin_linux64/DWIConvert"
         },
         "slicer": {
             "type": "str",
             "help": "Path to slicer",
-            "value": "False"
+            "value": "/tools/Slicer4/Slicer-4.10.2-2019-07-11-linux-amd64/Slicer"
         },
         "fsl": {
             "type": "str",
             "help": "Path to FSL",
-            "value": "False"
+            "value": "/tools/FSL/fsl-6.0.3/bin"
         },
         "ExtractLabelSurfaces": {
             "type": "str",
             "help": "Path to ExtractLabelSurfaces",
-            "value": "False"
+            "value": "/tools/bin_linux64/ExtractLabelSurfaces"
         },
         "MRtrix": {
             "type": "str",
             "help": "Path to MRtrix",
-            "value": "False"
+            "value": "/home/elodie/anaconda3/bin"
         },
         "SegPostProcessCLP": {
             "type": "str",
             "help": "Path to SegPostProcessCLP",
-            "value": "False"
+            "value": "/tools/bin_linux64/SegPostProcessCLP"
         },
         "GenParaMeshCLP": {
             "type": "str",
             "help": "Path to GenParaMeshCLP",
-            "value": "False"
+            "value": "/tools/bin_linux64/GenParaMeshCLP"
         },
         "ParaToSPHARMMeshCLP": {
             "type": "str",
             "help": "Path to ParaToSPHARMMeshCLP",
-            "value": "False"
+            "value": "/tools/bin_linux64/ParaToSPHARMMeshCLP"
         }
     },
     "View_Controllers": {

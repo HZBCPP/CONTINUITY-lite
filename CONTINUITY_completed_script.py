@@ -244,8 +244,8 @@ with Tee(log_file):
 	# Convert DWI nifti input to nrrd:  
 
 	[path, afile] =os.path.split(DWI_DATA)
-	print(path) #./input_CONTINUITY
-	print(afile) #T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
+	#print(path) #./input_CONTINUITY
+	#print(afile) #T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
 
 	if afile.endswith('nii.gz'): 
 
@@ -254,7 +254,7 @@ with Tee(log_file):
 		print("*****************************************")
 
 		new_name = afile[:-7] + '.nrrd'
-		print(new_name)
+		#print(new_name)
 		
 		# New folder: 
 		OUT_FOLDER_nifti2nrrd = os.path.join(OUT_FOLDER, 'nifti2nrrd') 
@@ -754,7 +754,7 @@ with Tee(log_file):
 				else: 
 					print("For", region, "region: creation SPHARM surface labeled file")
 				    # Applies the label in the KWM file to the SPHARM surface: 
-					KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, PARCELLATION_TABLE_NAME)
+					KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, labelSetName)
 
 
 		# Brainstem
@@ -823,7 +823,7 @@ with Tee(log_file):
 
 	if not surface_already_labeled:
 
-		labelSetName = PARCELLATION_TABLE_NAME
+		#labelSetName = PARCELLATION_TABLE_NAME
 
 		if not DO_REGISTRATION:
 			# Outputs:
@@ -836,14 +836,14 @@ with Tee(log_file):
 			if os.path.exists( RSL_WM_L_Surf_NON_REGISTRATION_labeled ):
 				print("NON_REGISTRATION: WM left labeled file found: Skipping Labelization of the left cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_L_Surf_NON_REGISTRATION, RSL_WM_L_Surf_NON_REGISTRATION_labeled, cortical_label_left, PARCELLATION_TABLE_NAME)  
+				KWMtoPolyData(RSL_WM_L_Surf_NON_REGISTRATION, RSL_WM_L_Surf_NON_REGISTRATION_labeled, cortical_label_left, labelSetName)  
 				 
 
 			print("NON_REGISTRATION: Label the right cortical surface")
 			if os.path.exists( RSL_WM_R_Surf_NON_REGISTRATION_labeled ):
 				print("NON_REGISTRATION: WM right labeled file found: Skipping Labelization of the right cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_R_Surf_NON_REGISTRATION, RSL_WM_R_Surf_NON_REGISTRATION_labeled, cortical_label_right, PARCELLATION_TABLE_NAME)  		
+				KWMtoPolyData(RSL_WM_R_Surf_NON_REGISTRATION, RSL_WM_R_Surf_NON_REGISTRATION_labeled, cortical_label_right, labelSetName)  		
 
 
 		else: 
@@ -857,13 +857,13 @@ with Tee(log_file):
 			if os.path.exists( RSL_WM_L_Surf_labeled ):
 				print("WM left labeled file found: Skipping Labelization of the left cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_L_Surf, RSL_WM_L_Surf_labeled, cortical_label_left, PARCELLATION_TABLE_NAME)  
+				KWMtoPolyData(RSL_WM_L_Surf, RSL_WM_L_Surf_labeled, cortical_label_left, labelSetName)  
 				 
 			print("Label the right cortical surface")
 			if os.path.exists( RSL_WM_R_Surf_labeled ):
 				print("WM right labeled file found: Skipping Labelization of the right cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_R_Surf, RSL_WM_R_Surf_labeled, cortical_label_right, PARCELLATION_TABLE_NAME)  
+				KWMtoPolyData(RSL_WM_R_Surf, RSL_WM_R_Surf_labeled, cortical_label_right, labelSetName)  
 
 			# Add SURFACE in INPUTDATA folder for visualization 
 			shutil.copy(RSL_WM_L_Surf_labeled, OUT_INPUTDATA)
@@ -1393,8 +1393,7 @@ with Tee(log_file):
 					else:
 						polydatamerge(output_track_tckgen_tck_seed, output_track_tckgen_tck, output_track_tckgen_tck)
 				
-					
-
+				
 				'''
 				# Type of algorithm and their specification:
 				if tractography_model == "MRtrix (default: IFOD2) ":
