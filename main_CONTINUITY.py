@@ -29,8 +29,8 @@ if __name__ == '__main__':
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
     #default_config_filename = "./CONTINUITY_ARGS/args_setup.json"
     #TEST: 
-    #default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" 
-    default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
+    default_config_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" 
+    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix1.json" 
@@ -70,8 +70,8 @@ if __name__ == '__main__':
         data_default = json.load(default_file)    
 
     # User file
-    #user_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json" 
-    user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
+    user_filename = "./CONTINUITY_ARGS/args_main_CONTINUITY.json" 
+    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
     #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_no_create_SALT.json" 
     #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix.json" 
     #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix1.json" 
