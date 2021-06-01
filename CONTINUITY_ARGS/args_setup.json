@@ -136,7 +136,7 @@
         "INTEGRATE_SC_DATA": {
             "type": "bool",
             "help": "Integrate subcortical data",
-            "default": true
+            "default": false
         },
         "INTEGRATE_SC_DATA_by_generated_sc_surf": {
             "type": "bool",

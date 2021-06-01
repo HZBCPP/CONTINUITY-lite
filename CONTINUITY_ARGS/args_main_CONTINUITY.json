@@ -48,7 +48,7 @@
         "PARCELLATION_TABLE": {
             "type": "str",
             "help": "Parcellation table (.json)",
-            "value": "/home/elodie/Desktop/input_CONTINUITY/TABLE_AAL_SubCorticals.json"
+            "value": "/home/elodie/Desktop/input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
         },
         "PARCELLATION_TABLE_NAME": {
             "type": "str",
@@ -166,18 +166,18 @@
             "type": "list",
             "help": "List of subcortical regions names(name as in the parcellation table) (optional if 'subcortical' parameter in your parcellation table) ",
             "value": [
-                "sub_rh_gp",
-                "sub_rh_put",
-                "sub_rh_thal",
-                "sub_rh_hippo",
-                "sub_rh_caud",
-                "sub_rh_amy",
-                "sub_lh_gp",
-                "sub_lh_put",
-                "sub_lh_thal",
-                "sub_lh_hippo",
+                "sub_lh_amy",
                 "sub_lh_caud",
-                "sub_lh_amy"
+                "sub_lh_hippo",
+                "sub_lh_thal",
+                "sub_lh_put",
+                "sub_lh_gp",
+                "sub_rh_amy",
+                "sub_rh_caud",
+                "sub_rh_hippo",
+                "sub_rh_thal",
+                "sub_rh_put",
+                "sub_rh_gp"
             ]
         },
         "subcorticals_region_labels": {
