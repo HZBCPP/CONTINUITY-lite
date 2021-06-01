@@ -434,7 +434,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             lhor.set_ydata(y)
             lver.set_xdata(x)
 
-            self.label_matrix.setText('<font color= "green">' + text + '</font>')
+            self.label_matrix.setText( text )
 
             self.fig_normalize_matrix.canvas.draw()
 
@@ -1251,7 +1251,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                         # Display lines for coronal view: 
                         cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), 
-                                                        marker = '.'  ,gid="Lines between: " + name_region1 + " and " + name_region2)
+                                                        marker = '.'  ,gid="Lines between: \n" + name_region1 + " and " + name_region2)
 
                     
 
@@ -1267,7 +1267,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                             # Display lines for sagittal left view: 
                             cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
-                                                             marker = '.'  , gid="Lines between: " + name_region1 + " and " + name_region2)
+                                                             marker = '.'  , gid="Lines between: \n" + name_region1 + " and " + name_region2)
                            
                         else: 
                             point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
@@ -1278,7 +1278,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                             # Display lines for sagittal right view:
                             cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
-                                                             marker = '.'  ,gid="Lines between: " + name_region1 + " and " + name_region2)
+                                                             marker = '.'  ,gid="Lines between: \n" + name_region1 + " and " + name_region2)
 
 
 
@@ -1418,7 +1418,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             lhors.append(lhor)
             lvers.append(lver)
  
-        self.fig_brain_connectome.tight_layout(pad=0.2)            
+        #self.fig_brain_connectome.tight_layout(pad=0.2)            
         self.fig_brain_connectome.canvas.mpl_connect('button_press_event', self.click_2D_connectome)     
 
         print("End display brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
@@ -1544,9 +1544,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         # Get path to brain surfaces and read the file
         # *****************************************
         
-        SURFACE_template = './CONTINUITY_QC/template_brain_connectome_3D.vtk.vtk'
+        SURFACE_template = './CONTINUITY_QC/template_brain_connectome_3D.vtk'
         if not os.path.exists(SURFACE_template): 
-            SURFACE_template = './template_brain_connectome_3D.vtk.vtk'
+            SURFACE_template = './template_brain_connectome_3D.vtk'
 
         # Create template surfaces: visualization independente of subject:  (only cortical surfaces but is good for juste visualized)
         #polydatamerge('./CONTINUITY_QC/surface_template/icbm_avg_mid_sym_mc_left.vtk', './CONTINUITY_QC/surface_template/icbm_avg_mid_sym_mc_right.vtk', SURFACE_template)

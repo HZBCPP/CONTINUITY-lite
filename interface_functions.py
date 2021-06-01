@@ -102,11 +102,19 @@ class Ui(QtWidgets.QTabWidget):
 
         # Parcellation table for registration and non registration:
         self.PARCELLATION_TABLE_textEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE"]["default"])
+            
+        self.parcellation_table_name_lineEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE_NAME"]["default"])
+        self.parcellation_table_name_no_registration_lineEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE_NAME"]["default"])
+
         self.no_registration_parcellation_table_textEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE"]["default"])
 
         # Labelset name: text and help: 
         self.labelset_lineEdit.setText( json_setup_object['Arguments']["labelSetName"]["default"] ) 
         self.question_labelset_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
+
+        self.labelset_lineEdit_no_registration.setText( json_setup_object['Arguments']["labelSetName"]["default"] ) 
+        self.question_labelset_name_textEdit_no_registration.setStyleSheet("color: transparent;"  "background-color: transparent")
+
 
         # Label cortical surfaces for registration and not registration:
         self.question_cortical_labeled_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
@@ -373,6 +381,10 @@ class Ui(QtWidgets.QTabWidget):
         json_user_object['Arguments']["labelSetName"]["value"] = self.labelset_lineEdit.text()
         Ui.update_user_json_file()
 
+    def no_registration_labelsetname_valuechanged(self):
+        json_user_object['Arguments']["labelSetName"]["value"] = self.labelset_lineEdit_no_registration.text()
+        Ui.update_user_json_file()
+
 
     def name_parcellation_table_no_registration(self): 
         json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"] = self.parcellation_table_name_no_registration_lineEdit.text()
@@ -394,7 +406,17 @@ class Ui(QtWidgets.QTabWidget):
             
         else: # self.question_job_name_pushButton.text() == "X":
             self.question_labelset_name_pushButton.setText("Help")
-            self.question_labelset_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")    
+            self.question_labelset_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")  
+
+
+    def no_registration_question_labelset_name_pushButton_clicked(self):
+        if self.question_labelset_name_pushButton_no_registration.text() == "Help":
+            self.question_labelset_name_pushButton_no_registration.setText("close help")
+            self.question_labelset_name_textEdit_no_registration.setStyleSheet("color: blue;"  "background-color: transparent")
+            
+        else: # self.question_job_name_pushButton.text() == "X":
+            self.question_labelset_name_pushButton_no_registration.setText("Help")
+            self.question_labelset_name_textEdit_no_registration.setStyleSheet("color: transparent;"  "background-color: transparent")   
 
     
 
