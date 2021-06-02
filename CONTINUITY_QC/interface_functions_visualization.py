@@ -53,9 +53,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         global default_json_filename, user_json_filename
         default_json_filename = sys.argv[1]
         user_json_filename = sys.argv[2]
-
-        #print("default_json_filename", default_json_filename)
-        #print("user_json_filename",user_json_filename)
     
         if os.path.exists('./CONTINUITY_QC/interface_visualization.ui'):  # if you open the second interface with the first interface
             uic.loadUi('./CONTINUITY_QC/interface_visualization.ui', self)
@@ -95,19 +92,18 @@ class Ui_visu(QtWidgets.QTabWidget):
         path = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"], json_user_object['Arguments']["ID"]["value"], "Tractography", 'new_parcellation_table')
         self.parcellation_table_textEdit.setText(path)
 
-        global overlapName
+        global overlapName, loopcheckName
         overlapName = ""
         if json_user_object['Parameters']["overlapping"]["value"]: 
             overlapName = "_overlapping" 
 
         # Setup default path to save the connectivity matrix with a specific name:
-        global loopcheckName
         loopcheckName = ""
         if json_user_object['Parameters']["loopcheck"]["value"]: 
             loopcheckName = "_loopcheck"
             
         path = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"], json_user_object['Arguments']["ID"]["value"], "Tractography" )
-                                                                                                                                #, "Network" + overlapName + loopcheckName)
+                                                                                                                    #, "Network" + overlapName + loopcheckName)
         self.connectivity_matrix_textEdit.setText(path)
 
         # Colormap circle connectome: strength of each node
@@ -226,7 +222,6 @@ class Ui_visu(QtWidgets.QTabWidget):
 
     def update_param(self, comboBox_name):
         json_user_object['View_Controllers'][comboBox_name]["value"] = Ui_visu.convert_name_data( eval("self." + comboBox_name + "_comboBox.currentText()")) 
-        print(eval("self." + comboBox_name + "_comboBox.currentText()"))
         Ui_visu.update_user_json_file()
 
 
@@ -442,10 +437,8 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
         # Left click
         # *****************************************
-  
 
         elif event.button == 3: 
-            print("test")
 
             annot.set_visible(False)
 
@@ -453,6 +446,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             lver.set_xdata(-1)
 
             self.fig_normalize_matrix.canvas.draw()
+
 
             
     # *****************************************
@@ -463,6 +457,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         DirName= QtWidgets.QFileDialog.getExistingDirectory(self)
         if DirName:
             self.connectivity_matrix_textEdit.setText(DirName)
+
 
 
     # *****************************************
@@ -644,10 +639,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         elif self.type_of_symmetrization_circle_comboBox.currentText() == "Minimum": connectivity_score = minimum_symmetrization(connectivity_score)
         
         # Transform a list of list into a numpy array:
-        global connectivity_matrix
+        global connectivity_matrix, number_total_line
         connectivity_matrix = np.array(connectivity_score)
 
-        global number_total_line
         number_total_line = np.count_nonzero(np.abs(connectivity_matrix)) #Doc plot_connectivity_circle: n_lines strongest connections (strength=abs(con))
         max_value = np.amax(connectivity_matrix)
 
@@ -778,7 +772,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         node_angles = node_angles_copy * np.pi / 180
         node_angles_copy_event = node_angles
 
-
         # Draw new node labels: 
         angles_deg = 180 * node_angles_copy_event / np.pi
 
@@ -826,7 +819,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         while i < len(VisuHierarchy_order):   
             current_elem = VisuHierarchy_order[i]
        
-            #print('region',current_elem, list_of_list_VisuHierarchy[list_VisuHierarchy.index(current_elem)])
             self.all_nodes_listWidget.addItems(list_of_list_VisuHierarchy[list_VisuHierarchy.index(current_elem)])
 
             for i in range(self.all_nodes_listWidget.count()):
@@ -1146,8 +1138,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             list_y_original.append(float("{:.2f}".format(-y + 165/2 )))
             list_z_original.append(float("{:.2f}".format(-z + 190/2 )))
 
-
-
             # Sagittal left:
             if x>= 146/2 : 
                 list_x_sagittal_left.append(x)   
@@ -1214,8 +1204,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         mmin, mmax = (np.min(a),np.max(a))
 
 
-
-        # LINES
+        # Draw lines: 
         global cax1, cax2, cax3
         for i in range(np.shape(a)[0]):
             for j in range(np.shape(a)[1]):
@@ -1281,8 +1270,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                                                              marker = '.'  ,gid="Line between: \n" + name_region1 + " and " + name_region2)
 
 
-
-        # POINTS
+        # Draw points: 
         for i in range(np.shape(a)[0]):
 
             point1_original = [list_x_original[i], list_y_original[i], list_z_original[i]]
@@ -1290,6 +1278,12 @@ class Ui_visu(QtWidgets.QTabWidget):
                         
             name_region1 = list_name_2D_connectome[list_coord_2D_connectome.index(point1_original)]
             name_region2 = list_name_2D_connectome[list_coord_2D_connectome.index(point2_original)]
+
+            point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
+            point2_sagittal_right = [list_x_sagittal_right[j], list_y_sagittal_right[j],list_z_sagittal_right[j]]
+
+            y_values_sagittal_right = [point1_sagittal_right[1], point2_sagittal_right[1]]
+            z_values_sagittal_right = [point1_sagittal_right[2], point2_sagittal_right[2]]
 
             is_connected_axial, is_connected_coronal, is_connected_sagittal = (False, False, False)
 
@@ -1299,81 +1293,48 @@ class Ui_visu(QtWidgets.QTabWidget):
                     # Normalize:
                     my_norm = (a[i,j] - mmin) / (mmax - mmin) #value between 0 to 1 
     
-                    # Specific threshold for axial lines (give by the range of the colorbar):
-                    if my_norm <= vmax_axial and my_norm >= vmin_axial:
-                        is_connected_axial = True
-
-                    # Specific threshold for coronal lines (give by the range of the colorbar):
-                    if my_norm <= vmax_coronal and my_norm >= vmin_coronal:
-                        is_connected_coronal = True
-
-                    # Specific threshold for sagittal slice (give by the range of the colorbar):
-                    if my_norm <= vmax_sagittal and my_norm >= vmin_sagittal:
-                        is_connected_sagittal = True
+                    # Specific threshold for axial/coronal/sagittal lines (give by the range of the colorbar):
+                    if (my_norm <= vmax_axial)    and (my_norm >= vmin_axial)   : is_connected_axial    = True
+                    if (my_norm <= vmax_coronal)  and (my_norm >= vmin_coronal) : is_connected_coronal  = True
+                    if (my_norm <= vmax_sagittal) and (my_norm >= vmin_sagittal): is_connected_sagittal = True
                             
-
-
+            # Display points and unconnected points for axial view:
             if is_connected_axial: 
-                # Display points for axial view: 
                 cax1, = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid="Point: " + name_region1) 
                 cax1, = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid="Point: " + name_region2) 
 
-
             elif not is_connected_axial and self.plot_unconnected_points_CheckBox.isChecked(): 
-                # Plot connected points for axial view: 
-                cax1, = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid="Point unconnected: " + name_region1) 
-                cax1, = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid="Point unconnected: " + name_region2) 
+                cax1, = self.ax1.plot(list_x[i], list_y[i] , 'brown', marker=".", markersize=8, gid="Unconnected point: " + name_region1) 
+                cax1, = self.ax1.plot(list_x[j], list_y[j] , 'brown', marker=".", markersize=8, gid="Unconnected point: " + name_region2) 
                         
 
+            # Display points and unconnected points for coronal view:
             if is_connected_coronal:
-                # Plot points for coronal view:
                 cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="Point: " + name_region1)
                 cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid="Point: " + name_region2) 
                             
             elif not is_connected_coronal and self.plot_unconnected_points_CheckBox.isChecked(): 
-                # Plot points for coronal view:
-                cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="Point unconnected: " + name_region1)
-                cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid="Point unconnected: " + name_region2) 
+                cax3 = self.ax3.plot(list_x[i], list_z[i] , 'brown', marker=".", markersize=8, gid="Unconnected point: " + name_region1)
+                cax3 = self.ax3.plot(list_x[j], list_z[j] , 'brown', marker=".", markersize=8, gid="Unconnected point: " + name_region2) 
 
 
-
-            point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
-            point2_sagittal_right = [list_x_sagittal_right[j], list_y_sagittal_right[j],list_z_sagittal_right[j]]
-
-            y_values_sagittal_right = [point1_sagittal_right[1], point2_sagittal_right[1]]
-            z_values_sagittal_right = [point1_sagittal_right[2], point2_sagittal_right[2]]
-
+            # Display points and unconnected points for sagittal view: 
             if is_connected_sagittal: 
-                # Display the considering point
                 if self.sagittal_left_checkBox.isChecked():
-                    # Plot points for sagittal left view:
-                    cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, 
-                                                                                gid="Point:" + name_region1 ) #sagittal left
-                    cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, 
-                                                                                gid="Point: " + name_region2) #sagittal left
-
+                    cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, gid="Point:" + name_region1)
+                    cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, gid="Point: " + name_region2) 
                 else:
-                    # Plot points for sagittal right view:
-                    cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, 
-                                                                        gid="Point: " + name_region1) #sagittal right
-                    cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, 
-                                                                            gid="Point: " + name_region2) #sagittal right
+                    cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, gid="Point: " + name_region1) 
+                    cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, gid="Point: " + name_region2) 
 
 
             elif not is_connected_sagittal and self.plot_unconnected_points_CheckBox.isChecked(): 
                 if self.sagittal_left_checkBox.isChecked():
-                    # Plot points for sagittal left  view:
-                    cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, 
-                                                                                gid="Point unconnected:" + name_region1 ) #sagittal left
-                    cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, 
-                                                                                gid="Point unconnected: " + name_region2) #sagittal left
-
+                    cax2 = self.ax2.plot(list_y_sagittal_left[i], list_z_sagittal_left[i], 'brown', marker=".", markersize=8, gid="Unconnected point: " + name_region1)
+                    cax2 = self.ax2.plot(list_y_sagittal_left[j], list_z_sagittal_left[j], 'brown', marker=".", markersize=8, gid="Unconnected point: " + name_region2) 
                 else: 
-                    # Plot points for sagittal right  view:
-                    cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, 
-                                                                            gid="Point unconnected: " + name_region1) #sagittal right
-                    cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, 
-                                                                            gid="Point unconnected: " + name_region2) #sagittal right
+                    cax2 = self.ax2.plot(list_y_sagittal_right[i], list_z_sagittal_right[i], 'brown', marker=".", markersize=8, gid="Unconnected point: " + name_region1) 
+                    cax2 = self.ax2.plot(list_y_sagittal_right[j], list_z_sagittal_right[j], 'brown', marker=".", markersize=8, gid="Unconnected point: " + name_region2) 
 
 
         # *****************************************
@@ -1405,7 +1366,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         annots, lhors, lvers = ([], [], [])
     
         for ax in [self.ax1, self.ax2, self.ax3]:
-            global annot
+            #global annot
             annot = ax.annotate("", xy=(0,0), xytext=(-20,-30), xycoords='data',textcoords="offset points",
                     bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1),arrowprops=dict(arrowstyle='fancy'))
             annot.set_visible(False)
@@ -1450,7 +1411,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                     for line in ax.get_lines():
                         if line.contains(event)[0]:
                             if line.get_gid() != None: 
-
                                 text = "%s" % line.get_gid()
 
                                 self.text_connectome.setText('<font color= "green">' + text + '</font>')
@@ -1533,24 +1493,16 @@ class Ui_visu(QtWidgets.QTabWidget):
         
 
         # *****************************************
-        # Setup figure parameters: remove the previous plot: 
+        # Setup figure parameters by removing the previous plot and get path to brain surfaces and read the file
         # *****************************************
 
         for i in reversed(range(self.Layout_brain_connectome_3D.count())): 
             self.Layout_brain_connectome_3D.itemAt(i).widget().setParent(None)
-
-
-        # *****************************************
-        # Get path to brain surfaces and read the file
-        # *****************************************
         
         SURFACE_template = './CONTINUITY_QC/template_brain_connectome_3D.vtk'
         if not os.path.exists(SURFACE_template): 
             SURFACE_template = './template_brain_connectome_3D.vtk'
 
-        # Create template surfaces: visualization independente of subject:  (only cortical surfaces but is good for juste visualized)
-        #polydatamerge('./CONTINUITY_QC/surface_template/icbm_avg_mid_sym_mc_left.vtk', './CONTINUITY_QC/surface_template/icbm_avg_mid_sym_mc_right.vtk', SURFACE_template)
-        # Compute point for Destrieux: function in CONTINUITY_functions.py and use in CONTINUITY_completed_script.py
 
         # Read the brain surfaces file:
         reader = vtk.vtkPolyDataReader()
@@ -1590,8 +1542,6 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         # Create the renderer: 
         self.ren = vtk.vtkRenderer()
-
-        #balloonWidget.AddBalloon(actor, 'This is the brain surface', None)
         self.ren.AddActor(actor) #brain surfaces
 
 
@@ -1604,7 +1554,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             table_json_object = json.load(table_json_file)
 
         # Get data points for connected and unconnected points: 
-        list_x, list_y, list_z, list_points, list_name_unordered, list_MatrixRow, list_name = ([], [], [], [], [], [], [])
+        list_x, list_y, list_z, list_name_unordered, list_MatrixRow, list_name = ([], [], [], [], [], [])
        
         for key in table_json_object:    
             list_name_unordered.append(key["name"])
@@ -1624,14 +1574,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                     list_x.append(key["coord"][0])
                     list_y.append(key["coord"][1])
                     list_z.append(key["coord"][2])
-
-                    # for map()
-                    point = []
-                    point.append(key["coord"][0])
-                    point.append(key["coord"][1])
-                    point.append(key["coord"][2])
-
-                    list_points.append(point)
 
         # Set 1 if the point is connected and 0 otherwise
         list_visibility_point = []
@@ -1657,6 +1599,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
 
         for i in range(len(list_x)): 
+
             # *****************************************
             # Creates points thanks to parcellation table 
             # *****************************************
@@ -1825,6 +1768,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         print("End display 3D brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 
+
     # *****************************************
     # Update the 3D brain connectome if the user change the range: min/max
     # ***************************************** 
@@ -1883,6 +1827,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                 if my_norm > vmin_3D and my_norm < vmax_3D:
                     list_visibility_lines.append(1)
+                    
                     # Add color:
                     colorLookupTable1.GetColor(my_norm, my_color)
                     list_color.append(my_color)
@@ -2098,6 +2043,12 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.select_vtk_file_textEdit.setText(fileName) 
 
 
+
+
+
+
+
+
   
 # *****************************************
 # AddObserver for the 3D connectome
@@ -2135,59 +2086,3 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
 
         self.OnLeftButtonDown()
         return
-
-
-
-
-'''
-class Formatter(object):
-    def __init__(self, im):
-        self.im = im
-    def __call__(self, x, y):
-        z = self.im.get_array()[int(y), int(x)]
-        return 'x={:.01f}, y={:.01f}, z={:.01f}'.format(x, y, z)
-'''
-
-
-
-
-
-'''
-    # Display a vtk file WITHOUT Qt interface
-    file_name = "./input_CONTINUITY/stx_T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_ITKspace.vtk"
-
-    # Read the source file.
-    import vtk
-    reader = vtk.vtkPolyDataReader()
-    reader.SetFileName(file_name)
-    reader.Update()  # Needed because of GetScalarRange
-    output = reader.GetOutput()
-    output_port = reader.GetOutputPort()
-    scalar_range = output.GetScalarRange()
-
-    # Create the mapper that corresponds the objects of the vtk file
-    # into graphics elements
-    mapper = vtkDataSetMapper()
-    mapper.SetInputConnection(output_port)
-    mapper.SetScalarRange(scalar_range)
-
-    # Create the Actor
-    actor = vtkActor()
-    actor.SetMapper(mapper)
-
-    # Create the Renderer
-    renderer = vtkRenderer()
-    renderer.AddActor(actor)
-    renderer.SetBackground(1, 1, 1) # Set background 
-
-    # Create the RendererWindow
-    renderer_window = vtkRenderWindow()
-    renderer_window.AddRenderer(renderer)
-
-    # Create the RendererWindowInteractor and display the vtk_file
-    interactor = vtkRenderWindowInteractor()
-    interactor.SetRenderWindow(renderer_window)
-
-    interactor.Initialize()
-    interactor.Start()
-'''
