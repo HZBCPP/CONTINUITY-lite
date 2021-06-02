@@ -351,7 +351,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             divider = make_axes_locatable(ax_matrix)
             cax = divider.new_vertical(size="3%", pad=0.7, pack_start=True)
             self.fig_normalize_matrix.add_axes(cax)
-            self.fig_normalize_matrix.colorbar(im, cax=cax, orientation="horizontal")
+            self.fig_normalize_matrix.colorbar(im, cax=cax, orientation="horizontal" )
             
             # Defining the cursor
             cursor = Cursor(ax_matrix, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
@@ -359,10 +359,12 @@ class Ui_visu(QtWidgets.QTabWidget):
             # Creating an annotating box
             global annot
             annot = ax_matrix.annotate("", xy=(0,0), xytext=(-20,-50), xycoords='data',textcoords="offset points",
+                    zorder = 100000,
                     bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1),
                     arrowprops=dict(arrowstyle='fancy'))
 
             annot.set_visible(False)
+
            
             global lhor, lver
             lhor = ax_matrix.axhline(0)
@@ -1056,6 +1058,11 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.ax2.set_axis_off()
         self.ax3.set_axis_off()
 
+        #self.ax1.set_zorder(-1)
+        #self.ax2.set_zorder(-1)
+        #self.ax3.set_zorder(-1)
+
+
         # Set subtitles: 
         self.ax1.title.set_text("Axial")
         self.ax2.title.set_text("Sagittal right")
@@ -1083,9 +1090,9 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.imarray_sagittal = self.imarray_sagittal_left
 
         # Plot background with a specific slice:
-        self.im1 = self.ax1.imshow(self.imarray_axial[self.num_slice_axial_horizontalSlider.value()]) 
-        self.im2 = self.ax2.imshow(self.imarray_sagittal[self.num_slice_sagittal_horizontalSlider.value()])
-        self.im3 = self.ax3.imshow(self.imarray_coronal[self.num_slice_coronal_horizontalSlider.value()]) 
+        self.im1 = self.ax1.imshow(self.imarray_axial[self.num_slice_axial_horizontalSlider.value()], zorder=1) 
+        self.im2 = self.ax2.imshow(self.imarray_sagittal[self.num_slice_sagittal_horizontalSlider.value()], zorder=1)
+        self.im3 = self.ax3.imshow(self.imarray_coronal[self.num_slice_coronal_horizontalSlider.value()], zorder=1) 
 
 
         # *****************************************
@@ -1356,9 +1363,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_coronal,  cmap=plt.cm.RdBu), cax=ax3_cbar, orientation='horizontal')
 
         # Defining the cursor
-        cursor1 = Cursor(self.ax1, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
-        cursor2 = Cursor(self.ax2, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
-        cursor3 = Cursor(self.ax3, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
+        cursor1 = Cursor(self.ax1, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1, zorder=1000)
+        cursor2 = Cursor(self.ax2, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1, zorder=1000)
+        cursor3 = Cursor(self.ax3, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1, zorder=1000)
 
 
         # Creating an annotating box
@@ -1368,8 +1375,10 @@ class Ui_visu(QtWidgets.QTabWidget):
         for ax in [self.ax1, self.ax2, self.ax3]:
             #global annot
             annot = ax.annotate("", xy=(0,0), xytext=(-20,-30), xycoords='data',textcoords="offset points",
-                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1),arrowprops=dict(arrowstyle='fancy'))
+                    zorder = 10000,
+                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1, zorder=1000),arrowprops=dict(arrowstyle='fancy')) 
             annot.set_visible(False)
+            #annot.set_zorder(100) 
 
             lhor, lver = (ax.axhline(0), ax.axvline(0))
             lhor.set_ydata(-1)

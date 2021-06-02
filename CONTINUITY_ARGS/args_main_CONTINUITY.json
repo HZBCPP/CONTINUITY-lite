@@ -135,7 +135,7 @@
         "INTEGRATE_SC_DATA": {
             "type": "bool",
             "help": "Integrate subcortical data",
-            "value": true
+            "value": false
         },
         "INTEGRATE_SC_DATA_by_generated_sc_surf": {
             "type": "bool",
@@ -166,17 +166,17 @@
             "type": "list",
             "help": "List of subcortical regions names(name as in the parcellation table) (optional if 'subcortical' parameter in your parcellation table) ",
             "value": [
-                "sub_lh_caud",
-                "sub_lh_hippo",
-                "sub_lh_thal",
-                "sub_lh_put",
-                "sub_lh_gp",
-                "sub_rh_amy",
-                "sub_rh_caud",
-                "sub_rh_hippo",
-                "sub_rh_thal",
-                "sub_rh_put",
                 "sub_rh_gp",
+                "sub_rh_put",
+                "sub_rh_thal",
+                "sub_rh_hippo",
+                "sub_rh_caud",
+                "sub_rh_amy",
+                "sub_lh_gp",
+                "sub_lh_put",
+                "sub_lh_thal",
+                "sub_lh_hippo",
+                "sub_lh_caud",
                 "sub_lh_amy"
             ]
         },
