@@ -237,15 +237,12 @@ class Ui(QtWidgets.QTabWidget):
     def update_param_path(self, button_name):
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
         if fileName:
-            eval("self." + button_name + "_textEdit.setText(fileName)")
-
+            #eval("self." + button_name + "_textEdit.setText(fileName)")
             try: 
                 json_user_object['Parameters'][button_name]["value"] = fileName
 
             except: 
                 json_user_object['Arguments'][button_name]["value"] = fileName
-
-
             Ui.update_user_json_file()
 
 
@@ -725,11 +722,10 @@ class Ui(QtWidgets.QTabWidget):
         # Add all names: 
         self.sc_regions_labels_listWidget.addItems(all_labels)
 
-        # Set parameters: 
+        # Set parameters and a signal to do something if the user click on a region: 
         for i in range(self.sc_regions_labels_listWidget.count()):
             item = self.sc_regions_labels_listWidget.item(i) 
 
-        # Set a signal to do something if the user click on a region: 
         self.sc_regions_labels_listWidget.itemDoubleClicked.connect(self.subcortical_label_changed , type= Qt.UniqueConnection)   
 
     

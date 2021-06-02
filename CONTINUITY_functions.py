@@ -101,8 +101,7 @@ def executable_path(default_filename, user_filename):
                 elif key == "MRtrix": 
                     run = subprocess.Popen(['whereis', "mrtrix"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     out, err = run.communicate()
-                    #print("out: ", colored("\n" + str(out) + "\n", 'green')) #b'mrtrix: /home/elodie/anaconda3/bin/mrtrix3.py /home/elodie/anaconda3/bin/mrtrix3.pyc\n'
-                    section = str(out).split()
+                    section = str(out).split() #b'mrtrix: /home/elodie/anaconda3/bin/mrtrix3.py /home/elodie/anaconda3/bin/mrtrix3.pyc\n'
                    
                     if len(section) > 1:
                         all = os.path.split(section[1]) #(b'/home/elodie/anaconda3/bin', b'mrtrix3.py')
@@ -208,7 +207,7 @@ def KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, NAME_PARCELLATION_TABLE):
                 if count >= NDimension:
                     print("Error in input file format: one line contains too many components")
                     return 1
-                my_list.append(float(sub))  #int(sub)
+                my_list.append(float(sub))
                 count += 1
 
         if count != NDimension:
@@ -234,17 +233,17 @@ def KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, NAME_PARCELLATION_TABLE):
 # *************************************************************************************
 # Function to replace polydatamerge (NIRAL function)
 # *************************************************************************************
-
-def polydatamerge(fiberFile1, fiberFile2, fiberOutput):
-    # Read fiberfile 1:
+'''
+def polydatamerge(File1, File2, Output):
+    # Read file 1:
     reader1 = vtk.vtkPolyDataReader()
-    reader1.SetFileName(fiberFile1)
+    reader1.SetFileName(File1)
     reader1.Update()
     polydata1 = reader1.GetOutput()
 
-    # Read fiberfile 2:
+    # Read file 2:
     reader2 = vtk.vtkPolyDataReader()
-    reader2.SetFileName(fiberFile2)
+    reader2.SetFileName(File2)
     reader2.Update()
     polydata2 = reader2.GetOutput()
 
@@ -261,37 +260,36 @@ def polydatamerge(fiberFile1, fiberFile2, fiberOutput):
     apd.Update()
     polydata = apd.GetOutput()
 
-    # print("Saving fibers in ", fiberOutput)
-    fiberwriter = vtk.vtkPolyDataWriter()
-    fiberwriter.SetFileName(fiberOutput)
+    writer = vtk.vtkPolyDataWriter()
+    writer.SetFileName(Output)
 
     if (vtk.VTK_MAJOR_VERSION < 6):
-        fiberwriter.SetInput(polydata)
+        writer.SetInput(polydata)
     else:
-        fiberwriter.SetInputData(polydata)
+        writer.SetInputData(polydata)
 
-    fiberwriter.SetFileTypeToBinary()
-    fiberwriter.Update()
+    writer.SetFileTypeToBinary()
+    writer.Update()
 
     try:
-        fiberwriter.Write()
+        writer.Write()
         print("Merging done!")
     except:
-        print("Error while saving fiber file.")
+        print("Error while saving file.")
         exit()
-
+'''
     
 
-def polydatamerge_ascii(fiberFile1, fiberFile2, fiberOutput):
-    # Read fiberfile 1:
+def polydatamerge_ascii(File1, File2, Output):
+    # Read file 1:
     reader1 = vtk.vtkPolyDataReader()
-    reader1.SetFileName(fiberFile1)
+    reader1.SetFileName(File1)
     reader1.Update()
     polydata1 = reader1.GetOutput()
 
-    # Read fiberfile 2:
+    # Read file 2:
     reader2 = vtk.vtkPolyDataReader()
-    reader2.SetFileName(fiberFile2)
+    reader2.SetFileName(File2)
     reader2.Update()
     polydata2 = reader2.GetOutput()
 
@@ -308,23 +306,23 @@ def polydatamerge_ascii(fiberFile1, fiberFile2, fiberOutput):
     apd.Update()
     polydata = apd.GetOutput()
 
-    # print("Saving fibers in ", fiberOutput)
-    fiberwriter = vtk.vtkPolyDataWriter()
-    fiberwriter.SetFileName(fiberOutput)
+    writer = vtk.vtkPolyDataWriter()
+    writer.SetFileName(Output)
 
     if (vtk.VTK_MAJOR_VERSION < 6):
-        fiberwriter.SetInput(polydata)
+        writer.SetInput(polydata)
     else:
-        fiberwriter.SetInputData(polydata)
+        writer.SetInputData(polydata)
 
-    fiberwriter.SetFileTypeToASCII()
-    fiberwriter.Update()
+    writer.SetFileTypeToASCII()
+    #writer.SetFileTypeToBinary()
+    writer.Update()
 
     try:
-        fiberwriter.Write()
+        writer.Write()
         print("Merging done!")
     except:
-        print("Error while saving fiber file.")
+        print("Error while saving file.")
         exit()
 
 
@@ -880,7 +878,7 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
         else: #Labels[index] == 0: 
             print("this region will be ignore: ", LabelNames[index])
 
-        index +=  + 1
+        index += 1
         print('******************************************************')
 
 
@@ -911,17 +909,33 @@ def create_kwm_files(OUT_FOLDER, new_parcellation_table, LabelNames, number_of_p
 
                 file = open(complete_name,"w")
 
-                # First line: 'NUMBER_OF_POINTS=1002'
-                file.write("NUMBER_OF_POINTS=" + str(number_of_points) + "\n" )
-
-                # Second line: 'DIMENSION=1'
-                file.write("DIMENSION=1 \n" )
-
-                # Third line: 'TYPE=Scalar'
-                file.write("TYPE=Scalar \n" )
+                file.write("NUMBER_OF_POINTS=" + str(number_of_points) + "\n" ) #'NUMBER_OF_POINTS=1002'
+                file.write("DIMENSION=1 \n" ) #'DIMENSION=1'
+                file.write("TYPE=Scalar \n" ) #'TYPE=Scalar'
 
                 # Loop to write the label of this region * the number of point (number_of_point lines)
                 for i in range(number_of_points):
                     file.write(str(key['labelValue']) + "\n" )
 
                 print('KWM file compute for region: ', LabelNames[region] )
+
+
+
+# *************************************************************************************
+# Return number of points for the creation of KWM files: 
+# *************************************************************************************
+
+def get_number_of_points(SALTDir): 
+   
+    # Extract a file: 
+    file_name = os.listdir(SALTDir)[0]
+
+    reader = vtk.vtkPolyDataReader()
+    reader.SetFileName(file_name)
+    reader.Update()  # Needed because of GetScalarRange
+    output = reader.GetOutput()
+
+    number_of_points = output.GetNumberOfPoints()
+    print("number_of_points", number_of_points)
+
+    return number_of_points

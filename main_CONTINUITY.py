@@ -190,7 +190,6 @@ if __name__ == '__main__':
         qt_args.append(user_filename)
         sys.argv = qt_args
 
-        #print(qt_args)
         app = QtWidgets.QApplication(sys.argv)
         window = Ui()
         app.exec_()
