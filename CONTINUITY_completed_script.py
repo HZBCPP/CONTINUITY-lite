@@ -148,7 +148,6 @@ ParaToSPHARMMeshCLPPath   = json_user_object["Executables"]["ParaToSPHARMMeshCLP
 
 writeSeedListScript       = "./writeSeedList.py" 
 
-
 # data: /Human/twin-gilmore/AUTOSEG_4-6year_T1andMultiAtlas/Data/T0054-1-1-6yr/AutoSegTissue_1year_v2-MultiAtlas
 
 # *****************************************
@@ -242,10 +241,7 @@ with Tee(log_file):
 	# *****************************************
 
 	# Convert DWI nifti input to nrrd:  
-
-	[path, afile] =os.path.split(DWI_DATA)
-	#print(path) #./input_CONTINUITY
-	#print(afile) #T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
+	[path, afile] =os.path.split(DWI_DATA) #./input_CONTINUITY    and   T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
 
 	if afile.endswith('nii.gz'): 
 
@@ -254,7 +250,6 @@ with Tee(log_file):
 		print("*****************************************")
 
 		new_name = afile[:-7] + '.nrrd'
-		#print(new_name)
 		
 		# New folder: 
 		OUT_FOLDER_nifti2nrrd = os.path.join(OUT_FOLDER, 'nifti2nrrd') 
@@ -309,13 +304,12 @@ with Tee(log_file):
 		    for i in out.splitlines():
 		        section = i.split()
 		        if "b'kinds:" in str(section):
-		            grad_first = False                 # Case: [b'kinds:', b'domain', b'domain', b'domain', b'vector'] --> gradient in last position
-		            if "b'vector" in str(section[1]):  # Case: [b'kinds:', b'vector', b'domain', b'domain', b'domain'] --> gradient in first position
+		            grad_first = False                # Case: [b'kinds:', b'domain', b'domain', b'domain', b'vector'] --> gradient in last position
+		            if "b'vector" in str(section[1]): # Case: [b'kinds:', b'vector', b'domain', b'domain', b'domain'] --> gradient in first position
 		                grad_first = True               
 		else:
 		    DWI_NRRD = os.path.join(OUT_INPUT_CONTINUITY_DWISPACE, ID + "_DWI_original.nrrd")
 		    DWI_MASK = os.path.join(OUT_INPUT_CONTINUITY_DWISPACE, ID + "_Original_DWI_BrainMask_original.nrrd")
-
 
 
 		# Interpolation / upsampling DWI
@@ -622,6 +616,10 @@ with Tee(log_file):
 	if not os.path.exists(OUT_LABELS):
 		os.mkdir(OUT_LABELS)
 
+	# Copy the original parcellation table to be able to build an other specific with only good subcortical regions ( = with good KWM and SALT files)
+	only_matrix_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'only_matrix_parcellation_table' )
+	shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
+
 
 
 	if INTEGRATE_SC_DATA:  
@@ -670,7 +668,6 @@ with Tee(log_file):
 					print( "OR the label for this region = 0: this region won't be integrate ")
 					subcorticals_list_labels_checked = subcorticals_region_labels.remove(index)
 				
-
 				subcorticals_list_names_checked = subcorticals_list_names_checked.remove(region)
 
 
@@ -685,10 +682,6 @@ with Tee(log_file):
 			print (now.strftime("Generation of subcortical surfaces: %H:%M %m-%d-%Y"))
 			start = time.time()
 
-			 # ['AmyL', 'AmyR', 'CaudL', 'CaudR', 'HippoL', 'HippoR', 'ThalL', 'ThalR', 'GPL', 'GPR', 'PutL', 'PutR']
-			 # [ "sub_rh_gp", "sub_rh_put", "sub_rh_thal", "sub_rh_hippo","sub_rh_caud", "sub_rh_amy", "sub_lh_gp", "sub_lh_put","sub_lh_thal",
-			 #   "sub_lh_hippo", "sub_lh_caud", "sub_lh_amy" ]
-
 			if len(subcorticals_list_names_checked) == len(subcorticals_list_labels_checked): 
 				# Generate subcortical surfaces: 
 				generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, subcorticals_list_labels_checked, subcorticals_list_names_checked, 
@@ -696,12 +689,15 @@ with Tee(log_file):
 					                                                           sx,sy,sz, nb_iteration_GenParaMeshCLP,spharmDegree, subdivLevel)
 				print("Generation of subcortical surfaces: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 
+				# Update the localization of SALT surfaces: 
+				SALTDir = os.path.join(OUT_FOLDER, 'my_SALT') 
 
+				#number_of_points = get_number_of_points(SALTDir)
+				#print('number_of_points', number_of_points )
 				number_of_points = 1002 # new input param ? 
 				create_kwm_files(OUT_FOLDER, PARCELLATION_TABLE, subcorticals_list_names_checked, number_of_points)
 
-				# Update the localization of subcortical surfaces: 
-				SALTDir = os.path.join(OUT_FOLDER, 'my_SALT') 
+				# Update the localization of KWM files: 
 				KWMDir = os.path.join(OUT_FOLDER, 'my_KWM') 
 			
 			else: 
@@ -716,10 +712,6 @@ with Tee(log_file):
 		print("*****************************************")
 		print("Apply label after validation of subcortical region")
 		print("*****************************************")
-
-		# Copy the original parcellation table to be able to build an other specific with only good subcortical regions ( = with good KWM and SALT files)
-		only_matrix_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'only_matrix_parcellation_table' )
-		shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
 
 		# For each region label the SALT file with the Atlas label value. Create SPHARM surface labeled with the new atlas label. 
 		subcorticals_list_names_checked_with_surfaces = []

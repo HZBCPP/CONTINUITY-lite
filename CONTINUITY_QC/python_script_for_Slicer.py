@@ -33,9 +33,6 @@ ID = json_user_object['Arguments']['ID']['value']
 NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME']['value']
 input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
 
-#print(ID)
-#print(NAME_PARCELLATION_TABLE)
-#print(input_path)
 
 #find datas for B0_BiasCorrect
 B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_resample.nrrd")
@@ -47,26 +44,21 @@ B0_with_biais = os.path.join( input_path, ID +"_DTI_B0_resample.nrrd")
 if not os.path.exists(B0_with_biais):
 	B0_with_biais = os.path.join( input_path, ID +"_DTI_B0_original.nrrd")
 
-
 # Find data for T1 and T1_registered
 T1_registered = os.path.join( input_path, ID + "_T1_SkullStripped_scaled_DWISpace.nrrd")
-
 
 # Find data for AD: (A0_NRRD variable in the script)
 AD = os.path.join( input_path, ID +"_DTI_A0_resample.nrrd")
 if not os.path.exists(AD):
 	AD = os.path.join( input_path,  ID +"_DTI_A0_original.nrrd")
 
-
 # Find data for FA: 
 FA = os.path.join( input_path, ID +"_DTI_FA_resample.nrrd")
 if not os.path.exists(FA):
 	FA = os.path.join( input_path, ID +"_DTI_FA_original.nrrd")
 
-
 # Find data for labeled image: 
 labeled_image = os.path.join( input_path, ID + "-T1_SkullStripped_scaled_label.nrrd")
-
 
 # Find data for surface: 
 registered_combine_surface         = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + ".vtk")
@@ -80,7 +72,6 @@ surface_left_labeled  = os.path.join( input_path, "stx_" + ID
 
 surface_right_labeled = os.path.join(input_path, "stx_" + ID 
 						+ "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
-
 
 
 
