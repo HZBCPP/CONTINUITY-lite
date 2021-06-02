@@ -718,8 +718,8 @@ with Tee(log_file):
 		print("*****************************************")
 
 		# Copy the original parcellation table to be able to build an other specific with only good subcortical regions ( = with good KWM and SALT files)
-		new_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'new_parcellation_table' )
-		shutil.copy(PARCELLATION_TABLE, new_parcellation_table)
+		only_matrix_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'only_matrix_parcellation_table' )
+		shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
 
 		# For each region label the SALT file with the Atlas label value. Create SPHARM surface labeled with the new atlas label. 
 		subcorticals_list_names_checked_with_surfaces = []
@@ -731,7 +731,7 @@ with Tee(log_file):
 
 			if not os.path.exists(SPHARMSurf) or not os.path.exists(KWMFile): 
 				# Delete info of this region in the new-parcellation-table:
-				with open(new_parcellation_table, 'r') as data_file:
+				with open(only_matrix_parcellation_table, 'r') as data_file:
 				    data = json.load(data_file)
 
 				for i in range(len(data)):
@@ -739,7 +739,7 @@ with Tee(log_file):
 						data.pop(i)
 						break
 
-				with open(new_parcellation_table, 'w') as data_file:
+				with open(only_matrix_parcellation_table, 'w') as data_file:
 					data = json.dump(data, data_file, indent = 2)
 
 
@@ -758,7 +758,7 @@ with Tee(log_file):
 
 
 		# Brainstem
-		with open(new_parcellation_table, 'r') as data_file:
+		with open(only_matrix_parcellation_table, 'r') as data_file:
 			   data = json.load(data_file)
 
 		for i in range(len(data)):
@@ -766,7 +766,7 @@ with Tee(log_file):
 				data.pop(i)
 				break
 
-		with open(new_parcellation_table, 'w') as data_file:
+		with open(only_matrix_parcellation_table, 'w') as data_file:
 			data = json.dump(data, data_file, indent = 2)
 
 
@@ -776,7 +776,7 @@ with Tee(log_file):
 			print("Compute one point per region")
 			print("*****************************************")
 
-			compute_point_destrieux(new_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
+			compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
 		
 
 		print("*****************************************")
@@ -794,7 +794,7 @@ with Tee(log_file):
 
             # Combine the labeled subcorticals 
 			print("For ", subcorticals_list_names_checked_with_surfaces[0], "region: ") 
-			polydatamerge(s1, s2, outputSurface)
+			polydatamerge_ascii(s1, s2, outputSurface)
 
 			# Add other regions 
 			for i in range(2,len(subcorticals_list_names_checked_with_surfaces)):
@@ -802,7 +802,7 @@ with Tee(log_file):
 
 				# Combine the labeled subcorticals 
 				print("For ", subcorticals_list_names_checked_with_surfaces[i], "region: ")
-				polydatamerge(outputSurface, toAdd, outputSurface)
+				polydatamerge_ascii(outputSurface, toAdd, outputSurface)
 
 
 		print("Move combining subcortical surfaces in DWISpace")
@@ -898,7 +898,7 @@ with Tee(log_file):
 		else: 
 			if not left_right_surface_need_to_be_combining:
 				# NOT REGISTRATION: combine left and right surface 
-				polydatamerge(WM_L_Surf_NON_REGISTRATION_labeled, WM_R_Surf_NON_REGISTRATION_labeled, SURFACE)
+				polydatamerge_ascii(WM_L_Surf_NON_REGISTRATION_labeled, WM_R_Surf_NON_REGISTRATION_labeled, SURFACE)
 			else:
 				shutil.copy(SURFACE_USER, SURFACE)
 				SURFACE = SURFACE_USER
@@ -909,7 +909,7 @@ with Tee(log_file):
 			print("Combine cortical file: Found Skipping combining cortical left and right surface ")
 		else: 
 			# Combine left+right surface 
-			polydatamerge(RSL_WM_L_Surf_labeled, RSL_WM_R_Surf_labeled, SURFACE)
+			polydatamerge_ascii(RSL_WM_L_Surf_labeled, RSL_WM_R_Surf_labeled, SURFACE)
 
 	# Add SURFACE in INPUTDATA folder for visualization 
 	shutil.copy(SURFACE, OUT_INPUTDATA)
@@ -928,7 +928,7 @@ with Tee(log_file):
 			print("Combine cortical and subcortical file: Found Skipping combining cortical and sc")
 		else: 
 			# Integration of subcortical data
-			polydatamerge(subsAllDWISpace, SURFACE, outputSurfaceFullMerge)
+			polydatamerge_ascii(subsAllDWISpace, SURFACE, outputSurfaceFullMerge)
 
 			# Add outputSurfaceFullMerge in INPUTDATA folder for visualization 
 			shutil.copy(outputSurfaceFullMerge, OUT_INPUTDATA)
@@ -1028,7 +1028,7 @@ with Tee(log_file):
 		command = [ExtractLabelSurfaces, "--extractPointData", "--translateToLabelNumber",   # /tools/bin_linux64/ExtractLabelSurfaces 
 								  	    	 "--labelNameInfo", labelListNamePath, 
 								  	    	 "--labelNumberInfo", labelListNumberPath, 
-								  	    	 "--useTranslationTable", "--labelTranslationTable", new_parcellation_table, 
+								  	    	 "--useTranslationTable", "--labelTranslationTable", only_matrix_parcellation_table, 
 								  	    	 "-a",labelSetName, 
 								  	    	 "--vtkLabelFile", str(EXTRA_SURFACE_COLOR), 
 								  	    	 "--createSurfaceLabelFiles", 
@@ -1058,7 +1058,7 @@ with Tee(log_file):
 		os.remove(os.path.join(OutSurfaceName,"seeds.txt"))
 
 	# Create a text file listing all path of label surfaces created by ExtractLabelSurfaces
-	run_command("Write seed list", [sys.executable, writeSeedListScript, OutSurfaceName, new_parcellation_table])
+	run_command("Write seed list", [sys.executable, writeSeedListScript, OutSurfaceName, only_matrix_parcellation_table])
 
 
 	
@@ -1391,7 +1391,7 @@ with Tee(log_file):
 					if list_coord_seeds.index(element) == 1: 
 						output_track_tckgen_tck = output_track_tckgen_tck_seed
 					else:
-						polydatamerge(output_track_tckgen_tck_seed, output_track_tckgen_tck, output_track_tckgen_tck)
+						polydatamerge_ascii(output_track_tckgen_tck_seed, output_track_tckgen_tck, output_track_tckgen_tck)
 				
 				
 				'''

@@ -317,7 +317,7 @@ def polydatamerge_ascii(fiberFile1, fiberFile2, fiberOutput):
     else:
         fiberwriter.SetInputData(polydata)
 
-    #fiberwriter.SetFileTypeToBinary()
+    fiberwriter.SetFileTypeToASCII()
     fiberwriter.Update()
 
     try:
