@@ -1243,7 +1243,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                         # Display lines for axial view: 
                         cax1, = self.ax1.plot(x_values, y_values, lw=1.5, color= plt.cm.RdBu(norm_axial(my_norm)), 
-                                                         marker = '.'  ,gid="Lines between: " + name_region1 + " and " + name_region2)
+                                                         marker = '.'  ,gid="Line between: " + name_region1 + " and " + name_region2)
                         
             
                     # Specific threshold for coronal lines (give by the range of the colorbar):
@@ -1251,7 +1251,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                         # Display lines for coronal view: 
                         cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), 
-                                                        marker = '.'  ,gid="Lines between: \n" + name_region1 + " and " + name_region2)
+                                                        marker = '.'  ,gid="Line between: \n" + name_region1 + " and " + name_region2)
 
                     
 
@@ -1267,7 +1267,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                             # Display lines for sagittal left view: 
                             cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
-                                                             marker = '.'  , gid="Lines between: \n" + name_region1 + " and " + name_region2)
+                                                             marker = '.'  , gid="Line between: \n" + name_region1 + " and " + name_region2)
                            
                         else: 
                             point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
@@ -1278,7 +1278,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                             # Display lines for sagittal right view:
                             cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
-                                                             marker = '.'  ,gid="Lines between: \n" + name_region1 + " and " + name_region2)
+                                                             marker = '.'  ,gid="Line between: \n" + name_region1 + " and " + name_region2)
 
 
 
