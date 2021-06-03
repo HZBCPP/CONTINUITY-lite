@@ -692,9 +692,9 @@ with Tee(log_file):
 				# Update the localization of SALT surfaces: 
 				SALTDir = os.path.join(OUT_FOLDER, 'my_SALT') 
 
-				#number_of_points = get_number_of_points(SALTDir)
-				#print('number_of_points', number_of_points )
-				number_of_points = 1002 # new input param ? 
+				number_of_points = get_number_of_points(SALTDir)
+				print('number_of_points', number_of_points ) #number_of_points = 1002
+
 				create_kwm_files(OUT_FOLDER, PARCELLATION_TABLE, subcorticals_list_names_checked, number_of_points)
 
 				# Update the localization of KWM files: 
@@ -710,7 +710,7 @@ with Tee(log_file):
 
 
 		print("*****************************************")
-		print("Apply label after validation of subcortical region")
+		print("Apply label after validation of subcortical regions")
 		print("*****************************************")
 
 		# For each region label the SALT file with the Atlas label value. Create SPHARM surface labeled with the new atlas label. 
