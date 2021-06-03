@@ -806,7 +806,7 @@ with Tee(log_file):
 			# Transform a PolyData with a displacement field: apply T1 to DWI WARP (ie displacement field)
 			#                              , landmark file ,input        , displacement file       , output in DWI space
 			command=[pathPOLY_TRANSTOOL_EXE, "--fiber_file",outputSurface, "-D", ConcatedWarp, "-o", subsAllDWISpace, "--inverty", "--invertx"]
-			run_command("POLY_TRANSTOOL_EXE: combining sc data transform into DWISpace", command)
+			run_command("POLY_TRANSTOOL_EXE: combining subcortical data transform into DWISpace", command)
 
 
 	print("*****************************************")
@@ -917,7 +917,7 @@ with Tee(log_file):
 		outputSurfaceFullMerge = os.path.join(OUT_INPUT_CONTINUITY_DWISPACE, "stx_" + ID + "_T1_CombinedSurface_white_" + PARCELLATION_TABLE_NAME + 
 			                                                                                                                       "_WithSubcorticals.vtk") 
 		if os.path.exists(outputSurfaceFullMerge):
-			print("Combine cortical and subcortical file: Found Skipping combining cortical and sc")
+			print("Combine cortical and subcortical file: Found Skipping combining cortical and subcortical")
 		else: 
 			# Integration of subcortical data
 			polydatamerge_ascii(subsAllDWISpace, SURFACE, outputSurfaceFullMerge)

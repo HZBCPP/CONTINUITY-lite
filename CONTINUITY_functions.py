@@ -226,59 +226,16 @@ def KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, NAME_PARCELLATION_TABLE):
     SurfaceWriter = vtk.vtkPolyDataWriter()
     SurfaceWriter.SetInputData(polydataAtt)
     SurfaceWriter.SetFileName(SPHARMSurfL)
+
+    SurfaceWriter.SetFileTypeToASCII() #test
+
     SurfaceWriter.Update()
 
 
 
 # *************************************************************************************
 # Function to replace polydatamerge (NIRAL function)
-# *************************************************************************************
-'''
-def polydatamerge(File1, File2, Output):
-    # Read file 1:
-    reader1 = vtk.vtkPolyDataReader()
-    reader1.SetFileName(File1)
-    reader1.Update()
-    polydata1 = reader1.GetOutput()
-
-    # Read file 2:
-    reader2 = vtk.vtkPolyDataReader()
-    reader2.SetFileName(File2)
-    reader2.Update()
-    polydata2 = reader2.GetOutput()
-
-    polydata = vtk.vtkPolyData()
-    apd = vtk.vtkAppendPolyData()
-
-    if (vtk.VTK_MAJOR_VERSION < 6):
-        apd.AddInput(polydata2)
-        apd.AddInput(polydata1)
-    else:
-        apd.AddInputData(polydata2)
-        apd.AddInputData(polydata1)
-
-    apd.Update()
-    polydata = apd.GetOutput()
-
-    writer = vtk.vtkPolyDataWriter()
-    writer.SetFileName(Output)
-
-    if (vtk.VTK_MAJOR_VERSION < 6):
-        writer.SetInput(polydata)
-    else:
-        writer.SetInputData(polydata)
-
-    writer.SetFileTypeToBinary()
-    writer.Update()
-
-    try:
-        writer.Write()
-        print("Merging done!")
-    except:
-        print("Error while saving file.")
-        exit()
-'''
-    
+# *************************************************************************************   
 
 def polydatamerge_ascii(File1, File2, Output):
     # Read file 1:
