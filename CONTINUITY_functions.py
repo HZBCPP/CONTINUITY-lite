@@ -885,14 +885,16 @@ def create_kwm_files(OUT_FOLDER, new_parcellation_table, LabelNames, number_of_p
 def get_number_of_points(SALTDir): 
    
     # Extract a file: 
-    file_name = os.listdir(SALTDir)[0]
-
+    for file in os.listdir(SALTDir):
+        if file.endswith("_pp_surfSPHARM.vtk"):
+            file_name = file
+            break
+  
     reader = vtk.vtkPolyDataReader()
-    reader.SetFileName(file_name)
+    reader.SetFileName(os.path.join(SALTDir, file_name))
     reader.Update()  # Needed because of GetScalarRange
     output = reader.GetOutput()
 
     number_of_points = output.GetNumberOfPoints()
-    print("number_of_points", number_of_points)
 
     return number_of_points
