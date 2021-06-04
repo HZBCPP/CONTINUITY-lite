@@ -692,8 +692,10 @@ with Tee(log_file):
 				# Update the localization of SALT surfaces: 
 				SALTDir = os.path.join(OUT_FOLDER, 'my_SALT') 
 
+				
 				number_of_points = get_number_of_points(SALTDir)
-				print('number_of_points', number_of_points ) #number_of_points = 1002
+				print('number_of_points', number_of_points ) 
+
 
 				create_kwm_files(OUT_FOLDER, PARCELLATION_TABLE, subcorticals_list_names_checked, number_of_points)
 
@@ -703,6 +705,17 @@ with Tee(log_file):
 			else: 
 				print("ERROR: You have to provide one label per subcortical regions (0 if you don't want to integrate this region)")
 				exit()
+
+
+		else: # user provide SALT and KWM dir
+		    KWM_file = open( os.path.join(KWMDir, subcorticals_list_names_checked[0] + "_" + number_of_points + "_KWM.txt"), 'r')     
+
+		    # Get number of points
+		    first_line = KWM_file.readline(70) 
+		    first_line_list = first_line.split("=") 
+		    number_of_points =int(first_line_list[1].strip()) #"NUMBER_OF_POINTS=1002"
+		    print('number_of_points first method', number_of_points)
+
 		
 		
 		# Add labeled_image in INPUTDATA folder for visualization 
@@ -718,10 +731,15 @@ with Tee(log_file):
 		for region in subcorticals_list_names_checked:
 
 			#​The KWM files are intermediate .txt files for labeling the vertices on the respective subcortical SPHARM surfaces with a parcellation specific label number.
-			KWMFile = os.path.join(KWMDir,region + "_1002_KWM.txt")
+			KWMFile = os.path.join(KWMDir, region + "_" + str(number_of_points) + "_KWM.txt")
 			SPHARMSurf = os.path.join(SALTDir, ID + "-T1_SkullStripped_scaled_label_" + region + "_pp_surfSPHARM.vtk")
 
+
+			
+
 			if not os.path.exists(SPHARMSurf) or not os.path.exists(KWMFile): 
+				print(KWMFile)
+				print(SPHARMSurf)
 				# Delete info of this region in the new-parcellation-table:
 				with open(only_matrix_parcellation_table, 'r') as data_file:
 				    data = json.load(data_file)
@@ -747,6 +765,8 @@ with Tee(log_file):
 					print("For", region, "region: creation SPHARM surface labeled file")
 				    # Applies the label in the KWM file to the SPHARM surface: 
 					KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, labelSetName)
+
+		print("subcorticals_list_names_checked_with_surfaces", subcorticals_list_names_checked_with_surfaces)
 
 
 		# Brainstem
@@ -1167,7 +1187,7 @@ with Tee(log_file):
 		else: 
 			command = [MRtrixPath + "/dwi2response",'tournier', DiffusionData, # input
 												   				Response_function_estimation_txt, #output
-												                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
+												                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 												                '-nthreads', str(nb_threads)]
 			run_command("Response function estimation", command)
 
@@ -1221,10 +1241,7 @@ with Tee(log_file):
 			now = datetime.datetime.now()
 			print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
 			start = time.time()
-			run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', 
-																			   T1_DWI_SPACE_nifti, # input
-																			   fivett_img, # output
-																			   '-nthreads', str(nb_threads) ])
+			run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_DWI_SPACE_nifti, fivett_img, '-nthreads', str(nb_threads) ])
 			print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 		
 
