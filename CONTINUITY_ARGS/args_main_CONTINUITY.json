@@ -48,7 +48,7 @@
         "PARCELLATION_TABLE": {
             "type": "str",
             "help": "Parcellation table (.json)",
-            "value": "/home/elodie/Desktop/input_CONTINUITY/TABLE_AAL_SubCorticals.json"
+            "value": "/BAND/USERS/elodie/input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
         },
         "PARCELLATION_TABLE_NAME": {
             "type": "str",
