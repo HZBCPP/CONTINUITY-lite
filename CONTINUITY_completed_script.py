@@ -34,6 +34,8 @@ from dipy.io.stateful_tractogram import Space, StatefulTractogram
 from dipy.io.streamline import save_trk
 
 
+
+
 from CONTINUITY_functions import *
 
 ##########################################################################################################################################
@@ -147,6 +149,12 @@ GenParaMeshCLPPath        = json_user_object["Executables"]["GenParaMeshCLP"]['v
 ParaToSPHARMMeshCLPPath   = json_user_object["Executables"]["ParaToSPHARMMeshCLP"]['value'] 
 
 writeSeedListScript       = "./writeSeedList.py" 
+
+
+os.environ["ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS"] = nb_threads
+os.environ["OMP_NUM_THREADS"] = nb_threads
+
+
 
 # data: /Human/twin-gilmore/AUTOSEG_4-6year_T1andMultiAtlas/Data/T0054-1-1-6yr/AutoSegTissue_1year_v2-MultiAtlas
 

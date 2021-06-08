@@ -2251,6 +2251,50 @@ p, li { white-space: pre-wrap; }
         <property name="tabBarAutoHide">
          <bool>false</bool>
         </property>
+        <widget class="QWidget" name="tab_24">
+         <attribute name="title">
+          <string>Regions info</string>
+         </attribute>
+         <widget class="QLabel" name="text_connectome1">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>271</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="text_connectome2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>70</y>
+            <width>271</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="text_connectome3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>120</y>
+            <width>271</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </widget>
         <widget class="QWidget" name="tab_10">
          <attribute name="title">
           <string>Slices visualization</string>
@@ -2678,24 +2722,10 @@ p, li { white-space: pre-wrap; }
          <string>Show unconnected points</string>
         </property>
        </widget>
-       <widget class="QLabel" name="text_connectome">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>291</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
        <zorder>brain_connectome_groupBox</zorder>
        <zorder>display_brain_connectome_pushButton</zorder>
        <zorder>tabWidget_3</zorder>
        <zorder>plot_unconnected_points_CheckBox</zorder>
-       <zorder>text_connectome</zorder>
       </widget>
       <widget class="QWidget" name="tab_13">
        <attribute name="title">
