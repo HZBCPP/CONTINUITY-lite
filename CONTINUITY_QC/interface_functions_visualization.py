@@ -89,7 +89,9 @@ class Ui_visu(QtWidgets.QTabWidget):
 
 
         # Setup default path to visualize connectivity matrix and brain/circle connectome:
-        path = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"], json_user_object['Arguments']["ID"]["value"], "Tractography", 'new_parcellation_table')
+        #path = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"], json_user_object['Arguments']["ID"]["value"], "Tractography", 'new_parcellation_table')
+        
+        path = "/home/elodie/Desktop/input_CONTINUITY/TABLE_AAL_SubCorticals.json"
         self.parcellation_table_textEdit.setText(path)
 
         global overlapName, loopcheckName
@@ -102,8 +104,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         if json_user_object['Parameters']["loopcheck"]["value"]: 
             loopcheckName = "_loopcheck"
             
-        path = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"], json_user_object['Arguments']["ID"]["value"], "Tractography" )
+        #path = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"], json_user_object['Arguments']["ID"]["value"], "Tractography" )
                                                                                                                     #, "Network" + overlapName + loopcheckName)
+        path = "/home/elodie/Downloads/Connectivity matrix"
         self.connectivity_matrix_textEdit.setText(path)
 
         # Colormap circle connectome: strength of each node
@@ -365,11 +368,9 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             annot.set_visible(False)
 
-           
             global lhor, lver
-            lhor = ax_matrix.axhline(0)
-            lver = ax_matrix.axvline(0)
-
+            lhor, lver = (ax_matrix.axhline(0), ax_matrix.axvline(0))
+         
             lhor.set_ydata(-1)
             lver.set_xdata(-1)
 
@@ -396,10 +397,13 @@ class Ui_visu(QtWidgets.QTabWidget):
 
 
             self.fig_normalize_matrix.tight_layout(pad=0)            
-
             self.fig_normalize_matrix.canvas.mpl_connect('button_press_event', self.cursor_mouse_move)
 
 
+
+    # *****************************************
+    # Display the name of each region when the user click 
+    # ***************************************** 
 
     def cursor_mouse_move(self,event):
        
@@ -413,25 +417,22 @@ class Ui_visu(QtWidgets.QTabWidget):
         if event.button == 1:  
             x, y = event.xdata, event.ydata
             numrows, numcols = len(a_matrix[0]), len(a_matrix[1])
-
-            col = int(x+0.5)
-            row = int(y+0.5)
+            col, row = (int(x+0.5), int(y+0.5))
 
             if col>=0 and col<numcols and row>=0 and row<numrows:
                 z = a_matrix[row][col]
                 
             annot.xy = (x,y)
-            text = "Column " + str(col) + ": " + str(list_name_matrix[col]) + " \nRow " + str(row) + ": " + str(list_name_matrix[row]) + " \nValue: " + str(z) 
             text_small = "Col: " + str(list_name_matrix[col]) + " \nRow: " + str(list_name_matrix[row])
-
             annot.set_text(text_small)
             annot.set_visible(True)
 
-            # update the line positions
+            # Update the line positions
             lhor.set_ydata(y)
             lver.set_xdata(x)
 
-            self.label_matrix.setText( text )
+            text = "Column " + str(col) + ": " + str(list_name_matrix[col]) + " \nRow " + str(row) + ": " + str(list_name_matrix[row]) + " \nValue: " + str(z) 
+            self.label_matrix.setText(text)
 
             self.fig_normalize_matrix.canvas.draw()
 
@@ -443,10 +444,8 @@ class Ui_visu(QtWidgets.QTabWidget):
         elif event.button == 3: 
 
             annot.set_visible(False)
-
             lhor.set_ydata(-1)
             lver.set_xdata(-1)
-
             self.fig_normalize_matrix.canvas.draw()
 
 
@@ -1043,9 +1042,13 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.Layout_brain_connectome.itemAt(i).widget().setParent(None)
         
         # Create figure:
-        self.fig_brain_connectome = plt.figure(num=None)#, constrained_layout=True)
+        self.fig_brain_connectome = plt.figure(num=None, constrained_layout=True)
         self.canvas = FigureCanvas(self.fig_brain_connectome)
         self.Layout_brain_connectome.addWidget(self.canvas)
+
+        self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 72, hspace=0, wspace=0)
+
+
         
         # Set title:
         #outputfilename = 'Brain connectome of subject ' + json_user_object['Arguments']["ID"]["value"] + ' (connectivity matrix normalized (row-region))'
@@ -1090,9 +1093,9 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.imarray_sagittal = self.imarray_sagittal_left
 
         # Plot background with a specific slice:
-        self.im1 = self.ax1.imshow(self.imarray_axial[self.num_slice_axial_horizontalSlider.value()], zorder=1) 
-        self.im2 = self.ax2.imshow(self.imarray_sagittal[self.num_slice_sagittal_horizontalSlider.value()], zorder=1)
-        self.im3 = self.ax3.imshow(self.imarray_coronal[self.num_slice_coronal_horizontalSlider.value()], zorder=1) 
+        self.im1 = self.ax1.imshow(self.imarray_axial[self.num_slice_axial_horizontalSlider.value()])#, zorder=1)#, aspect='equal') 
+        self.im2 = self.ax2.imshow(self.imarray_sagittal[self.num_slice_sagittal_horizontalSlider.value()])#, zorder=1)#,  aspect='equal')
+        self.im3 = self.ax3.imshow(self.imarray_coronal[self.num_slice_coronal_horizontalSlider.value()])#, zorder=1)#,  aspect='equal') 
 
 
         # *****************************************
@@ -1349,6 +1352,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
 
         # Set colorbar position
+        global p0,p1,p2
         p0 = self.ax1.get_position().get_points().flatten()
         p1 = self.ax2.get_position().get_points().flatten()
         p2 = self.ax3.get_position().get_points().flatten()
@@ -1363,9 +1367,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_coronal,  cmap=plt.cm.RdBu), cax=ax3_cbar, orientation='horizontal')
 
         # Defining the cursor
-        cursor1 = Cursor(self.ax1, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1, zorder=1000)
-        cursor2 = Cursor(self.ax2, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1, zorder=1000)
-        cursor3 = Cursor(self.ax3, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1, zorder=1000)
+        cursor1 = Cursor(self.ax1, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)#, zorder=1000)
+        cursor2 = Cursor(self.ax2, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)#, zorder=1000)
+        cursor3 = Cursor(self.ax3, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)#, zorder=1000)
 
 
         # Creating an annotating box
@@ -1373,6 +1377,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         annots, lhors, lvers = ([], [], [])
     
         for ax in [self.ax1, self.ax2, self.ax3]:
+
             #global annot
             annot = ax.annotate("", xy=(0,0), xytext=(-20,-30), xycoords='data',textcoords="offset points",
                     zorder = 10000,
@@ -1416,21 +1421,44 @@ class Ui_visu(QtWidgets.QTabWidget):
                 
                     x, y = event.xdata, event.ydata
                     annots[list_axes.index(ax)].xy = (x,y)
+
+                    text = ""
                     
                     for line in ax.get_lines():
-                        if line.contains(event)[0]:
-                            if line.get_gid() != None: 
-                                text = "%s" % line.get_gid()
+                        if (line.contains(event)[0]) and (line.get_gid() != None):
+                           
+                            text = "%s" % line.get_gid()
 
-                                self.text_connectome.setText('<font color= "green">' + text + '</font>')
 
-                                annots[list_axes.index(ax)].set_text(text)
-                                annots[list_axes.index(ax)].set_visible(True)
+                    if text != "": 
+                        
+                        if list_axes.index(ax) == 0: 
+                        self.text_connectome.setText('<font color= "green">' + text + '</font>')
+                        
+                        elif list_axes.index(ax) == 1: 
+                        self.text_connectome.setText('<font color= "green">' + text + '</font>')
+                        
+                        elif list_axes.index(ax) == 2: 
+                        self.text_connectome.setText('<font color= "green">' + text + '</font>')
 
-                                lhors[list_axes.index(ax)].set_ydata(y)
-                                lvers[list_axes.index(ax)].set_xdata(x)
 
-                                self.fig_brain_connectome.canvas.draw()
+
+                        annots[list_axes.index(ax)].set_text(list_axes.index(ax))
+                        annots[list_axes.index(ax)].set_visible(True)
+
+                        lhors[list_axes.index(ax)].set_ydata(y)
+                        lvers[list_axes.index(ax)].set_xdata(x)
+
+                        annots[list_axes.index(ax)].set_position((-20, -20))
+
+
+
+                    self.fig_brain_connectome.canvas.draw()
+
+                    #self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 72, hspace=0, wspace=0)
+                    #plt.rcParams['figure.constrained_layout.use'] = True
+
+
 
                        
         # *****************************************
@@ -1445,6 +1473,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                     lhors[list_axes.index(ax)].set_ydata(-1)
                     lvers[list_axes.index(ax)].set_xdata(-1)
 
+                    self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 72, hspace=0, wspace=0)
                     self.fig_brain_connectome.canvas.draw()
         
 
