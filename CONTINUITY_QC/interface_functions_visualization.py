@@ -1433,17 +1433,17 @@ class Ui_visu(QtWidgets.QTabWidget):
                     if text != "": 
                         
                         if list_axes.index(ax) == 0: 
-                        self.text_connectome.setText('<font color= "green">' + text + '</font>')
+                            self.text_connectome1.setText('1: <font color= "green">' + text + '</font>')
                         
                         elif list_axes.index(ax) == 1: 
-                        self.text_connectome.setText('<font color= "green">' + text + '</font>')
+                            self.text_connectome2.setText('2: <font color= "green">' + text + '</font>')
                         
                         elif list_axes.index(ax) == 2: 
-                        self.text_connectome.setText('<font color= "green">' + text + '</font>')
+                            self.text_connectome3.setText('3: <font color= "green">' + text + '</font>')
 
 
 
-                        annots[list_axes.index(ax)].set_text(list_axes.index(ax))
+                        annots[list_axes.index(ax)].set_text(str(list_axes.index(ax)+1))
                         annots[list_axes.index(ax)].set_visible(True)
 
                         lhors[list_axes.index(ax)].set_ydata(y)
