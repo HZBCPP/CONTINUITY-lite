@@ -795,6 +795,8 @@ with Tee(log_file):
 
 		outputSurface = os.path.join(OUT_LABELS, ID + "-" + PARCELLATION_TABLE_NAME + "_Labeled_Subcorticals_Combined_T1Space.vtk")
 
+		print("subcorticals_list_names_checked_with_surfaces", subcorticals_list_names_checked_with_surfaces)
+
 		if os.path.exists( outputSurface ):
 			print("OutputSurface file found: Skipping combine the labeled subcorticals ")
 		else:
@@ -808,7 +810,9 @@ with Tee(log_file):
 
 			# Add other regions 
 			for i in range(2,len(subcorticals_list_names_checked_with_surfaces)):
+
 				toAdd = os.path.join(OUT_LABELS, ID + "-T1_SkullStripped_scaled_label_" + subcorticals_list_names_checked_with_surfaces[i] + "_pp_SPHARM_labeled.vtk")
+				print(toAdd)
 
 				# Combine the labeled subcorticals 
 				print("For ", subcorticals_list_names_checked_with_surfaces[i], "region: ")
