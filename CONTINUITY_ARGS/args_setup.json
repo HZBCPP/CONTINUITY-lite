@@ -115,7 +115,7 @@
         "only_registration": {
             "type": "bool",
             "help": "Run only the registration part",
-            "defauilt": false
+            "default": false
         },
         "only_bedpostx": {
             "type": "bool",
