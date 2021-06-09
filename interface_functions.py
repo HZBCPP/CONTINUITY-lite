@@ -1343,7 +1343,6 @@ class Ui(QtWidgets.QTabWidget):
     def local_run_checkBox_clicked(self):
         json_user_object['Arguments']["cluster"]["value"] = True         
         self.remote_run_groupBox.setChecked(True)
-
         if self.local_run_groupBox.isChecked():
             json_user_object['Arguments']["cluster"]["value"] = False            
             self.remote_run_groupBox.setChecked(False)
@@ -1352,7 +1351,6 @@ class Ui(QtWidgets.QTabWidget):
     def remote_run_checkBox_clicked(self):
         json_user_object['Arguments']["cluster"]["value"] = True            
         self.local_run_groupBox.setChecked(True)
-
         if self.remote_run_groupBox.isChecked():
             json_user_object['Arguments']["cluster"]["value"] = False           
             self.local_run_groupBox.setChecked(False)          
