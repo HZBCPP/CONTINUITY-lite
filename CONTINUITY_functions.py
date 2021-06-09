@@ -477,11 +477,11 @@ def save_connectivity_matrix(type_of_normalization, a, OutputDir, subject, overl
 
     outputfilename = 'Connectivity matrix of data \n' + subject + ' normalized type: ' + type_of_normalization + '\n'
 
-    if len(overlapName)>3 and len(loopcheck)>3:
+    if overlapName and loopcheck:
       outputfilename += 'with Loopcheck and with Overlapping'
-    elif len(overlapName)<3 and len(loopcheck)>3:
+    elif overlapName and loopcheck:
       outputfilename += 'without Loopcheck and with Overlapping'
-    elif len(overlapName)>3 and len(loopcheck)<3:
+    elif overlapName and loopcheck:
       outputfilename += 'with Loopcheck and without Overlapping'
     else:
       outputfilename += 'without Loopcheck and without Overlapping'
