@@ -86,6 +86,8 @@ KWMDir                     = json_user_object["Arguments"]["KWMDir"]['value']
 # Parameters: 
 cluster_command_line                    = json_user_object["Parameters"]["cluster_command_line"]['value']
 tractography_model                      = json_user_object["Parameters"]["tractography_model"]['value']
+only_registration                       = json_user_object["Parameters"]["only_registration"]['value']
+only_bedpostx                           = json_user_object["Parameters"]["only_bedpostx"]['value']
 filtering_with_tcksift					= json_user_object["Parameters"]["filtering_with_tcksift"]['value']
 optimisation_with_tcksift2				= json_user_object["Parameters"]["optimisation_with_tcksift2"]['value']
 act_option				                = json_user_object["Parameters"]["act_option"]['value']
@@ -151,8 +153,8 @@ ParaToSPHARMMeshCLPPath   = json_user_object["Executables"]["ParaToSPHARMMeshCLP
 writeSeedListScript       = "./writeSeedList.py" 
 
 
-os.environ["ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS"] = nb_threads
-os.environ["OMP_NUM_THREADS"] = nb_threads
+os.environ["ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS"] = str(nb_threads)
+os.environ["OMP_NUM_THREADS"] = str(nb_threads)
 
 
 
@@ -722,9 +724,6 @@ with Tee(log_file):
 		    first_line = KWM_file.readline(70) 
 		    first_line_list = first_line.split("=") 
 		    number_of_points =int(first_line_list[1].strip()) #"NUMBER_OF_POINTS=1002"
-		    print('number_of_points first method', number_of_points)
-
-		
 		
 		# Add labeled_image in INPUTDATA folder for visualization 
 		shutil.copy(labeled_image, OUT_INPUTDATA) 
@@ -746,8 +745,6 @@ with Tee(log_file):
 			
 
 			if not os.path.exists(SPHARMSurf) or not os.path.exists(KWMFile): 
-				print(KWMFile)
-				print(SPHARMSurf)
 				# Delete info of this region in the new-parcellation-table:
 				with open(only_matrix_parcellation_table, 'r') as data_file:
 				    data = json.load(data_file)
@@ -773,9 +770,6 @@ with Tee(log_file):
 					print("For", region, "region: creation SPHARM surface labeled file")
 				    # Applies the label in the KWM file to the SPHARM surface: 
 					KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, labelSetName)
-
-		print("subcorticals_list_names_checked_with_surfaces", subcorticals_list_names_checked_with_surfaces)
-
 
 		# Brainstem
 		with open(only_matrix_parcellation_table, 'r') as data_file:
@@ -955,6 +949,11 @@ with Tee(log_file):
 
 		SURFACE = outputSurfaceFullMerge
 
+
+
+	if only_registration: 
+		exit()
+
    
     
 
@@ -1045,7 +1044,7 @@ with Tee(log_file):
 		start = time.time()
 	
 		# Extract Point Data from the vtk file containing labels
-		command = [ExtractLabelSurfaces, "--extractPointData", "--translateToLabelNumber",   # /tools/bin_linux64/ExtractLabelSurfaces 
+		command = [ExtractLabelSurfaces, "--extractPointData", "--translateToLabelNumber",   # /tools/bin_linux64/ExtractLabelSurfaces  version 1.0.4 NOT 1.0
 								  	    	 "--labelNameInfo", labelListNamePath, 
 								  	    	 "--labelNumberInfo", labelListNumberPath, 
 								  	    	 "--useTranslationTable", "--labelTranslationTable", only_matrix_parcellation_table, 
@@ -1053,6 +1052,7 @@ with Tee(log_file):
 								  	    	 "--vtkLabelFile", str(EXTRA_SURFACE_COLOR), 
 								  	    	 "--createSurfaceLabelFiles", 
 								  	    	 "--vtkFile", SURFACE,
+								  	    	 "--outputSurfaceDirectory", OutSurfaceName, 
 								  	    	 overlapFlag]
 
 		if ignoreLabel != "": 
@@ -1061,9 +1061,6 @@ with Tee(log_file):
 			run_command("ExtractLabelSurfaces if 'ignoreLabel' != ''", command)
 		else:
 	  		run_command("ExtractLabelSurfaces", command)
-
-		# Move created files (.asc) in the tractography folder 
-		shutil.move('./labelSurfaces',OutSurfaceName)
 
 		print("ExtractLabelSurfaces command: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 
@@ -1114,7 +1111,7 @@ with Tee(log_file):
 			print("Bedpostx folder: Found Skipping bedpostx function")
 		else:
 			print("*****************************************")
-			print("Start bedpostx (~ 11 hours)")
+			print("Start bedpostx (~ 18 hours)")
 			print("*****************************************")
 
 			now = datetime.datetime.now()
@@ -1122,6 +1119,10 @@ with Tee(log_file):
 			start = time.time() #                , INPUT directory           
 			run_command("bedpostx", [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)])
 			print("bedpostx command: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
+
+
+		if only_bedpostx: 
+			exit()
 
 		# Name define by probtrackx2 tool:
 		matrix = "fdt_network_matrix"
@@ -1143,7 +1144,7 @@ with Tee(log_file):
 							                             "-x", os.path.join(OutSurfaceName, "seeds.txt"), #-x,--seed
 							                             "--forcedir", "--network", "--omatrix1", "-V", "0",
 							                             "--dir="+NETWORK_DIR, 
-							                             "--stop="+os.path.join(OUT_TRACTOGRAPHY, "seeds.txt"), 
+							                             "--stop="+os.path.join(OutSurfaceName, "seeds.txt"), 
 							                             "-P", str(nb_fiber_per_seed), #-P,--nsamples	Number of samples - default=5000
 							                             "--steplength="+str(steplength), 
 							                             "--sampvox="+str(sampvox), loopcheckFlag ])
@@ -1354,13 +1355,17 @@ with Tee(log_file):
 			else:
 				print("Compute tractography with for region " + number_region )	
 
-				
+				# Output: tck file generated by tckgen for this region: 
+				output_track_tckgen_tck = os.path.join(OUT_MRTRIX_tck, "output_track_tckgen_tck_" + number_region + ".tck")
+
+				'''
 				# Add seed coordinates for this region:
 				for element in  list_coord_seeds[0 : number_point-1]: 
 
-					# Output: tck file generated by tckgen for this region: 
-					output_track_tckgen_tck = os.path.join(OUT_MRTRIX_tck, "output_track_tckgen_tck_" + number_region + ".tck")
+					output_track_tckgen_tck_seed = os.path.join(OUT_MRTRIX_tck, "output_track_tckgen_tck_" + number_region + "_" + 
+													str(element[0]) + ',' + str(element[1]) + ',' + str(element[2]) + ',' + str(element[3]) + ".tck")
 
+					
 					# Type of algorithm and their specification:
 					if tractography_model == "MRtrix (default: IFOD2) ":
 						command = [MRtrixPath + "/tckgen", '-algorithm', 'iFOD2', FOD_nii, output_track_tckgen_tck_seed]	
@@ -1413,6 +1418,8 @@ with Tee(log_file):
 				
 				
 				'''
+
+
 				# Type of algorithm and their specification:
 				if tractography_model == "MRtrix (default: IFOD2) ":
 					command = [MRtrixPath + "/tckgen", '-algorithm', 'iFOD2', FOD_nii, output_track_tckgen_tck]	
@@ -1452,7 +1459,7 @@ with Tee(log_file):
 				out, err = run.communicate()
 				print("MRtrix tractography", "out: ", colored("\n" + str(out) + "\n", 'green')) 
 				print("MRtrix tractography", "err: ", colored("\n" + str(err) + "\n", 'red'))	   
-				'''
+				
 
 				# *****************************************
 				# Convert tractography tck file to vtk format    FOR VISUALIZATION
@@ -1630,6 +1637,14 @@ with Tee(log_file):
 
 
 
+
+
+
+
+
+
+
+
 	elif tractography_model == "DIPY":
 		
 		print("*****************************************")
@@ -1664,7 +1679,7 @@ with Tee(log_file):
 		#*****************************************
 
 		# https://dipy.org/documentation/1.2.0./examples_built/reconst_csd/
-		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.7)   #single shell    0.7: adult brain 
+		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.2)   #single shell    0.7: adult brain 
 
 		# Multi-Shell Multi-Tissue: used auto_response_msmt
 		#https://dipy.org/documentation/1.2.0./examples_built/reconst_mcsd/       csd: single shell

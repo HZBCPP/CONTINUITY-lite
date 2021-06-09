@@ -64,6 +64,7 @@ labeled_image = os.path.join( input_path, ID + "-T1_SkullStripped_scaled_label.n
 registered_combine_surface         = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + ".vtk")
 registered_combine_surface_with_sc = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + "_WithSubcorticals.vtk")
 
+'''
 surface_left  = os.path.join( input_path, "stx_" + ID + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace.vtk")
 surface_right = os.path.join( input_path, "stx_" + ID + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace.vtk")
 
@@ -72,7 +73,7 @@ surface_left_labeled  = os.path.join( input_path, "stx_" + ID
 
 surface_right_labeled = os.path.join(input_path, "stx_" + ID 
 						+ "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
-
+'''
 
 
 # *****************************************
@@ -86,13 +87,16 @@ if os.path.exists(FA):            loadedVolumeNode_FA            = slicer.util.l
 if os.path.exists(labeled_image): loadedVolumeNode_labeled_image = slicer.util.loadVolume(labeled_image, properties={'name': 'labeled_image', 'show': False})
 
 
+
 if os.path.exists(registered_combine_surface):         loadedVolumeNode_registered_combine_surface         = slicer.util.loadModel(registered_combine_surface)
 if os.path.exists(registered_combine_surface_with_sc): loadedVolumeNode_registered_combine_surface_with_sc = slicer.util.loadModel(registered_combine_surface_with_sc)
+
+'''
 if os.path.exists(surface_left):                       loadedVolumeNode_surface_left                       = slicer.util.loadModel(surface_left)
 if os.path.exists(surface_left_labeled):               loadedVolumeNode_surface_left_labeled               = slicer.util.loadModel(surface_left_labeled)
 if os.path.exists(surface_right):                      loadedVolumeNode_surface_right                      = slicer.util.loadModel(surface_right)
 if os.path.exists(surface_right_labeled):              loadedVolumeNode_surface_right_labeled              = slicer.util.loadModel(surface_right_labeled)
-
+'''
 
 # *****************************************
 # Get not and display data in the good place

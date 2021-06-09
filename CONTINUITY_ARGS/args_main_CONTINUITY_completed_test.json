@@ -104,12 +104,22 @@
         "cluster_command_line": {
             "type": "str",
             "help": "Run script in a cluster with this specific command line",
-            "default": "#!/bin/zsh \n #SBATCH -p general \n #SBATCH -N 1 \n #SBATCH --mem 5120 \n #SBATCH -n 1 \n #SBATCH -t 20-00:00:00 \n #SBATCH --mail-type=end \n #SBATCH --mail-user=elodie@email.unc.edu \n module add python \n python3 CONTINUITY_completed_script.py './CONTINUITY_ARGS/args_main_CONTINUITY.json'"
+            "default": "#!/bin/zsh \n #SBATCH -p general \n #SBATCH -N 1 \n #SBATCH --mem 5120 \n #SBATCH -n 1 \n #SBATCH -t 10-00:00:00 \n #SBATCH --mail-type=end \n #SBATCH --mail-user=elodie@email.unc.edu \n module add python \n python3 CONTINUITY_completed_script.py './CONTINUITY_ARGS/args_main_CONTINUITY.json'"
         },
         "tractography_model": {
             "type": "str",
             "help": "Tractography model: FSL, MRtrix or DIPY",
             "default": "FSL"
+        },
+        "only_registration": {
+            "type": "bool",
+            "help": "Run only the registration part",
+            "default": false
+        },
+        "only_bedpostx": {
+            "type": "bool",
+            "help": "Run only bedpostx (FSL)",
+            "default": false
         },
         "filtering_with_tcksift": {
             "type": "bool",
