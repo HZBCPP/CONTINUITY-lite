@@ -276,11 +276,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         if json_user_object['Parameters']["overlapping"]["value"]: 
             overlapName = "_overlapping"
 
-        end_name = ' without Loopcheck and without Overlapping'
-        if   len(overlapName)>3 and len(loopcheckName)>3: end_name = ' with Loopcheck and with Overlapping'
-        elif len(overlapName)<3 and len(loopcheckName)>3: end_name = ' without Loopcheck and with Overlapping'
-        elif len(overlapName)>3 and len(loopcheckName)<3: end_name = ' with Loopcheck and without Overlapping'
-
         # Remove previous plot:
         for i in reversed(range(self.Layout_normalize_matrix.count())): 
             self.Layout_normalize_matrix.itemAt(i).widget().setParent(None)
@@ -295,11 +290,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         ax_matrix = self.fig_normalize_matrix.add_subplot(1,1,1)
         ax_matrix.set_xlabel('Seeds')
         ax_matrix.set_ylabel('Targets')
-
-        # Title:
-        #start = 'Connectivity matrix for ' + json_user_object['Arguments']["ID"]["value"] + "\n  "
-        #self.fig_normalize_matrix.suptitle(start +end_name, fontsize=10)
-        self.fig_normalize_matrix.set_zorder(1)
 
         # Specific normalization: 
         global a_matrix 
@@ -356,21 +346,15 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.fig_normalize_matrix.add_axes(cax)
             self.fig_normalize_matrix.colorbar(im, cax=cax, orientation="horizontal" )
             
-            # Defining the cursor
-            cursor = Cursor(ax_matrix, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)
 
             # Creating an annotating box
             global annot
-            annot = ax_matrix.annotate("", xy=(0,0), xytext=(-20,-50), xycoords='data',textcoords="offset points",
-                    zorder = 100000,
-                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1),
-                    arrowprops=dict(arrowstyle='fancy'))
-
+            annot = ax_matrix.annotate("", xy=(0,0), xytext=(-60,-30), xycoords='data',textcoords="offset points",
+                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1), arrowprops=dict(arrowstyle='fancy'))
             annot.set_visible(False)
 
             global lhor, lver
             lhor, lver = (ax_matrix.axhline(0), ax_matrix.axvline(0))
-         
             lhor.set_ydata(-1)
             lver.set_xdata(-1)
 
@@ -394,7 +378,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             for i in range(len(list_MatrixRow)):
                 index = sorted_indices[i]
                 list_name_matrix.append(list_name_unordered[index])
-
 
             self.fig_normalize_matrix.tight_layout(pad=0)            
             self.fig_normalize_matrix.canvas.mpl_connect('button_press_event', self.cursor_mouse_move)
@@ -423,6 +406,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                 z = a_matrix[row][col]
                 
             annot.xy = (x,y)
+
             text_small = "Col: " + str(list_name_matrix[col]) + " \nRow: " + str(list_name_matrix[row])
             annot.set_text(text_small)
             annot.set_visible(True)
@@ -451,7 +435,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             
     # *****************************************
-    # Select the path to GET the connectivity matrix
+    # Select the path to GET and SAVE the connectivity matrix
     # ***************************************** 
 
     def get_connectivity_matrix_pushButton_clicked(self):
@@ -459,11 +443,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         if DirName:
             self.connectivity_matrix_textEdit.setText(DirName)
 
-
-
-    # *****************************************
-    # Select the path to SAVE the connectivity matrix
-    # ***************************************** 
 
     def connectivity_matrix_pushButton_clicked(self):
         DirName= QtWidgets.QFileDialog.getExistingDirectory(self)
@@ -1043,10 +1022,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         
         # Create figure:
         self.fig_brain_connectome = plt.figure(num=None, constrained_layout=True)
+        self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 72, hspace=0, wspace=0)
         self.canvas = FigureCanvas(self.fig_brain_connectome)
         self.Layout_brain_connectome.addWidget(self.canvas)
-
-        self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 72, hspace=0, wspace=0)
 
 
         
@@ -1060,11 +1038,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.ax1.set_axis_off()
         self.ax2.set_axis_off()
         self.ax3.set_axis_off()
-
-        #self.ax1.set_zorder(-1)
-        #self.ax2.set_zorder(-1)
-        #self.ax3.set_zorder(-1)
-
 
         # Set subtitles: 
         self.ax1.title.set_text("Axial")
@@ -1093,9 +1066,9 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.imarray_sagittal = self.imarray_sagittal_left
 
         # Plot background with a specific slice:
-        self.im1 = self.ax1.imshow(self.imarray_axial[self.num_slice_axial_horizontalSlider.value()])#, zorder=1)#, aspect='equal') 
-        self.im2 = self.ax2.imshow(self.imarray_sagittal[self.num_slice_sagittal_horizontalSlider.value()])#, zorder=1)#,  aspect='equal')
-        self.im3 = self.ax3.imshow(self.imarray_coronal[self.num_slice_coronal_horizontalSlider.value()])#, zorder=1)#,  aspect='equal') 
+        self.im1 = self.ax1.imshow(self.imarray_axial[self.num_slice_axial_horizontalSlider.value()])
+        self.im2 = self.ax2.imshow(self.imarray_sagittal[self.num_slice_sagittal_horizontalSlider.value()])
+        self.im3 = self.ax3.imshow(self.imarray_coronal[self.num_slice_coronal_horizontalSlider.value()]) 
 
 
         # *****************************************
@@ -1242,7 +1215,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                         # Display lines for axial view: 
                         cax1, = self.ax1.plot(x_values, y_values, lw=1.5, color= plt.cm.RdBu(norm_axial(my_norm)), 
-                                                         marker = '.'  ,gid="Line between: " + name_region1 + " and " + name_region2)
+                                                         marker = '.'  ,gid="Line between: " + name_region1 + ":" + name_region2)
                         
             
                     # Specific threshold for coronal lines (give by the range of the colorbar):
@@ -1250,7 +1223,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                         # Display lines for coronal view: 
                         cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), 
-                                                        marker = '.'  ,gid="Line between: \n" + name_region1 + " and " + name_region2)
+                                                        marker = '.'  ,gid="Line between: " + name_region1 + ":" + name_region2)
 
                     
 
@@ -1266,7 +1239,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                             # Display lines for sagittal left view: 
                             cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
-                                                             marker = '.'  , gid="Line between: \n" + name_region1 + " and " + name_region2)
+                                                             marker = '.'  , gid="Line between: " + name_region1 + ":" + name_region2)
                            
                         else: 
                             point1_sagittal_right = [list_x_sagittal_right[i], list_y_sagittal_right[i],list_z_sagittal_right[i]]
@@ -1277,7 +1250,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                             # Display lines for sagittal right view:
                             cax2 = self.ax2.plot(y_values_sagittal_right, z_values_sagittal_right, lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
-                                                             marker = '.'  ,gid="Line between: \n" + name_region1 + " and " + name_region2)
+                                                             marker = '.'  ,gid="Line between: " + name_region1 + ":" + name_region2)
 
 
         # Draw points: 
@@ -1366,12 +1339,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_sagittal, cmap=plt.cm.RdBu), cax=ax2_cbar, orientation='horizontal')
         plt.colorbar(mpl.cm.ScalarMappable(norm=norm_coronal,  cmap=plt.cm.RdBu), cax=ax3_cbar, orientation='horizontal')
 
-        # Defining the cursor
-        cursor1 = Cursor(self.ax1, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)#, zorder=1000)
-        cursor2 = Cursor(self.ax2, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)#, zorder=1000)
-        cursor3 = Cursor(self.ax3, horizOn=True, vertOn=True, useblit=True, color = 'red', linewidth = 1)#, zorder=1000)
-
-
         # Creating an annotating box
         global annots, lhors, lvers
         annots, lhors, lvers = ([], [], [])
@@ -1380,10 +1347,8 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             #global annot
             annot = ax.annotate("", xy=(0,0), xytext=(-20,-30), xycoords='data',textcoords="offset points",
-                    zorder = 10000,
-                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1, zorder=1000),arrowprops=dict(arrowstyle='fancy')) 
+                    bbox=dict(boxstyle='round4', fc='linen',ec='r',lw=2, alpha=1),arrowprops=dict(arrowstyle='fancy')) 
             annot.set_visible(False)
-            #annot.set_zorder(100) 
 
             lhor, lver = (ax.axhline(0), ax.axvline(0))
             lhor.set_ydata(-1)
@@ -1393,7 +1358,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             lhors.append(lhor)
             lvers.append(lver)
  
-        #self.fig_brain_connectome.tight_layout(pad=0.2)            
         self.fig_brain_connectome.canvas.mpl_connect('button_press_event', self.click_2D_connectome)     
 
         print("End display brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
@@ -1429,17 +1393,18 @@ class Ui_visu(QtWidgets.QTabWidget):
                            
                             text = "%s" % line.get_gid()
 
-
                     if text != "": 
-                        
-                        if list_axes.index(ax) == 0: 
-                            self.text_connectome1.setText('1: <font color= "green">' + text + '</font>')
-                        
-                        elif list_axes.index(ax) == 1: 
-                            self.text_connectome2.setText('2: <font color= "green">' + text + '</font>')
-                        
-                        elif list_axes.index(ax) == 2: 
-                            self.text_connectome3.setText('3: <font color= "green">' + text + '</font>')
+                        text_splitted = text.split(":")
+
+                        if text.startswith("Line"):
+                            new_text = text_splitted[0] + ': \n   ' + text_splitted[1] + "   and \n   " + text_splitted[2]
+
+                        else: #point
+                            new_text = text_splitted[0] + ': \n   ' + text_splitted[1] 
+
+                        if list_axes.index(ax) == 0:   self.text_connectome1.setText('1: ' + new_text)
+                        elif list_axes.index(ax) == 1: self.text_connectome2.setText('2: ' + new_text)
+                        elif list_axes.index(ax) == 2: self.text_connectome3.setText('3: ' + new_text)
 
 
 
@@ -1449,16 +1414,9 @@ class Ui_visu(QtWidgets.QTabWidget):
                         lhors[list_axes.index(ax)].set_ydata(y)
                         lvers[list_axes.index(ax)].set_xdata(x)
 
-                        annots[list_axes.index(ax)].set_position((-20, -20))
-
-
+                        annots[list_axes.index(ax)].set_position((-30, -30))
 
                     self.fig_brain_connectome.canvas.draw()
-
-                    #self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 72, hspace=0, wspace=0)
-                    #plt.rcParams['figure.constrained_layout.use'] = True
-
-
 
                        
         # *****************************************
@@ -1473,7 +1431,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                     lhors[list_axes.index(ax)].set_ydata(-1)
                     lvers[list_axes.index(ax)].set_xdata(-1)
 
-                    self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 72, hspace=0, wspace=0)
                     self.fig_brain_connectome.canvas.draw()
         
 
