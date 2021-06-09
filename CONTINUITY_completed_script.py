@@ -1095,7 +1095,7 @@ with Tee(log_file):
 	    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
 	else:
 	    print("Convert T1 image to nifti format ")
-	    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_DATA, 
+	    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
 														                             "--conversionMode", "NrrdToFSL", 
 														                             "--outputVolume", T1_nifti, 
 														                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
@@ -1214,7 +1214,7 @@ with Tee(log_file):
 								   									'-mask', DiffusionBrainMask, # input
 								    								'-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
 								    								'-nthreads', str(nb_threads) ])
-
+		'''
 		# *****************************************
 		# Convert nrrd T1 in DWI space file in nifti
 		# *****************************************
@@ -1234,6 +1234,7 @@ with Tee(log_file):
 			writer.SetFileName(T1_DWI_SPACE_nifti)
 			writer.SetInformation(reader.GetInformation())
 			writer.Write()
+		'''
 
 
 		# *****************************************
@@ -1249,7 +1250,7 @@ with Tee(log_file):
 			now = datetime.datetime.now()
 			print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
 			start = time.time()
-			run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_DWI_SPACE_nifti, fivett_img, '-nthreads', str(nb_threads) ])
+			run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_nifti, fivett_img, '-nthreads', str(nb_threads) ])
 			print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 		
 

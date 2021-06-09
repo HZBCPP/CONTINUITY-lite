@@ -1022,15 +1022,11 @@ class Ui_visu(QtWidgets.QTabWidget):
         
         # Create figure:
         self.fig_brain_connectome = plt.figure(num=None, constrained_layout=True)
-        self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 72, hspace=0, wspace=0)
+        self.fig_brain_connectome.set_constrained_layout_pads(w_pad=1 / 72, h_pad=1 / 92, hspace=0, wspace=0)
         self.canvas = FigureCanvas(self.fig_brain_connectome)
         self.Layout_brain_connectome.addWidget(self.canvas)
-
-
         
-        # Set title:
-        #outputfilename = 'Brain connectome of subject ' + json_user_object['Arguments']["ID"]["value"] + ' (connectivity matrix normalized (row-region))'
-        #self.fig_brain_connectome.suptitle(outputfilename, fontsize=10)
+        # Set subplot:
         self.ax1 = self.fig_brain_connectome.add_subplot(1,3,1) #axial
         self.ax2 = self.fig_brain_connectome.add_subplot(1,3,2) #sagittal left or right
         self.ax3 = self.fig_brain_connectome.add_subplot(1,3,3) #coronal
@@ -1113,7 +1109,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             z = float("{:.2f}".format(-(element[2]) + 190/2))
 
             # Axial and coronal:
-            list_x.append(x)
+            list_x.append(-x + 146)
             list_y.append(y)
             list_z.append(z)
 
