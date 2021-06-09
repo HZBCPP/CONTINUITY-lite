@@ -176,6 +176,13 @@ class Ui(QtWidgets.QTabWidget):
                 for key in infos: 
                     eval("self." + key + "_textEdit.setText(json_user_object[categories][key]['value'])")
 
+        # Only bedpostx
+        self.only_bedpostx_checkBox.setChecked(json_setup_object['Parameters']["only_bedpostx"]["default"])
+
+        # Only registration
+        self.only_registration_checkBox.setChecked(json_setup_object['Parameters']["only_registration"]["default"])
+
+
         # Ignore label:
         self.ignore_label_checkBox.setChecked(False)
         self.value_ignore_label_label.setStyleSheet("color: lightGray")
@@ -866,8 +873,8 @@ class Ui(QtWidgets.QTabWidget):
         json_user_object['Parameters']["UPSAMPLING_DWI"]["value"] = False
         if self.upsampling_checkBox.isChecked():
             json_user_object['Parameters']["UPSAMPLING_DWI"]["value"] = True       
-        Ui.update_user_json_file()                  
-
+        Ui.update_user_json_file()
+                 
 
 
     # *****************************************
@@ -1120,6 +1127,18 @@ class Ui(QtWidgets.QTabWidget):
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
+    
+    # *****************************************
+    # Write the value for only_bedpostx parameter (given by the user) in the user information json file
+    # *****************************************         
+
+    def only_bedpostx_checkBox_stateChanged(self):
+        json_user_object['Parameters']["only_bedpostx_checkBox"]["value"] = False
+        if self.only_bedpostx_checkBox.isChecked():
+            json_user_object['Parameters']["only_bedpostx_checkBox"]["value"] = True       
+        Ui.update_user_json_file() 
+
+
 
     # *****************************************
     # Write the number of fibers (bedpostx parameter) in user information json file  
@@ -1292,6 +1311,18 @@ class Ui(QtWidgets.QTabWidget):
 
     def save_config_file_pushButton_clicked(self):
         shutil.copy(user_json_filename, json_user_object['Parameters']["json_config_file"]["value"]) 
+
+
+
+    # *****************************************
+    # Write the value for only_registration parameter (given by the user) in the user information json file
+    # *****************************************         
+
+    def only_registration_checkBox_stateChanged(self):
+        json_user_object['Parameters']["only_registration_checkBox"]["value"] = False
+        if self.only_registration_checkBox.isChecked():
+            json_user_object['Parameters']["only_registration_checkBox"]["value"] = True       
+        Ui.update_user_json_file() 
 
 
 

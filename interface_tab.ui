@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>3</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -66,7 +66,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <property name="tabsClosable">
       <bool>false</bool>
@@ -3713,7 +3713,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -3823,7 +3823,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>430</y>
+        <y>440</y>
         <width>1091</width>
         <height>101</height>
        </rect>
@@ -3896,7 +3896,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>150</y>
+        <y>180</y>
         <width>1091</width>
         <height>251</height>
        </rect>
@@ -4035,6 +4035,19 @@ p, li { white-space: pre-wrap; }
         </layout>
        </widget>
       </widget>
+     </widget>
+     <widget class="QCheckBox" name="only_bedpostx_checkBox">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>140</y>
+        <width>241</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Run only Bedpostx function </string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_6">
@@ -4718,9 +4731,9 @@ p, li { white-space: pre-wrap; }
     <widget class="QGroupBox" name="groupBox_3">
      <property name="geometry">
       <rect>
-       <x>330</x>
+       <x>570</x>
        <y>30</y>
-       <width>771</width>
+       <width>531</width>
        <height>61</height>
       </rect>
      </property>
@@ -4761,6 +4774,32 @@ p, li { white-space: pre-wrap; }
         <string>DIPY</string>
        </property>
       </item>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_16">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>30</y>
+       <width>221</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Only registration</string>
+     </property>
+     <widget class="QCheckBox" name="only_registration_checkBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>221</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Do only the registration</string>
+      </property>
      </widget>
     </widget>
    </widget>
@@ -7636,6 +7675,38 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>only_bedpostx_checkBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>only_bedpostx_checkBox_stateChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>only_registration_checkBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>only_registration_checkBox_stateChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>462</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>DWI_button_clicked()</slot>
@@ -7750,5 +7821,7 @@ p, li { white-space: pre-wrap; }
   <slot>name_parcellation_table_no_registration()</slot>
   <slot>no_registration_labelsetname_valuechanged()</slot>
   <slot>no_registration_question_labelset_name_pushButton_clicked()</slot>
+  <slot>only_registration_checkBox_stateChanged()</slot>
+  <slot>only_bedpostx_checkBox_stateChanged()</slot>
  </slots>
 </ui>
