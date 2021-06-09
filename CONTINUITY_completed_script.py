@@ -702,11 +702,7 @@ with Tee(log_file):
 				# Update the localization of SALT surfaces: 
 				SALTDir = os.path.join(OUT_FOLDER, 'my_SALT') 
 
-				
 				number_of_points = get_number_of_points(SALTDir)
-				print('number_of_points', number_of_points ) 
-
-
 				create_kwm_files(OUT_FOLDER, PARCELLATION_TABLE, subcorticals_list_names_checked, number_of_points)
 
 				# Update the localization of KWM files: 
@@ -718,12 +714,14 @@ with Tee(log_file):
 
 
 		else: # user provide SALT and KWM dir
-		    KWM_file = open( os.path.join(KWMDir, subcorticals_list_names_checked[0] + "_" + number_of_points + "_KWM.txt"), 'r')     
+			number_of_points = get_number_of_points(SALTDir)
 
-		    # Get number of points
-		    first_line = KWM_file.readline(70) 
-		    first_line_list = first_line.split("=") 
-		    number_of_points =int(first_line_list[1].strip()) #"NUMBER_OF_POINTS=1002"
+			KWM_file = open( os.path.join(KWMDir, subcorticals_list_names_checked[0] + "_" + str(number_of_points) + "_KWM.txt"), 'r')     
+
+			# Get number of points
+			first_line = KWM_file.readline(70) 
+			first_line_list = first_line.split("=") 
+			number_of_points =int(first_line_list[1].strip()) #"NUMBER_OF_POINTS=1002"
 		
 		# Add labeled_image in INPUTDATA folder for visualization 
 		shutil.copy(labeled_image, OUT_INPUTDATA) 
@@ -741,8 +739,6 @@ with Tee(log_file):
 			KWMFile = os.path.join(KWMDir, region + "_" + str(number_of_points) + "_KWM.txt")
 			SPHARMSurf = os.path.join(SALTDir, ID + "-T1_SkullStripped_scaled_label_" + region + "_pp_surfSPHARM.vtk")
 
-
-			
 
 			if not os.path.exists(SPHARMSurf) or not os.path.exists(KWMFile): 
 				# Delete info of this region in the new-parcellation-table:
@@ -1052,7 +1048,7 @@ with Tee(log_file):
 								  	    	 "--vtkLabelFile", str(EXTRA_SURFACE_COLOR), 
 								  	    	 "--createSurfaceLabelFiles", 
 								  	    	 "--vtkFile", SURFACE,
-								  	    	 "--outputSurfaceDirectory", OutSurfaceName, 
+								  	    	 "--outputSurfaceDirectory", os.path.join(OutSurfaceName, "labelSurfaces"), 
 								  	    	 overlapFlag]
 
 		if ignoreLabel != "": 
@@ -1133,7 +1129,7 @@ with Tee(log_file):
 		    print("fdt_network_matrix found: Found Skipping probtrackx function")
 		else:
 			print("*****************************************")
-			print("Start tractography with probtrackx2 (~1h )")
+			print("Start tractography with probtrackx2 (~3h )")
 			print("*****************************************")
 
 			now = datetime.datetime.now()
