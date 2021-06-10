@@ -31,10 +31,10 @@ with open(user_json_filename, "r") as user_Qt_file:
 
 if __name__ == '__main__':
     
-    if os.path.exists( "./CONTINUITY_QC/python_script_for_Slicer.py"):
-    	command = [json_user_object['Executables']["slicer"]["value"], "--python-script", "./CONTINUITY_QC/python_script_for_Slicer.py", user_json_filename] 
+    if os.path.exists( os.path.abspath(os.path.dirname(__file__)) + "/CONTINUITY_QC/python_script_for_Slicer.py"):
+    	command = [json_user_object['Executables']["slicer"]["value"], "--python-script", os.path.abspath(os.path.dirname(__file__)) + "/CONTINUITY_QC/python_script_for_Slicer.py", user_json_filename] 
     else:
-    	command = [json_user_object['Executables']["slicer"]["value"], "--python-script", "./python_script_for_Slicer.py", user_json_filename] 
+    	command = [json_user_object['Executables']["slicer"]["value"], "--python-script", os.path.abspath(os.path.dirname(__file__)) + "/python_script_for_Slicer.py", user_json_filename] 
 
     print( colored(" ".join(command), 'blue'))
     slicer_Run = subprocess.Popen(command, stderr=subprocess.PIPE ,universal_newlines=True)

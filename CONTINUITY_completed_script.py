@@ -150,7 +150,7 @@ SegPostProcessCLPPath     = json_user_object["Executables"]["SegPostProcessCLP"]
 GenParaMeshCLPPath        = json_user_object["Executables"]["GenParaMeshCLP"]['value']
 ParaToSPHARMMeshCLPPath   = json_user_object["Executables"]["ParaToSPHARMMeshCLP"]['value'] 
 
-writeSeedListScript       = "./writeSeedList.py" 
+writeSeedListScript       = os.path.abspath(os.path.dirname(__file__)) + "/writeSeedList.py" 
 
 
 os.environ["ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS"] = str(nb_threads)
@@ -251,7 +251,7 @@ with Tee(log_file):
 	# *****************************************
 
 	# Convert DWI nifti input to nrrd:  
-	[path, afile] =os.path.split(DWI_DATA) #./input_CONTINUITY    and   T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
+	[path, afile] =os.path.split(DWI_DATA) #os.path.abspath(os.path.dirname(__file__)) + '/input_CONTINUITY'    and   T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
 
 	if afile.endswith('nii.gz'): 
 

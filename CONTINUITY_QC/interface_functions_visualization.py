@@ -30,7 +30,7 @@ from functools import partial
 sys.path.insert(1, os.path.split(os.getcwd())[0])  # if you want to open the second interface alone
 sys.path.insert(1, os.getcwd())                    # if you want to open the second interface with the first interface
 
-# sys.path.insert(1, '/proj/NIRAL/tools/CONTINUITY/')
+sys.path.insert(1, os.path.abspath(os.path.dirname(__file__)))
 
 from CONTINUITY_functions import *
 
@@ -54,10 +54,10 @@ class Ui_visu(QtWidgets.QTabWidget):
         default_json_filename = sys.argv[1]
         user_json_filename = sys.argv[2]
     
-        if os.path.exists('./CONTINUITY_QC/interface_visualization.ui'):  # if you open the second interface with the first interface
-            uic.loadUi('./CONTINUITY_QC/interface_visualization.ui', self)
+        if os.path.exists(os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/interface_visualization.ui'):  # if you open the second interface with the first interface
+            uic.loadUi(os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/interface_visualization.ui', self)
         else:                                                             # if you open the second interface alone
-            uic.loadUi('./interface_visualization.ui', self)
+            uic.loadUi(os.path.abspath(os.path.dirname(__file__)) + '/interface_visualization.ui', self)
 
         # Write default values on interface:    
         Ui_visu.setup_default_values(self, default_json_filename, user_json_filename )
@@ -198,10 +198,10 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
 
     def open_slicer_clicked(self): 
-        if os.path.exists("./CONTINUITY_QC/slicer_QC.py"):
-            Ui_visu.run_command("Open slicer with specific parameters", [sys.executable, "./CONTINUITY_QC/slicer_QC.py", user_json_filename])
+        if os.path.exists(os.path.abspath(os.path.dirname(__file__)) + "/CONTINUITY_QC/slicer_QC.py"):
+            Ui_visu.run_command("Open slicer with specific parameters", [sys.executable, os.path.abspath(os.path.dirname(__file__)) + "/CONTINUITY_QC/slicer_QC.py", user_json_filename])
         else: 
-            Ui_visu.run_command("Open slicer with specific parameters", [sys.executable, "./slicer_QC.py", user_json_filename])
+            Ui_visu.run_command("Open slicer with specific parameters", [sys.executable, os.path.abspath(os.path.dirname(__file__)) + "/slicer_QC.py", user_json_filename])
 
 
     def open_slicer_only(self):
@@ -1048,7 +1048,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
 
         # Find localization of images: 
-        self.imarray, header = nrrd.read("./CONTINUITY_QC/template_brain_connectome_2D.nrrd")  #T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
+        self.imarray, header = nrrd.read(os.path.abspath(os.path.dirname(__file__)) + "/CONTINUITY_QC/template_brain_connectome_2D.nrrd")  #T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
         
         # Modify the matrix to select a specific orrientation: 
         self.imarray_axial          = np.rot90(self.imarray, k=1, axes=(0, 2))  
@@ -1490,9 +1490,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         for i in reversed(range(self.Layout_brain_connectome_3D.count())): 
             self.Layout_brain_connectome_3D.itemAt(i).widget().setParent(None)
         
-        SURFACE_template = './CONTINUITY_QC/template_brain_connectome_3D.vtk'
+        SURFACE_template = os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/template_brain_connectome_3D.vtk'
         if not os.path.exists(SURFACE_template): 
-            SURFACE_template = './template_brain_connectome_3D.vtk'
+            SURFACE_template = os.path.abspath(os.path.dirname(__file__)) + '/template_brain_connectome_3D.vtk'
 
 
         # Read the brain surfaces file:
