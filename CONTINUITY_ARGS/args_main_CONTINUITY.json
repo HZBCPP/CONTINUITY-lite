@@ -366,11 +366,7 @@
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
-<<<<<<< HEAD
-            "value": "/home/elodie/Downloads/output_CONTINUITY"
-=======
             "value": "/BAND/USERS/elodie/testing/output_CONTINUITY"
->>>>>>> eecf5ed6eeda0f73d95d4259cb527b27144aaef7
         }
     },
     "Executables": {

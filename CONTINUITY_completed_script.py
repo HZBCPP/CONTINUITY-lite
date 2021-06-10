@@ -883,7 +883,7 @@ with Tee(log_file):
 				KWMtoPolyData(RSL_WM_L_Surf, RSL_WM_L_Surf_labeled, cortical_label_left, labelSetName)  
 
 				#QC: 
-				 KWMtoPolyData(WM_L_Surf, RSL_WM_L_Surf_labeled_QC, cortical_label_left, labelSetName)  
+				KWMtoPolyData(WM_L_Surf, RSL_WM_L_Surf_labeled_QC, cortical_label_left, labelSetName)  
 
 			print("Label the right cortical surface")
 			if os.path.exists( RSL_WM_R_Surf_labeled ):
