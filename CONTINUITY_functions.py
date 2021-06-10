@@ -160,9 +160,7 @@ def cluster(slurm_job_filename, cluster_command_line):
     slurm_job_file.write('module add python \n') 
 
     path = os.path.abspath(os.path.dirname(__file__))
-
-    slurm_job_file.write('python3 CONTINUITY_completed_script.py') 
-    slurm_job_file.write(path + "/CONTINUITY_ARGS/args_main_CONTINUITY.json" ) 
+    slurm_job_file.write('python3 CONTINUITY_completed_script.py ' + path + "/CONTINUITY_ARGS/args_main_CONTINUITY.json")  
     slurm_job_file.close()  
 
     # Run 
