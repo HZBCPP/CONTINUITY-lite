@@ -244,7 +244,7 @@ class Ui(QtWidgets.QTabWidget):
     def update_param_path(self, button_name):
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
         if fileName:
-            #eval("self." + button_name + "_textEdit.setText(fileName)")
+            eval("self." + button_name + "_textEdit.setText(fileName)")
             try: 
                 json_user_object['Parameters'][button_name]["value"] = fileName
 
