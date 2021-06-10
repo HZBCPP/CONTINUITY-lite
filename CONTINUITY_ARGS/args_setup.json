@@ -57,7 +57,7 @@
         "labelSetName": {
             "type": "str",
             "help": "Labelset name in vtk surface file",
-            "default": ""
+            "default": "label"
         },
         "WM_L_Surf": {
             "type": "str",
@@ -146,12 +146,12 @@
         "INTEGRATE_SC_DATA": {
             "type": "bool",
             "help": "Integrate subcortical data",
-            "default": false
+            "default": true
         },
         "INTEGRATE_SC_DATA_by_generated_sc_surf": {
             "type": "bool",
             "help": "Integrate subcortical data by generating subcortical surfaces",
-            "default": true
+            "default": false
         },
         "EXTRA_SURFACE_COLOR": {
             "type": "bool",
