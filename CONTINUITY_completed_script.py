@@ -221,8 +221,8 @@ with Tee(log_file):
 	OUT_WARPS = os.path.join(OUT_T1TODWISPACE, "Warps") #ID --> T1ToDWISpace --> WARP
 	if not os.path.exists( OUT_WARPS ): os.mkdir(OUT_WARPS)
 
-	OUT_INPUTDATA = os.path.join(OUT_FOLDER, "InputDataForSlicer") #ID --> INPUTDATA: for visualization
-	if not os.path.exists( OUT_INPUTDATA ): os.mkdir(OUT_INPUTDATA)
+	OUT_SLICER = os.path.join(OUT_FOLDER, "InputDataForSlicer") #ID --> INPUTDATA: for visualization
+	if not os.path.exists( OUT_SLICER ): os.mkdir(OUT_SLICER)
 
 	OUT_TRACTOGRAPHY = os.path.join(OUT_FOLDER, "Tractography") #ID --> Tractography
 	if not os.path.exists(OUT_TRACTOGRAPHY): os.mkdir(OUT_TRACTOGRAPHY)
@@ -420,7 +420,7 @@ with Tee(log_file):
 												                           "--idwi", IDWI_NRRD, #output:  geometric mean of the diffusion images.
 												                           "--correction nearest"])
 		    # Add BO_NRRD in INPUTDATA folder for visualization 
-		    shutil.copy(B0_NRRD, OUT_INPUTDATA) 
+		    shutil.copy(B0_NRRD, OUT_SLICER) 
 
 
 		# Bias Correct the B0 Image to match the T2 Bias Corrected Image: bias correction algorithm    
@@ -434,7 +434,7 @@ with Tee(log_file):
 			run_command("N4BiasFieldCorrection: BO Bias corrected image", [pathN4BiasFieldCorrection, "-d", "3", "-i", B0_NRRD, "-o", B0_BiasCorrect_NRRD])
 
 			# Add B0_BiasCorrect_NRRD in INPUTDATA folder for visualization 
-			shutil.copy(B0_BiasCorrect_NRRD, OUT_INPUTDATA) 
+			shutil.copy(B0_BiasCorrect_NRRD, OUT_SLICER) 
 		    
 
 		# FA generation using DTI process
@@ -447,8 +447,8 @@ with Tee(log_file):
 			run_command("Dtiprocess: FA generation from DTI", [pathdtiprocess, "--inputDTIVolume", DTI_NRRD, "-f", FA_NRRD, "--lambda1_output", A0_NRRD])
 
 			# Add FA_NRRD and A0_NRRD in INPUTDATA folder for visualization 
-			shutil.copy(FA_NRRD, OUT_INPUTDATA) 
-			shutil.copy(A0_NRRD, OUT_INPUTDATA) 
+			shutil.copy(FA_NRRD, OUT_SLICER) 
+			shutil.copy(A0_NRRD, OUT_SLICER) 
 
 
 
@@ -548,7 +548,7 @@ with Tee(log_file):
 			run_command("WARP_TRANSFORM: T1 resample in DWI space", [pathWARP_TRANSFORM, "3", T1_DATA, T1_OUT_NRRD, "-R", B0_BiasCorrect_NRRD, Warp, Affine])
 			
 			# Add T1_OUT_NRRD in INPUTDATA folder for visualization 
-			shutil.copy(T1_OUT_NRRD, OUT_INPUTDATA)
+			shutil.copy(T1_OUT_NRRD, OUT_SLICER)
 
 
 
@@ -592,8 +592,8 @@ with Tee(log_file):
 			run_command("POLY_TRANSTOOL_EXE: Transform WM right surface with InvWarp", command)		
 
 		# Add T1_OUT_NRRD in INPUTDATA folder for visualization 
-		shutil.copy(RSL_WM_L_Surf, OUT_INPUTDATA)	
-		shutil.copy(RSL_WM_R_Surf, OUT_INPUTDATA)	
+		shutil.copy(RSL_WM_L_Surf, OUT_SLICER)	
+		shutil.copy(RSL_WM_R_Surf, OUT_SLICER)	
        
 
 
@@ -724,7 +724,7 @@ with Tee(log_file):
 			number_of_points =int(first_line_list[1].strip()) #"NUMBER_OF_POINTS=1002"
 		
 		# Add labeled_image in INPUTDATA folder for visualization 
-		shutil.copy(labeled_image, OUT_INPUTDATA) 
+		shutil.copy(labeled_image, OUT_SLICER) 
 
 
 		print("*****************************************")
@@ -837,8 +837,6 @@ with Tee(log_file):
 
 	if not surface_already_labeled:
 
-		#labelSetName = PARCELLATION_TABLE_NAME
-
 		if not DO_REGISTRATION:
 			# Outputs:
 			RSL_WM_L_Surf_NON_REGISTRATION_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
@@ -846,12 +844,13 @@ with Tee(log_file):
 			RSL_WM_R_Surf_NON_REGISTRATION_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
 			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + PARCELLATION_TABLE_NAME + ".vtk")
 		
+
 			print("NON_REGISTRATION: Label the left cortical surface")
 			if os.path.exists( RSL_WM_L_Surf_NON_REGISTRATION_labeled ):
 				print("NON_REGISTRATION: WM left labeled file found: Skipping Labelization of the left cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_L_Surf_NON_REGISTRATION, RSL_WM_L_Surf_NON_REGISTRATION_labeled, cortical_label_left, labelSetName)  
-				 
+				KWMtoPolyData(RSL_WM_L_Surf_NON_REGISTRATION, RSL_WM_L_Surf_NON_REGISTRATION_labeled, cortical_label_left, labelSetName)   
+
 
 			print("NON_REGISTRATION: Label the right cortical surface")
 			if os.path.exists( RSL_WM_R_Surf_NON_REGISTRATION_labeled ):
@@ -867,21 +866,37 @@ with Tee(log_file):
 			RSL_WM_R_Surf_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
 			           "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + PARCELLATION_TABLE_NAME + ".vtk")
 			
+
+
+			# Outputs for QC (in structural space)
+			RSL_WM_L_Surf_labeled_QC = os.path.join(OUT_SLICER, "stx_" + ID + 
+			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_QC_" + PARCELLATION_TABLE_NAME + ".vtk")
+			RSL_WM_R_Surf_labeled_QC = os.path.join(OUT_SLICER, "stx_" + ID + 
+			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_QC_" + PARCELLATION_TABLE_NAME + ".vtk")
+		
+
+
 			print("Label the left cortical surface")
 			if os.path.exists( RSL_WM_L_Surf_labeled ):
 				print("WM left labeled file found: Skipping Labelization of the left cortical surfaces")
 			else:
 				KWMtoPolyData(RSL_WM_L_Surf, RSL_WM_L_Surf_labeled, cortical_label_left, labelSetName)  
-				 
+
+				#QC: 
+				 KWMtoPolyData(WM_L_Surf, RSL_WM_L_Surf_labeled_QC, cortical_label_left, labelSetName)  
+
 			print("Label the right cortical surface")
 			if os.path.exists( RSL_WM_R_Surf_labeled ):
 				print("WM right labeled file found: Skipping Labelization of the right cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_R_Surf, RSL_WM_R_Surf_labeled, cortical_label_right, labelSetName)  
+				KWMtoPolyData(RSL_WM_R_Surf, RSL_WM_R_Surf_labeled, cortical_label_right, labelSetName)
+
+				#QC: 
+				KWMtoPolyData(WM_R_Surf, RSL_WM_R_Surf_labeled_QC, cortical_label_right, labelSetName)   
 
 			# Add SURFACE in INPUTDATA folder for visualization 
-			shutil.copy(RSL_WM_L_Surf_labeled, OUT_INPUTDATA)
-			shutil.copy(RSL_WM_R_Surf_labeled, OUT_INPUTDATA)
+			shutil.copy(RSL_WM_L_Surf_labeled, OUT_SLICER)
+			shutil.copy(RSL_WM_R_Surf_labeled, OUT_SLICER)
 
 
 	else: #surfaces already labeled
@@ -894,8 +909,8 @@ with Tee(log_file):
 			RSL_WM_R_Surf_labeled = RSL_WM_R_Surf
 
 			# Add SURFACE in INPUTDATA folder for visualization 
-			shutil.copy(RSL_WM_L_Surf_labeled, OUT_INPUTDATA)
-			shutil.copy(RSL_WM_R_Surf_labeled, OUT_INPUTDATA)
+			shutil.copy(RSL_WM_L_Surf_labeled, OUT_SLICER)
+			shutil.copy(RSL_WM_R_Surf_labeled, OUT_SLICER)
 
 
 
@@ -905,6 +920,8 @@ with Tee(log_file):
 
 	# Create cortical.vtk: 
 	SURFACE = os.path.join(OUT_SURFACE, "stx_" + ID + "_T1_CombinedSurface_white_" + PARCELLATION_TABLE_NAME + ".vtk")
+	SURFACE_QC = os.path.join(OUT_SLICER, "stx_" + ID + "_T1_CombinedSurface_white_QC_" + PARCELLATION_TABLE_NAME + ".vtk")
+
 
 	if not DO_REGISTRATION:
 		if os.path.exists(SURFACE):
@@ -913,6 +930,7 @@ with Tee(log_file):
 			if not left_right_surface_need_to_be_combining:
 				# NOT REGISTRATION: combine left and right surface 
 				polydatamerge_ascii(WM_L_Surf_NON_REGISTRATION_labeled, WM_R_Surf_NON_REGISTRATION_labeled, SURFACE)
+				
 			else:
 				shutil.copy(SURFACE_USER, SURFACE)
 				SURFACE = SURFACE_USER
@@ -925,8 +943,9 @@ with Tee(log_file):
 			# Combine left+right surface 
 			polydatamerge_ascii(RSL_WM_L_Surf_labeled, RSL_WM_R_Surf_labeled, SURFACE)
 
-	# Add SURFACE in INPUTDATA folder for visualization 
-	shutil.copy(SURFACE, OUT_INPUTDATA)
+			#QC
+			polydatamerge_ascii(RSL_WM_L_Surf_labeled_QC, RSL_WM_R_Surf_labeled_QC, SURFACE_QC)
+
 
 
 
@@ -938,17 +957,29 @@ with Tee(log_file):
 		# Output of the next command: 
 		outputSurfaceFullMerge = os.path.join(OUT_INPUT_CONTINUITY_DWISPACE, "stx_" + ID + "_T1_CombinedSurface_white_" + PARCELLATION_TABLE_NAME + 
 			                                                                                                                       "_WithSubcorticals.vtk") 
+		
+		#QC:
+		outputSurfaceFullMerge_QC = os.path.join(OUT_SLICER, "stx_" + ID + "_T1_CombinedSurface_white_QC" + PARCELLATION_TABLE_NAME + 
+			                                                                                                                       "_WithSubcorticals.vtk") 
+
 		if os.path.exists(outputSurfaceFullMerge):
 			print("Combine cortical and subcortical file: Found Skipping combining cortical and subcortical")
 		else: 
 			# Integration of subcortical data
 			polydatamerge_ascii(subsAllDWISpace, SURFACE, outputSurfaceFullMerge)
 
+			#QC: 
+			polydatamerge_ascii(outputSurface, SURFACE_QC, outputSurfaceFullMerge_QC)
+
+
 			# Add outputSurfaceFullMerge in INPUTDATA folder for visualization 
-			shutil.copy(outputSurfaceFullMerge, OUT_INPUTDATA)
+			shutil.copy(outputSurfaceFullMerge, OUT_SLICER)
 
 		SURFACE = outputSurfaceFullMerge
+	
 
+	# Add SURFACE in INPUTDATA folder for visualization 
+	shutil.copy(SURFACE, OUT_SLICER)
 
 
 	if only_registration: 
