@@ -443,7 +443,7 @@ with Tee(log_file):
 		else:
 			print("*****************************************")
 			print("FA generation using DTI process")      
-			print("*****************************************")    #                                            ,    FA output , max eigenvalue output
+			print("*****************************************")    #                                           ,    FA output , max eigenvalue output
 			
 			command = [pathdtiprocess, '--version']
 			run = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -727,6 +727,9 @@ with Tee(log_file):
 				print("ERROR: You have to provide one label per subcortical regions (0 if you don't want to integrate this region)")
 				exit()
 
+			# Add labeled_image in INPUTDATA folder for visualization 
+			shutil.copy(labeled_image, OUT_SLICER) 
+
 
 		else: # user provide SALT and KWM dir
 			number_of_points = get_number_of_points(SALTDir)
@@ -738,8 +741,7 @@ with Tee(log_file):
 			first_line_list = first_line.split("=") 
 			number_of_points =int(first_line_list[1].strip()) #"NUMBER_OF_POINTS=1002"
 		
-		# Add labeled_image in INPUTDATA folder for visualization 
-		shutil.copy(labeled_image, OUT_SLICER) 
+		
 
 
 		print("*****************************************")
