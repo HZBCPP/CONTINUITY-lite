@@ -8,7 +8,7 @@
         "cluster": {
             "type": "bool",
             "help": "Run script in a cluster",
-            "value": false
+            "value": true
         },
         "ID": {
             "type": "str",
@@ -18,7 +18,7 @@
         "DWI_DATA": {
             "type": "str",
             "help": "DWI Image (.nrrd)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr_42_DWI-Trio_QCed_VC.nrrd"
+            "value": "/home/elodie/Desktop/input_CONTINUITY/T0054-1-1-6yr_42_DWI-Trio_QCed_VC.nrrd"
         },
         "DWI_DATA_bvecs": {
             "type": "str",
@@ -33,7 +33,7 @@
         "T1_DATA": {
             "type": "str",
             "help": "T1 (.nrrd)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd"
+            "value": "/home/elodie/Desktop/input_CONTINUITY/T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd"
         },
         "T2_DATA": {
             "type": "str",
@@ -43,12 +43,12 @@
         "BRAINMASK": {
             "type": "str",
             "help": "Brain mask in DWI space (.nrrd)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/T0054-1-1-6yr-brainmask.nrrd"
+            "value": "/home/elodie/Desktop/input_CONTINUITY/T0054-1-1-6yr-brainmask.nrrd"
         },
         "PARCELLATION_TABLE": {
             "type": "str",
             "help": "Parcellation table (.json)",
-            "value": "/BAND/USERS/elodie/input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
+            "value": "/home/elodie/Desktop/input_CONTINUITY/TABLE_Destrieux_SubCorticals_BrainStem.json"
         },
         "PARCELLATION_TABLE_NAME": {
             "type": "str",
@@ -116,7 +116,7 @@
         "only_registration": {
             "type": "bool",
             "help": "Run only the registration part",
-            "value": false
+            "value": true
         },
         "only_bedpostx": {
             "type": "bool",
@@ -177,17 +177,17 @@
             "type": "list",
             "help": "List of subcortical regions names(name as in the parcellation table) (optional if 'subcortical' parameter in your parcellation table) ",
             "value": [
-                "sub_rh_gp",
-                "sub_rh_put",
-                "sub_rh_thal",
-                "sub_rh_hippo",
-                "sub_rh_caud",
-                "sub_rh_amy",
-                "sub_lh_gp",
-                "sub_lh_put",
-                "sub_lh_thal",
-                "sub_lh_hippo",
                 "sub_lh_caud",
+                "sub_lh_hippo",
+                "sub_lh_thal",
+                "sub_lh_put",
+                "sub_lh_gp",
+                "sub_rh_amy",
+                "sub_rh_caud",
+                "sub_rh_hippo",
+                "sub_rh_thal",
+                "sub_rh_put",
+                "sub_rh_gp",
                 "sub_lh_amy"
             ]
         },
@@ -367,7 +367,7 @@
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
-            "value": "/BAND/USERS/elodie/testing/output_CONTINUITY"
+            "value": "/home/elodie/Downloads/output_CONTINUITY"
         }
     },
     "Executables": {
@@ -424,7 +424,7 @@
         "slicer": {
             "type": "str",
             "help": "Path to slicer",
-            "value": "False"
+            "value": "/home/elodie/Downloads/Slicer-4.11.20200930-linux-amd64/Slicer"
         },
         "fsl": {
             "type": "str",
