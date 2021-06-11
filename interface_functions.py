@@ -1133,9 +1133,9 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************         
 
     def only_bedpostx_checkBox_stateChanged(self):
-        json_user_object['Parameters']["only_bedpostx_checkBox"]["value"] = False
+        json_user_object['Parameters']["only_bedpostx"]["value"] = False
         if self.only_bedpostx_checkBox.isChecked():
-            json_user_object['Parameters']["only_bedpostx_checkBox"]["value"] = True       
+            json_user_object['Parameters']["only_bedpostx"]["value"] = True       
         Ui.update_user_json_file() 
 
 
@@ -1319,9 +1319,9 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************         
 
     def only_registration_checkBox_stateChanged(self):
-        json_user_object['Parameters']["only_registration_checkBox"]["value"] = False
+        json_user_object['Parameters']["only_registration"]["value"] = False 
         if self.only_registration_checkBox.isChecked():
-            json_user_object['Parameters']["only_registration_checkBox"]["value"] = True       
+            json_user_object['Parameters']["only_registration"]["value"] = True       
         Ui.update_user_json_file() 
 
 

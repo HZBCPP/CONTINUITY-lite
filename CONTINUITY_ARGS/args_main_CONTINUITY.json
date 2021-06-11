@@ -367,7 +367,7 @@
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
-            "value": "/home/elodie/Downloads/output_CONTINUITY_QC"
+            "value": "/BAND/USERS/elodie/testing/output_CONTINUITY"
         }
     },
     "Executables": {
@@ -424,7 +424,7 @@
         "slicer": {
             "type": "str",
             "help": "Path to slicer",
-            "value": "/home/elodie/Downloads/Slicer-4.11.20200930-linux-amd64/Slicer"
+            "value": "False"
         },
         "fsl": {
             "type": "str",

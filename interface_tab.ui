@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>3</number>
+   <number>2</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -3725,7 +3725,7 @@ p, li { white-space: pre-wrap; }
         <x>10</x>
         <y>10</y>
         <width>1091</width>
-        <height>121</height>
+        <height>161</height>
        </rect>
       </property>
       <property name="title">
@@ -3817,6 +3817,19 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
+      </widget>
+      <widget class="QCheckBox" name="only_bedpostx_checkBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>241</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Run only Bedpostx function </string>
+       </property>
       </widget>
      </widget>
      <widget class="QGroupBox" name="extract_label_surfaces_groupBox">
@@ -4035,19 +4048,6 @@ p, li { white-space: pre-wrap; }
         </layout>
        </widget>
       </widget>
-     </widget>
-     <widget class="QCheckBox" name="only_bedpostx_checkBox">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>140</y>
-        <width>241</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Run only Bedpostx function </string>
-      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_6">
