@@ -34,10 +34,18 @@ NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME
 input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
 
 
+print(ID)
+print(NAME_PARCELLATION_TABLE)
+print(input_path)
+
+
 #find datas for B0_BiasCorrect
 B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_resample.nrrd")
 if not os.path.exists(B0):
 	B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_original.nrrd")
+
+print(B0)
+
 
 #find datas for B0
 B0_with_biais = os.path.join( input_path, ID +"_DTI_B0_resample.nrrd")
