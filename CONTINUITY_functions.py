@@ -122,6 +122,12 @@ def executable_path(default_filename, user_filename):
                         path = "/tools/Slicer4/Slicer-4.10.2-2019-07-11-linux-amd64/Slicer" # On pegasus
                         if not os.path.exists(path): 
                             path = my_which(key)
+
+                elif key == "dtiestim":
+                    path = my_which("dtiestim_v1.2.1")
+                    if path == 'False': 
+                        path = my_which("dtiestim")
+                        
                 else:
                     path = my_which(key)
                 data_user[categories][key]["value"] = path

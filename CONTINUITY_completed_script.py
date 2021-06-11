@@ -443,8 +443,20 @@ with Tee(log_file):
 		else:
 			print("*****************************************")
 			print("FA generation using DTI process")      
-			print("*****************************************")#                                            ,    FA output , max eigenvalue output
-			run_command("Dtiprocess: FA generation from DTI", [pathdtiprocess, "--inputDTIVolume", DTI_NRRD, "-f", FA_NRRD, "--lambda1_output", A0_NRRD])
+			print("*****************************************")    #                                            ,    FA output , max eigenvalue output
+			
+			command = [pathdtiprocess, '--version']
+			run = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	   		out, err = run.communicate()
+	    
+	    	print(text_printed, "out: ", colored("\n" + str(out) + "\n", 'green')) 
+	    	print(text_printed, "err: ", colored("\n" + str(err) + "\n", 'red'))
+
+	    	if out.split()[-1].endswith('1.0.3'): #version 1.0.3 on Pegasus
+				run_command("Dtiprocess: FA generation from DTI", [pathdtiprocess, "--inputDTIVolume", DTI_NRRD, "-f", FA_NRRD, "--lambda1_output", A0_NRRD])
+	    	else:#version 1.0.2 on Longleaf 
+				run_command("Dtiprocess: FA generation from DTI", [pathdtiprocess, "--dti_image", DTI_NRRD, "-f", FA_NRRD, "--lambda1_output", A0_NRRD])
+
 
 			# Add FA_NRRD and A0_NRRD in INPUTDATA folder for visualization 
 			shutil.copy(FA_NRRD, OUT_SLICER) 
