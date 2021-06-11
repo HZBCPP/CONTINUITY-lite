@@ -105,8 +105,7 @@
         "cluster_command_line": {
             "type": "str",
             "help": "Run script in a cluster with this specific command line",
-            "default": "#!/bin/zsh \n #SBATCH -p general \n #SBATCH -N 1 \n #SBATCH --mem 5120 \n #SBATCH -n 1 \n #SBATCH -t 10-00:00:00 \n #SBATCH --mail-type=end \n #SBATCH --mail-user=elodie@email.unc.edu \n",
-            "value": "#!/bin/zsh \n #SBATCH -p general \n #SBATCH -N 1 \n #SBATCH --mem 5120 \n #SBATCH -n 1 \n #SBATCH -t 10-00:00:00 \n #SBATCH --mail-type=end \n #SBATCH --mail-user=elodie@email.unc.edu \n"
+            "value": "#!/bin/zsh \n #SBATCH -p general \n #SBATCH -N 1 \n #SBATCH --mem 5120 \n #SBATCH -n 6 \n #SBATCH -t 10-00:00:00 \n #SBATCH --mail-type=end \n #SBATCH --mail-user=elodie@email.unc.edu \n"
         },
         "tractography_model": {
             "type": "str",

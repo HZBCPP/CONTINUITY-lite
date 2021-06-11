@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
     #default_config_filename = dir_path + "/CONTINUITY_ARGS/args_setup.json"
     #TEST: 
-    default_config_filename = dir_path + "/CONTINUITY_ARGS/args_main_CONTINUITY_completed_test.json" 
+    default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_sc.json" 
