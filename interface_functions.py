@@ -1377,7 +1377,8 @@ class Ui(QtWidgets.QTabWidget):
 
 
     def start_tractography_remotely_pushButton_clicked(self):
-        cluster(os.path.abspath(os.path.dirname(__file__)) + "/slurm-job", json_user_object['Parameters']["cluster_command_line"]["value"])
+        cluster(json_user_object['Arguments']["OUT_PATH"]["value"] + "/" +
+                json_user_object['Arguments']["ID"]["value"] + "/slurm-job", json_user_object['Parameters']["cluster_command_line"]["value"])
 
 
 

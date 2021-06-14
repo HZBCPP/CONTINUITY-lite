@@ -158,9 +158,9 @@ def CONTINUITY(user_filename):
 # Run the script in longleaf: python3 main_CONTINUITY.py -noGUI -cluster -cluster_command_line test
 # *************************************************************************************
 
-def cluster(slurm_job_filename, cluster_command_line):  
+def cluster(slurm_job_file, cluster_command_line):  
     # Open and write the command line given by the user:
-    slurm_job_file = open(slurm_job_filename, 'w') 
+    slurm_job_file = open(slurm_job, 'w') 
     slurm_job_file.write(cluster_command_line) 
 
     slurm_job_file.write('module add python \n') 
@@ -170,7 +170,7 @@ def cluster(slurm_job_filename, cluster_command_line):
     slurm_job_file.close()  
 
     # Run 
-    run_command("cluster", ['sbatch', os.path.abspath(os.path.dirname(__file__)) + "/slurm-job" ])
+    run_command("cluster", ['sbatch',slurm_job_file])
     
 
 

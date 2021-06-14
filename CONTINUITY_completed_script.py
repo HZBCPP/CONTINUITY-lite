@@ -645,22 +645,25 @@ with Tee(log_file):
 	only_matrix_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'only_matrix_parcellation_table' )
 	shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
 
+	if subcorticals_region_names == []: 
+		#Open parcellation table file with subcortical regions:
+		with open(PARCELLATION_TABLE) as data_file:
+			data = json.load(data_file)
+
+		for seed in data:
+			try: 
+				if seed['subcortical']:
+					subcorticals_region_names.append(seed['name'])
+
+			except: 
+				if INTEGRATE_SC_DATA:  
+					print("no 'subcortical' param in your parcellation table")
 
 
 	if INTEGRATE_SC_DATA:  
 		print("*****************************************")
 		print("Integration of subcortical data ")
 		print("*****************************************")
-
-		if subcorticals_region_names == []: 
-			#Open parcellation table file with subcortical regions:
-			with open(PARCELLATION_TABLE) as data_file:
-				data = json.load(data_file)
-
-			for seed in data:
-				if seed['subcortical']:
-					subcorticals_region_names.append(seed['name'])
-
 
 		# Copy to have only regions with good KWM and SALT files
 		subcorticals_list_names_checked, subcorticals_list_labels_checked = (subcorticals_region_names, subcorticals_region_labels )
@@ -795,6 +798,29 @@ with Tee(log_file):
 
 		with open(only_matrix_parcellation_table, 'w') as data_file:
 			data = json.dump(data, data_file, indent = 2)
+
+
+
+
+
+	else: #no integrate sc data
+		print("subcorticals_region_names", subcorticals_region_names)
+		with open(only_matrix_parcellation_table, 'r') as data_file:
+			data = json.load(data_file)
+
+			for i in range(len(data)):
+				if data[i]['name'] == subcorticals_region_names[0]:  #work because elem in list in the same order by building of this list
+					data.pop(i)
+					subcorticals_region_names.pop(0)
+
+					print("subcorticals_region_names", subcorticals_region_names)
+
+					break
+
+			with open(only_matrix_parcellation_table, 'w') as data_file:
+				data = json.dump(data, data_file, indent = 2)
+
+		print("subcorticals_region_names", subcorticals_region_names)
 
 
 		
@@ -1159,7 +1185,7 @@ with Tee(log_file):
 			print("Bedpostx folder: Found Skipping bedpostx function")
 		else:
 			print("*****************************************")
-			print("Start bedpostx (~ 18 hours)")
+			print("Start bedpostx (~ 20 hours)")
 			print("*****************************************")
 
 			now = datetime.datetime.now()

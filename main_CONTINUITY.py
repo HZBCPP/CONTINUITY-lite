@@ -32,12 +32,12 @@ if __name__ == '__main__':
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
     #default_config_filename = dir_path + "/CONTINUITY_ARGS/args_setup.json"
     #TEST: 
-    default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test.json" 
+    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_sc.json" 
 
-    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix.json" 
+    default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix1.json" 
     #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix2.json"
 
@@ -78,11 +78,11 @@ if __name__ == '__main__':
         data_default = json.load(default_file)    
 
     # User file
-    user_filename = dir_path + "/CONTINUITY_ARGS/args_main_CONTINUITY.json" 
+    #user_filename = dir_path + "/CONTINUITY_ARGS/args_main_CONTINUITY.json" 
     #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_create_SALT.json" 
     #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_no_create_SALT.json" 
     #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_no_sc.json" 
-    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix.json" 
+    user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix.json" 
     #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix1.json" 
     #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix2.json" 
 
@@ -107,6 +107,10 @@ if __name__ == '__main__':
     # *****************************************
     # Run CONTINUITY thanks to a command line: -noGUI / -cvs_file / -cluster
     # *****************************************
+
+    # Create the output folder
+    if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
+        os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
 
     if args["noGUI"]: 
 
@@ -152,7 +156,12 @@ if __name__ == '__main__':
             if not args["cluster"]:  # Run localy: -noGUI  
                 CONTINUITY(user_filename)
             else: # run in longleaf: -noGUI -cluster 
-                cluster(dir_path + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
+
+                OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
+                if not os.path.exists( OUT_FOLDER ):
+                    os.mkdir(OUT_FOLDER)
+
+                cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
 
 
         # *****************************************
@@ -183,7 +192,11 @@ if __name__ == '__main__':
                         print("SUBJECT: ", row['ID'] )
                         CONTINUITY(user_filename)
                     else: # Run localy: -noGUI -csv_file
-                        cluster(dir_path + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
+                    
+                        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
+                        if not os.path.exists( OUT_FOLDER ):
+                            os.mkdir(OUT_FOLDER)
+                        cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
 
         
     # *****************************************
