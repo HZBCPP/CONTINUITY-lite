@@ -158,19 +158,28 @@ def CONTINUITY(user_filename):
 # Run the script in longleaf: python3 main_CONTINUITY.py -noGUI -cluster -cluster_command_line test
 # *************************************************************************************
 
-def cluster(slurm_job_file, cluster_command_line):  
-    # Open and write the command line given by the user:
-    slurm_job_file = open(slurm_job, 'w') 
-    slurm_job_file.write(cluster_command_line) 
+def cluster(slurm_job, cluster_command_line, out_path, ID_path, user_json_file ): 
 
+    # Create the output folder
+    if not os.path.exists( out_path ):
+        os.mkdir(out_path)
+
+    OUT_FOLDER = os.path.join(out_path,ID_path) #ID
+    if not os.path.exists( OUT_FOLDER ):
+        os.mkdir(OUT_FOLDER)
+ 
+    # Open and write the command line given by the user:
+    slurm_job_file = open(str(slurm_job), 'w+') 
+    slurm_job_file.write(cluster_command_line) 
+    slurm_job_file.write(' $SBATCH -e ' + OUT_FOLDER +   '/slurm_error.txt \n') 
     slurm_job_file.write('module add python \n') 
 
     path = os.path.realpath(os.path.dirname(__file__))
-    slurm_job_file.write('python3 CONTINUITY_completed_script.py ' + path + "/CONTINUITY_ARGS/args_main_CONTINUITY.json")  
+    slurm_job_file.write('python3 CONTINUITY_completed_script.py ' + user_json_file)  
     slurm_job_file.close()  
 
     # Run 
-    run_command("cluster", ['sbatch',slurm_job_file])
+    run_command("cluster", ['sbatch',str(slurm_job)])
     
 
 

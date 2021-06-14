@@ -18,8 +18,7 @@ from CONTINUITY_functions import *
 
 if __name__ == '__main__':
 
-    dir_path = os.path.realpath(os.path.dirname(__file__)) #/BAND/USERS/elodie/CONTINUITY
-   
+    dir_path = os.path.realpath(os.path.dirname(__file__))
    
     # *****************************************
     # Argparse
@@ -68,7 +67,10 @@ if __name__ == '__main__':
     if not os.path.exists( OUT_HOME ):
         os.mkdir(OUT_HOME)
 
-    user_filename = OUT_HOME + "/user_args_CONTINUITY_" + str(datetime.datetime.now()) + ".json"
+    now = datetime.datetime.now()
+    date = str(now.strftime("%H_%M_%S_%m-%d-%Y"))
+
+    user_filename = OUT_HOME + "/user_args_CONTINUITY_" + date + ".json"
     shutil.copy(default_config_filename, user_filename)
 
     # Initialization of user file with default values in json default file provide by the user 
@@ -145,7 +147,8 @@ if __name__ == '__main__':
             if not args["cluster"]:  # Run localy: -noGUI  
                 CONTINUITY(user_filename)
             else: # run in longleaf: -noGUI -cluster 
-                cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
+                cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
+                        data_user['Parameters']["OUT_PATH"]["value"], data_user['Parameters']["ID"]["value"], user_filename)
 
 
         # *****************************************
@@ -176,7 +179,8 @@ if __name__ == '__main__':
                         print("SUBJECT: ", row['ID'] )
                         CONTINUITY(user_filename)
                     else: # Run localy: -noGUI -csv_file
-                        cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
+                        cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
+                                data_user['Parameters']["OUT_PATH"]["value"], data_user['Parameters']["ID"]["value"], user_filename)
 
         
     # *****************************************
