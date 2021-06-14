@@ -187,7 +187,7 @@ def cluster(slurm_job, cluster_command_line, out_path, ID_path, user_json_file )
 # Function to replace MeshMath KWMtoPolyData: applies the label in the KWM file to the SPHARM surface
 # *************************************************************************************
 
-def KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, NAME_PARCELLATION_TABLE):
+def KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFileName, NAME_PARCELLATION_TABLE):
     #                   input mesh ,outputFileName,inputTxtFile, scalar field name
     # https://github.com/NIRALUser/SPHARM-PDM/blob/master/Modules/CLI/MetaMeshTools/MeshMath.cxx   line 4443 to 4531
 
@@ -197,7 +197,7 @@ def KWMtoPolyData(SPHARMSurf, SPHARMSurfL, KWMFile, NAME_PARCELLATION_TABLE):
     polydataAtt = polyIn.GetOutput() 
 
     # Start parsing KWMeshVisu file
-    KWM_file = open(KWMFile, 'r')     
+    KWM_file = open(KWMFileName, 'r')     
 
     # Get number of points
     first_line = KWM_file.readline(70) 

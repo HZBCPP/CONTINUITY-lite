@@ -29,7 +29,7 @@ if __name__ == '__main__':
     parser.add_argument('-csv_file'               , nargs='?', type=str, help="csv file with data information for one or several subject") 
 
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
-    default_config_filename = "/work/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" # dir_path + "/args_setup.json"
+    default_config_filename = dir_path + "/args_setup.json" #"/work/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" #
    
     with open(default_config_filename) as default_file: 
         data_default = json.load(default_file)

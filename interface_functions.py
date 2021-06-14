@@ -282,10 +282,13 @@ class Ui(QtWidgets.QTabWidget):
     def registration_tab1_groupBox_valueChanged(self): 
         self.registration_tab2_groupBox.setChecked(True)
         json_user_object['Parameters']["DO_REGISTRATION"]["value"] = False
+        json_user_object['Parameters']["INTEGRATE_SC_DATA"]["value"] = False 
+        json_user_object['Parameters']["INTEGRATE_SC_DATA_by_generated_sc_surf"]["value"] = False
 
         if self.registration_tab1_groupBox.isChecked():
             self.registration_tab2_groupBox.setChecked(False)
             json_user_object['Parameters']["DO_REGISTRATION"]["value"] = True 
+
         Ui.update_user_json_file()
 
 
@@ -989,6 +992,8 @@ class Ui(QtWidgets.QTabWidget):
             Ui.no_registration_surface_data_clicked(self)
             Ui.no_registration_surface_data_clicked2(self)
             json_user_object['Parameters']["DO_REGISTRATION"]["value"] = False 
+            json_user_object['Parameters']["INTEGRATE_SC_DATA"]["value"] = False 
+            json_user_object['Parameters']["INTEGRATE_SC_DATA_by_generated_sc_surf"]["value"] = False
         Ui.update_user_json_file()
 
 

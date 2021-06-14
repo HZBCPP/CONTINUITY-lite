@@ -295,6 +295,18 @@ with Tee(log_file):
 	print("Script 1: prepare files for T1 to DWI space registration")
 	print("**********************************************************************************")
 
+	# Protect script: 
+	if not DO_REGISTRATION:
+		INTEGRATE_SC_DATA = False
+		INTEGRATE_SC_DATA_by_generated_sc_surf = False
+
+		if not left_right_surface_need_to_be_combining: 
+			surface_already_labeled = True
+
+	print(left_right_surface_need_to_be_combining, surface_already_labeled)
+
+
+
 	if DO_REGISTRATION:
 		print("Starting Pre-registration: (Up)sampled DWI, DWI BrainMask, T1 DWISpace, DWISpace T1 surfaces")
 
@@ -856,7 +868,6 @@ with Tee(log_file):
 
 
 	else: #no integrate sc data
-		print("subcorticals_region_names", subcorticals_region_names)
 		with open(only_matrix_parcellation_table, 'r') as data_file:
 			data = json.load(data_file)
 
@@ -864,15 +875,11 @@ with Tee(log_file):
 				if data[i]['name'] == subcorticals_region_names[0]:  #work because elem in list in the same order by building of this list
 					data.pop(i)
 					subcorticals_region_names.pop(0)
-
-					print("subcorticals_region_names", subcorticals_region_names)
-
 					break
 
 			with open(only_matrix_parcellation_table, 'w') as data_file:
 				data = json.dump(data, data_file, indent = 2)
 
-		print("subcorticals_region_names", subcorticals_region_names)
 
 	print("*****************************************")
 	print("Labelization of the cortical surfaces ")
@@ -882,24 +889,24 @@ with Tee(log_file):
 
 		if not DO_REGISTRATION:
 			# Outputs:
-			RSL_WM_L_Surf_NON_REGISTRATION_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
+			WM_L_Surf_NON_REGISTRATION_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
 			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_" + PARCELLATION_TABLE_NAME + ".vtk")
-			RSL_WM_R_Surf_NON_REGISTRATION_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
+			WM_R_Surf_NON_REGISTRATION_labeled = os.path.join(OUT_00_QC_VISUALIZATION, "stx_" + ID + 
 			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + PARCELLATION_TABLE_NAME + ".vtk")
 		
 
 			print("NON_REGISTRATION: Label the left cortical surface")
-			if os.path.exists( RSL_WM_L_Surf_NON_REGISTRATION_labeled ):
+			if os.path.exists( WM_L_Surf_NON_REGISTRATION_labeled ):
 				print("NON_REGISTRATION: WM left labeled file found: Skipping Labelization of the left cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_L_Surf_NON_REGISTRATION, RSL_WM_L_Surf_NON_REGISTRATION_labeled, cortical_label_left, labelSetName)   
+				KWMtoPolyData(WM_L_Surf_NON_REGISTRATION, WM_L_Surf_NON_REGISTRATION_labeled, cortical_label_left, labelSetName)   
 
 
 			print("NON_REGISTRATION: Label the right cortical surface")
-			if os.path.exists( RSL_WM_R_Surf_NON_REGISTRATION_labeled ):
+			if os.path.exists( WM_R_Surf_NON_REGISTRATION_labeled ):
 				print("NON_REGISTRATION: WM right labeled file found: Skipping Labelization of the right cortical surfaces")
 			else:
-				KWMtoPolyData(RSL_WM_R_Surf_NON_REGISTRATION, RSL_WM_R_Surf_NON_REGISTRATION_labeled, cortical_label_right, labelSetName)  		
+				KWMtoPolyData(WM_R_Surf_NON_REGISTRATION, WM_R_Surf_NON_REGISTRATION_labeled, cortical_label_right, labelSetName)  		
 
 
 		else: 
@@ -944,8 +951,8 @@ with Tee(log_file):
 
 	else: #surfaces already labeled
 		if not DO_REGISTRATION:
-			RSL_WM_L_Surf_NON_REGISTRATION_labeled = RSL_WM_L_Surf_NON_REGISTRATION
-			RSL_WM_R_Surf_NON_REGISTRATION_labeled = RSL_WM_R_Surf_NON_REGISTRATION
+			RSL_WM_L_Surf_NON_REGISTRATION_labeled = WM_L_Surf_NON_REGISTRATION
+			RSL_WM_R_Surf_NON_REGISTRATION_labeled = WM_R_Surf_NON_REGISTRATION
 
 		else: 
 			RSL_WM_L_Surf_labeled = RSL_WM_L_Surf
@@ -970,7 +977,7 @@ with Tee(log_file):
 		if os.path.exists(SURFACE):
 			print("NOT REGISTRATION: Combine cortical file: Found Skipping combining cortical left and right surface ")
 		else: 
-			if not left_right_surface_need_to_be_combining:
+			if left_right_surface_need_to_be_combining:
 				# NOT REGISTRATION: combine left and right surface 
 				polydatamerge_ascii(WM_L_Surf_NON_REGISTRATION_labeled, WM_R_Surf_NON_REGISTRATION_labeled, SURFACE)
 				
@@ -1073,7 +1080,7 @@ with Tee(log_file):
 	if not os.path.exists(OutSurfaceName):
 	    os.mkdir(OutSurfaceName)
 
-		
+	'''
 	print("*****************************************")
 	print("DWIConvert BRAINMASK and DWI: nrrd to nii")
 	print("*****************************************")
@@ -1100,6 +1107,7 @@ with Tee(log_file):
 							                                         "--outputVolume", DiffusionData, 
 							                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
 							                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
+	'''
 
 
 	print("*****************************************")
@@ -1243,6 +1251,39 @@ with Tee(log_file):
 	# *****************************************
 
 	if tractography_model == "MRtrix (default: IFOD2) " or tractography_model == "MRtrix (Tensor-Prob)" or tractography_model == "MRtrix (iFOD1)": 
+
+		if DO_REGISTRATION: 
+			print("*****************************************")
+			print("DWIConvert BRAINMASK and DWI: nrrd to nii")
+			print("*****************************************")
+
+			# Outputs:
+			DiffusionData      = os.path.join(OUT_DIFFUSION, "data.nii.gz") 
+			DiffusionBrainMask = os.path.join(OUT_DIFFUSION, "nodif_brain_mask.nii.gz")
+
+			# DWIConvert BRAINMASK: NrrdToFSL: .nrrd file format to FSL format (.nii.gz)     # Err: "No gradient vectors found " --> it is normal 
+			if os.path.exists(DiffusionBrainMask):
+			    print("Brain mask FSL file: Found Skipping convertion")
+			else: 
+			    run_command("DWIConvert BRAINMASK to FSL format(err ok)", [DWIConvertPath, "--inputVolume", DWI_MASK, 
+										                                                   "--conversionMode", "NrrdToFSL", 
+										                                                   "--outputVolume", DiffusionBrainMask, 
+										                                                   "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
+										                                                   "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+			# DWIConvert DWI: Nrrd to FSL format
+			if os.path.exists(DiffusionData):
+			    print("DWI FSL file: Found Skipping convertion")
+			else:
+			    run_command("DWIConvert DWI to FSL format", [DWIConvertPath, "--inputVolume", DWI_NRRD, # original: DWI_DATA
+									                                         "--conversionMode", "NrrdToFSL", 
+									                                         "--outputVolume", DiffusionData, 
+									                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
+									                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
+		else: 
+			print("to do: change interface, warning because of upsampling")
+
+
+
 		
 		print("*****************************************")
 		print("Run tractography with " + tractography_model )
