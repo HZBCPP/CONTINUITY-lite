@@ -917,32 +917,17 @@ with Tee(log_file):
 			           "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + PARCELLATION_TABLE_NAME + ".vtk")
 			
 
-
-			# Outputs for QC (in structural space)
-			RSL_WM_L_Surf_labeled_QC = os.path.join(OUT_SLICER, "stx_" + ID + 
-			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_QC_" + PARCELLATION_TABLE_NAME + ".vtk")
-			RSL_WM_R_Surf_labeled_QC = os.path.join(OUT_SLICER, "stx_" + ID + 
-			            "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_QC_" + PARCELLATION_TABLE_NAME + ".vtk")
-		
-
-
 			print("Label the left cortical surface")
 			if os.path.exists( RSL_WM_L_Surf_labeled ):
 				print("WM left labeled file found: Skipping Labelization of the left cortical surfaces")
 			else:
 				KWMtoPolyData(RSL_WM_L_Surf, RSL_WM_L_Surf_labeled, cortical_label_left, labelSetName)  
 
-				#QC: 
-				KWMtoPolyData(WM_L_Surf, RSL_WM_L_Surf_labeled_QC, cortical_label_left, labelSetName)  
-
 			print("Label the right cortical surface")
 			if os.path.exists( RSL_WM_R_Surf_labeled ):
 				print("WM right labeled file found: Skipping Labelization of the right cortical surfaces")
 			else:
 				KWMtoPolyData(RSL_WM_R_Surf, RSL_WM_R_Surf_labeled, cortical_label_right, labelSetName)
-
-				#QC: 
-				KWMtoPolyData(WM_R_Surf, RSL_WM_R_Surf_labeled_QC, cortical_label_right, labelSetName)   
 
 			# Add SURFACE in INPUTDATA folder for visualization 
 			shutil.copy(RSL_WM_L_Surf_labeled, OUT_SLICER)
@@ -970,8 +955,6 @@ with Tee(log_file):
 
 	# Create cortical.vtk: 
 	SURFACE = os.path.join(OUT_SURFACE, "stx_" + ID + "_T1_CombinedSurface_white_" + PARCELLATION_TABLE_NAME + ".vtk")
-	SURFACE_QC = os.path.join(OUT_SLICER, "stx_" + ID + "_T1_CombinedSurface_white_QC_" + PARCELLATION_TABLE_NAME + ".vtk")
-
 
 	if not DO_REGISTRATION:
 		if os.path.exists(SURFACE):
@@ -993,10 +976,6 @@ with Tee(log_file):
 			# Combine left+right surface 
 			polydatamerge_ascii(RSL_WM_L_Surf_labeled, RSL_WM_R_Surf_labeled, SURFACE)
 
-			#QC
-			polydatamerge_ascii(RSL_WM_L_Surf_labeled_QC, RSL_WM_R_Surf_labeled_QC, SURFACE_QC)
-
-
 
 
 	if INTEGRATE_SC_DATA: 
@@ -1007,19 +986,12 @@ with Tee(log_file):
 		# Output of the next command: 
 		outputSurfaceFullMerge = os.path.join(OUT_INPUT_CONTINUITY_DWISPACE, "stx_" + ID + "_T1_CombinedSurface_white_" + PARCELLATION_TABLE_NAME + 
 			                                                                                                                       "_WithSubcorticals.vtk") 
-		
-		#QC:
-		outputSurfaceFullMerge_QC = os.path.join(OUT_SLICER, "stx_" + ID + "_T1_CombinedSurface_white_QC" + PARCELLATION_TABLE_NAME + 
-			                                                                                                                       "_WithSubcorticals.vtk") 
 
 		if os.path.exists(outputSurfaceFullMerge):
 			print("Combine cortical and subcortical file: Found Skipping combining cortical and subcortical")
 		else: 
 			# Integration of subcortical data
 			polydatamerge_ascii(subsAllDWISpace, SURFACE, outputSurfaceFullMerge)
-
-			#QC: 
-			polydatamerge_ascii(outputSurface, SURFACE_QC, outputSurfaceFullMerge_QC)
 
 
 			# Add outputSurfaceFullMerge in INPUTDATA folder for visualization 
