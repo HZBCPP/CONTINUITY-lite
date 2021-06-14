@@ -150,7 +150,7 @@ def executable_path(default_filename, user_filename):
 # *************************************************************************************
 
 def CONTINUITY(user_filename):
-    run_command("CONTINUITY script", [sys.executable, os.path.abspath(os.path.dirname(__file__)) + "/CONTINUITY_completed_script.py", user_filename ])     
+    run_command("CONTINUITY script", [sys.executable, os.path.realpath(os.path.dirname(__file__)) + "/CONTINUITY_completed_script.py", user_filename ])     
 
 
 
@@ -165,7 +165,7 @@ def cluster(slurm_job_file, cluster_command_line):
 
     slurm_job_file.write('module add python \n') 
 
-    path = os.path.abspath(os.path.dirname(__file__))
+    path = os.path.realpath(os.path.dirname(__file__))
     slurm_job_file.write('python3 CONTINUITY_completed_script.py ' + path + "/CONTINUITY_ARGS/args_main_CONTINUITY.json")  
     slurm_job_file.close()  
 
@@ -590,16 +590,16 @@ def compute_radius_of_each_seed(line):
 
 def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_with_surfaces, KWMDir, SALTDir, ID):
     # KWM file for left and right surfaces:
-    left_KWM  = os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/Atlas_Left_Destrieux.KWM.txt'
-    right_KWM = os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/Atlas_Right_Destrieux.KWM.txt'
+    left_KWM  = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/Atlas_Left_Destrieux.KWM.txt'
+    right_KWM = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/Atlas_Right_Destrieux.KWM.txt'
 
     # Left and right surfaces: 
-    left  = os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_left_hires.vtk'
-    right = os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_right_hires.vtk'
+    left  = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_left_hires.vtk'
+    right = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_right_hires.vtk'
 
     # Outputs: 
-    left_out  = os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/surface_destrieux_left.vtk'
-    right_out = os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/surface_destrieux_rigth.vtk'
+    left_out  = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/surface_destrieux_left.vtk'
+    right_out = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/surface_destrieux_rigth.vtk'
 
     # Combine surfaces and scalar: 
     if not os.path.exists(left_out):
@@ -692,7 +692,7 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
                 scalar = key["labelValue"]
 
                 # Read the surface of this subcortical region: 
-                out_surface_destrieux = os.path.abspath(os.path.dirname(__file__)) + '/CONTINUITY_QC/sc_surf_organize/surface_merge_' + region + '.vtk'
+                out_surface_destrieux = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/sc_surf_organize/surface_merge_' + region + '.vtk'
 
                 reader = vtk.vtkPolyDataReader()
                 reader.SetFileName(out_surface_destrieux)

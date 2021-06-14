@@ -18,7 +18,7 @@ from CONTINUITY_functions import *
 
 if __name__ == '__main__':
 
-    dir_path = os.path.abspath(os.path.dirname(__file__)) #os.path.dirname(__file__) #/BAND/USERS/elodie/CONTINUITY
+    dir_path = os.path.realpath(os.path.dirname(__file__)) #/BAND/USERS/elodie/CONTINUITY
    
    
     # *****************************************
@@ -30,21 +30,8 @@ if __name__ == '__main__':
     parser.add_argument('-csv_file'               , nargs='?', type=str, help="csv file with data information for one or several subject") 
 
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
-    #default_config_filename = dir_path + "/CONTINUITY_ARGS/args_setup.json"
-    #TEST: 
-    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test.json" 
-    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_create_SALT.json" 
-    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" 
-    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_no_sc.json" 
-
-    default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix.json" 
-    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix1.json" 
-    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_mrtrix2.json"
-
-    #default_config_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_completed_test_DIPY.json" 
-
-
-
+    default_config_filename = "/work/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" # dir_path + "/args_setup.json"
+   
     with open(default_config_filename) as default_file: 
         data_default = json.load(default_file)
 
@@ -62,8 +49,7 @@ if __name__ == '__main__':
     ''' Display arguments values
     for key, val in args.items():
         print("args:",key ,": '",args[key],"'")  
-    print("noGUI:",args['noGUI'] )
-    print("cluster:",args['cluster'], "csv_file:",args['csv_file'], "default_config_filename:",args['default_config_filename']  )
+    print("noGUI:",args['noGUI'], "cluster:",args['cluster'], "csv_file:",args['csv_file'], "default_config_filename:",args['default_config_filename'])
     '''
 
     # *****************************************
@@ -78,42 +64,35 @@ if __name__ == '__main__':
         data_default = json.load(default_file)    
 
     # User file
-    #user_filename = dir_path + "/CONTINUITY_ARGS/args_main_CONTINUITY.json" 
-    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_create_SALT.json" 
-    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_no_create_SALT.json" 
-    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_no_sc.json" 
-    user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix.json" 
-    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix1.json" 
-    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_mrtrix2.json" 
+    OUT_HOME = os.getenv("HOME") + "/CONTINUITY_json_file"
+    if not os.path.exists( OUT_HOME ):
+        os.mkdir(OUT_HOME)
 
-    #user_filename = "/BAND/USERS/elodie/testing/args_main_CONTINUITY_DIPY.json" 
+    user_filename = OUT_HOME + "/user_args_CONTINUITY_" + str(datetime.datetime.now()) + ".json"
+    shutil.copy(default_config_filename, user_filename)
 
-
-
+    # Initialization of user file with default values in json default file provide by the user 
     with open(user_filename) as user_file:
         global data_user
         data_user = json.load(user_file)
 
-
-    # Initialization of user file with default values in json default file provide by the user 
-    for categories, infos in data_default.items():
+    for categories, infos in data_user.items():
         for key in infos: 
-            data_user[categories][key]['value'] = data_default[categories][key]['default']
+            # change 'default' by 'value'
+            d = data_user[categories][key]
+            d['value'] = d.pop('default')
 
-            with open(user_filename, "w+") as user_file: 
+        with open(user_filename, "w+") as user_file: 
                 user_file.write(json.dumps(data_user, indent=4)) 
+
     
 
     # *****************************************
     # Run CONTINUITY thanks to a command line: -noGUI / -cvs_file / -cluster
     # *****************************************
 
-    # Create the output folder
-    if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
-        os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
-
     if args["noGUI"]: 
-
+        
         with open(user_filename) as user_file:
             data_user = json.load(user_file)
 
@@ -129,6 +108,16 @@ if __name__ == '__main__':
 
         # Find and write localisation of executables            
         executable_path(default_config_filename, user_filename)
+
+
+
+        # Create the output folder
+        if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
+            os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
+
+        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
+        if not os.path.exists( OUT_FOLDER ):
+            os.mkdir(OUT_FOLDER)
     
 
         # *****************************************
@@ -156,11 +145,6 @@ if __name__ == '__main__':
             if not args["cluster"]:  # Run localy: -noGUI  
                 CONTINUITY(user_filename)
             else: # run in longleaf: -noGUI -cluster 
-
-                OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
-                if not os.path.exists( OUT_FOLDER ):
-                    os.mkdir(OUT_FOLDER)
-
                 cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
 
 
@@ -192,10 +176,6 @@ if __name__ == '__main__':
                         print("SUBJECT: ", row['ID'] )
                         CONTINUITY(user_filename)
                     else: # Run localy: -noGUI -csv_file
-                    
-                        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
-                        if not os.path.exists( OUT_FOLDER ):
-                            os.mkdir(OUT_FOLDER)
                         cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"])
 
         

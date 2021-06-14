@@ -28,7 +28,7 @@ class Ui(QtWidgets.QTabWidget):
         user_json_filename = sys.argv[2]
 
         super(Ui, self).__init__()
-        uic.loadUi('interface_tab.ui', self)
+        uic.loadUi(os.path.realpath(os.path.dirname(__file__)) + '/interface_tab.ui', self)
 
         # write default values on interface:  
         Ui.setup_default_values(self, default_json_filename, user_json_filename)
@@ -1397,10 +1397,10 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def open_visualisation_button_clicked(self):
-        Ui.run_command("Open visualization interface", [sys.executable, os.path.abspath(os.path.dirname(__file__)) + "/CONTINUITY_QC/main_interface_visualization.py", default_json_filename, user_json_filename])
+        Ui.run_command("Open visualization interface", [sys.executable, os.path.realpath(os.path.dirname(__file__)) + "/CONTINUITY_QC/main_interface_visualization.py", default_json_filename, user_json_filename])
 
     def open_slicer_first_interface_button_clicked(self):
-        Ui.run_command("Open slicer with the first interface", [sys.executable, os.path.abspath(os.path.dirname(__file__)) +"/CONTINUITY_QC/slicer_QC.py", user_json_filename])
+        Ui.run_command("Open slicer with the first interface", [sys.executable, os.path.realpath(os.path.dirname(__file__)) +"/CONTINUITY_QC/slicer_QC.py", user_json_filename])
 
 
 

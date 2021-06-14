@@ -150,7 +150,7 @@ SegPostProcessCLPPath     = json_user_object["Executables"]["SegPostProcessCLP"]
 GenParaMeshCLPPath        = json_user_object["Executables"]["GenParaMeshCLP"]['value']
 ParaToSPHARMMeshCLPPath   = json_user_object["Executables"]["ParaToSPHARMMeshCLP"]['value'] 
 
-writeSeedListScript       = os.path.abspath(os.path.dirname(__file__)) + "/writeSeedList.py" 
+writeSeedListScript       = os.path.realpath(os.path.dirname(__file__)) + "/writeSeedList.py" 
 
 
 os.environ["ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS"] = str(nb_threads)
@@ -251,7 +251,7 @@ with Tee(log_file):
 	# *****************************************
 
 	# Convert DWI nifti input to nrrd:  
-	[path, afile] =os.path.split(DWI_DATA) #os.path.abspath(os.path.dirname(__file__)) + '/input_CONTINUITY'    and   T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
+	[path, afile] =os.path.split(DWI_DATA) #os.path.realpath(os.path.dirname(__file__)) + '/input_CONTINUITY'    and   T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
 
 	if afile.endswith('nii.gz'): 
 
@@ -800,29 +800,6 @@ with Tee(log_file):
 			data = json.dump(data, data_file, indent = 2)
 
 
-
-
-
-	else: #no integrate sc data
-		print("subcorticals_region_names", subcorticals_region_names)
-		with open(only_matrix_parcellation_table, 'r') as data_file:
-			data = json.load(data_file)
-
-			for i in range(len(data)):
-				if data[i]['name'] == subcorticals_region_names[0]:  #work because elem in list in the same order by building of this list
-					data.pop(i)
-					subcorticals_region_names.pop(0)
-
-					print("subcorticals_region_names", subcorticals_region_names)
-
-					break
-
-			with open(only_matrix_parcellation_table, 'w') as data_file:
-				data = json.dump(data, data_file, indent = 2)
-
-		print("subcorticals_region_names", subcorticals_region_names)
-
-
 		
 		if PARCELLATION_TABLE_NAME == 'Destrieux': 
 			print("*****************************************")
@@ -873,6 +850,29 @@ with Tee(log_file):
 			command=[pathPOLY_TRANSTOOL_EXE, "--fiber_file",outputSurface, "-D", ConcatedWarp, "-o", subsAllDWISpace, "--inverty", "--invertx"]
 			run_command("POLY_TRANSTOOL_EXE: combining subcortical data transform into DWISpace", command)
 
+
+
+
+
+
+	else: #no integrate sc data
+		print("subcorticals_region_names", subcorticals_region_names)
+		with open(only_matrix_parcellation_table, 'r') as data_file:
+			data = json.load(data_file)
+
+			for i in range(len(data)):
+				if data[i]['name'] == subcorticals_region_names[0]:  #work because elem in list in the same order by building of this list
+					data.pop(i)
+					subcorticals_region_names.pop(0)
+
+					print("subcorticals_region_names", subcorticals_region_names)
+
+					break
+
+			with open(only_matrix_parcellation_table, 'w') as data_file:
+				data = json.dump(data, data_file, indent = 2)
+
+		print("subcorticals_region_names", subcorticals_region_names)
 
 	print("*****************************************")
 	print("Labelization of the cortical surfaces ")
