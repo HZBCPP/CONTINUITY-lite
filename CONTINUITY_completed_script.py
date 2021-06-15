@@ -1133,24 +1133,6 @@ with Tee(log_file):
 
 
 	
-	print("*****************************************")
-	print("Convert T1 image to nifti format")
-	print("*****************************************")
-	
-	NETWORK_DIR = os.path.join(OUT_TRACTOGRAPHY, "Network" + overlapName + loopcheckName)
-	if not os.path.exists( NETWORK_DIR ):
-	    os.mkdir(NETWORK_DIR)
-
-	T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
-	if os.path.exists(T1_nifti):
-	    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
-	else:
-	    print("Convert T1 image to nifti format ")
-	    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
-														                             "--conversionMode", "NrrdToFSL", 
-														                             "--outputVolume", T1_nifti, 
-														                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
-														                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
 
 
 
@@ -1177,6 +1159,11 @@ with Tee(log_file):
 
 		if only_bedpostx: 
 			exit()
+
+		NETWORK_DIR = os.path.join(OUT_TRACTOGRAPHY, "Network" + overlapName + loopcheckName)
+		if not os.path.exists( NETWORK_DIR ):
+		    os.mkdir(NETWORK_DIR)
+
 
 		# Name define by probtrackx2 tool:
 		matrix = "fdt_network_matrix"
@@ -1254,6 +1241,24 @@ with Tee(log_file):
 		else: 
 			print("to do: change interface, warning because of upsampling")
 
+
+
+
+		print("*****************************************")
+		print("Convert T1 image to nifti format")
+		print("*****************************************")
+		
+
+		T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
+		if os.path.exists(T1_nifti):
+		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
+		else:
+		    print("Convert T1 image to nifti format ")
+		    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
+															                             "--conversionMode", "NrrdToFSL", 
+															                             "--outputVolume", T1_nifti, 
+															                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
+															                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
 
 
 		
