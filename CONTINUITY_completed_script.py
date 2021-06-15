@@ -272,6 +272,8 @@ with Tee(log_file):
 														                             "--conversionMode", "FSLToNrrd", 
 														                             "--outputVolume", output_nrrd, 
 														                             "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
+
+
 		# New path :
 		DWI_DATA = output_nrrd
 			
@@ -1072,20 +1074,50 @@ with Tee(log_file):
 	if os.path.exists(DiffusionBrainMask):
 	    print("Brain mask FSL file: Found Skipping convertion")
 	else: 
+		print("DWIConvert BRAINMASK to FSL format")
+		'''
 	    run_command("DWIConvert BRAINMASK to FSL format(err ok)", [DWIConvertPath, "--inputVolume", DWI_MASK, 
 								                                                   "--conversionMode", "NrrdToFSL", 
 								                                                   "--outputVolume", DiffusionBrainMask, 
 								                                                   "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 								                                                   "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+		'''
+	    # Load nrrd:
+		reader = vtk.vtkNrrdReader()
+		reader.SetFileName(DWI_MASK)
+		reader.Update()
+
+		# Save nifti:
+		writer = vtk.vtkNIFTIImageWriter()
+		writer.SetInputData(reader.GetOutput())
+		writer.SetFileName(DiffusionBrainMask)
+		writer.SetInformation(reader.GetInformation())
+		writer.Write()
+
+
 	# DWIConvert DWI: Nrrd to FSL format
 	if os.path.exists(DiffusionData):
 	    print("DWI FSL file: Found Skipping convertion")
 	else:
+		print("DWIConvert DWI to FSL format")
+		'''
 	    run_command("DWIConvert DWI to FSL format", [DWIConvertPath, "--inputVolume", DWI_NRRD, # original: DWI_DATA
 							                                         "--conversionMode", "NrrdToFSL", 
 							                                         "--outputVolume", DiffusionData, 
 							                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
 							                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
+		'''
+	    # Load nrrd:
+		reader = vtk.vtkNrrdReader()
+		reader.SetFileName(DWI_NRRD)
+		reader.Update()
+
+		# Save nifti:
+		writer = vtk.vtkNIFTIImageWriter()
+		writer.SetInputData(reader.GetOutput())
+		writer.SetFileName(DiffusionData)
+		writer.SetInformation(reader.GetInformation())
+		writer.Write()
 	
 
 
@@ -1221,26 +1253,6 @@ with Tee(log_file):
 	if tractography_model == "MRtrix (default: IFOD2) " or tractography_model == "MRtrix (Tensor-Prob)" or tractography_model == "MRtrix (iFOD1)": 
 
 
-
-		print("*****************************************")
-		print("Convert T1 image to nifti format")
-		print("*****************************************")
-
-		if not DO_REGISTRATION: 
-			T1_OUT_NRRD = T1_DATA
-
-		T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
-		if os.path.exists(T1_nifti):
-		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
-		else:
-		    print("Convert T1 image to nifti format ")
-		    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
-															                             "--conversionMode", "NrrdToFSL", 
-															                             "--outputVolume", T1_nifti, 
-															                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
-															                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
-
-
 		
 		print("*****************************************")
 		print("Run tractography with " + tractography_model )
@@ -1287,45 +1299,57 @@ with Tee(log_file):
 								   									'-mask', DiffusionBrainMask, # input
 								    								'-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
 								    								'-nthreads', str(nb_threads) ])
-		'''
-		# *****************************************
-		# Convert nrrd T1 in DWI space file in nifti
-		# *****************************************
 
-		T1_DWI_SPACE_nifti = os.path.join(OUT_MRTRIX, "T1_DWI_SPACE.nii.gz")
-		if os.path.exists(T1_DWI_SPACE_nifti):
-		    print("T1_nifti file in DWI space: Found Skipping Convert T1 image to nifti format ")
-		else:
-			# Load nrrd:
-			reader = vtk.vtkNrrdReader()
-			reader.SetFileName(T1_OUT_NRRD)
-			reader.Update()
-
-			# Save nifti:
-			writer = vtk.vtkNIFTIImageWriter()
-			writer.SetInputData(reader.GetOutput())
-			writer.SetFileName(T1_DWI_SPACE_nifti)
-			writer.SetInformation(reader.GetInformation())
-			writer.Write()
-		'''
 
 
 		# *****************************************
 		# Create 5tt   
 		# *****************************************	    
-		
-		# First choice: use T1_OUT_NRRD (after convertion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
-		fivett_img = os.path.join(OUT_MRTRIX,"5tt.nii.gz")
-		if os.path.exists(fivett_img):
-		    print("5tt image already compute")
-		else: 
-			print("Create 5tt image (~20min )")      
-			now = datetime.datetime.now()
-			print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
-			start = time.time()
-			run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_nifti, fivett_img, '-nthreads', str(nb_threads) ])
-			print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
-		
+		if act_option: 
+			print("*****************************************")
+			print("Convert T1 image to nifti format")
+			print("*****************************************")
+
+			#if not DO_REGISTRATION: 
+			#	T1_OUT_NRRD = T1_DATA
+
+			T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
+			if os.path.exists(T1_nifti):
+			    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
+			else:
+			    print("Convert T1 image to nifti format ")
+			    '''
+			    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
+																                             "--conversionMode", "NrrdToFSL", 
+																                             "--outputVolume", T1_nifti, 
+																                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
+																                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
+				'''
+			    # Load nrrd:
+				reader = vtk.vtkNrrdReader()
+				reader.SetFileName(T1_OUT_NRRD)
+				reader.Update()
+
+				# Save nifti:
+				writer = vtk.vtkNIFTIImageWriter()
+				writer.SetInputData(reader.GetOutput())
+				writer.SetFileName(T1_nifti)
+				writer.SetInformation(reader.GetInformation())
+				writer.Write()
+
+
+			# First choice: use T1_OUT_NRRD (after convertion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
+			fivett_img = os.path.join(OUT_MRTRIX,"5tt.nii.gz")
+			if os.path.exists(fivett_img):
+			    print("5tt image already compute")
+			else: 
+				print("Create 5tt image (~20min )")      
+				now = datetime.datetime.now()
+				print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
+				start = time.time()
+				run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_nifti, fivett_img, '-nthreads', str(nb_threads) ])
+				print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
+			
 
 		# *****************************************
 		# Output folder
@@ -1731,6 +1755,37 @@ with Tee(log_file):
 		OUT_MRTRIX = os.path.join(OUT_TRACTOGRAPHY, tractography_model) 
 		if not os.path.exists(OUT_MRTRIX):
 			os.mkdir(OUT_MRTRIX)
+
+		print("*****************************************")
+		print("Convert T1 image to nifti format")
+		print("*****************************************")
+
+		#if not DO_REGISTRATION: 
+		#	T1_OUT_NRRD = T1_DATA
+
+		T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
+		if os.path.exists(T1_nifti):
+		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
+		else:
+		    print("Convert T1 image to nifti format ")
+		    '''
+		    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
+															                             "--conversionMode", "NrrdToFSL", 
+															                             "--outputVolume", T1_nifti, 
+															                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
+															                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
+			'''
+		    # Load nrrd:
+			reader = vtk.vtkNrrdReader()
+			reader.SetFileName(T1_OUT_NRRD)
+			reader.Update()
+
+			# Save nifti:
+			writer = vtk.vtkNIFTIImageWriter()
+			writer.SetInputData(reader.GetOutput())
+			writer.SetFileName(T1_nifti)
+			writer.SetInformation(reader.GetInformation())
+			writer.Write()
 			
 
 		#*****************************************

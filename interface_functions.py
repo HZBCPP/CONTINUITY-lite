@@ -102,7 +102,7 @@ class Ui(QtWidgets.QTabWidget):
 
         # NO registration ID: text and help 
         self.job_name_no_registration_lineEdit.setText( json_setup_object['Arguments']["ID"]["default"] )
-        self.question_job_name_no_registration_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
+        self.question_job_name_textEdit_2.setStyleSheet("color: transparent;"  "background-color: transparent")
 
 
         # Parcellation table for registration and non registration:
@@ -338,10 +338,10 @@ class Ui(QtWidgets.QTabWidget):
     def question_job_name_no_registration_pushButton_clicked(self):
         if self.question_job_name_no_registration_pushButton.text() == "Help":
             self.question_job_name_no_registration_pushButton.setText("close help")
-            self.question_job_name_no_registration_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
+            self.question_job_name_textEdit_2.setStyleSheet("color: blue;"  "background-color: transparent")
         else: # self.question_job_name_pushButton.text() == "X":
             self.question_job_name_no_registration_pushButton.setText("Help")
-            self.question_job_name_no_registration_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
+            self.question_job_name_textEdit_2.setStyleSheet("color: transparent;"  "background-color: transparent")
 
 
 
