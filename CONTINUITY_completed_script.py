@@ -305,8 +305,6 @@ with Tee(log_file):
 		if not left_right_surface_need_to_be_combining: 
 			surface_already_labeled = True
 
-	print(left_right_surface_need_to_be_combining, surface_already_labeled)
-
 
 
 	if DO_REGISTRATION:
@@ -1075,14 +1073,14 @@ with Tee(log_file):
 	    print("Brain mask FSL file: Found Skipping convertion")
 	else: 
 		print("DWIConvert BRAINMASK to FSL format")
-		'''
-	    run_command("DWIConvert BRAINMASK to FSL format(err ok)", [DWIConvertPath, "--inputVolume", DWI_MASK, 
+		
+		run_command("DWIConvert BRAINMASK to FSL format(err ok)", [DWIConvertPath, "--inputVolume", DWI_MASK, 
 								                                                   "--conversionMode", "NrrdToFSL", 
 								                                                   "--outputVolume", DiffusionBrainMask, 
 								                                                   "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 								                                                   "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 		'''
-	    # Load nrrd:
+		# Load nrrd:
 		reader = vtk.vtkNrrdReader()
 		reader.SetFileName(DWI_MASK)
 		reader.Update()
@@ -1093,6 +1091,7 @@ with Tee(log_file):
 		writer.SetFileName(DiffusionBrainMask)
 		writer.SetInformation(reader.GetInformation())
 		writer.Write()
+		'''
 
 
 	# DWIConvert DWI: Nrrd to FSL format
@@ -1100,14 +1099,14 @@ with Tee(log_file):
 	    print("DWI FSL file: Found Skipping convertion")
 	else:
 		print("DWIConvert DWI to FSL format")
-		'''
-	    run_command("DWIConvert DWI to FSL format", [DWIConvertPath, "--inputVolume", DWI_NRRD, # original: DWI_DATA
+		
+		run_command("DWIConvert DWI to FSL format", [DWIConvertPath, "--inputVolume", DWI_NRRD, # original: DWI_DATA
 							                                         "--conversionMode", "NrrdToFSL", 
 							                                         "--outputVolume", DiffusionData, 
 							                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
 							                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
 		'''
-	    # Load nrrd:
+		# Load nrrd:
 		reader = vtk.vtkNrrdReader()
 		reader.SetFileName(DWI_NRRD)
 		reader.Update()
@@ -1118,6 +1117,7 @@ with Tee(log_file):
 		writer.SetFileName(DiffusionData)
 		writer.SetInformation(reader.GetInformation())
 		writer.Write()
+		'''
 
 
 
@@ -1317,7 +1317,7 @@ with Tee(log_file):
 			    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
 			else:
 				print("Convert T1 image to nifti format ")
-				'''
+				
 				run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
 																                             "--conversionMode", "NrrdToFSL", 
 																                             "--outputVolume", T1_nifti, 
@@ -1335,6 +1335,7 @@ with Tee(log_file):
 				writer.SetFileName(T1_nifti)
 				writer.SetInformation(reader.GetInformation())
 				writer.Write()
+				'''
 
 
 			# First choice: use T1_OUT_NRRD (after convertion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
@@ -1767,7 +1768,7 @@ with Tee(log_file):
 		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
 		else:
 			print("Convert T1 image to nifti format ")
-			'''
+			
 			run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
 															                             "--conversionMode", "NrrdToFSL", 
 															                             "--outputVolume", T1_nifti, 
@@ -1785,6 +1786,7 @@ with Tee(log_file):
 			writer.SetFileName(T1_nifti)
 			writer.SetInformation(reader.GetInformation())
 			writer.Write()
+			'''
 			
 
 		#*****************************************
