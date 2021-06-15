@@ -1052,7 +1052,14 @@ with Tee(log_file):
 	if not os.path.exists(OutSurfaceName):
 	    os.mkdir(OutSurfaceName)
 
-	'''
+
+
+	if not DO_REGISTRATION: 
+		DWI_MASK = BRAINMASK
+		DWI_NRRD = DWI_DATA
+
+
+
 	print("*****************************************")
 	print("DWIConvert BRAINMASK and DWI: nrrd to nii")
 	print("*****************************************")
@@ -1079,7 +1086,9 @@ with Tee(log_file):
 							                                         "--outputVolume", DiffusionData, 
 							                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
 							                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
-	'''
+	
+
+
 
 
 	print("*****************************************")
@@ -1211,43 +1220,14 @@ with Tee(log_file):
 
 	if tractography_model == "MRtrix (default: IFOD2) " or tractography_model == "MRtrix (Tensor-Prob)" or tractography_model == "MRtrix (iFOD1)": 
 
-		if DO_REGISTRATION: 
-			print("*****************************************")
-			print("DWIConvert BRAINMASK and DWI: nrrd to nii")
-			print("*****************************************")
-
-			# Outputs:
-			DiffusionData      = os.path.join(OUT_DIFFUSION, "data.nii.gz") 
-			DiffusionBrainMask = os.path.join(OUT_DIFFUSION, "nodif_brain_mask.nii.gz")
-
-			# DWIConvert BRAINMASK: NrrdToFSL: .nrrd file format to FSL format (.nii.gz)     # Err: "No gradient vectors found " --> it is normal 
-			if os.path.exists(DiffusionBrainMask):
-			    print("Brain mask FSL file: Found Skipping convertion")
-			else: 
-			    run_command("DWIConvert BRAINMASK to FSL format(err ok)", [DWIConvertPath, "--inputVolume", DWI_MASK, 
-										                                                   "--conversionMode", "NrrdToFSL", 
-										                                                   "--outputVolume", DiffusionBrainMask, 
-										                                                   "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
-										                                                   "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
-			# DWIConvert DWI: Nrrd to FSL format
-			if os.path.exists(DiffusionData):
-			    print("DWI FSL file: Found Skipping convertion")
-			else:
-			    run_command("DWIConvert DWI to FSL format", [DWIConvertPath, "--inputVolume", DWI_NRRD, # original: DWI_DATA
-									                                         "--conversionMode", "NrrdToFSL", 
-									                                         "--outputVolume", DiffusionData, 
-									                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
-									                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
-		else: 
-			print("to do: change interface, warning because of upsampling")
-
-
 
 
 		print("*****************************************")
 		print("Convert T1 image to nifti format")
 		print("*****************************************")
-		
+
+		if not DO_REGISTRATION: 
+			T1_OUT_NRRD = T1_DATA
 
 		T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
 		if os.path.exists(T1_nifti):

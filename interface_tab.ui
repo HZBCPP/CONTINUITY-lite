@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1130</width>
+    <width>1128</width>
     <height>631</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>1</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -66,7 +66,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="tabsClosable">
       <bool>false</bool>
@@ -88,7 +88,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
@@ -116,7 +116,7 @@
            </rect>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_13">
            <attribute name="title">
@@ -2769,19 +2769,202 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
+     <widget class="QWidget" name="tab_25">
+      <attribute name="title">
+       <string>Job name and brain mask</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_17">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>1071</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Job name</string>
+       </property>
+       <widget class="QWidget" name="layoutWidget_16">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>431</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_31">
+         <item>
+          <widget class="QLabel" name="label_76">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+             <underline>true</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>Job name (optional): </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="job_name_no_registration_lineEdit">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="question_job_name_no_registration_pushButton">
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	background-color : rgb(114, 159, 207)
+}
+</string>
+           </property>
+           <property name="text">
+            <string>Help</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QTextEdit" name="question_job_name_textEdit_2">
+        <property name="geometry">
+         <rect>
+          <x>446</x>
+          <y>24</y>
+          <width>611</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Specify the ID/name of the subject. &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This ID/name gonna be the name of the directory containing all outputs of the tractography&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="acceptRichText">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_20">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>1071</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Brain mask</string>
+       </property>
+       <widget class="QWidget" name="layoutWidget_17">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>1051</width>
+          <height>171</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_12">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_77">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+             <underline>true</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>Brain mask (.nrrd):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="BRAINMASK_no_registration_pushButton">
+           <property name="text">
+            <string>Browser...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="3">
+          <widget class="QTextEdit" name="BRAINMASK_no_registration_textEdit">
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_55">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
      <widget class="QWidget" name="tab_16">
       <attribute name="title">
-       <string>Image data</string>
+       <string>DWI and parcellation table</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_6">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>1061</width>
-         <height>331</height>
+         <width>1071</width>
+         <height>291</height>
         </rect>
        </property>
        <property name="title">
@@ -2791,9 +2974,9 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>150</y>
-          <width>1041</width>
-          <height>171</height>
+          <y>130</y>
+          <width>1051</width>
+          <height>151</height>
          </rect>
         </property>
         <property name="title">
@@ -2804,8 +2987,8 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>10</x>
            <y>30</y>
-           <width>1051</width>
-           <height>131</height>
+           <width>1031</width>
+           <height>111</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_9">
@@ -2931,8 +3114,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>1041</width>
-          <height>111</height>
+          <width>1051</width>
+          <height>91</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -3002,61 +3185,585 @@ p, li { white-space: pre-wrap; }
         </layout>
        </widget>
       </widget>
-      <widget class="QWidget" name="layoutWidget">
+      <widget class="QGroupBox" name="groupBox_21">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>350</y>
-         <width>1061</width>
-         <height>121</height>
+         <y>310</y>
+         <width>1071</width>
+         <height>191</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_10">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_49">
-          <item>
-           <widget class="QLabel" name="label_25">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-              <underline>true</underline>
-             </font>
-            </property>
-            <property name="text">
-             <string>Parcellation table (.json):</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="no_registration_parcellation_table_pushButton">
-            <property name="text">
-             <string>Browser...</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_8">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTextEdit" name="no_registration_parcellation_table_textEdit">
-          <property name="styleSheet">
-           <string notr="true">QTextEdit {
+       <property name="title">
+        <string>Parcellation table</string>
+       </property>
+       <widget class="QWidget" name="layoutWidget_15">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>150</y>
+          <width>431</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_84">
+         <item>
+          <widget class="QLabel" name="label_74">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+             <underline>true</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>Name of the parcellation table: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="parcellation_table_name_no_registration_lineEdit">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_41">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>30</y>
+          <width>1061</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_10">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_49">
+           <item>
+            <widget class="QLabel" name="label_25">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>Parcellation table (.json):</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="no_registration_parcellation_table_pushButton">
+             <property name="text">
+              <string>Browser...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QTextEdit" name="no_registration_parcellation_table_textEdit">
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
 	background-color : transparent
 }
 </string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_17">
+      <attribute name="title">
+       <string>Surface data</string>
+      </attribute>
+      <widget class="QTabWidget" name="tabWidget_9">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>1081</width>
+         <height>491</height>
+        </rect>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <widget class="QWidget" name="tab_26">
+        <attribute name="title">
+         <string>Surfaces</string>
+        </attribute>
+        <widget class="QGroupBox" name="left_right_not_combined_groupBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>1061</width>
+           <height>331</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Left and right surface not combining</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <widget class="QGroupBox" name="NO_registration_surface_already_labeled_groupBox">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>1041</width>
+            <height>181</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Left and right surfaces need to be labeled</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <widget class="QTextEdit" name="NO_registration_cortical_label_left_textEdit">
+           <property name="geometry">
+            <rect>
+             <x>11</x>
+             <y>100</y>
+             <width>511</width>
+             <height>71</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+          <widget class="QTextEdit" name="NO_registration_cortical_label_right_textEdit">
+           <property name="geometry">
+            <rect>
+             <x>529</x>
+             <y>100</y>
+             <width>501</width>
+             <height>71</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>11</x>
+             <y>67</y>
+             <width>1021</width>
+             <height>29</height>
+            </rect>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_26">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_33">
+              <item>
+               <widget class="QLabel" name="label_7">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <underline>true</underline>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Cortical label left (.txt):</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="NO_registration_cortical_label_left_pushButton">
+                <property name="text">
+                 <string>Browser...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_9">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_34">
+              <item>
+               <widget class="QLabel" name="label_13">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <underline>true</underline>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Cortical label right (.txt):</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="NO_registration_cortical_label_right_pushButton">
+                <property name="text">
+                 <string>Browser...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_46">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QPushButton" name="NO_registration_question_cortical_labeled_pushButton">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>80</width>
+             <height>25</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	background-color : rgb(114, 159, 207)
+}
+</string>
+           </property>
+           <property name="text">
+            <string>Help</string>
+           </property>
+          </widget>
+          <widget class="QTextEdit" name="NO_registration_question_cortical_labeled_textEdit">
+           <property name="geometry">
+            <rect>
+             <x>100</x>
+             <y>20</y>
+             <width>941</width>
+             <height>81</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Structure of each file: &amp;quot;NUMBER_OF_POINTS=&amp;quot;  then &amp;quot;DIMENSION=&amp;quot; then &amp;quot;TYPE=&amp;quot; then values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+          <zorder>NO_registration_question_cortical_labeled_textEdit</zorder>
+          <zorder>NO_registration_cortical_label_left_textEdit</zorder>
+          <zorder>NO_registration_cortical_label_right_textEdit</zorder>
+          <zorder>layoutWidget</zorder>
+          <zorder>NO_registration_question_cortical_labeled_pushButton</zorder>
+         </widget>
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>220</y>
+            <width>1041</width>
+            <height>29</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_32">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_42">
+             <item>
+              <widget class="QLabel" name="WMR_surface_diffusion_label">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                 <underline>true</underline>
+                </font>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Right surface data&lt;span style=&quot; color:#ef2929;&quot;&gt; in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="WM_R_Surf_NON_REGISTRATION_pushButton">
+               <property name="text">
+                <string>Browser...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_14">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_43">
+             <item>
+              <widget class="QLabel" name="WML_surface_diffusion_label">
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                 <underline>true</underline>
+                 <strikeout>false</strikeout>
+                </font>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Left surface data &lt;span style=&quot; color:#ef2929;&quot;&gt;in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="WM_L_Surf_NON_REGISTRATION_pushButton">
+               <property name="text">
+                <string>Browser...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_15">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>250</y>
+            <width>1041</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_44">
+           <item>
+            <widget class="QTextEdit" name="WM_R_Surf_NON_REGISTRATION_textEdit">
+             <property name="styleSheet">
+              <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="html">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="overwriteMode">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="WM_L_Surf_NON_REGISTRATION_textEdit">
+             <property name="styleSheet">
+              <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="html">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="overwriteMode">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="left_right_combined_groupBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>350</y>
+           <width>1061</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Left and right surfaces already combined</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="layoutWidget_7">
+          <property name="geometry">
+           <rect>
+            <x>12</x>
+            <y>30</y>
+            <width>411</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_50">
+           <item>
+            <widget class="QLabel" name="no_registration_surface_diffusion_label">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Surface data&lt;span style=&quot; color:#ef2929;&quot;&gt; labeled in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="SURFACE_USER_pushButton">
+             <property name="text">
+              <string>Browser...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QTextEdit" name="SURFACE_USER_textEdit">
+          <property name="geometry">
+           <rect>
+            <x>430</x>
+            <y>30</y>
+            <width>631</width>
+            <height>61</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -3068,22 +3775,104 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
+          <property name="overwriteMode">
+           <bool>true</bool>
+          </property>
          </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="layoutWidget_15">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>480</y>
-         <width>431</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_84">
-        <item>
-         <widget class="QLabel" name="label_74">
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_27">
+        <attribute name="title">
+         <string>Surfaces: additonal informations</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_33">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>1061</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Inner surface </string>
+         </property>
+         <widget class="QCheckBox" name="inner_surface_checkBox">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>631</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Inner surface contains color labels : check this if the surface contains labels for each region </string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="autoExclusive">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_14">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>1061</width>
+           <height>121</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Labelset name</string>
+         </property>
+         <widget class="QTextEdit" name="question_labelset_name_textEdit_no_registration">
+          <property name="geometry">
+           <rect>
+            <x>570</x>
+            <y>30</y>
+            <width>461</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In the VTK file containing labels, the labelset is identified by an ID. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="labelset_lineEdit_no_registration">
+          <property name="geometry">
+           <rect>
+            <x>320</x>
+            <y>30</y>
+            <width>142</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_75">
+          <property name="geometry">
+           <rect>
+            <x>4</x>
+            <y>30</y>
+            <width>341</width>
+            <height>71</height>
+           </rect>
+          </property>
           <property name="font">
            <font>
             <weight>75</weight>
@@ -3092,607 +3881,32 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string>Name of the parcellation table: </string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="parcellation_table_name_no_registration_lineEdit">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_41">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_17">
-      <attribute name="title">
-       <string>Surface data</string>
-      </attribute>
-      <widget class="QGroupBox" name="left_right_not_combined_groupBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>1071</width>
-         <height>331</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Left and right surface not combining</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <widget class="QGroupBox" name="NO_registration_surface_already_labeled_groupBox">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>1051</width>
-          <height>181</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>Left and right surfaces need to be labeled</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <widget class="QTextEdit" name="NO_registration_cortical_label_left_textEdit">
-         <property name="geometry">
-          <rect>
-           <x>11</x>
-           <y>113</y>
-           <width>511</width>
-           <height>61</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-        <widget class="QTextEdit" name="NO_registration_cortical_label_right_textEdit">
-         <property name="geometry">
-          <rect>
-           <x>529</x>
-           <y>113</y>
-           <width>511</width>
-           <height>61</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-        <widget class="QWidget" name="layoutWidget">
-         <property name="geometry">
-          <rect>
-           <x>11</x>
-           <y>80</y>
-           <width>1041</width>
-           <height>29</height>
-          </rect>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_26">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_33">
-            <item>
-             <widget class="QLabel" name="label_7">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-                <underline>true</underline>
-               </font>
-              </property>
-              <property name="text">
-               <string>Cortical label left (.txt):</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="NO_registration_cortical_label_left_pushButton">
-              <property name="text">
-               <string>Browser...</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_9">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_34">
-            <item>
-             <widget class="QLabel" name="label_13">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-                <underline>true</underline>
-               </font>
-              </property>
-              <property name="text">
-               <string>Cortical label right (.txt):</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="NO_registration_cortical_label_right_pushButton">
-              <property name="text">
-               <string>Browser...</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_46">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QPushButton" name="NO_registration_question_cortical_labeled_pushButton">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>80</width>
-           <height>25</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-	background-color : rgb(114, 159, 207)
-}
-</string>
-         </property>
-         <property name="text">
-          <string>Help</string>
-         </property>
-        </widget>
-        <widget class="QTextEdit" name="NO_registration_question_cortical_labeled_textEdit">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>20</y>
-           <width>941</width>
-           <height>81</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-         </property>
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Structure of each file: &amp;quot;NUMBER_OF_POINTS=&amp;quot;  then &amp;quot;DIMENSION=&amp;quot; then &amp;quot;TYPE=&amp;quot; then values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-        <zorder>NO_registration_question_cortical_labeled_textEdit</zorder>
-        <zorder>NO_registration_cortical_label_left_textEdit</zorder>
-        <zorder>NO_registration_cortical_label_right_textEdit</zorder>
-        <zorder>layoutWidget</zorder>
-        <zorder>NO_registration_question_cortical_labeled_pushButton</zorder>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>11</x>
-          <y>220</y>
-          <width>1051</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_32">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_42">
-           <item>
-            <widget class="QLabel" name="WMR_surface_diffusion_label">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-               <underline>true</underline>
-              </font>
-             </property>
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Right surface data&lt;span style=&quot; color:#ef2929;&quot;&gt; in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="WM_R_Surf_NON_REGISTRATION_pushButton">
-             <property name="text">
-              <string>Browser...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_14">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_43">
-           <item>
-            <widget class="QLabel" name="WML_surface_diffusion_label">
-             <property name="font">
-              <font>
-               <pointsize>11</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-               <underline>true</underline>
-               <strikeout>false</strikeout>
-              </font>
-             </property>
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Left surface data &lt;span style=&quot; color:#ef2929;&quot;&gt;in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="WM_L_Surf_NON_REGISTRATION_pushButton">
-             <property name="text">
-              <string>Browser...</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_15">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>11</x>
-          <y>250</y>
-          <width>1051</width>
-          <height>72</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_44">
-         <item>
-          <widget class="QTextEdit" name="WM_R_Surf_NON_REGISTRATION_textEdit">
-           <property name="styleSheet">
-            <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-           <property name="html">
-            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="overwriteMode">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTextEdit" name="WM_L_Surf_NON_REGISTRATION_textEdit">
-           <property name="styleSheet">
-            <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-           <property name="html">
-            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="overwriteMode">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="left_right_combined_groupBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>350</y>
-         <width>1071</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Left and right surfaces already combined</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="layoutWidget_7">
-        <property name="geometry">
-         <rect>
-          <x>12</x>
-          <y>30</y>
-          <width>411</width>
-          <height>27</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_50">
-         <item>
-          <widget class="QLabel" name="no_registration_surface_diffusion_label">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-             <underline>true</underline>
-            </font>
-           </property>
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Surface data&lt;span style=&quot; color:#ef2929;&quot;&gt; labeled in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="SURFACE_USER_pushButton">
-           <property name="text">
-            <string>Browser...</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QTextEdit" name="SURFACE_USER_textEdit">
-        <property name="geometry">
-         <rect>
-          <x>430</x>
-          <y>30</y>
-          <width>631</width>
-          <height>51</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="overwriteMode">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_24">
-      <attribute name="title">
-       <string>Surfaces data: additional informations</string>
-      </attribute>
-      <widget class="QGroupBox" name="groupBox_33">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>1071</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Inner surface </string>
-       </property>
-       <widget class="QCheckBox" name="inner_surface_checkBox">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>631</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Inner surface contains color labels : check this if the surface contains labels for each region </string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="autoExclusive">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_14">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>100</y>
-         <width>1071</width>
-         <height>121</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Labelset name</string>
-       </property>
-       <widget class="QTextEdit" name="question_labelset_name_textEdit_no_registration">
-        <property name="geometry">
-         <rect>
-          <x>570</x>
-          <y>30</y>
-          <width>461</width>
-          <height>71</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-        </property>
-        <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In the VTK file containing labels, the labelset is identified by an ID. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="labelset_lineEdit_no_registration">
-        <property name="geometry">
-         <rect>
-          <x>320</x>
-          <y>30</y>
-          <width>142</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_75">
-        <property name="geometry">
-         <rect>
-          <x>4</x>
-          <y>30</y>
-          <width>341</width>
-          <height>71</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-          <underline>true</underline>
-         </font>
-        </property>
-        <property name="text">
-         <string>Labelset name in vtk inner surface file: 
+           <string>Labelset name in vtk inner surface file: 
  
  If you surfaces are not labeled you can put 
  the same name as your parcellation table </string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="question_labelset_name_pushButton_no_registration">
-        <property name="geometry">
-         <rect>
-          <x>480</x>
-          <y>30</y>
-          <width>80</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
+          </property>
+         </widget>
+         <widget class="QPushButton" name="question_labelset_name_pushButton_no_registration">
+          <property name="geometry">
+           <rect>
+            <x>480</x>
+            <y>30</y>
+            <width>80</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
 	background-color : rgb(114, 159, 207)
 }
 </string>
-        </property>
-        <property name="text">
-         <string>Help</string>
-        </property>
+          </property>
+          <property name="text">
+           <string>Help</string>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -7673,38 +7887,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>labelset_lineEdit_no_registration</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>no_registration_labelsetname_valuechanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>423</x>
-     <y>239</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>564</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>question_labelset_name_pushButton_no_registration</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>no_registration_question_labelset_name_pushButton_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>552</x>
-     <y>237</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>564</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>only_bedpostx_checkBox</sender>
    <signal>stateChanged(int)</signal>
    <receiver>TabWidget</receiver>
@@ -7732,6 +7914,54 @@ p, li { white-space: pre-wrap; }
     </hint>
     <hint type="destinationlabel">
      <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>job_name_no_registration_lineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>job_name_no_registration_textChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>293</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>question_job_name_no_registration_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>question_job_name_no_registration_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>432</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>BRAINMASK_no_registration_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>no_registration_Brainmask_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>220</x>
+     <y>270</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
      <y>315</y>
     </hint>
    </hints>
@@ -7852,5 +8082,8 @@ p, li { white-space: pre-wrap; }
   <slot>no_registration_question_labelset_name_pushButton_clicked()</slot>
   <slot>only_registration_checkBox_stateChanged()</slot>
   <slot>only_bedpostx_checkBox_stateChanged()</slot>
+  <slot>job_name_no_registration_textChanged()</slot>
+  <slot>question_job_name_no_registration_pushButton_clicked()</slot>
+  <slot>no_registration_Brainmask_button_clicked()</slot>
  </slots>
 </ui>

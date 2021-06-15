@@ -100,6 +100,11 @@ class Ui(QtWidgets.QTabWidget):
         self.job_name_lineEdit.setText( json_setup_object['Arguments']["ID"]["default"] )
         self.question_job_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
 
+        # NO registration ID: text and help 
+        self.job_name_no_registration_lineEdit.setText( json_setup_object['Arguments']["ID"]["default"] )
+        self.question_job_name_no_registration_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
+
+
         # Parcellation table for registration and non registration:
         self.PARCELLATION_TABLE_textEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE"]["default"])
             
@@ -304,6 +309,15 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
+    # NO registration: Write the job name in user information json file
+    # *****************************************
+
+    def job_name_no_registration_textChanged(self):
+        json_user_object['Arguments']["ID"]["value"] = self.job_name_no_registration_lineEdit.text()
+        Ui.update_user_json_file()
+
+
+    # *****************************************
     # Button help which display explanations
     # *****************************************
 
@@ -314,6 +328,20 @@ class Ui(QtWidgets.QTabWidget):
         else: # self.question_job_name_pushButton.text() == "X":
             self.question_job_name_pushButton.setText("Help")
             self.question_job_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
+
+
+
+    # *****************************************
+    # No registration: Button help which display explanations
+    # *****************************************
+
+    def question_job_name_no_registration_pushButton_clicked(self):
+        if self.question_job_name_no_registration_pushButton.text() == "Help":
+            self.question_job_name_no_registration_pushButton.setText("close help")
+            self.question_job_name_no_registration_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
+        else: # self.question_job_name_pushButton.text() == "X":
+            self.question_job_name_no_registration_pushButton.setText("Help")
+            self.question_job_name_no_registration_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
 
 
 
@@ -417,7 +445,7 @@ class Ui(QtWidgets.QTabWidget):
             self.question_labelset_name_pushButton.setText("close help")
             self.question_labelset_name_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
             
-        else: # self.question_job_name_pushButton.text() == "X":
+        else: 
             self.question_labelset_name_pushButton.setText("Help")
             self.question_labelset_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")  
 
@@ -427,7 +455,7 @@ class Ui(QtWidgets.QTabWidget):
             self.question_labelset_name_pushButton_no_registration.setText("close help")
             self.question_labelset_name_textEdit_no_registration.setStyleSheet("color: blue;"  "background-color: transparent")
             
-        else: # self.question_job_name_pushButton.text() == "X":
+        else: 
             self.question_labelset_name_pushButton_no_registration.setText("Help")
             self.question_labelset_name_textEdit_no_registration.setStyleSheet("color: transparent;"  "background-color: transparent")   
 
@@ -691,7 +719,7 @@ class Ui(QtWidgets.QTabWidget):
                                                 'In each subfolder, you need to provide a file with a name like that: "job_name-T1_SkullStripped_scaled_label_'+
                                                 '<font color="red">region</font>_..."  \n where "job_name" is the same name that specify in the first tab')
             self.question_SALT_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
-        else: # self.question_job_name_pushButton.text() == "X":
+        else: 
             self.question_SALT_pushButton.setText("Help")
             self.question_SALT_textEdit.setText("")
             self.question_SALT_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
@@ -708,7 +736,7 @@ class Ui(QtWidgets.QTabWidget):
             self.question_KWM_textEdit.setText('KWM directory : directory with a txt file per subcortical region. For each subcortical region, you need to provide a file' +
                                                ' which contains the name of the subcortical region in his name.')
             self.question_KWM_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
-        else: # self.question_job_name_pushButton.text() == "X":
+        else: 
             self.question_KWM_pushButton.setText("Help")
             self.question_KWM_textEdit.setText("")
             self.question_KWM_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
@@ -1077,6 +1105,18 @@ class Ui(QtWidgets.QTabWidget):
         if fileName:
             self.no_registration_DWI_textEdit.setText(fileName)
             json_user_object['Arguments']["DWI_DATA"]["value"] = fileName
+            Ui.update_user_json_file()
+
+
+    # *****************************************
+    # NO registration: open file system and write the Brain mask path in user information json file
+    # *****************************************
+
+    def no_registration_Brainmask_button_clicked(self):
+        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
+        if fileName:
+            self.BRAINMASK_no_registration_textEdit.setText(fileName)
+            json_user_object['Arguments']["BRAINMASK"]["value"] = fileName
             Ui.update_user_json_file()
 
 
