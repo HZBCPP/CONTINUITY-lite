@@ -2769,7 +2769,7 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_25">
       <attribute name="title">
@@ -3115,7 +3115,7 @@ p, li { white-space: pre-wrap; }
           <x>10</x>
           <y>30</y>
           <width>1051</width>
-          <height>91</height>
+          <height>105</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -3649,7 +3649,7 @@ p, li { white-space: pre-wrap; }
             <x>11</x>
             <y>250</y>
             <width>1041</width>
-            <height>71</height>
+            <height>72</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_44">
@@ -7959,6 +7959,22 @@ p, li { white-space: pre-wrap; }
     <hint type="sourcelabel">
      <x>220</x>
      <y>270</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelset_lineEdit_no_registration</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>no_registration_labelsetname_valuechanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>425</x>
+     <y>268</y>
     </hint>
     <hint type="destinationlabel">
      <x>563</x>
