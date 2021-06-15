@@ -871,14 +871,19 @@ with Tee(log_file):
 		with open(only_matrix_parcellation_table, 'r') as data_file:
 			data = json.load(data_file)
 
-			for i in range(len(data)):
-				if data[i]['name'] == subcorticals_region_names[0]:  #work because elem in list in the same order by building of this list
-					data.pop(i)
-					subcorticals_region_names.pop(0)
-					break
+		i = 0 
+		while i < len(data)-1:
 
-			with open(only_matrix_parcellation_table, 'w') as data_file:
-				data = json.dump(data, data_file, indent = 2)
+			if data[i]['name'] in subcorticals_region_names:  #work because elem in list in the same order by building of this list
+				subcorticals_region_names.remove(data[i]['name'])
+				data.pop(i)
+				i -= 1
+			else: 
+				i +=1
+
+		with open(only_matrix_parcellation_table, 'w') as data_file:
+			data = json.dump(data, data_file, indent = 2)
+
 
 
 	print("*****************************************")
