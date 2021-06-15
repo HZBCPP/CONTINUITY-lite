@@ -1118,7 +1118,6 @@ with Tee(log_file):
 		writer.SetFileName(DiffusionData)
 		writer.SetInformation(reader.GetInformation())
 		writer.Write()
-	
 
 
 
@@ -1317,15 +1316,15 @@ with Tee(log_file):
 			if os.path.exists(T1_nifti):
 			    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
 			else:
-			    print("Convert T1 image to nifti format ")
-			    '''
-			    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
+				print("Convert T1 image to nifti format ")
+				'''
+				run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
 																                             "--conversionMode", "NrrdToFSL", 
 																                             "--outputVolume", T1_nifti, 
 																                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
 																                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
 				'''
-			    # Load nrrd:
+				# Load nrrd:
 				reader = vtk.vtkNrrdReader()
 				reader.SetFileName(T1_OUT_NRRD)
 				reader.Update()
@@ -1767,15 +1766,15 @@ with Tee(log_file):
 		if os.path.exists(T1_nifti):
 		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
 		else:
-		    print("Convert T1 image to nifti format ")
-		    '''
-		    run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
+			print("Convert T1 image to nifti format ")
+			'''
+			run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
 															                             "--conversionMode", "NrrdToFSL", 
 															                             "--outputVolume", T1_nifti, 
 															                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
 															                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
 			'''
-		    # Load nrrd:
+			# Load nrrd:
 			reader = vtk.vtkNrrdReader()
 			reader.SetFileName(T1_OUT_NRRD)
 			reader.Update()
