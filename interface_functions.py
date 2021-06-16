@@ -1295,11 +1295,11 @@ class Ui(QtWidgets.QTabWidget):
     # Checkbox to do the -act option
     # ***************************************** 
 
-    def act_checkBox_checked(sefl): 
+    def act_checkBox_checked(self): 
         json_user_object['Parameters']["act_option"]["value"] = False
-        if act_checkBox.isChecked(): 
+        if self.act_checkBox.isChecked(): 
             json_user_object['Parameters']["act_option"]["value"] = True
-        Ui_visu.update_user_json_file()
+        Ui.update_user_json_file()
 
 
 
