@@ -34,8 +34,6 @@ from dipy.io.stateful_tractogram import Space, StatefulTractogram
 from dipy.io.streamline import save_trk
 
 
-
-
 from CONTINUITY_functions import *
 
 ##########################################################################################################################################
@@ -1084,20 +1082,6 @@ with Tee(log_file):
 								                                                   "--outputVolume", DiffusionBrainMask, 
 								                                                   "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 								                                                   "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
-		'''
-		# Load nrrd:
-		reader = vtk.vtkNrrdReader()
-		reader.SetFileName(DWI_MASK)
-		reader.Update()
-
-		# Save nifti:
-		writer = vtk.vtkNIFTIImageWriter()
-		writer.SetInputData(reader.GetOutput())
-		writer.SetFileName(DiffusionBrainMask)
-		writer.SetInformation(reader.GetInformation())
-		writer.Write()
-		'''
-
 
 	# DWIConvert DWI: Nrrd to FSL format
 	if os.path.exists(DiffusionData):
@@ -1110,20 +1094,6 @@ with Tee(log_file):
 							                                         "--outputVolume", DiffusionData, 
 							                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
 							                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
-		'''
-		# Load nrrd:
-		reader = vtk.vtkNrrdReader()
-		reader.SetFileName(DWI_NRRD)
-		reader.Update()
-
-		# Save nifti:
-		writer = vtk.vtkNIFTIImageWriter()
-		writer.SetInputData(reader.GetOutput())
-		writer.SetFileName(DiffusionData)
-		writer.SetInformation(reader.GetInformation())
-		writer.Write()
-		'''
-
 
 
 
@@ -1177,7 +1147,9 @@ with Tee(log_file):
 	run_command("Write seed list", [sys.executable, writeSeedListScript, OutSurfaceName, only_matrix_parcellation_table])
 
 
-	
+	NETWORK_DIR = os.path.join(OUT_TRACTOGRAPHY, "Network" + overlapName + loopcheckName)
+	if not os.path.exists( NETWORK_DIR ):
+		os.mkdir(NETWORK_DIR)
 
 
 
@@ -1204,10 +1176,6 @@ with Tee(log_file):
 
 		if only_bedpostx: 
 			exit()
-
-		NETWORK_DIR = os.path.join(OUT_TRACTOGRAPHY, "Network" + overlapName + loopcheckName)
-		if not os.path.exists( NETWORK_DIR ):
-		    os.mkdir(NETWORK_DIR)
 
 
 		# Name define by probtrackx2 tool:
@@ -1328,20 +1296,6 @@ with Tee(log_file):
 																                             "--outputVolume", T1_nifti, 
 																                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
 																                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
-				'''
-				# Load nrrd:
-				reader = vtk.vtkNrrdReader()
-				reader.SetFileName(T1_OUT_NRRD)
-				reader.Update()
-
-				# Save nifti:
-				writer = vtk.vtkNIFTIImageWriter()
-				writer.SetInputData(reader.GetOutput())
-				writer.SetFileName(T1_nifti)
-				writer.SetInformation(reader.GetInformation())
-				writer.Write()
-				'''
-
 
 			# First choice: use T1_OUT_NRRD (after convertion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
 			fivett_img = os.path.join(OUT_MRTRIX,"5tt.nii.gz")
@@ -1779,20 +1733,7 @@ with Tee(log_file):
 															                             "--outputVolume", T1_nifti, 
 															                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
 															                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
-			'''
-			# Load nrrd:
-			reader = vtk.vtkNrrdReader()
-			reader.SetFileName(T1_OUT_NRRD)
-			reader.Update()
 
-			# Save nifti:
-			writer = vtk.vtkNIFTIImageWriter()
-			writer.SetInputData(reader.GetOutput())
-			writer.SetFileName(T1_nifti)
-			writer.SetInformation(reader.GetInformation())
-			writer.Write()
-			'''
-			
 
 		#*****************************************
 		# Data and gradient
@@ -1812,7 +1753,7 @@ with Tee(log_file):
 		#*****************************************
 
 		# https://dipy.org/documentation/1.2.0./examples_built/reconst_csd/
-		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.2)   #single shell    0.7: adult brain 
+		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.01)   #single shell    0.7: adult brain 
 
 		# Multi-Shell Multi-Tissue: used auto_response_msmt
 		#https://dipy.org/documentation/1.2.0./examples_built/reconst_mcsd/       csd: single shell
