@@ -1081,7 +1081,12 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         # Sort regions by VisuHierarchy number: 
         sorted_indices = np.argsort(list_MatrixRow)
-        
+
+        for elem in list_coord_unordered: 
+            elem[0] = float("{:.2f}".format(elem[0]))
+            elem[1] = float("{:.2f}".format(elem[1]))
+            elem[2] = float("{:.2f}".format(elem[2]))
+
 
         for i in range(len(list_MatrixRow)):
             index = sorted_indices[i]
@@ -1098,18 +1103,18 @@ class Ui_visu(QtWidgets.QTabWidget):
         # Extract data point for each view (axial, sagittal, coronal)
         for element in list_coord_2D_connectome:   
             # Header of nrrd-file: array([146, 190, 165])
-            x = float("{:.2f}".format(-(element[0]) + 146/2))
-            y = float("{:.2f}".format(-(element[1]) + 165/2))
-            z = float("{:.2f}".format(-(element[2]) + 190/2))
+            x = float("{:.2f}".format(-(float("{:.2f}".format(element[0]))) + 146/2))
+            y = float("{:.2f}".format(-(float("{:.2f}".format(element[1]))) + 165/2))
+            z = float("{:.2f}".format(-(float("{:.2f}".format(element[2]))) + 190/2))
 
             # Axial and coronal:
             list_x.append(-x + 146)
             list_y.append(y)
             list_z.append(z)
 
-            list_x_original.append(float("{:.2f}".format(-x + 146/2 )))
-            list_y_original.append(float("{:.2f}".format(-y + 165/2 )))
-            list_z_original.append(float("{:.2f}".format(-z + 190/2 )))
+            list_x_original.append(float("{:.2f}".format(element[0]))) # float("{:.2f}".format(-x + 146/2 )))
+            list_y_original.append(float("{:.2f}".format(element[1]))) #float("{:.2f}".format(-y + 165/2 )))
+            list_z_original.append(float("{:.2f}".format(element[2]))) #float("{:.2f}".format(-z + 190/2 )))
 
             # Sagittal left:
             if x>= 146/2 : 
