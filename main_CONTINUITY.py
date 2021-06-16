@@ -10,13 +10,56 @@ from csv import reader, DictReader
 from interface_functions import *
 from CONTINUITY_functions import *
 
+
 ##########################################################################################################################################
 
      # CONTINUITY : connectivity tools which include subcortical regions as seed and target for connectivity 
 
 ##########################################################################################################################################
 
+def run_command(text_printed, command):
+    # Display command:
+    print(colored("\n"+" ".join(command)+"\n", 'blue'))
+    # Run command and display output and error:
+    run = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = run.communicate()
+    print(text_printed, "out: ", colored("\n" + str(out) + "\n", 'green')) 
+    print(text_printed, "err: ", colored("\n" + str(err) + "\n", 'red'))
+
+
+
+
 if __name__ == '__main__':
+
+    '''
+    left = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_left_hires.vtk"
+    right = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_right_hires.vtk"
+    out = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.vtk"
+
+    polydatamerge_ascii(left, right, out)
+
+    out_nifti = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.nii.gz"
+
+    slicer.util.saveNode(slicer.util.loadVolume(out), out_nifti)
+
+
+
+
+    out_nrrd = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.nrrd"
+    run_command("template", ["/tools/bin_linux64/DWIConvert", "--inputVolume", out_nifti, 
+                                                                                   "--conversionMode", "FSLToNrrd", 
+                                                                                   "--outputVolume", out_nrrd] )
+    '''
+    
+
+
+
+
+
+
+
+
+
 
     dir_path = os.path.realpath(os.path.dirname(__file__))
    

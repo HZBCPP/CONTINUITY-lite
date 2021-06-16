@@ -195,7 +195,7 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
 
     def open_slicer_clicked(self): 
-        Ui_visu.run_command("Open slicer with specific parameters", [sys.executable, os.path.realpath(os.path.dirname(__file__)) + "/CONTINUITY_QC/slicer_QC.py", user_json_filename])
+        Ui_visu.run_command("Open slicer with specific parameters", [sys.executable, os.path.realpath(os.path.dirname(__file__)) + "/slicer_QC.py", user_json_filename])
 
 
     def open_slicer_only(self):
