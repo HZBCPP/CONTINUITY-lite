@@ -1307,7 +1307,7 @@ with Tee(log_file):
 				now = datetime.datetime.now()
 				print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
 				start = time.time()
-				run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_nifti, fivett_img, '-nthreads', str(nb_threads) ])
+				run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_nifti, fivett_img, '-scratch', os.path.join(OUT_MRTRIX), '-nthreads', str(nb_threads) ])
 				print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 			
 
