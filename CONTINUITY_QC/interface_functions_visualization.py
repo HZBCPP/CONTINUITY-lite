@@ -1464,6 +1464,9 @@ class Ui_visu(QtWidgets.QTabWidget):
     # ***************************************** 
 
     def create_brain_connectome_3D_pushButton_clicked(self):
+        global already_build
+        already_build = False
+
         now = datetime.datetime.now()
         print(now.strftime("Display 3D brain connectome function: %H:%M %m-%d-%Y"))
         start = time.time()
@@ -1770,6 +1773,9 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.ren.ResetCamera()
         self.ren.GetActiveCamera().Zoom(1.3)
         self.iren.Initialize()
+
+
+        already_build = True
         print("End display 3D brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 
@@ -1779,104 +1785,105 @@ class Ui_visu(QtWidgets.QTabWidget):
     # ***************************************** 
 
     def update_3D_connectome(self): 
-        # New range colorbar: 
-        vmin_3D,vmax_3D  = (self.min_colorbar_brain_3D_connectome_doubleSpinBox.value() / 100, self.max_colorbar_brain_3D_connectome_doubleSpinBox.value() / 100)
+        if already_build: 
+            # New range colorbar: 
+            vmin_3D,vmax_3D  = (self.min_colorbar_brain_3D_connectome_doubleSpinBox.value() / 100, self.max_colorbar_brain_3D_connectome_doubleSpinBox.value() / 100)
 
-         # Create the new color map:
-        colorLookupTable1 = vtk.vtkLookupTable()
-        colorLookupTable1.SetTableRange(vmin_3D, vmax_3D)
-        n = 255  #n: number of colors
-        colorLookupTable1.SetNumberOfTableValues(n)
-        colorLookupTable1.Build()
+             # Create the new color map:
+            colorLookupTable1 = vtk.vtkLookupTable()
+            colorLookupTable1.SetTableRange(vmin_3D, vmax_3D)
+            n = 255  #n: number of colors
+            colorLookupTable1.SetNumberOfTableValues(n)
+            colorLookupTable1.Build()
 
-        # Add value inside the new color map:
-        my_colormap = plt.cm.get_cmap('RdBu') #RdBu
-        for i in range(n):
-            my_color = list(my_colormap(i/n)) # tuple: R, G, B, 1 
-            my_color = my_color[:-1] # R G B 
-            colorLookupTable1.SetTableValue(i, my_color[0], my_color[1], my_color[2], 1)
-        
-        # Compute again the list with all atribute to know with point to hidde:
-        list_visibility_point = []
+            # Add value inside the new color map:
+            my_colormap = plt.cm.get_cmap('RdBu') #RdBu
+            for i in range(n):
+                my_color = list(my_colormap(i/n)) # tuple: R, G, B, 1 
+                my_color = my_color[:-1] # R G B 
+                colorLookupTable1.SetTableValue(i, my_color[0], my_color[1], my_color[2], 1)
+            
+            # Compute again the list with all atribute to know with point to hidde:
+            list_visibility_point = []
 
-        if not self.plot_unconnected_points_3D_CheckBox.isChecked(): 
+            if not self.plot_unconnected_points_3D_CheckBox.isChecked(): 
+                for i in range(np.shape(a)[0]):
+                    is_connected = False
+
+                    for j in range(np.shape(a)[1]):
+                        # Normalize the value in connectivity matrix: 
+                        my_norm = (a[i,j] - mmin) / (mmax - mmin) # value between 0 to 1 
+
+                        # To be coherent with the range of colorbar: 
+                        if my_norm > vmin_3D and my_norm < vmax_3D: 
+                            is_connected = True
+                    
+                    if not is_connected:  
+                        list_visibility_point.append(0)
+                    else: 
+                        list_visibility_point.append(1)
+            else: 
+                list_visibility_point = [1] * np.shape(a)[0]
+
+
+            # Compute the list with all atribute to know with lines to hidde: 
+            list_visibility_lines,list_color  = ([],[])
             for i in range(np.shape(a)[0]):
-                is_connected = False
+                for j in range(np.shape(a)[1]):                
 
-                for j in range(np.shape(a)[1]):
                     # Normalize the value in connectivity matrix: 
                     my_norm = (a[i,j] - mmin) / (mmax - mmin) # value between 0 to 1 
 
                     # To be coherent with the range of colorbar: 
-                    if my_norm > vmin_3D and my_norm < vmax_3D: 
-                        is_connected = True
-                
-                if not is_connected:  
-                    list_visibility_point.append(0)
-                else: 
-                    list_visibility_point.append(1)
-        else: 
-            list_visibility_point = [1] * np.shape(a)[0]
+                    my_color = [0.0, 0.0, 0.0]
 
+                    if my_norm > vmin_3D and my_norm < vmax_3D:
+                        list_visibility_lines.append(1)
+                        
+                        # Add color:
+                        colorLookupTable1.GetColor(my_norm, my_color)
+                        list_color.append(my_color)
 
-        # Compute the list with all atribute to know with lines to hidde: 
-        list_visibility_lines,list_color  = ([],[])
-        for i in range(np.shape(a)[0]):
-            for j in range(np.shape(a)[1]):                
+                    else: 
+                        list_visibility_lines.append(0)
+                        list_color.append(my_color)
 
-                # Normalize the value in connectivity matrix: 
-                my_norm = (a[i,j] - mmin) / (mmax - mmin) # value between 0 to 1 
+            # Update actor:
+            actors = self.ren.GetActors()
+            actors.InitTraversal()
 
-                # To be coherent with the range of colorbar: 
-                my_color = [0.0, 0.0, 0.0]
+            iNumberOfActors = actors.GetNumberOfItems()
+            for i in range(iNumberOfActors): 
+                if i == 0: 
+                    actors.GetNextProp().VisibilityOn() # skip brain surfaces actor which is the first actor
 
-                if my_norm > vmin_3D and my_norm < vmax_3D:
-                    list_visibility_lines.append(1)
-                    
-                    # Add color:
-                    colorLookupTable1.GetColor(my_norm, my_color)
-                    list_color.append(my_color)
+                elif i != 0 and i < len(list_visibility_point)+1: # actor point
+                    if list_visibility_point[i-1] == 0: 
+                        actors.GetNextProp().VisibilityOff()
+                    else:
+                        actors.GetNextProp().VisibilityOn() 
 
-                else: 
-                    list_visibility_lines.append(0)
-                    list_color.append(my_color)
+                else: #actor line
+                    if list_visibility_lines[i-1 - len(list_visibility_point)] == 0: 
+                        actors.GetNextProp().VisibilityOff()
+                    else: 
+                        my_actor = actors.GetNextProp()
+                        my_actor.VisibilityOn()
+                        # Add new color: 
+                        my_actor.GetProperty().SetColor(list_color[i-1 - len(list_visibility_point)][0], 
+                                                        list_color[i-1 - len(list_visibility_point)][1], 
+                                                        list_color[i-1 - len(list_visibility_point)][2])
 
-        # Update actor:
-        actors = self.ren.GetActors()
-        actors.InitTraversal()
+            actors_2D = self.ren.GetActors2D()
+            actors_2D.InitTraversal()
+            iNumberOfActors_2D = actors_2D.GetNumberOfItems()
+            for i in range(iNumberOfActors_2D):
+                actors_2D.GetNextProp().SetLookupTable(colorLookupTable1)
 
-        iNumberOfActors = actors.GetNumberOfItems()
-        for i in range(iNumberOfActors): 
-            if i == 0: 
-                actors.GetNextProp().VisibilityOn() # skip brain surfaces actor which is the first actor
-
-            elif i != 0 and i < len(list_visibility_point)+1: # actor point
-                if list_visibility_point[i-1] == 0: 
-                    actors.GetNextProp().VisibilityOff()
-                else:
-                    actors.GetNextProp().VisibilityOn() 
-
-            else: #actor line
-                if list_visibility_lines[i-1 - len(list_visibility_point)] == 0: 
-                    actors.GetNextProp().VisibilityOff()
-                else: 
-                    my_actor = actors.GetNextProp()
-                    my_actor.VisibilityOn()
-                    # Add new color: 
-                    my_actor.GetProperty().SetColor(list_color[i-1 - len(list_visibility_point)][0], 
-                                                    list_color[i-1 - len(list_visibility_point)][1], 
-                                                    list_color[i-1 - len(list_visibility_point)][2])
-
-        actors_2D = self.ren.GetActors2D()
-        actors_2D.InitTraversal()
-        iNumberOfActors_2D = actors_2D.GetNumberOfItems()
-        for i in range(iNumberOfActors_2D):
-            actors_2D.GetNextProp().SetLookupTable(colorLookupTable1)
-
-        # Update visualization
-        self.ren.ResetCamera()
-        self.ren.GetActiveCamera().Zoom(1.3)
-        self.iren.Initialize()
+            # Update visualization
+            self.ren.ResetCamera()
+            self.ren.GetActiveCamera().Zoom(1.3)
+            self.iren.Initialize()
 
 
     
@@ -1885,20 +1892,23 @@ class Ui_visu(QtWidgets.QTabWidget):
     # ***************************************** 
 
     def update_points_size(self):
-        # Update actor:
-        actors = self.ren.GetActors()
-        actors.InitTraversal()
+        if already_build : 
+            # Update actor:
+            actors = self.ren.GetActors()
+            actors.InitTraversal()
 
-        for i in range(np.shape(a)[0]+1):  
-            if i == 0:  #actor for brain surfaces: skip
-                actors.GetNextProp().VisibilityOn()
-            else: # actor points
-                actors.GetNextProp().GetProperty().SetPointSize(self.point_size_3D_spinBox.value())
+            for i in range(np.shape(a)[0]+1):  
+                if i == 0:  #actor for brain surfaces: skip
+                    actors.GetNextProp().VisibilityOn()
+                else: # actor points
+                    my_actors = actors.GetNextProp()
+                    if my_actors.GetVisibility() == 1: 
+                        my_actors.GetProperty().SetPointSize(self.point_size_3D_spinBox.value())
 
-        # Update visualization
-        self.ren.ResetCamera()
-        self.ren.GetActiveCamera().Zoom(1.3)
-        self.iren.Initialize()
+            # Update visualization
+            self.ren.ResetCamera()
+            self.ren.GetActiveCamera().Zoom(1.3)
+            self.iren.Initialize()
 
 
     
@@ -1907,23 +1917,26 @@ class Ui_visu(QtWidgets.QTabWidget):
     # ***************************************** 
 
     def update_lines_size(self):
+        if already_build : 
 
-        # Update actor:
-        actors = self.ren.GetActors()
-        actors.InitTraversal()
+            # Update actor:
+            actors = self.ren.GetActors()
+            actors.InitTraversal()
 
-        iNumberOfActors = actors.GetNumberOfItems()
+            iNumberOfActors = actors.GetNumberOfItems()
 
-        for i in range(iNumberOfActors):  
-            if i == 0 or i < np.shape(a)[0]+1:  #actor for brain surfaces + point: skip
-                actors.GetNextProp().VisibilityOn()
-            else: # actors lines
-                actors.GetNextProp().GetProperty().SetLineWidth(self.linewidth_3D_spinBox.value())
+            for i in range(iNumberOfActors):  
+                if i == 0 or i < np.shape(a)[0]+1:  #actor for brain surfaces + point: skip
+                    actors.GetNextProp().VisibilityOn()
+                else: # actors lines
+                    my_actors = actors.GetNextProp()
+                    if my_actors.GetVisibility() == 1: 
+                        my_actors.GetProperty().SetLineWidth(self.linewidth_3D_spinBox.value())
 
-        # Update visualization
-        self.ren.ResetCamera()
-        self.ren.GetActiveCamera().Zoom(1.3)
-        self.iren.Initialize()
+            # Update visualization
+            self.ren.ResetCamera()
+            self.ren.GetActiveCamera().Zoom(1.3)
+            self.iren.Initialize()
    
 
 
@@ -1932,18 +1945,19 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
 
     def updata_opacity(self):
-        # Update actor:
-        actors = vtk.vtkPropCollection() 
-        actors = self.ren.GetViewProps()
-        actors.InitTraversal()
+        if already_build : 
+            # Update actor:
+            actors = vtk.vtkPropCollection() 
+            actors = self.ren.GetViewProps()
+            actors.InitTraversal()
 
-        # Brain surface: first actor
-        actors.GetNextProp().GetProperty().SetOpacity(self.opacity_3D_spinBox.value())
+            # Brain surface: first actor
+            actors.GetNextProp().GetProperty().SetOpacity(self.opacity_3D_spinBox.value())
 
-        # Update visualization
-        self.ren.ResetCamera()
-        self.ren.GetActiveCamera().Zoom(1.3)
-        self.iren.Initialize()
+            # Update visualization
+            self.ren.ResetCamera()
+            self.ren.GetActiveCamera().Zoom(1.3)
+            self.iren.Initialize()
 
 
 

@@ -179,10 +179,8 @@ modelDisplay = slicer.vtkMRMLModelDisplayNode()
 slicer.mrmlScene.AddNode(modelDisplay)
 modelDisplay.VisibilityOn()
 modelDisplay.SetVisibility2D(True) #SetSliceIntersectionVisibility(True)
-#modelDisplay.SetVisibility(True)
 
 model.SetAndObserveDisplayNodeID(modelDisplay.GetID())
-
 model.GetDisplayNode().SetActiveScalarName('label')
 model.GetDisplayNode().SetAndObserveColorNodeID("vtkMRMLColorTableNodeLabels")
 model.GetDisplayNode().ScalarVisibilityOn()
