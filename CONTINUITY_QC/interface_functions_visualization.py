@@ -80,6 +80,10 @@ class Ui_visu(QtWidgets.QTabWidget):
             global json_setup_object
             json_setup_object = json.load(default_Qt_file)
 
+
+        self.job_name_lineEdit.setText(json_user_object['Arguments']["ID"]["value"])
+        self.parcellation_table_name_lineEdit.setText(json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"])
+
         # Setup default path to access of created files for Slicer and Slicer:
         self.OUTPUT_path_textEdit.setText(json_user_object['Parameters']["OUT_PATH"]["value"])
         self.slicer_textEdit.setText(json_user_object['Executables']["slicer"]["value"])
@@ -90,6 +94,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         
         path = "/home/elodie/Desktop/input_CONTINUITY/TABLE_AAL_SubCorticals.json"
         self.parcellation_table_textEdit.setText(path)
+
 
         global overlapName, loopcheckName
         overlapName = ""
@@ -174,6 +179,19 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.slicer_textEdit.setText(fileName)
             json_user_object['Executables']["slicer"]["value"] = fileName
             Ui_visu.update_user_json_file()
+
+
+    # *****************************************
+    # Job name and parcellation table name used previously
+    # *****************************************
+
+    def QC_job_name_changed(self):
+        json_user_object['Arguments']["ID"]["value"] = self.job_name_lineEdit.text()
+        Ui_visu.update_user_json_file()
+
+    def QC_parcellation_table_name_changed(self):
+        json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"] = self.parcellation_table_name_lineEdit.text()
+        Ui_visu.update_user_json_file()
 
 
 

@@ -42,21 +42,21 @@ out_nifti = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.nii.gz"
 slicer.util.saveNode(slicer.util.loadVolume('/proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1/CONTINUITY_QC/icbm_merge.vtk'), '/proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1/CONTINUITY_QC/icbm_merge.nrrd')
 '''
 
-#ID = json_user_object['Arguments']['ID']['value']
-#NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME']['value']
-#input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
+ID = json_user_object['Arguments']['ID']['value']
+NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME']['value']
+input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
 
 
-print(ID)
-print(NAME_PARCELLATION_TABLE)
-print(input_path)
+#print("ID",ID)
+#print("NAME_PARCELLATION_TABLE", NAME_PARCELLATION_TABLE)
+#print("input_path", input_path)
 
 #find datas for B0_BiasCorrect
 B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_resample.nrrd")
 if not os.path.exists(B0):
 	B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_original.nrrd")
 
-print(B0)
+#print(B0)
 
 
 #find datas for B0
@@ -83,6 +83,25 @@ labeled_image = os.path.join( input_path, ID + "-T1_SkullStripped_scaled_label.n
 # Find data for surface: 
 registered_combine_surface         = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + ".vtk")
 registered_combine_surface_with_sc = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + "_WithSubcorticals.vtk")
+
+
+# Read and build polydata: 
+reader = vtk.vtkPolyDataReader() #vtkPolyDataReader
+reader.SetFileName(registered_combine_surface_with_sc)
+reader.Update()
+polydata_input = reader.GetOutput()  
+
+polydata = vtk.vtkPolyData()
+apd = vtk.vtkAppendPolyData()
+
+if (vtk.VTK_MAJOR_VERSION < 6):
+    apd.AddInput(polydata)
+else:
+    apd.AddInputData(polydata_input)
+  
+apd.Update()
+output = apd.GetOutput()
+
 
 '''
 surface_left  = os.path.join( input_path, "stx_" + ID + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace.vtk")
@@ -147,3 +166,24 @@ for sliceNode in sliceNodes:
 		
 	# Display foreground
 	slicer.app.layoutManager().sliceWidget(place).sliceLogic().GetSliceCompositeNode().SetForegroundVolumeID( node.GetID() )  
+
+
+# Create model node: 
+model = slicer.vtkMRMLModelNode()
+model.SetName('registered_combine_surface_with_sc_model')
+model = slicer.mrmlScene.AddNode(model)
+model.SetAndObservePolyData(output)
+
+# Create display node: 
+modelDisplay = slicer.vtkMRMLModelDisplayNode()
+slicer.mrmlScene.AddNode(modelDisplay)
+modelDisplay.VisibilityOn()
+modelDisplay.SetVisibility2D(True) #SetSliceIntersectionVisibility(True)
+#modelDisplay.SetVisibility(True)
+
+model.SetAndObserveDisplayNodeID(modelDisplay.GetID())
+
+model.GetDisplayNode().SetActiveScalarName('label')
+model.GetDisplayNode().SetAndObserveColorNodeID("vtkMRMLColorTableNodeLabels")
+model.GetDisplayNode().ScalarVisibilityOn()
+model.GetDisplayNode().AutoScalarRangeOn()
