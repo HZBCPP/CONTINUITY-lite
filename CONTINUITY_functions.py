@@ -913,9 +913,92 @@ def get_number_of_points(SALTDir):
   
     reader = vtk.vtkPolyDataReader()
     reader.SetFileName(os.path.join(SALTDir, file_name))
-    reader.Update()  # Needed because of GetScalarRange
+    reader.Update()  
     output = reader.GetOutput()
 
     number_of_points = output.GetNumberOfPoints()
 
     return number_of_points
+
+
+
+# *************************************************************************************
+# Write a csv file to run CONTINUITY with prisma data
+# *************************************************************************************
+
+def write_csv_file_prisma_data(csv_file_name, default_config_filename):
+
+    list_param_prisma = ["ID", "DWI_DATA", "BRAINMASK","SURFACE_USER", "PARCELLATION_TABLE", "PARCELLATION_TABLE_NAME", "DO_REGISTRATION", 
+                         "surface_already_labeled", "OUT_PATH"]
+
+    with open(csv_file_name, mode='w+') as csv_file:
+        with open(default_config_filename) as data_file:
+            json_file = json.load(data_file)
+
+        # *****************************************
+        # Extract field name: name of each column
+        # *****************************************
+
+        fieldnames = []
+        for categories, infos in json_file.items():
+            for key in infos:
+                if key in list_param_prisma:
+                    fieldnames.append(key)
+        writer = csv.DictWriter(csv_file, delimiter=',', fieldnames=fieldnames)
+        writer.writeheader()
+
+        # *****************************************
+        # Write data
+        # *****************************************
+
+        path_prisma_data = "/ASD/maria_projects/EBDS_Temp/Prisma/Input_CIVILITY/8Year"
+        subject_folder = [ f.path for f in os.scandir(path_prisma_data) if f.is_dir() ]
+
+        parcellation_Table = "/work/elodie/input_CONTINUITY/TABLE_AAL_SubCorticals.json"
+        out_path = "/work/elodie/testing/output_prisma_all_subject"
+
+        for elem in subject_folder:
+            ID = os.path.basename(os.path.normpath(elem)) #neo-0137-2-1-8year
+
+            Input_Civility_DWISpace_AND_T1ToDWISpace_folder = [ f.path for f in os.scandir(elem) if f.is_dir() ]
+            Input_Civility_DWISpace_folder = Input_Civility_DWISpace_AND_T1ToDWISpace_folder[0] 
+            T1ToDWISpace_folder = Input_Civility_DWISpace_AND_T1ToDWISpace_folder[1]
+
+            # Input_Civility_DWISpace_folder contain brainmask and DWI data
+            Input_Civility_DWISpace_files = [ f.path for f in os.scandir(Input_Civility_DWISpace_folder) ]
+            for file in Input_Civility_DWISpace_files:
+                if 'brainmask' in file:
+                    brainmask = file
+                else:
+                    DWI = file
+
+            # T1ToDWISpace_folder contain 00_QC_Visualization
+            T1ToDWISpace_subfolder = [ f.path for f in os.scandir(T1ToDWISpace_folder) if f.is_dir() ]
+            for subdir in T1ToDWISpace_subfolder: 
+                name_subdir = os.path.basename(os.path.normpath(subdir))
+                if name_subdir == "00_QC_Visualization": 
+                    #00_QC_Visualization contains surfaces already combine and labeled 
+                    T1ToDWISpace_files = [ f.path for f in os.scandir(subdir) ]
+                    for file in T1ToDWISpace_files: 
+                        if "CombinedSurface" in file:
+                            surface = file
+                        elif "T1_SkullStripped_scaled" in file:
+                            T1 = file
+
+            # Write these paths in the csv: 
+            line = "{"
+            for categories, infos in json_file.items():
+                for key in infos:
+                    if key == "ID":                        line += "'" + key + "' : '" + ID + "',"
+                    elif key == "DWI_DATA":                line += "'" + key + "' : '" + DWI + "',"
+                    elif key == "BRAINMASK":               line += "'" + key + "' : '" + brainmask + "',"
+                    elif key == "SURFACE_USER":            line += "'" + key + "' : '" + surface + "',"
+                    elif key == "PARCELLATION_TABLE":      line += "'" + key + "' : '" + parcellation_Table + "',"
+                    elif key == "PARCELLATION_TABLE_NAME": line += "'" + key + "' : '" + "AAL" + "',"
+                       
+                    elif key == "DO_REGISTRATION":         line += "'" + key + "' : '" + str(False) + "',"
+                    elif key == "surface_already_labeled": line += "'" + key + "' : '" + str(True) + "',"
+                    elif key == "OUT_PATH":                line += "'" + key + "' : '" + out_path + "',"
+
+            line += "}"
+            writer.writerow( eval(line) )

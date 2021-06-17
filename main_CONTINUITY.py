@@ -52,15 +52,6 @@ if __name__ == '__main__':
     '''
     
 
-
-
-
-
-
-
-
-
-
     dir_path = os.path.realpath(os.path.dirname(__file__))
    
     # *****************************************
@@ -132,6 +123,10 @@ if __name__ == '__main__':
 
     
 
+    #write_csv_file_prisma_data("/work/elodie/testing/csv_CONTINUITY.csv", default_config_filename)
+
+
+
     # *****************************************
     # Run CONTINUITY thanks to a command line: -noGUI / -cvs_file / -cluster
     # *****************************************
@@ -148,22 +143,13 @@ if __name__ == '__main__':
                     if str(args[key]) != " ":
                         data_user[categories][key]['value'] = args[key]
 
-                    with open(user_filename, "w+") as user_file: 
-                        user_file.write(json.dumps(data_user, indent=4)) 
+        with open(user_filename, "w+") as user_file: 
+            user_file.write(json.dumps(data_user, indent=4)) 
 
         # Find and write localisation of executables            
         executable_path(default_config_filename, user_filename)
+        
 
-
-
-        # Create the output folder
-        if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
-            os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
-
-        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
-        if not os.path.exists( OUT_FOLDER ):
-            os.mkdir(OUT_FOLDER)
-    
 
         # *****************************************
         # Run CONTINUITY thanks to a command line ONLY: -noGUI
@@ -190,6 +176,13 @@ if __name__ == '__main__':
             if not args["cluster"]:  # Run localy: -noGUI  
                 CONTINUITY(user_filename)
             else: # run in longleaf: -noGUI -cluster 
+                # Create the output folder
+                if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
+                    os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
+
+                OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
+                if not os.path.exists( OUT_FOLDER ):
+                    os.mkdir(OUT_FOLDER)
                 cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
                         data_user['Parameters']["OUT_PATH"]["value"], data_user['Parameters']["ID"]["value"], user_filename)
 
@@ -212,16 +205,39 @@ if __name__ == '__main__':
                 for row in csv_dict_reader:
                     print("info subject:",row)
                     for element in header: 
-                        data_user['Arguments'][element]['value'] = row[element]
+                        try:
+                            if data_user['Arguments'][element]['type'] == "bool":
+                                if row[element].lower() == "false": data_user['Arguments'][element]['value'] = False
+                                else:                               data_user['Arguments'][element]['value'] = True
+                            else:
+                                data_user['Arguments'][element]['value'] = row[element]
 
-                        with open(user_filename, "w+") as user_file: 
-                            user_file.write(json.dumps(data_user, indent=4)) 
+                        except: 
+                            if data_user['Parameters'][element]['type'] == "bool":
+                                if row[element].lower() == "false": data_user['Parameters'][element]['value'] = False
+                                else:                               data_user['Parameters'][element]['value'] = True                            
+                            else:
+                                data_user['Parameters'][element]['value'] = row[element]
+
+
+                    with open(user_filename, "w+") as user_file: 
+                        user_file.write(json.dumps(data_user, indent=4)) 
+
 
                     # Run CONTINUITY script
                     if not args["cluster"]: # run in longleaf: -noGUI -csv_file -cluster 
                         print("SUBJECT: ", row['ID'] )
                         CONTINUITY(user_filename)
+
+
                     else: # Run localy: -noGUI -csv_file
+                        # Create the output folder
+                        if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
+                            os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
+
+                        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
+                        if not os.path.exists( OUT_FOLDER ):
+                            os.mkdir(OUT_FOLDER)
                         cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
                                 data_user['Parameters']["OUT_PATH"]["value"], data_user['Parameters']["ID"]["value"], user_filename)
 

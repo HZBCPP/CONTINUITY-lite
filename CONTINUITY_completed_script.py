@@ -1253,7 +1253,7 @@ with Tee(log_file):
 			command = [MRtrixPath + "/dwi2response",'tournier', DiffusionData, # input
 												   				Response_function_estimation_txt, #output
 												                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
-												                '-scratch', os.path.join(OUT_MRTRIX)
+												                '-scratch', os.path.join(OUT_MRTRIX),
 												                '-nthreads', str(nb_threads)]
 			run_command("Response function estimation (err ok)", command)
 
@@ -1701,6 +1701,12 @@ with Tee(log_file):
 
 
 
+
+
+
+
+
+
 	elif tractography_model == "DIPY":
 		
 		print("*****************************************")
@@ -1712,9 +1718,9 @@ with Tee(log_file):
 		# Output folder for MRtrix and DIPY 
 		# *****************************************
 
-		OUT_MRTRIX = os.path.join(OUT_TRACTOGRAPHY, tractography_model) 
-		if not os.path.exists(OUT_MRTRIX):
-			os.mkdir(OUT_MRTRIX)
+		OUT_DIPY = os.path.join(OUT_TRACTOGRAPHY, tractography_model) 
+		if not os.path.exists(OUT_DIPY):
+			os.mkdir(OUT_DIPY)
 
 		print("*****************************************")
 		print("Convert T1 image to nifti format")
@@ -1723,19 +1729,19 @@ with Tee(log_file):
 		#if not DO_REGISTRATION: 
 		#	T1_OUT_NRRD = T1_DATA
 
-		T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
+		T1_nifti = os.path.join(OUT_DIPY, ID + "-T1_SkullStripped_scaled.nii.gz")
 		if os.path.exists(T1_nifti):
 		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
 		else:
 			print("Convert T1 image to nifti format ")
 			
-			run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
+			run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_DATA,  #T1_OUT_NRRD
 															                             "--conversionMode", "NrrdToFSL", 
 															                             "--outputVolume", T1_nifti, 
-															                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
-															                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
+															                             "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
+															                             "--outputBVectors", os.path.join(OUT_DIPY, "bvecs")])
 
-
+		
 		#*****************************************
 		# Data and gradient
 		#*****************************************
@@ -1743,7 +1749,7 @@ with Tee(log_file):
 		data, affine, img = load_nifti(T1_nifti, return_img=True) 
 	
 		# https://dipy.org/documentation/1.1.1./reference/dipy.data/#dipy.data.gradient_table
-		gtab = gradient_table(os.path.join(OUT_DIFFUSION, "bvals"), os.path.join(OUT_DIFFUSION, "bvecs"))
+		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
 
 		# White matter mask to restrict tracking to the white matter
 		white_matter = DiffusionBrainMask # DiffusionBrainMask = nifti of brainmask
@@ -1811,3 +1817,4 @@ with Tee(log_file):
 		#*****************************************
 		sft = StatefulTractogram(streamlines, img, Space.RASMM)
 		save_trk(sft, "tractogram.trk", streamlines)
+		

@@ -29,7 +29,7 @@ print("Execution of python script for Slicer")
 # DATA
 # *****************************************
 
-
+'''
 left = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_left_hires.vtk"
 right = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_right_hires.vtk"
 out = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.vtk"
@@ -39,24 +39,17 @@ out = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.vtk"
 out_nifti = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.nii.gz"
 
 
-slicer.util.saveNode(slicer.util.loadVolume('/proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1/CONTINUITY_QC/icbm_merge.vtk'), /proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1/CONTINUITY_QC/icbm_merge.nrrd')
+slicer.util.saveNode(slicer.util.loadVolume('/proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1/CONTINUITY_QC/icbm_merge.vtk'), '/proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1/CONTINUITY_QC/icbm_merge.nrrd')
+'''
 
-
-
-
-
-
-
-
-ID = json_user_object['Arguments']['ID']['value']
-NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME']['value']
-input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
+#ID = json_user_object['Arguments']['ID']['value']
+#NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME']['value']
+#input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
 
 
 print(ID)
 print(NAME_PARCELLATION_TABLE)
 print(input_path)
-
 
 #find datas for B0_BiasCorrect
 B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_resample.nrrd")

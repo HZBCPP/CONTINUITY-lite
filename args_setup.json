@@ -137,7 +137,6 @@
             "help": "Use the Anatomically-Constrained Tractography framework during tracking",
             "default": false
         },
-        
         "DO_REGISTRATION": {
             "type": "bool",
             "help": "Do registration with this tool",
