@@ -1746,6 +1746,8 @@ class Ui_visu(QtWidgets.QTabWidget):
         scalarBar = vtk.vtkScalarBarActor()
         scalarBar.SetNumberOfLabels(8)
         scalarBar.SetLookupTable(colorLookupTable)
+        scalarBar.SetMaximumWidthInPixels(80)
+        scalarBar.SetMaximumHeightInPixels(1000)
         self.ren.AddActor2D(scalarBar)
 
         # Set color of the background: 
