@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -88,7 +88,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
@@ -1162,7 +1162,7 @@ p, li { white-space: pre-wrap; }
            <x>14</x>
            <y>380</y>
            <width>341</width>
-           <height>71</height>
+           <height>31</height>
           </rect>
          </property>
          <property name="font">
@@ -1173,10 +1173,7 @@ p, li { white-space: pre-wrap; }
           </font>
          </property>
          <property name="text">
-          <string>Labelset name in vtk inner surface file: 
- 
- If you surfaces are not labeled you can put 
- the same name as your parcellation table </string>
+          <string>Labelset name in vtk inner surface file:</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="labelset_lineEdit">
