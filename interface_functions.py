@@ -533,11 +533,14 @@ class Ui(QtWidgets.QTabWidget):
 
             for key in data:
                 list_regions_name.append(key['name'])
-
-                if key['subcortical']:
-                    list_subcortical.append(1)
-                else: 
-                     list_subcortical.append(0)
+                try: 
+                    if key['subcortical']:
+                        list_subcortical.append(1)
+                    else: 
+                        list_subcortical.append(0)
+                
+                except: 
+                        list_subcortical.append(0)
                     
 
             # Clear the list and add all names:
@@ -545,7 +548,7 @@ class Ui(QtWidgets.QTabWidget):
             self.sc_regions_names_listWidget.addItems(list_regions_name)
 
             # Set parameters: 
-            sc = []
+            sc, labels_list = ([],[])
             text = "Subcortical regions found: \n"
             for i in range(self.sc_regions_names_listWidget.count()):
                 item = self.sc_regions_names_listWidget.item(i) 
@@ -554,11 +557,15 @@ class Ui(QtWidgets.QTabWidget):
                     item.setCheckState(Qt.Checked)
                     item.setForeground(QtGui.QColor("green"))
                     sc.append(list_regions_name[i])
+                    labels_list.append(0)
                     text += str(list_regions_name[i]) + '\n'
                 else:
                     item.setCheckState(not Qt.Checked)
 
             json_user_object['Parameters']["subcorticals_region_names"]["value"] = sc 
+            json_user_object['Parameters']["subcorticals_region_labels"]["value"] = labels_list
+
+
             Ui.update_user_json_file() 
 
             self.Subcortical_regions_textEdit.setText(text)
@@ -748,7 +755,7 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def complete_label_name_sc_region(self): 
-
+        print("here")
         # Clear the list: 
         self.sc_regions_labels_listWidget.clear()
 
@@ -764,10 +771,10 @@ class Ui(QtWidgets.QTabWidget):
         for i in range(self.sc_regions_labels_listWidget.count()):
             item = self.sc_regions_labels_listWidget.item(i) 
 
+        print("here1")
         self.sc_regions_labels_listWidget.itemDoubleClicked.connect(self.subcortical_label_changed , type= Qt.UniqueConnection)   
 
     
- 
     # *****************************************
     # Update subcorticals_region_names list if the user checked or unchecked region
     # *****************************************  
