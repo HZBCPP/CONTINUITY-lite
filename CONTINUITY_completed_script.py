@@ -268,7 +268,7 @@ with Tee(log_file):
 		        line = int(line.strip('\n') )
 		        all_bvals.append(line)
 
-		    print(all_bvals)
+		    print("all_bvals", all_bvals)
 		
 		    # Write txt file with all bval that will be deleted: 
 	    	txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_FOLDER, "txt_file_with_bval_that_will_be_deleted.txt")
@@ -290,6 +290,16 @@ with Tee(log_file):
 	    	DWI_DATA_bvals = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bval')
    		 	DWI_DATA_bvecs = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bvec')
    		 	DWI_DATA       = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.nii.gz')
+
+
+   		 	# Find all b-values after filtered: 
+			new_bvals = []
+			bval_file = open(DWI_DATA_bvals, 'r')     
+		    for line in bval_file:
+		        line = int(line.strip('\n') )
+		        new_bvals.append(line)
+
+		    print("new_bvals", new_bvals)
 
 
 		print("*****************************************")
@@ -1291,6 +1301,11 @@ with Tee(log_file):
 												                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 												                '-scratch', os.path.join(OUT_MRTRIX),
 												                '-nthreads', str(nb_threads)]
+
+			if multi_shell_DWI: 
+				command.append('-shells')
+				command.append(new_bvals)
+
 			run_command("Response function estimation (err ok)", command)
 
 		# *****************************************
@@ -1301,13 +1316,19 @@ with Tee(log_file):
 		if os.path.exists(FOD_nii):
 		    print("Fibre Orientation Distribution estimation already compute")
 		else: 
-			run_command("FOD estimation", [MRtrixPath + "/dwi2fod", 'csd',
-								    						        DiffusionData, # input
-								    								Response_function_estimation_txt, # input
-								    								FOD_nii, # ouput
-								   									'-mask', DiffusionBrainMask, # input
-								    								'-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
-								    								'-nthreads', str(nb_threads) ])
+			command = [MRtrixPath + "/dwi2fod", 'csd',
+								    DiffusionData, # input
+								    Response_function_estimation_txt, # input
+								    FOD_nii, # ouput
+								   	'-mask', DiffusionBrainMask, # input
+								    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
+								    '-nthreads', str(nb_threads) ]
+
+			if multi_shell_DWI: 
+				command.append('-shells')
+				command.append(new_bvals)
+
+			run_command("FOD estimation", command)
 
 
 
@@ -1725,9 +1746,6 @@ with Tee(log_file):
 		np.savetxt(connectome_mrtrix, connectome.astype(float),  fmt='%f', delimiter='  ')
 
 		
-
-
-
 
 
 
