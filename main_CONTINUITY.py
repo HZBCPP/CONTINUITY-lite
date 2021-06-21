@@ -31,6 +31,11 @@ def run_command(text_printed, command):
 
 if __name__ == '__main__':
 
+
+    test = extract_bvals("/work/elodie/testing/bvals_test")
+    print(test)
+
+
     '''
     left = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_left_hires.vtk"
     right = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_right_hires.vtk"
@@ -148,7 +153,7 @@ if __name__ == '__main__':
 
         # Find and write localisation of executables            
         executable_path(default_config_filename, user_filename)
-        
+
 
 
         # *****************************************

@@ -1002,3 +1002,52 @@ def write_csv_file_prisma_data(csv_file_name, default_config_filename):
 
             line += "}"
             writer.writerow( eval(line) )
+
+
+
+
+def extract_bvals(bval_file_name):
+    list_bval, list_bval_clean = ([], [])
+
+    bval_file = open(bval_file_name, 'r')     
+    for line in bval_file:
+        line = int(line.strip('\n') )
+        list_bval.append(line)
+
+    # remove duplicate
+    list_bval = list(dict.fromkeys(list_bval))
+
+    print("list_bval", list_bval ) #[0, 300, 301, 302, 199, 404, 400, 402, 401, 1004]
+
+    list_list_bval = [[] for i in range(len(list_bval))]
+    group = []
+
+    list_bval_clean.append(list_bval[0])
+    group.append(list_bval[1])
+
+    for val in list_bval[1:]:
+        for bval in group:
+       
+            if abs(bval - val) < 10: 
+                index = group.index(bval)
+                list_list_bval[index].append(val)
+
+            else: 
+                not_in_list = True
+
+                for i in range(20):
+                    if (val-10)+i in group:
+                        not_in_list = False
+                
+                if not_in_list:
+                    if val not in group:
+                        group.append(val)
+    
+    print(list_list_bval)# [[300, 301, 302], [199], [404, 400, 402, 401], [1004], [], [], [], [], [], []]
+
+    for i in range(len(list_list_bval)):
+        if list_list_bval[i] != []:
+            list_bval_clean.append(int(sum(list_list_bval[i]) / len(list_list_bval[i])))
+
+
+    return list_bval_clean 
