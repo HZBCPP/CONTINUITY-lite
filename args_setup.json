@@ -132,6 +132,11 @@
             "help": "Optimisation_with_tcksift2 if Tractography model == MRtrix",
             "default": true
         },
+        "multi_shell_DWI": {
+            "type": "bool",
+            "help": "multi shell DWI data",
+            "default": false
+        },
         "act_option": {
             "type": "bool",
             "help": "Use the Anatomically-Constrained Tractography framework during tracking",
@@ -337,6 +342,11 @@
             "help": "json config file with user configuration",
             "default": ""
         },
+        "list_bval_that_will_be_deleted": {
+            "type": "list",
+            "help": "List of bval that will be deleted in the DWI multi-shell",
+            "default": []
+        }, 
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",

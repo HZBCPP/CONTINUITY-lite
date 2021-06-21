@@ -376,6 +376,79 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
+    # Remove bval from DWI data
+    # *****************************************  
+
+    def remove_bval_groupBox_clicked(self):
+        if self.remove_bval_groupBox.isChecked: 
+            list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"])
+
+        # int to str: 
+        for i in range(len(list_bval)): 
+            list_bval[i] = str(list_bval[i])
+
+        # Clear the list and add all names:
+        self.bval_in_bvalfile_listWidget.clear()
+        self.bval_in_bvalfile_listWidget.addItems(list_bval)
+
+        # Set parameters: 
+        for i in range(self.bval_in_bvalfile_listWidget.count()):
+            item = self.bval_in_bvalfile_listWidget.item(i) 
+            item.setCheckState(not Qt.Checked)
+
+
+        # Set a signal to do something if the user click on a region: 
+        self.bval_in_bvalfile_listWidget.itemClicked.connect(self.change_bval)
+
+            
+
+    # *****************************************
+    # Update bval that will be deleted
+    # *****************************************  
+
+    def change_bval(self, item):
+        self.bval_in_bvalfile_listWidget.blockSignals(True)
+        list_bval_that_will_be_deleted = json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"]
+       
+        if item.checkState() == Qt.Unchecked: 
+            if int(item.text()) in list_bval_that_will_be_deleted: 
+                del list_bval_that_will_be_deleted[list_bval_that_will_be_deleted.index(int(item.text()))]
+
+        if item.checkState() == Qt.Checked:             
+            if int(item.text()) not in list_bval_that_will_be_deleted:
+                list_bval_that_will_be_deleted.append(int(item.text()))
+
+        json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"] = list_bval_that_will_be_deleted
+        Ui.update_user_json_file() 
+
+        text = 'bval that will be deleted:  \n'
+        for i in range(len(list_bval_that_will_be_deleted)): 
+            text+= str(list_bval_that_will_be_deleted[i]) + '\n'
+
+        self.bval_removing_textEdit.setText(text)
+
+        self.bval_in_bvalfile_listWidget.blockSignals(False) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # *****************************************
     # Remove the selected path and change value of T2 data parameter in json user file
     # *****************************************
 
@@ -1299,13 +1372,34 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
-    # Checkbox to do the -act option
+    # Checkbox to do the -act option and handle multi-shell data
     # ***************************************** 
 
     def act_checkBox_checked(self): 
         json_user_object['Parameters']["act_option"]["value"] = False
         if self.act_checkBox.isChecked(): 
             json_user_object['Parameters']["act_option"]["value"] = True
+        Ui.update_user_json_file()
+
+
+    def act_option_T1_clicked(self):
+        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
+        if fileName:
+            self.act_option_T1_DATA_textEdit.setText(fileName)
+            json_user_object['Parameters']["T1_DATA"]["value"] = fileName
+            Ui.update_user_json_file() 
+
+
+    def mult_shell_DWI_MRtrix_checkBox_clicked(self):
+        json_user_object['Parameters']["multi_shell_DWI"]["value"] = False
+        if self.mult_shell_DWI_MRtrix_checkBox.isChecked(): 
+            json_user_object['Parameters']["multi_shell_DWI"]["value"] = True
+        Ui.update_user_json_file()
+
+    def mult_shell_DWI_DIPY_checkBox_clicked(self):
+        json_user_object['Parameters']["multi_shell_DWI"]["value"] = False
+        if self.mult_shell_DWI_DIPY_checkBox.isChecked(): 
+            json_user_object['Parameters']["multi_shell_DWI"]["value"] = True
         Ui.update_user_json_file()
 
 

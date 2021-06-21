@@ -1005,6 +1005,9 @@ def write_csv_file_prisma_data(csv_file_name, default_config_filename):
 
 
 
+# *************************************************************************************
+# Extract b-values from a bval txt file
+# *************************************************************************************
 
 def extract_bvals(bval_file_name):
     list_bval, list_bval_clean = ([], [])
@@ -1017,7 +1020,7 @@ def extract_bvals(bval_file_name):
     # remove duplicate
     list_bval = list(dict.fromkeys(list_bval))
 
-    print("list_bval", list_bval ) #[0, 300, 301, 302, 199, 404, 400, 402, 401, 1004]
+    #print("list_bval", list_bval ) #[0, 300, 301, 302, 199, 404, 400, 402, 401, 1004]
 
     list_list_bval = [[] for i in range(len(list_bval))]
     group = []
@@ -1043,7 +1046,7 @@ def extract_bvals(bval_file_name):
                     if val not in group:
                         group.append(val)
     
-    print(list_list_bval)# [[300, 301, 302], [199], [404, 400, 402, 401], [1004], [], [], [], [], [], []]
+    #print(list_list_bval)# [[300, 301, 302], [199], [404, 400, 402, 401], [1004], [], [], [], [], [], []]
 
     for i in range(len(list_list_bval)):
         if list_list_bval[i] != []:
@@ -1051,3 +1054,47 @@ def extract_bvals(bval_file_name):
 
 
     return list_bval_clean 
+
+
+
+# *************************************************************************************
+# Remove b-values from DWI    (from /tools/bin_linux64/rm_bad_DWI.script)
+# *************************************************************************************
+
+def remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI, bvec, bval, OutDir, ID, FSL_path): 
+
+    bvecvar = np.loadtxt(bvec)
+    bvalvar = np.loadtxt(bval, ndmin=2)
+    txt_file_with_bval_that_will_be_deleted_var = np.loadtxt(txt_file_with_bval_that_will_be_deleted, ndmin=2)
+
+
+    bval_clean=np.delete(bvalvar, txt_file_with_bval_that_will_be_deleted_var, axis = 0)
+    bvec_clean=np.delete(bvecvar, txt_file_with_bval_that_will_be_deleted_var, axis = 0)
+
+    bval_clean_name = os.path.join(OutDir, ID + '_DWI_filtered.bval')
+    bvec_clean_name = os.path.join(OutDir, ID + '_DWI_filtered.bvec')
+
+    np.savetxt(bval_clean_name, bval_clean, fmt='%1.0f')
+    np.savetxt(bvec_clean_name, bvec_clean, fmt='%1.5f')
+
+    FSLSplitCommand = FSL_path + "/fslsplit " + DWI + " " + OutDir + "/" + "vol"
+    os.system(FSLSplitCommand)
+
+    for i in txt_file_with_bval_that_will_be_deleted_var:
+        ImgInd = ('%04d' % i)
+        print(ImgInd)
+        RemoveCommand="rm -rf " + OutDir + "/vol" + ImgInd + ".nii.gz"
+        os.system(RemoveCommand)
+
+
+    DWIClean = ID + '_DWI_filtered.nii.gz'
+    DWIClean = os.path.join(OutDir, DWIClean)
+
+    FSLROICommand= FSL_path + "/fslmerge -t " + DWIClean + " " + OutDir + "/" + "vol*.nii.gz"
+    os.system(FSLROICommand)
+
+
+    RemoveCommand="rm -rf " + OutDir + "/" + "vol*.nii.gz"
+    os.system(RemoveCommand)
+
+

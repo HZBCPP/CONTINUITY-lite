@@ -88,6 +88,7 @@ only_registration                       = json_user_object["Parameters"]["only_r
 only_bedpostx                           = json_user_object["Parameters"]["only_bedpostx"]['value']
 filtering_with_tcksift					= json_user_object["Parameters"]["filtering_with_tcksift"]['value']
 optimisation_with_tcksift2				= json_user_object["Parameters"]["optimisation_with_tcksift2"]['value']
+multi_shell_DWI                         = json_user_object["Parameters"]["multi_shell_DWI"]['value']
 act_option				                = json_user_object["Parameters"]["act_option"]['value']
 UPSAMPLING_DWI                          = json_user_object["Parameters"]["UPSAMPLING_DWI"]['value']
 DO_REGISTRATION                         = json_user_object["Parameters"]["DO_REGISTRATION"]['value']
@@ -128,6 +129,7 @@ sz  									= json_user_object["Parameters"]["sz"]['value']
 nb_iteration_GenParaMeshCLP  			= json_user_object["Parameters"]["nb_iteration_GenParaMeshCLP"]['value']
 spharmDegree  			                = json_user_object["Parameters"]["spharmDegree"]['value']
 subdivLevel  			                = json_user_object["Parameters"]["subdivLevel"]['value']
+list_bval_that_will_be_deleted          = json_user_object["Parameters"]["list_bval_that_will_be_deleted"]['value']
 OUT_PATH                                = json_user_object["Parameters"]["OUT_PATH"]['value']
 
 # Executables
@@ -253,6 +255,43 @@ with Tee(log_file):
 
 	if afile.endswith('nii.gz'): 
 
+    	if len(txt_file_with_bval_that_will_be_deleted) != 0: 
+
+    		print("*****************************************")
+			print("Remove bval from DWI")
+			print("*****************************************")
+
+			# Find all b-values: 
+			all_bvals = []
+			bval_file = open(DWI_DATA_bvals, 'r')     
+		    for line in bval_file:
+		        line = int(line.strip('\n') )
+		        all_bvals.append(line)
+
+		    print(all_bvals)
+		
+		    # Write txt file with all bval that will be deleted: 
+	    	txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_FOLDER, "txt_file_with_bval_that_will_be_deleted.txt")
+
+	    	with open(txt_file_with_bval_that_will_be_deleted, 'w') as filebval:
+    			for listitem in txt_file_with_bval_that_will_be_deleted:
+        			filebval.write('%s\n' % listitem)
+
+        			# write other nerest b-values: 
+        			for i in range(20):
+        				if int((listitem-10)) + i in all_bvals:
+        					filebval.write('%s\n' % int((listitem-10)) + i)
+
+
+        	# Filtering DWI: 
+	    	remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI_DATA, DWI_DATA_bvecs, DWI_DATA_bvals, OUT_FOLDER, ID, FSLPath)
+
+	    	# Update the path of DWI: 
+	    	DWI_DATA_bvals = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bval')
+   		 	DWI_DATA_bvecs = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bvec')
+   		 	DWI_DATA       = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.nii.gz')
+
+
 		print("*****************************************")
 		print("Convert DWI FSL2Nrrd")
 		print("*****************************************")
@@ -270,7 +309,6 @@ with Tee(log_file):
 														                             "--conversionMode", "FSLToNrrd", 
 														                             "--outputVolume", output_nrrd, 
 														                             "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
-
 
 		# New path :
 		DWI_DATA = output_nrrd
@@ -1224,8 +1262,6 @@ with Tee(log_file):
 
 	if tractography_model == "MRtrix (default: IFOD2) " or tractography_model == "MRtrix (Tensor-Prob)" or tractography_model == "MRtrix (iFOD1)": 
 
-
-		
 		print("*****************************************")
 		print("Run tractography with " + tractography_model )
 		print("*****************************************")
