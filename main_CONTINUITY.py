@@ -32,9 +32,8 @@ def run_command(text_printed, command):
 if __name__ == '__main__':
 
 
-    test = extract_bvals("/work/elodie/testing/bvals_test")
-    print(test)
-
+    #test = extract_bvals("/work/elodie/testing/bvals_test")
+    
 
     '''
     left = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_left_hires.vtk"
