@@ -1067,7 +1067,6 @@ def remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI, bvec, bva
     bvalvar = np.loadtxt(bval, ndmin=2)
     txt_file_with_bval_that_will_be_deleted_var = np.loadtxt(txt_file_with_bval_that_will_be_deleted, ndmin=2)
 
-
     bval_clean=np.delete(bvalvar, txt_file_with_bval_that_will_be_deleted_var, axis = 0)
     bvec_clean=np.delete(bvecvar, txt_file_with_bval_that_will_be_deleted_var, axis = 0)
 
@@ -1082,10 +1081,8 @@ def remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI, bvec, bva
 
     for i in txt_file_with_bval_that_will_be_deleted_var:
         ImgInd = ('%04d' % i)
-        print(ImgInd)
         RemoveCommand="rm -rf " + OutDir + "/vol" + ImgInd + ".nii.gz"
         os.system(RemoveCommand)
-
 
     DWIClean = ID + '_DWI_filtered.nii.gz'
     DWIClean = os.path.join(OutDir, DWIClean)
@@ -1097,4 +1094,4 @@ def remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI, bvec, bva
     RemoveCommand="rm -rf " + OutDir + "/" + "vol*.nii.gz"
     os.system(RemoveCommand)
 
-
+    print("Remove b-values from DWI done ! ") 
