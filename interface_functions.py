@@ -1386,7 +1386,7 @@ class Ui(QtWidgets.QTabWidget):
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
         if fileName:
             self.act_option_T1_DATA_textEdit.setText(fileName)
-            json_user_object['Parameters']["T1_DATA"]["value"] = fileName
+            json_user_object['Arguments']["T1_DATA"]["value"] = fileName
             Ui.update_user_json_file() 
 
 
