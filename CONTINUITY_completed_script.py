@@ -255,51 +255,51 @@ with Tee(log_file):
 
 	if afile.endswith('nii.gz'): 
 
-    	if len(txt_file_with_bval_that_will_be_deleted) != 0: 
+		if len(txt_file_with_bval_that_will_be_deleted) != 0: 
 
-    		print("*****************************************")
+			print("*****************************************")
 			print("Remove bval from DWI")
 			print("*****************************************")
 
 			# Find all b-values: 
 			all_bvals = []
 			bval_file = open(DWI_DATA_bvals, 'r')     
-		    for line in bval_file:
-		        line = int(line.strip('\n') )
-		        all_bvals.append(line)
+			for line in bval_file:
+				line = int(line.strip('\n') )
+				all_bvals.append(line)
 
-		    print("all_bvals", all_bvals)
+			print("all_bvals", all_bvals)
 		
-		    # Write txt file with all bval that will be deleted: 
-	    	txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_FOLDER, "txt_file_with_bval_that_will_be_deleted.txt")
+			# Write txt file with all bval that will be deleted: 
+			txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_FOLDER, "txt_file_with_bval_that_will_be_deleted.txt")
 
-	    	with open(txt_file_with_bval_that_will_be_deleted, 'w') as filebval:
-    			for listitem in txt_file_with_bval_that_will_be_deleted:
-        			filebval.write('%s\n' % listitem)
+			with open(txt_file_with_bval_that_will_be_deleted, 'w') as filebval:
+				for listitem in txt_file_with_bval_that_will_be_deleted:
+					filebval.write('%s\n' % listitem)
 
-        			# write other nerest b-values: 
-        			for i in range(20):
-        				if int((listitem-10)) + i in all_bvals:
-        					filebval.write('%s\n' % int((listitem-10)) + i)
-
-
-        	# Filtering DWI: 
-	    	remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI_DATA, DWI_DATA_bvecs, DWI_DATA_bvals, OUT_FOLDER, ID, FSLPath)
-
-	    	# Update the path of DWI: 
-	    	DWI_DATA_bvals = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bval')
-   		 	DWI_DATA_bvecs = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bvec')
-   		 	DWI_DATA       = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.nii.gz')
+					# write other nerest b-values: 
+					for i in range(20):
+						if int((listitem-10)) + i in all_bvals:
+							filebval.write('%s\n' % int((listitem-10)) + i)
 
 
-   		 	# Find all b-values after filtered: 
+			# Filtering DWI: 
+			remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI_DATA, DWI_DATA_bvecs, DWI_DATA_bvals, OUT_FOLDER, ID, FSLPath)
+
+			# Update the path of DWI: 
+			DWI_DATA_bvals = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bval')
+			DWI_DATA_bvecs = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bvec')
+			DWI_DATA       = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.nii.gz')
+
+
+			# Find all b-values after filtered: 
 			new_bvals = []
 			bval_file = open(DWI_DATA_bvals, 'r')     
-		    for line in bval_file:
-		        line = int(line.strip('\n') )
-		        new_bvals.append(line)
+			for line in bval_file:
+				line = int(line.strip('\n') )
+				new_bvals.append(line)
 
-		    print("new_bvals", new_bvals)
+			print("new_bvals", new_bvals)
 
 
 		print("*****************************************")
