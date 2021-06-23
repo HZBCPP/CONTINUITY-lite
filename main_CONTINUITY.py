@@ -201,13 +201,10 @@ if __name__ == '__main__':
 
             with open(args['csv_file'], 'r') as csv_file:
                 csv_dict_reader = DictReader(csv_file)
-
                 header = csv_dict_reader.fieldnames
-                print("header: ",header )
                 
                 # Iterate over each row after the header in the csv
                 for row in csv_dict_reader:
-                    print("info subject:",row)
                     for element in header: 
                         try:
                             if data_user['Arguments'][element]['type'] == "bool":

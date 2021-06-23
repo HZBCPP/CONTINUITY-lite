@@ -920,7 +920,7 @@ with Tee(log_file):
 		i = 0 
 		while i < len(data)-1:
 
-			if data[i]['name'] in subcorticals_region_names:  #work because elem in list in the same order by building of this list
+			if data[i]['name'] in subcorticals_region_names:  
 				subcorticals_region_names.remove(data[i]['name'])
 				data.pop(i)
 				i -= 1

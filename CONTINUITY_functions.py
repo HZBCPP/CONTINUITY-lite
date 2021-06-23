@@ -173,10 +173,9 @@ def cluster(slurm_job, cluster_command_line, out_path, ID_path, user_json_file )
     slurm_job_file.write(cluster_command_line) 
     slurm_job_file.write('#SBATCH -e ' + OUT_FOLDER +   '/slurm_error.txt \n') 
     slurm_job_file.write('#SBATCH -o ' + OUT_FOLDER +   '/slurm.out \n') 
-    slurm_job_file.write('module add python \n') 
+    #slurm_job_file.write('module add python \n') 
 
-    path = os.path.realpath(os.path.dirname(__file__))
-    slurm_job_file.write('python3 CONTINUITY_completed_script.py ' + user_json_file)  
+    slurm_job_file.write(sys.executable + ' ' +  os.path.realpath(os.path.dirname(__file__)) + "/CONTINUITY_completed_script.py" + user_json_file) #' CONTINUITY_completed_script.py ' + user_json_file)  
     slurm_job_file.close()  
 
     # Run 
@@ -929,7 +928,7 @@ def get_number_of_points(SALTDir):
 def write_csv_file_prisma_data(csv_file_name, default_config_filename):
 
     list_param_prisma = ["ID", "DWI_DATA", "BRAINMASK","SURFACE_USER", "PARCELLATION_TABLE", "PARCELLATION_TABLE_NAME", "DO_REGISTRATION", 
-                         "surface_already_labeled", "OUT_PATH"]
+                         "surface_already_labeled", "OUT_PATH", "labelSetName"]
 
     with open(csv_file_name, mode='w+') as csv_file:
         with open(default_config_filename) as data_file:
@@ -995,7 +994,8 @@ def write_csv_file_prisma_data(csv_file_name, default_config_filename):
                     elif key == "SURFACE_USER":            line += "'" + key + "' : '" + surface + "',"
                     elif key == "PARCELLATION_TABLE":      line += "'" + key + "' : '" + parcellation_Table + "',"
                     elif key == "PARCELLATION_TABLE_NAME": line += "'" + key + "' : '" + "AAL" + "',"
-                       
+                    elif key == "labelSetName":            line += "'" + key + "' : '" + "AAL" + "',"
+
                     elif key == "DO_REGISTRATION":         line += "'" + key + "' : '" + str(False) + "',"
                     elif key == "surface_already_labeled": line += "'" + key + "' : '" + str(True) + "',"
                     elif key == "OUT_PATH":                line += "'" + key + "' : '" + out_path + "',"
