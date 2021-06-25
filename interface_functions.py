@@ -434,8 +434,59 @@ class Ui(QtWidgets.QTabWidget):
 
 
 
+    # *****************************************
+    # Remove bval from DWI data
+    # *****************************************  
+
+    def no_registration_remove_bval_groupBox_clicked(self):
+        if self.no_registration_remove_bval_groupBox.isChecked: 
+            no_registration_list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"])
+
+        # int to str: 
+        for i in range(len(no_registration_list_bval)): 
+            no_registration_list_bval[i] = str(no_registration_list_bval[i])
+
+        # Clear the list and add all names:
+        self.no_registration_bval_in_bvalfile_listWidget.clear()
+        self.no_registration_bval_in_bvalfile_listWidget.addItems(no_registration_list_bval)
+
+        # Set parameters: 
+        for i in range(self.no_registration_bval_in_bvalfile_listWidget.count()):
+            item = self.no_registration_bval_in_bvalfile_listWidget.item(i) 
+            item.setCheckState(not Qt.Checked)
 
 
+        # Set a signal to do something if the user click on a region: 
+        self.no_registration_bval_in_bvalfile_listWidget.itemClicked.connect(self.no_registration_change_bval)
+
+            
+
+    # *****************************************
+    # Update bval that will be deleted
+    # *****************************************  
+
+    def no_registration_change_bval(self, item):
+        self.no_registration_bval_in_bvalfile_listWidget.blockSignals(True)
+        no_registration_list_bval_that_will_be_deleted = json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"]
+       
+        if item.checkState() == Qt.Unchecked: 
+            if int(item.text()) in no_registration_list_bval_that_will_be_deleted: 
+                del no_registration_list_bval_that_will_be_deleted[no_registration_list_bval_that_will_be_deleted.index(int(item.text()))]
+
+        if item.checkState() == Qt.Checked:             
+            if int(item.text()) not in no_registration_list_bval_that_will_be_deleted:
+                no_registration_list_bval_that_will_be_deleted.append(int(item.text()))
+
+        json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"] = no_registration_list_bval_that_will_be_deleted
+        Ui.update_user_json_file() 
+
+        text = 'bval that will be deleted:  \n'
+        for i in range(len(no_registration_list_bval_that_will_be_deleted)): 
+            text+= str(no_registration_list_bval_that_will_be_deleted[i]) + '\n'
+
+        self.no_registration_bval_removing_textEdit.setText(text)
+
+        self.no_registration_bval_in_bvalfile_listWidget.blockSignals(False) 
 
 
 
