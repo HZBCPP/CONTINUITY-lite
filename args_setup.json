@@ -122,6 +122,11 @@
             "help": "Run only bedpostx (FSL)",
             "default": false
         },
+        "run_bedpostx_gpu": {
+            "type": "bool",
+            "help": "Run bedpostx_gpu function (FSL)",
+            "default": false
+        },
         "filtering_with_tcksift": {
             "type": "bool",
             "help": "filtering_with_tcksift if Tractography model == MRtrix ",

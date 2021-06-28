@@ -242,6 +242,7 @@ if __name__ == '__main__':
                         cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
                                 data_user['Parameters']["OUT_PATH"]["value"], data_user['Parameters']["ID"]["value"], user_filename)
 
+
         
     # *****************************************
     # Run CONTINUITY thanks to an interface (default)

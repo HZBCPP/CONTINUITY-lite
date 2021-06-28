@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>2</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -4162,7 +4162,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -4186,7 +4186,7 @@ p, li { white-space: pre-wrap; }
          <x>10</x>
          <y>30</y>
          <width>391</width>
-         <height>81</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="html">
@@ -4204,7 +4204,7 @@ p, li { white-space: pre-wrap; }
          <x>410</x>
          <y>30</y>
          <width>671</width>
-         <height>81</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
@@ -4247,13 +4247,26 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>110</y>
          <width>241</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
         <string>Run only Bedpostx function </string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="bedpostx_gpu_checkBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>1061</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Run Bedpostx_gpu function (- NJOBS parameter can be change in 'submit job and result' tab by setting &quot; number of thread &quot;)</string>
        </property>
       </widget>
      </widget>
@@ -7410,22 +7423,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>nb_fibers_spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>nb_fibers_spinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>623</x>
-     <y>159</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>nb_fiber_per_seed_spinBox</sender>
    <signal>valueChanged(int)</signal>
    <receiver>TabWidget</receiver>
@@ -8114,22 +8111,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>only_bedpostx_checkBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>only_bedpostx_checkBox_stateChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>204</x>
-     <y>219</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>564</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>only_registration_checkBox</sender>
    <signal>stateChanged(int)</signal>
    <receiver>TabWidget</receiver>
@@ -8337,6 +8318,54 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>nb_fibers_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>nb_fibers_spinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>623</x>
+     <y>159</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>only_bedpostx_checkBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>only_bedpostx_checkBox_stateChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bedpostx_gpu_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>bedpostx_gpu_checkbox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>564</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>DWI_button_clicked()</slot>
@@ -8461,5 +8490,6 @@ p, li { white-space: pre-wrap; }
   <slot>mult_shell_DWI_DIPY_checkBox_clicked()</slot>
   <slot>act_option_T1_clicked()</slot>
   <slot>no_registration_remove_bval_groupBox_clicked()</slot>
+  <slot>bedpostx_gpu_checkbox_clicked()</slot>
  </slots>
 </ui>

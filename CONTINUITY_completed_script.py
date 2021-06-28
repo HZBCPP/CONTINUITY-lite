@@ -86,6 +86,7 @@ cluster_command_line                    = json_user_object["Parameters"]["cluste
 tractography_model                      = json_user_object["Parameters"]["tractography_model"]['value']
 only_registration                       = json_user_object["Parameters"]["only_registration"]['value']
 only_bedpostx                           = json_user_object["Parameters"]["only_bedpostx"]['value']
+run_bedpostx_gpu                        = json_user_object["Parameters"]["run_bedpostx_gpu"]['value']
 filtering_with_tcksift					= json_user_object["Parameters"]["filtering_with_tcksift"]['value']
 optimisation_with_tcksift2				= json_user_object["Parameters"]["optimisation_with_tcksift2"]['value']
 multi_shell_DWI                         = json_user_object["Parameters"]["multi_shell_DWI"]['value']
@@ -1218,8 +1219,18 @@ with Tee(log_file):
 			now = datetime.datetime.now()
 			print (now.strftime("Script running bedpostx command since: %H:%M %m-%d-%Y"))
 			start = time.time() #                , INPUT directory           
-			run_command("bedpostx", [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)])
+
+
+			if not run_bedpostx_gpu: 
+				command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)]
+
+			#else:  #run bepostx_gpu
+			#	command.append()
+
+			
+			run_command("bedpostx", command)
 			print("bedpostx command: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
+
 
 
 		if only_bedpostx: 
@@ -1869,6 +1880,10 @@ with Tee(log_file):
         #*****************************************
 		# Save the streamlines as a Trackvis file
 		#*****************************************
+
 		sft = StatefulTractogram(streamlines, img, Space.RASMM)
 		save_trk(sft, "tractogram.trk", streamlines)
+
+
+		# output file name must be "fdt_network_matrix" !!!!
 		

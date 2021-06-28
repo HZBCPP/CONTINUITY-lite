@@ -317,6 +317,7 @@ class Ui(QtWidgets.QTabWidget):
         Ui.update_user_json_file()
 
 
+
     # *****************************************
     # Button help which display explanations
     # *****************************************
@@ -1313,6 +1314,18 @@ class Ui(QtWidgets.QTabWidget):
         if self.only_bedpostx_checkBox.isChecked():
             json_user_object['Parameters']["only_bedpostx"]["value"] = True       
         Ui.update_user_json_file() 
+
+
+    # *****************************************
+    # Run only bedpost_gpu function
+    # *****************************************
+    
+    def bedpostx_gpu_checkbox_clicked(self):
+        json_user_object['Parameters']["run_bedpostx_gpu"]["value"] = False
+        if self.bedpostx_gpu_checkBox.isChecked():
+            json_user_object['Parameters']["run_bedpostx_gpu"]["value"] = True
+      
+        Ui.update_user_json_file()
 
 
 
