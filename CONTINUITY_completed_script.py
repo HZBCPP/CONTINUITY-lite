@@ -1226,7 +1226,7 @@ with Tee(log_file):
 				command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)]
 
 			else:  #run bepostx_gpu
-				command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)    ]
+				command = [bedpostx_gpuPath, OUT_DIFFUSION, "-n", str(nb_fibers)    ]
 
 			run_command("bedpostx", command)
 			print("bedpostx command: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
