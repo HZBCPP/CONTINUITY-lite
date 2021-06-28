@@ -145,6 +145,7 @@ pathPOLY_TRANSTOOL_EXE    = json_user_object["Executables"]["polydatatransform_v
 pathWARP_TRANSFORM        = json_user_object["Executables"]["WarpImageMultiTransform"]['value']
 DWIConvertPath            = json_user_object["Executables"]["DWIConvert"]['value']
 FSLPath                   = json_user_object["Executables"]["fsl"]['value'] 
+bedpostx_gpuPath          = json_user_object["Executables"]["bedpostx_gpu"]['value'] 
 ExtractLabelSurfaces      = json_user_object["Executables"]["ExtractLabelSurfaces"]['value']
 MRtrixPath                = json_user_object["Executables"]["MRtrix"]['value'] 
 SegPostProcessCLPPath     = json_user_object["Executables"]["SegPostProcessCLP"]['value']
@@ -1224,10 +1225,9 @@ with Tee(log_file):
 			if not run_bedpostx_gpu: 
 				command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)]
 
-			#else:  #run bepostx_gpu
-			#	command.append()
+			else:  #run bepostx_gpu
+				command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)    ]
 
-			
 			run_command("bedpostx", command)
 			print("bedpostx command: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 

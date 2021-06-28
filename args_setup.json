@@ -419,6 +419,11 @@
             "help": "Path to FSL",
             "default": "required"
         },
+        "bedpostx_gpu": {
+            "type": "str",
+            "help": "Path to bedpostx_gpu",
+            "default": ""
+        },
         "ExtractLabelSurfaces": {
             "type": "str",
             "help": "Path to ExtractLabelSurfaces",
