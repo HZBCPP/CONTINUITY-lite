@@ -118,6 +118,7 @@ iteration1                              = json_user_object["Parameters"]["iterat
 iteration2                              = json_user_object["Parameters"]["iteration2"]['value']
 iteration3                              = json_user_object["Parameters"]["iteration3"]['value']
 nb_threads                              = json_user_object["Parameters"]["nb_threads"]['value']
+nb_jobs_bedpostx_gpu                              = json_user_object["Parameters"]["nb_jobs_bedpostx_gpu"]['value']
 overlapping                             = json_user_object["Parameters"]["overlapping"]['value']
 nb_fibers                               = json_user_object["Parameters"]["nb_fibers"]['value']
 nb_fiber_per_seed                       = json_user_object["Parameters"]["nb_fiber_per_seed"]['value']
@@ -1226,7 +1227,10 @@ with Tee(log_file):
 				command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)]
 
 			else:  #run bepostx_gpu
-				command = [bedpostx_gpuPath, OUT_DIFFUSION, "-n", str(nb_fibers)    ]
+				command = [bedpostx_gpuPath, OUT_DIFFUSION, 
+											"-n", str(nb_fibers)
+											"-NJOBS", str(nb_jobs_bedpostx_gpu) ] #-NJOBS (number of jobs to queue, the data is divided in NJOBS parts, usefull 
+											                       				  # for a GPU cluster, default 4)
 
 			run_command("bedpostx", command)
 			print("bedpostx command: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
@@ -1267,11 +1271,14 @@ with Tee(log_file):
 		print("*****************************************")
 		print("Normalize connectivity matrix and save plot as PDF file")
 		print("*****************************************")
+
+		if not cluster: #can't display on Longleaf
+			save_connectivity_matrix('no_normalization', no_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
+			save_connectivity_matrix('whole', whole_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
+			save_connectivity_matrix('row_region', row_region_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
+			save_connectivity_matrix('row_column', row_column_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
 		
-		save_connectivity_matrix('no_normalization', no_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
-		save_connectivity_matrix('whole', whole_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
-		save_connectivity_matrix('row_region', row_region_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
-		save_connectivity_matrix('row_column', row_column_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
+		
 
 
 
@@ -1791,18 +1798,16 @@ with Tee(log_file):
 		print("Convert T1 image to nifti format")
 		print("*****************************************")
 
-		#if not DO_REGISTRATION: 
-		#	T1_OUT_NRRD = T1_DATA
 
-		T1_nifti = os.path.join(OUT_DIPY, ID + "-T1_SkullStripped_scaled.nii.gz")
+		DWI_nifti = os.path.join(OUT_DIPY, ID + "-T1_SkullStripped_scaled.nii.gz")
 		if os.path.exists(T1_nifti):
 		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
 		else:
 			print("Convert T1 image to nifti format ")
 			
-			run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_DATA,  #T1_OUT_NRRD
+			run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA,  
 															                             "--conversionMode", "NrrdToFSL", 
-															                             "--outputVolume", T1_nifti, 
+															                             "--outputVolume", DWI_nifti, 
 															                             "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
 															                             "--outputBVectors", os.path.join(OUT_DIPY, "bvecs")])
 
@@ -1811,7 +1816,7 @@ with Tee(log_file):
 		# Data and gradient
 		#*****************************************
 		
-		data, affine, img = load_nifti(T1_nifti, return_img=True) 
+		data, affine, img = load_nifti(DWI_nifti, return_img=True) 
 	
 		# https://dipy.org/documentation/1.1.1./reference/dipy.data/#dipy.data.gradient_table
 		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
@@ -1825,7 +1830,7 @@ with Tee(log_file):
 		#*****************************************
 
 		# https://dipy.org/documentation/1.2.0./examples_built/reconst_csd/
-		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.01)   #single shell    0.7: adult brain 
+		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.2)   #single shell    0.7: adult brain 
 
 		# Multi-Shell Multi-Tissue: used auto_response_msmt
 		#https://dipy.org/documentation/1.2.0./examples_built/reconst_mcsd/       csd: single shell

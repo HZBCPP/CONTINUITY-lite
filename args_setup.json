@@ -282,6 +282,11 @@
             "help": "ANTs: number of threads",
             "default": 6
         },
+        "nb_jobs_bedpostx_gpu": {
+            "type": "int",
+            "help": "Bedpostx_gpu: number of jobs to queue",
+            "default": 4
+        },
         "overlapping": {
             "type": "bool",
             "help": "Overlapping surfaces name",

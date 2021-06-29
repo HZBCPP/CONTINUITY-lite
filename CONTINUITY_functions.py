@@ -175,7 +175,7 @@ def cluster(slurm_job, cluster_command_line, out_path, ID_path, user_json_file )
     slurm_job_file.write('#SBATCH -o ' + OUT_FOLDER +   '/slurm.out \n') 
     #slurm_job_file.write('module add python \n') 
 
-    slurm_job_file.write(sys.executable + ' ' +  os.path.realpath(os.path.dirname(__file__)) + "/CONTINUITY_completed_script.py" + user_json_file) #' CONTINUITY_completed_script.py ' + user_json_file)  
+    slurm_job_file.write(sys.executable + ' ' +  os.path.realpath(os.path.dirname(__file__)) + "/CONTINUITY_completed_script.py " + user_json_file) #' CONTINUITY_completed_script.py ' + user_json_file)  
     slurm_job_file.close()  
 
     # Run 
