@@ -4174,7 +4174,7 @@ p, li { white-space: pre-wrap; }
         <x>10</x>
         <y>10</y>
         <width>1091</width>
-        <height>161</height>
+        <height>171</height>
        </rect>
       </property>
       <property name="title">
@@ -4204,7 +4204,7 @@ p, li { white-space: pre-wrap; }
          <x>410</x>
          <y>30</y>
          <width>671</width>
-         <height>71</height>
+         <height>111</height>
         </rect>
        </property>
        <property name="title">
@@ -4221,24 +4221,59 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>14</x>
           <y>34</y>
-          <width>228</width>
-          <height>28</height>
+          <width>472</width>
+          <height>64</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QVBoxLayout" name="verticalLayout_14">
          <item>
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>n: number of fibers = </string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>n: number of fibers = </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="nb_fibers_spinBox">
+             <property name="maximum">
+              <number>10000</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QSpinBox" name="nb_fibers_spinBox">
-           <property name="maximum">
-            <number>10000</number>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_22">
+           <item>
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>NJOBS : number of jobs to queue ( bedpostx_gpu only) = </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="nb_jobs_bedpostx_gpu_spinBox">
+             <property name="maximum">
+              <number>10000</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -4247,26 +4282,26 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>100</y>
-         <width>241</width>
+         <y>110</y>
+         <width>341</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
-        <string>Run only Bedpostx function </string>
+        <string>Run ONLY bedpostx / bedpostx_gpu function </string>
        </property>
       </widget>
       <widget class="QCheckBox" name="bedpostx_gpu_checkBox">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>140</y>
          <width>1061</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
-        <string>Run Bedpostx_gpu function (- NJOBS parameter can be change in 'submit job and result' tab by setting &quot; number of thread &quot;)</string>
+        <string>Run bedpostx_gpu function </string>
        </property>
       </widget>
      </widget>
@@ -4347,9 +4382,9 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>180</y>
+        <y>190</y>
         <width>1091</width>
-        <height>251</height>
+        <height>241</height>
        </rect>
       </property>
       <property name="title">
@@ -4361,7 +4396,7 @@ p, li { white-space: pre-wrap; }
          <x>10</x>
          <y>30</y>
          <width>1071</width>
-         <height>91</height>
+         <height>81</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -4380,7 +4415,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>120</y>
          <width>1071</width>
          <height>111</height>
         </rect>
@@ -6260,7 +6295,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -6467,7 +6502,7 @@ p, li { white-space: pre-wrap; }
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -8547,6 +8582,38 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>nb_jobs_bedpostx_gpu_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>nb_jobs_bedpostx_gpu_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>880</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bedpostx_gpu_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>button_exec_path_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>DWI_button_clicked()</slot>
@@ -8672,5 +8739,6 @@ p, li { white-space: pre-wrap; }
   <slot>act_option_T1_clicked()</slot>
   <slot>no_registration_remove_bval_groupBox_clicked()</slot>
   <slot>bedpostx_gpu_checkbox_clicked()</slot>
+  <slot>nb_jobs_bedpostx_gpu_valueChanged()</slot>
  </slots>
 </ui>

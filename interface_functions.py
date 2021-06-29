@@ -161,7 +161,7 @@ class Ui(QtWidgets.QTabWidget):
         # Initialization of spinBox:
         list_param_setValue_spinBox = ["first_metric_weight", "first_radius", "second_metric_weight", "second_radius", 
                                        "iteration1", "iteration2", "iteration3", 
-                                       "nb_fibers", "nb_fiber_per_seed", "nb_threads", "nb_jobs_bedpostx_gpu" "spharmDegree", "subdivLevel", "nb_iteration_GenParaMeshCLP" ]
+                                       "nb_fibers", "nb_fiber_per_seed", "nb_threads", "nb_jobs_bedpostx_gpu", "spharmDegree", "subdivLevel", "nb_iteration_GenParaMeshCLP" ]
         for item in list_param_setValue_spinBox:
             eval("self." + item + "_spinBox.setValue(int(json_setup_object['Parameters'][item]['default']))")
 
@@ -1324,7 +1324,15 @@ class Ui(QtWidgets.QTabWidget):
         json_user_object['Parameters']["run_bedpostx_gpu"]["value"] = False
         if self.bedpostx_gpu_checkBox.isChecked():
             json_user_object['Parameters']["run_bedpostx_gpu"]["value"] = True
-      
+        Ui.update_user_json_file()
+
+
+    # *****************************************
+    # Number of jobs: parameters of bedpost_gpu
+    # *****************************************
+
+    def nb_jobs_bedpostx_gpu_valueChanged(self):
+        json_user_object['Parameters']["nb_jobs_bedpostx_gpu"]["value"] = self.nb_jobs_bedpostx_gpu_spinBox.value()
         Ui.update_user_json_file()
 
 
