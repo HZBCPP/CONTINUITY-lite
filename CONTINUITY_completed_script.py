@@ -1753,6 +1753,7 @@ with Tee(log_file):
 				else: 
 					# Open output file: 
 					weight_file = open(weight_txt_file, 'r')
+					
 
 
 				# Compute value: Value in connectome matrix between this two region: sum of weight of each streamlines 
