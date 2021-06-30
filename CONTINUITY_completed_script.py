@@ -251,7 +251,7 @@ with Tee(log_file):
 
 
 
-
+	'''
 	file1 = "/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_gm_tal_nlin_sym_09c.nii.gz"
 	file2 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_t1_tal_nlin_sym_09c.nii.gz"
 	file3 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_wm_tal_nlin_sym_09c.nii.gz"
@@ -269,18 +269,7 @@ with Tee(log_file):
 
 	run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", file3, 
 														                           	 "--conversionMode", "FSLToNrrd",  "--outputVolume", out_file3])
-
-
-
-
-
-
-
-
-
-
-
-
+	'''
 
 
 
