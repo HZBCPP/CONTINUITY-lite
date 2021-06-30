@@ -1265,7 +1265,7 @@ with Tee(log_file):
 
 			else:  #run bepostx_gpu
 				command = [bedpostx_gpuPath, OUT_DIFFUSION, 
-											"-n", str(nb_fibers)
+											"-n", str(nb_fibers),
 											"-NJOBS", str(nb_jobs_bedpostx_gpu) ] #-NJOBS (number of jobs to queue, the data is divided in NJOBS parts, usefull 
 											                       				  # for a GPU cluster, default 4)
 
