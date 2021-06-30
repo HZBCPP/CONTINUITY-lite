@@ -1,9 +1,8 @@
 CONTINUITY: CONnectivity Tool with INtegration of sUbcortical regions, registration and visualIzation of TractographY
 
 
-
 To install all libraries required for CONTINUITY: 
-	- In your terminal, run:  
+	- In your terminal, run:
 		cd /tools/CONTINUITY/CONTINUITY_v1.1     ( On Longleaf: cd /proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1 ) 
 
 	- Install miniconda by running : 
@@ -12,8 +11,8 @@ To install all libraries required for CONTINUITY:
 
 	Now, you can restart your terminal at the end
 
-	- On the new terminal, to install libraries, write :  
-		cd /tools/CONTINUITY/CONTINUITY_v1.1        ( On Longleaf: cd /proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1 ) 
+	- On the new terminal, to install libraries, write :
+		cd /tools/CONTINUITY/CONTINUITY_v1.1     ( On Longleaf: cd /proj/NIRAL/tools/CONTINUITY/CONTINUITY_v1.1 ) 
 		conda env create -f CONTINUITY_env.yml
 
 	- Then (3min later): 

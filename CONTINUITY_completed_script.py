@@ -1822,17 +1822,17 @@ with Tee(log_file):
 			os.mkdir(OUT_DIPY)
 
 		print("*****************************************")
-		print("Convert T1 image to nifti format")
+		print("Convert DWI image to nifti format")
 		print("*****************************************")
 
 
 		DWI_nifti = os.path.join(OUT_DIPY, ID + "-T1_SkullStripped_scaled.nii.gz")
-		if os.path.exists(T1_nifti):
-		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
+		if os.path.exists(DWI_nifti):
+		    print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
 		else:
-			print("Convert T1 image to nifti format ")
+			print("Convert DWI image to nifti format ")
 			
-			run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA,  
+			run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA,  
 															                             "--conversionMode", "NrrdToFSL", 
 															                             "--outputVolume", DWI_nifti, 
 															                             "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
@@ -1844,14 +1844,19 @@ with Tee(log_file):
 		#*****************************************
 		
 		data, affine, img = load_nifti(DWI_nifti, return_img=True) 
+		print(data.shape)
 	
 		# https://dipy.org/documentation/1.1.1./reference/dipy.data/#dipy.data.gradient_table
 		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
 
 		# White matter mask to restrict tracking to the white matter
-		white_matter = DiffusionBrainMask # DiffusionBrainMask = nifti of brainmask
+		#white_matter = DiffusionBrainMask # DiffusionBrainMask = nifti of brainmas
 
+		data_brainMask = load_nifti_data(DiffusionBrainMask) 
+		white_matter = data_brainMask
 
+		print(white_matter.shape)
+		
         #*****************************************
 		# Method for getting directions from a diffusion data set
 		#*****************************************
