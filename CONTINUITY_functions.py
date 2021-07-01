@@ -110,8 +110,16 @@ def executable_path(default_filename, user_filename):
                         path = 'False'
                                  
                 elif key == "fsl": 
-                    path = my_which("fsl") #/tools/FSL/fsl-6.0.3/bin/fsl
-                   
+                    path = my_which("fsl") #/tools/FSL/fsl-6.0.3/bin/
+
+                    print("path before", path,"e")
+
+                    '''
+                    if not path.endswith("bin"):
+                        print("force path fsl")
+                        path+= "/bin"
+                    '''
+
                     if path != "False":
                         listFSLPath = os.path.split(path) 
                         path = listFSLPath[0] #/tools/FSL/fsl-6.0.3/bin/probtrackx2  /tools/FSL/fsl-6.0.3/bin/bedpostx

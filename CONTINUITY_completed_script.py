@@ -413,7 +413,7 @@ with Tee(log_file):
 		if os.path.exists( DWI_NRRD ):
 		    print("Files Found: Skipping Upsampling DWI")
 		elif UPSAMPLING_DWI:
-			print("*****************************************")
+			print("*****************************************  T0054-1-1-6yr")
 			print("Upsampling DWI")
 			print("*****************************************")
 
@@ -433,8 +433,11 @@ with Tee(log_file):
 			print("Resample DWI err: ", colored("\n" + str(err) + "\n", 'red')) 
 
 		else: # no Upsampling DWI
-			command = [pathUnu,"3op", "clamp", 0,'-', 10000000]
-			p2 = subprocess.Popen(command, stdin= DWI_DATA, stdout=subprocess.PIPE)
+
+			command = [pathUnu,"3op", "clamp", "0", "10000000", DWI_DATA]
+			p2 = subprocess.Popen(command, stdout=subprocess.PIPE)
+			print( colored("\n"+" ".join(command)+"\n", 'blue'))
+
 
 			command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", DWI_NRRD]
 			p3 = subprocess.Popen(command,stdin=p2.stdout, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -464,8 +467,8 @@ with Tee(log_file):
 			print("Pipe resample DWI Mask err: ", colored("\n" + str(err) + "\n", 'red')) 
 
 		else: # no Upsampling DWI
-		    command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", DWI_MASK]
-		    p2 = subprocess.Popen(command,stdin= BRAINMASK, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		    command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", DWI_MASK, "-i", BRAINMASK]
+		    p2 = subprocess.Popen(command, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 		    print( colored("\n"+" ".join(command)+"\n", 'blue'))
 		    out, err = p2.communicate()
 		    print("Pipe no resample DWI_Mask out: ", colored("\n" + str(out) + "\n", 'green'))
@@ -1250,7 +1253,8 @@ with Tee(log_file):
 
 
 			if not run_bedpostx_gpu: 
-				command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)]
+				if (FSLPath+'/bedpostx').exist():
+					command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)]
 
 			else:  #run bepostx_gpu
 				command = [bedpostx_gpuPath, OUT_DIFFUSION, 
@@ -1852,11 +1856,30 @@ with Tee(log_file):
 		# White matter mask to restrict tracking to the white matter
 		#white_matter = DiffusionBrainMask # DiffusionBrainMask = nifti of brainmas
 
-		data_brainMask = load_nifti_data(DiffusionBrainMask) 
+
+		DiffusionBrainMask_withoutUpsampling = os.path.join(OUT_DIPY, "nodif_brain_mask_withoutUpsampling.nii.gz")
+
+		if os.path.exists(DiffusionBrainMask_withoutUpsampling):
+		    print("Brain mask FSL file: Found Skipping convertion")
+		else: 
+			print("DWIConvert BRAINMASK to FSL format")
+			
+			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK, 
+									                                    "--conversionMode", "NrrdToFSL", 
+									                                    "--outputVolume", DiffusionBrainMask_withoutUpsampling, 
+									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
+									                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+
+
+
+
+
+
+		data_brainMask = load_nifti_data(DiffusionBrainMask_withoutUpsampling) 
 		white_matter = data_brainMask
 
 		print(white_matter.shape)
-		
+
         #*****************************************
 		# Method for getting directions from a diffusion data set
 		#*****************************************
