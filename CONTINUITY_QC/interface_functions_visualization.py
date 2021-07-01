@@ -1060,7 +1060,11 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
 
         # Find localization of images: 
-        self.imarray, header = nrrd.read(os.path.realpath(os.path.dirname(__file__)) + "/template_brain_connectome_2D.nrrd")  #T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
+        #self.imarray, header = nrrd.read(os.path.realpath("/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_gm_tal_nlin_sym_09c.nrrd"))
+        self.imarray, header = nrrd.read(os.path.realpath("/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_t1_tal_nlin_sym_09c.nrrd"))
+        #self.imarray, header = nrrd.read(os.path.realpath("/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_wm_tal_nlin_sym_09c.nrrd"))
+
+        #self.imarray, header = nrrd.read(os.path.realpath(os.path.dirname(__file__)) + "/template_brain_connectome_2D.nrrd")  #T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
         
         # Modify the matrix to select a specific orrientation: 
         self.imarray_axial          = np.rot90(self.imarray, k=1, axes=(0, 2))  
@@ -1120,24 +1124,24 @@ class Ui_visu(QtWidgets.QTabWidget):
         
         # Extract data point for each view (axial, sagittal, coronal)
         for element in list_coord_2D_connectome:   
-            # Header of nrrd-file: array([146, 190, 165])
-            x = float("{:.2f}".format(-(float("{:.2f}".format(element[0]))) + 146/2))
-            y = float("{:.2f}".format(-(float("{:.2f}".format(element[1]))) + 165/2))
-            z = float("{:.2f}".format(-(float("{:.2f}".format(element[2]))) + 190/2))
+            # Header of nrrd-file: array([146, 190, 165])     193 229 193
+            x = float("{:.2f}".format(-(float("{:.2f}".format(element[0]))) + 193/2))
+            y = float("{:.2f}".format(-(float("{:.2f}".format(element[1]))) + 193/2))
+            z = float("{:.2f}".format(-(float("{:.2f}".format(element[2]))) + 229/2))
 
             # Axial and coronal:
-            list_x.append(-x + 146)
+            list_x.append(-x + 193) #146)
             list_y.append(y)
             list_z.append(z)
 
-            list_x_original.append(float("{:.2f}".format(element[0]))) # float("{:.2f}".format(-x + 146/2 )))
+            list_x_original.append(float("{:.2f}".format(element[0]))) # float("{:.2f}".format(-x + 146/2 ))) forget that 
             list_y_original.append(float("{:.2f}".format(element[1]))) #float("{:.2f}".format(-y + 165/2 )))
             list_z_original.append(float("{:.2f}".format(element[2]))) #float("{:.2f}".format(-z + 190/2 )))
 
             # Sagittal left:
-            if x>= 146/2 : 
+            if x>= 193/2: #146/2 : 
                 list_x_sagittal_left.append(x)   
-                list_y_sagittal_left.append(-y + 190)
+                list_y_sagittal_left.append(-y + 229)#190)
                 list_z_sagittal_left.append(z)
 
                 list_x_sagittal_right.append(float('nan'))

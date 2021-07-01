@@ -118,7 +118,7 @@ iteration1                              = json_user_object["Parameters"]["iterat
 iteration2                              = json_user_object["Parameters"]["iteration2"]['value']
 iteration3                              = json_user_object["Parameters"]["iteration3"]['value']
 nb_threads                              = json_user_object["Parameters"]["nb_threads"]['value']
-nb_jobs_bedpostx_gpu                              = json_user_object["Parameters"]["nb_jobs_bedpostx_gpu"]['value']
+nb_jobs_bedpostx_gpu                    = json_user_object["Parameters"]["nb_jobs_bedpostx_gpu"]['value']
 overlapping                             = json_user_object["Parameters"]["overlapping"]['value']
 nb_fibers                               = json_user_object["Parameters"]["nb_fibers"]['value']
 nb_fiber_per_seed                       = json_user_object["Parameters"]["nb_fiber_per_seed"]['value']
@@ -248,9 +248,6 @@ with Tee(log_file):
 	    print(text_printed, "err: ", colored("\n" + str(err) + "\n", 'red'))
 
 
-
-
-
 	'''
 	file1 = "/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_gm_tal_nlin_sym_09c.nii.gz"
 	file2 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_t1_tal_nlin_sym_09c.nii.gz"
@@ -260,19 +257,10 @@ with Tee(log_file):
 	out_file2 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_t1_tal_nlin_sym_09c.nrrd"
 	out_file3 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_wm_tal_nlin_sym_09c.nrrd"
 
-
-	run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", file1, 
-														                           	 "--conversionMode", "FSLToNrrd",  "--outputVolume", out_file1])
-
-	run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", file2, 
-														                           	 "--conversionMode", "FSLToNrrd",  "--outputVolume", out_file2])
-
-	run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", file3, 
-														                           	 "--conversionMode", "FSLToNrrd",  "--outputVolume", out_file3])
+	run_command("1 ", ["/NIRAL/tools/bin_linux64/itk_convert", file1, out_file1])
+	run_command("2 ", ["/NIRAL/tools/bin_linux64/itk_convert", file2, out_file2])
+	run_command("3 ", ["/NIRAL/tools/bin_linux64/itk_convert", file3, out_file3])
 	'''
-
-
-
 
 
 	# *****************************************
