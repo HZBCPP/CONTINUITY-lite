@@ -880,7 +880,7 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def complete_label_name_sc_region(self): 
-        print("here")
+
         # Clear the list: 
         self.sc_regions_labels_listWidget.clear()
 
@@ -896,8 +896,7 @@ class Ui(QtWidgets.QTabWidget):
         for i in range(self.sc_regions_labels_listWidget.count()):
             item = self.sc_regions_labels_listWidget.item(i) 
 
-        print("here1")
-        self.sc_regions_labels_listWidget.itemDoubleClicked.connect(self.subcortical_label_changed , type= Qt.UniqueConnection)   
+        self.sc_regions_labels_listWidget.itemDoubleClicked.connect(self.subcortical_label_changed )#, type= Qt.UniqueConnection)   
 
     
     # *****************************************

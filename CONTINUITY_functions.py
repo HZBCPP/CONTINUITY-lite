@@ -771,6 +771,8 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
 def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, LabelNames, 
                                     SegPostProcessCLPPath, GenParaMeshCLPPath, ParaToSPHARMMeshCLPPath, sx,sy,sz, nb_iteration_GenParaMeshCLP, spharmDegree, subdivLevel): 
 
+    #Labels =     ( 1     2    3     4     5      6      40   41    7   8   9    10)
+    #LabelNames = (AmyL AmyR CaudL CaudR HippoL HippoR ThalL ThalR GPL GPR PutL PutR)
     # Output folder of subcortical surfaces: 
     OutputDir = os.path.join(OUT_FOLDER, 'my_SALT') 
     if not os.path.exists(OutputDir):
