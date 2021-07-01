@@ -113,7 +113,6 @@ def executable_path(default_filename, user_filename):
                     path = my_which("fsl") #/tools/FSL/fsl-6.0.3/bin/fsl  #on Pegasus
 
                     if not path.endswith("bin"): #path != "False":
-                        print("FSL False")
                         if "bin" in path: #/tools/FSL/fsl-6.0.3/bin/  #on Pegasus
                             listFSLPath = os.path.split(path) 
                             path = listFSLPath[0] #/tools/FSL/fsl-6.0.3/bin/probtrackx2  /tools/FSL/fsl-6.0.3/bin/bedpostx
@@ -777,6 +776,7 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
     if not os.path.exists(OutputDir):
         os.mkdir(OutputDir) 
 
+
     # Loop throught all subcortical regions:
     index = 0
     while index < len(Labels) :  
@@ -828,6 +828,14 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
             # Check to see if output succfessful
             if not os.path.exists(Surftarget):
                 print('Error calculating ',Surftarget)
+
+                # Error txt.file: #
+                name_file = "manual_fixe.txt"
+                complete_name = os.path.join(OutputDir, name_file)
+                file = open(complete_name,"w+")
+                file.write( str(Surftarget) + "\n" ) 
+
+
             else:
                 print('Surftarget already done, try to run the SPHARM ')
 
@@ -852,9 +860,16 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
 
                 # Check if successful
                 if os.path.exists(SurfVTKtarget):
-                    print("SurfVTKtarget complete ")
+                    print("SUCCESS SurfVTKtarget complete ")
                 else: 
                     print('Error calcullating ',SurfVTKtarget)
+
+                    # Error txt.file: #
+                    name_file = "manual_fixe.txt"
+                    complete_name = os.path.join(OutputDir, name_file)
+                    file = open(complete_name,"w+")
+                    file.write( str(SurfVTKtarget) + "\n" ) 
+
 
         else: #Labels[index] == 0: 
             print("this region will be ignore: ", LabelNames[index])

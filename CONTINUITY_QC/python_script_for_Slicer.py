@@ -67,10 +67,10 @@ if not os.path.exists(B0_with_biais):
 # Find data for T1 and T1_registered
 T1_registered = os.path.join( input_path, ID + "_T1_SkullStripped_scaled_DWISpace.nrrd")
 
-# Find data for AD: (A0_NRRD variable in the script)
-AD = os.path.join( input_path, ID +"_DTI_A0_resample.nrrd")
+# Find data for AD: (AD_NRRD variable in the script)
+AD = os.path.join( input_path, ID +"_DTI_AD_resample.nrrd")
 if not os.path.exists(AD):
-	AD = os.path.join( input_path,  ID +"_DTI_A0_original.nrrd")
+	AD = os.path.join( input_path,  ID +"_DTI_AD_original.nrrd")
 
 # Find data for FA: 
 FA = os.path.join( input_path, ID +"_DTI_FA_resample.nrrd")
