@@ -110,20 +110,15 @@ def executable_path(default_filename, user_filename):
                         path = 'False'
                                  
                 elif key == "fsl": 
-                    path = my_which("fsl") #/tools/FSL/fsl-6.0.3/bin/fsl 
+                    path = my_which("fsl") #/tools/FSL/fsl-6.0.3/bin/fsl  #on Pegasus
 
-                    print("path before", path,"e")
-
-                    '''
-                    if not path.endswith("bin"):
-                        print("force path fsl")
-                        path+= "/bin"
-                    '''
-
-                    if path != "False":
+                    if not path.endswith("bin"): #path != "False":
                         print("FSL False")
-                        listFSLPath = os.path.split(path) #/tools/FSL/fsl-6.0.3/bin/ 
-                        path = listFSLPath[0] #/tools/FSL/fsl-6.0.3/bin/probtrackx2  /tools/FSL/fsl-6.0.3/bin/bedpostx
+                        if "bin" in path: #/tools/FSL/fsl-6.0.3/bin/  #on Pegasus
+                            listFSLPath = os.path.split(path) 
+                            path = listFSLPath[0] #/tools/FSL/fsl-6.0.3/bin/probtrackx2  /tools/FSL/fsl-6.0.3/bin/bedpostx
+                        else: #/proj/NIRAL/tools on Longleaf
+                            path += "/bin"
 
                 elif key == "slicer":
                     path = "/proj/NIRAL/tools/Slicer-4.11.0-2020-05-27-linux-amd64/Slicer" # On longleaf to have a specific version and not version in /nas ect
