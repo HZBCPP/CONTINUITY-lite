@@ -248,21 +248,6 @@ with Tee(log_file):
 	    print(text_printed, "err: ", colored("\n" + str(err) + "\n", 'red'))
 
 
-	'''
-	file1 = "/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_gm_tal_nlin_sym_09c.nii.gz"
-	file2 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_t1_tal_nlin_sym_09c.nii.gz"
-	file3 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_wm_tal_nlin_sym_09c.nii.gz"
-
-	out_file1 = "/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_gm_tal_nlin_sym_09c.nrrd"
-	out_file2 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_t1_tal_nlin_sym_09c.nrrd"
-	out_file3 ="/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_wm_tal_nlin_sym_09c.nrrd"
-
-	run_command("1 ", ["/NIRAL/tools/bin_linux64/itk_convert", file1, out_file1])
-	run_command("2 ", ["/NIRAL/tools/bin_linux64/itk_convert", file2, out_file2])
-	run_command("3 ", ["/NIRAL/tools/bin_linux64/itk_convert", file3, out_file3])
-	'''
-
-
 	# *****************************************
 	# Function to convert inputs in nifti format to nrrd format 
 	# *****************************************

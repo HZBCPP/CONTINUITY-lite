@@ -1134,9 +1134,9 @@ class Ui_visu(QtWidgets.QTabWidget):
             list_y.append(y)
             list_z.append(z)
 
-            list_x_original.append(float("{:.2f}".format(element[0]))) # float("{:.2f}".format(-x + 146/2 ))) forget that 
-            list_y_original.append(float("{:.2f}".format(element[1]))) #float("{:.2f}".format(-y + 165/2 )))
-            list_z_original.append(float("{:.2f}".format(element[2]))) #float("{:.2f}".format(-z + 190/2 )))
+            list_x_original.append(float("{:.2f}".format(element[0]))) #float("{:.2f}".format(-x + 146/2 ))) forget that 
+            list_y_original.append(float("{:.2f}".format(element[1]))) #float("{:.2f}".format(-y + 165/2 ))) forget that
+            list_z_original.append(float("{:.2f}".format(element[2]))) #float("{:.2f}".format(-z + 190/2 ))) forget that
 
             # Sagittal left:
             if x>= 193/2: #146/2 : 
