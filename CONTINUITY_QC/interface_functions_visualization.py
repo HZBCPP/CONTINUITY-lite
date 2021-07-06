@@ -1060,14 +1060,11 @@ class Ui_visu(QtWidgets.QTabWidget):
         # *****************************************
 
         # Find localization of images: 
-        #self.imarray, header = nrrd.read(os.path.realpath("/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_gm_tal_nlin_sym_09c.nrrd"))
-        self.imarray, header = nrrd.read(os.path.realpath("/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_t1_tal_nlin_sym_09c.nrrd"))
-        #self.imarray, header = nrrd.read(os.path.realpath("/work/elodie/CONTINUITY/CONTINUITY_QC/mni_icbm152_wm_tal_nlin_sym_09c.nrrd"))
-
+        self.imarray, header = nrrd.read(os.path.realpath(os.path.dirname(__file__)) + "/mni_icbm152_t1_tal_nlin_sym_09c.nrrd")
         #self.imarray, header = nrrd.read(os.path.realpath(os.path.dirname(__file__)) + "/template_brain_connectome_2D.nrrd")  #T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
         
         # Modify the matrix to select a specific orrientation: 
-        self.imarray_axial          = np.rot90(self.imarray, k=1, axes=(0, 2))  
+        self.imarray_axial          = np.flip( np.rot90(self.imarray, k=1, axes=(2, 0)) , axis=1) 
         self.imarray_sagittal_left  = np.flip(np.rot90(self.imarray, k=3, axes=(1, 2)) , axis=1)  
         self.imarray_sagittal_right = np.rot90(self.imarray_sagittal_left, k=2, axes=(0, 2)) 
         self.imarray_coronal        = np.rot90(self.imarray_sagittal_right, k=1, axes=(0, 2))  
@@ -1141,13 +1138,14 @@ class Ui_visu(QtWidgets.QTabWidget):
             # Sagittal left:
             if x>= 193/2: #146/2 : 
                 list_x_sagittal_left.append(x)   
-                list_y_sagittal_left.append(-y + 229)#190)
+                list_y_sagittal_left.append(y) #-y + 229)#190)
                 list_z_sagittal_left.append(z)
 
                 list_x_sagittal_right.append(float('nan'))
                 list_y_sagittal_right.append(float('nan'))
                 list_z_sagittal_right.append(float('nan'))
 
+          
             # Sagittal right:
             else: 
                 y_sagittal_left = float('nan')
@@ -1157,7 +1155,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                 list_z_sagittal_left.append(float('nan'))
 
                 list_x_sagittal_right.append(x)    
-                list_y_sagittal_right.append(y) 
+                list_y_sagittal_right.append(-y+229)#y) 
                 list_z_sagittal_right.append(z)
 
 
@@ -1253,6 +1251,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                             y_values_sagittal_left = [point1_sagittal_left[1], point2_sagittal_left[1]]
                             z_values_sagittal_left = [point1_sagittal_left[2], point2_sagittal_left[2]]
+
 
                             # Display lines for sagittal left view: 
                             cax2 = self.ax2.plot(y_values_sagittal_left,  z_values_sagittal_left , lw=1.5, color= plt.cm.RdBu(norm_sagittal(my_norm)), 
@@ -1374,6 +1373,10 @@ class Ui_visu(QtWidgets.QTabWidget):
             annots.append(annot)
             lhors.append(lhor)
             lvers.append(lver)
+
+        self.text_connectome1.setText('')
+        self.text_connectome2.setText('')
+        self.text_connectome3.setText('')
  
         self.fig_brain_connectome.canvas.mpl_connect('button_press_event', self.click_2D_connectome)     
 
@@ -1447,6 +1450,10 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                     lhors[list_axes.index(ax)].set_ydata(-1)
                     lvers[list_axes.index(ax)].set_xdata(-1)
+
+                    if list_axes.index(ax) == 0:   self.text_connectome1.setText('')
+                    elif list_axes.index(ax) == 1: self.text_connectome2.setText('')
+                    elif list_axes.index(ax) == 2: self.text_connectome3.setText('')
 
                     self.fig_brain_connectome.canvas.draw()
         
