@@ -1852,7 +1852,6 @@ with Tee(log_file):
 
 
 
-
 		data_brainMask = load_nifti_data(DiffusionBrainMask_withoutUpsampling) 
 		white_matter = data_brainMask
 
