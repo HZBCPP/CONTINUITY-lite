@@ -6435,7 +6435,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-      <widget class="QTextEdit" name="probtrack2_gpu_textEdit">
+      <widget class="QTextEdit" name="probtrackx2_gpu_textEdit">
        <property name="geometry">
         <rect>
          <x>540</x>
