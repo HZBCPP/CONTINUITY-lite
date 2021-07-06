@@ -386,8 +386,7 @@ with Tee(log_file):
 		if os.path.exists( DWI_NRRD ):
 		    print("Files Found: Skipping Upsampling DWI")
 		elif UPSAMPLING_DWI:
-			print("*****************************************  T0054-1-1-6yr")
-			print("Upsampling DWI")
+			print("*****************************************")
 			print("*****************************************")
 
 			command = [pathUnu, "resample", "-i", DWI_DATA, "-s", "x2", "x2", "x2", "=", "-k", "cubic:0,0.5"]
