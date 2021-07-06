@@ -87,7 +87,7 @@ tractography_model                      = json_user_object["Parameters"]["tracto
 only_registration                       = json_user_object["Parameters"]["only_registration"]['value']
 only_bedpostx                           = json_user_object["Parameters"]["only_bedpostx"]['value']
 run_bedpostx_gpu                        = json_user_object["Parameters"]["run_bedpostx_gpu"]['value']
-run_probtrackx2_gpu                     = json_user_object["Executables"]["run_probtrackx2_gpu"]['value'] 
+run_probtrackx2_gpu                     = json_user_object["Parameters"]["run_probtrackx2_gpu"]['value'] 
 filtering_with_tcksift					= json_user_object["Parameters"]["filtering_with_tcksift"]['value']
 optimisation_with_tcksift2				= json_user_object["Parameters"]["optimisation_with_tcksift2"]['value']
 multi_shell_DWI                         = json_user_object["Parameters"]["multi_shell_DWI"]['value']
@@ -1850,27 +1850,58 @@ with Tee(log_file):
 		#white_matter = DiffusionBrainMask # DiffusionBrainMask = nifti of brainmas
 
 
-		DiffusionBrainMask_withoutUpsampling = os.path.join(OUT_DIPY, "nodif_brain_mask_withoutUpsampling.nii.gz")
-
-		if os.path.exists(DiffusionBrainMask_withoutUpsampling):
+		white_matter_nifti = os.path.join(OUT_DIPY, "white_matter.nii.gz")
+		'''
+		if os.path.exists(white_matter_nifti):
 		    print("Brain mask FSL file: Found Skipping convertion")
 		else: 
 			print("DWIConvert BRAINMASK to FSL format")
 			
 			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK, 
 									                                    "--conversionMode", "NrrdToFSL", 
-									                                    "--outputVolume", DiffusionBrainMask_withoutUpsampling, 
+									                                    "--outputVolume", white_matter_nifti, 
 									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 									                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 
+		'''
+
+		reader = vtk.vtkPolyDataReader()
+		reader.SetFileName(SURFACE)
+		reader.Update()
+		# Save nifti:
+		writer = vtk.vtkNIFTIImageWriter()
+		writer.SetInputData(reader.GetOutput())
+		writer.SetFileName(white_matter_nifti)
+		writer.SetInformation(reader.GetInformation())
+		writer.Write()
 
 
-
-
-		data_brainMask = load_nifti_data(DiffusionBrainMask_withoutUpsampling) 
-		white_matter = data_brainMask
+		data_white_matter = load_nifti_data(white_matter_nifti) 
+		white_matter = data_white_matter
 
 		print(white_matter.shape)
+
+
+		'''
+		b'ERROR: In ../Common/ExecutionModel/vtkDemandDrivenPipeline.cxx, line 809\nvtkCompositeDataPipeline (0x559346b5d630): Input for connection index 0 on input port 
+		index 0 for algorithm vtkNIFTIImageWriter(0x559346e84670) is of type vtkPolyData, but a vtkImageData is required.\n\nERROR: In ../Common/ExecutionModel/
+		vtkDemandDrivenPipeline.cxx, line 809\nvtkCompositeDataPipeline (0x559346b5d630): Input for connection index 0 on input port index 0 for algorithm 
+		vtkNIFTIImageWriter(0x559346e84670) is of type vtkPolyData, but a vtkImageData is required.\n\nTraceback (most recent call last):\n  
+		File "/home/elodie/.local/lib/python3.7/site-packages/nibabel/loadsave.py", line 42, in load\n    stat_result = os.stat(filename)\nFileNotFoundError: [Errno 2] 
+		No such file or directory: \'/BAND/USERS/elodie/testing/output_CONTINUITY_DIPY/T0054-1-1-6yr/Tractography/DIPY/nodif_brain_mask_withoutUpsampling.nii.gz\'\n\nDuring 
+		handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File "/BAND/USERS/elodie/CONTINUITY/CONTINUITY_completed_script.py",
+		line 1879, in <module>\n    data_brainMask = load_nifti_data(DiffusionBrainMask_withoutUpsampling) \n  File "/home/elodie/.local/lib/python3.7/site-packages/dipy/io/image.py",
+		 line 27, in load_nifti_data\n    img = nib.load(fname)\n  File "/home/elodie/.local/lib/python3.7/site-packages/nibabel/loadsave.py", line 44, in load\n    r
+		 aise FileNotFoundError(f"No such file or no access: \'{filename}\'")\nFileNotFoundError: No such file or no access: 
+		 \'/BAND/USERS/elodie/testing/output_CONTINUITY_DIPY/T0054-1-1-6yr/Tractography/DIPY/nodif_brain_mask_withoutUpsampling.nii.gz\'\n'
+		'''
+
+
+
+
+
+
+
 
         #*****************************************
 		# Method for getting directions from a diffusion data set
