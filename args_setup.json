@@ -127,6 +127,11 @@
             "help": "Run bedpostx_gpu function (FSL)",
             "default": false
         },
+        "run_probtrackx2_gpu": {
+            "type": "bool",
+            "help": "Run probtrackx2_gpu function (FSL)",
+            "default": false
+        },
         "filtering_with_tcksift": {
             "type": "bool",
             "help": "filtering_with_tcksift if Tractography model == MRtrix ",
@@ -427,6 +432,11 @@
         "bedpostx_gpu": {
             "type": "str",
             "help": "Path to bedpostx_gpu",
+            "default": ""
+        },
+        "probtrackx2_gpu": {
+            "type": "str",
+            "help": "Path to probtrackx2_gpu",
             "default": ""
         },
         "ExtractLabelSurfaces": {

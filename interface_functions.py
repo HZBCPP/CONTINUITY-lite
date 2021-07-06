@@ -1327,6 +1327,17 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
+    # Run only bedpost_gpu function
+    # *****************************************
+    
+    def probtrackx2_gpu_checkbox_clicked(self):
+        json_user_object['Parameters']["run_probtrackx2_gpu"]["value"] = False
+        if self.probtrackx2_gpu_checkBox.isChecked():
+            json_user_object['Parameters']["run_probtrackx2_gpu"]["value"] = True
+        Ui.update_user_json_file()
+
+
+    # *****************************************
     # Number of jobs: parameters of bedpost_gpu
     # *****************************************
 

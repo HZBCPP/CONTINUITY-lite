@@ -87,6 +87,7 @@ tractography_model                      = json_user_object["Parameters"]["tracto
 only_registration                       = json_user_object["Parameters"]["only_registration"]['value']
 only_bedpostx                           = json_user_object["Parameters"]["only_bedpostx"]['value']
 run_bedpostx_gpu                        = json_user_object["Parameters"]["run_bedpostx_gpu"]['value']
+run_probtrackx2_gpu                     = json_user_object["Executables"]["run_probtrackx2_gpu"]['value'] 
 filtering_with_tcksift					= json_user_object["Parameters"]["filtering_with_tcksift"]['value']
 optimisation_with_tcksift2				= json_user_object["Parameters"]["optimisation_with_tcksift2"]['value']
 multi_shell_DWI                         = json_user_object["Parameters"]["multi_shell_DWI"]['value']
@@ -147,6 +148,7 @@ pathWARP_TRANSFORM        = json_user_object["Executables"]["WarpImageMultiTrans
 DWIConvertPath            = json_user_object["Executables"]["DWIConvert"]['value']
 FSLPath                   = json_user_object["Executables"]["fsl"]['value'] 
 bedpostx_gpuPath          = json_user_object["Executables"]["bedpostx_gpu"]['value'] 
+probtrackx2_gpuPath       = json_user_object["Executables"]["probtrackx2_gpu"]['value'] 
 ExtractLabelSurfaces      = json_user_object["Executables"]["ExtractLabelSurfaces"]['value']
 MRtrixPath                = json_user_object["Executables"]["MRtrix"]['value'] 
 SegPostProcessCLPPath     = json_user_object["Executables"]["SegPostProcessCLP"]['value']
@@ -1258,15 +1260,29 @@ with Tee(log_file):
 			now = datetime.datetime.now()
 			print (now.strftime("Script running probtrackx2 command since: %H:%M %m-%d-%Y"))
 			start = time.time()
-			run_command("probtrackx2", [FSLPath + '/probtrackx2', "-s", os.path.join(OUT_TRACTOGRAPHY, "Diffusion.bedpostX", "merged"), #-s,--samples	
-							                             "-m", os.path.join(OUT_TRACTOGRAPHY, "Diffusion.bedpostX", "nodif_brain_mask"), #-m,--mask
-							                             "-x", os.path.join(OutSurfaceName, "seeds.txt"), #-x,--seed
-							                             "--forcedir", "--network", "--omatrix1", "-V", "0",
-							                             "--dir="+NETWORK_DIR, 
-							                             "--stop="+os.path.join(OutSurfaceName, "seeds.txt"), 
-							                             "-P", str(nb_fiber_per_seed), #-P,--nsamples	Number of samples - default=5000
-							                             "--steplength="+str(steplength), 
-							                             "--sampvox="+str(sampvox), loopcheckFlag ])
+
+			if not run_probtrackx2_gpu: 
+				run_command("probtrackx2", [FSLPath + '/probtrackx2', "-s", os.path.join(OUT_TRACTOGRAPHY, "Diffusion.bedpostX", "merged"), #-s,--samples	
+								                             "-m", os.path.join(OUT_TRACTOGRAPHY, "Diffusion.bedpostX", "nodif_brain_mask"), #-m,--mask
+								                             "-x", os.path.join(OutSurfaceName, "seeds.txt"), #-x,--seed
+								                             "--forcedir", "--network", "--omatrix1", "-V", "0",
+								                             "--dir="+NETWORK_DIR, 
+								                             "--stop="+os.path.join(OutSurfaceName, "seeds.txt"), 
+								                             "-P", str(nb_fiber_per_seed), #-P,--nsamples	Number of samples - default=5000
+								                             "--steplength="+str(steplength), 
+								                             "--sampvox="+str(sampvox), loopcheckFlag ])
+			else: 
+				run_command("probtrackx2", [probtrackx2_gpuPath, "-s", os.path.join(OUT_TRACTOGRAPHY, "Diffusion.bedpostX", "merged"), #-s,--samples	
+								                             "-m", os.path.join(OUT_TRACTOGRAPHY, "Diffusion.bedpostX", "nodif_brain_mask"), #-m,--mask
+								                             "-x", os.path.join(OutSurfaceName, "seeds.txt"), #-x,--seed
+								                             "--forcedir", "--network", "--omatrix1", "-V", "0",
+								                             "--dir="+NETWORK_DIR, 
+								                             "--stop="+os.path.join(OutSurfaceName, "seeds.txt"), 
+								                             "-P", str(nb_fiber_per_seed), #-P,--nsamples	Number of samples - default=5000
+								                             "--steplength="+str(steplength), 
+								                             "--sampvox="+str(sampvox), loopcheckFlag ])
+
+
 			print("probtrackx2 command: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 
 

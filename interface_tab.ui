@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>4</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -4429,12 +4429,12 @@ p, li { white-space: pre-wrap; }
        <property name="checked">
         <bool>false</bool>
        </property>
-       <widget class="QWidget" name="layoutWidget_3">
+       <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>1051</width>
+          <x>11</x>
+          <y>31</y>
+          <width>1006</width>
           <height>71</height>
          </rect>
         </property>
@@ -4512,11 +4512,22 @@ p, li { white-space: pre-wrap; }
           </layout>
          </item>
          <item>
-          <widget class="QCheckBox" name="loopcheck_checkBox">
-           <property name="text">
-            <string>Loopcheck : path can travel to a point where thez have already been</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_78">
+           <item>
+            <widget class="QCheckBox" name="loopcheck_checkBox">
+             <property name="text">
+              <string>Loopcheck : path can travel to a point where thez have already been</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="probtrackx2_gpu_checkBox">
+             <property name="text">
+              <string>Run probtrackx2_gpu function </string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -8614,6 +8625,22 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>probtrackx2_gpu_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>probtrackx2_gpu_checkbox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>799</x>
+     <y>463</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>DWI_button_clicked()</slot>
@@ -8740,5 +8767,6 @@ p, li { white-space: pre-wrap; }
   <slot>no_registration_remove_bval_groupBox_clicked()</slot>
   <slot>bedpostx_gpu_checkbox_clicked()</slot>
   <slot>nb_jobs_bedpostx_gpu_valueChanged()</slot>
+  <slot>probtrackx2_gpu_checkbox_clicked()</slot>
  </slots>
 </ui>
