@@ -13,6 +13,7 @@ from vtk import *
 import numpy as np
 
 import dipy 
+from dipy.tracking import utils
 from dipy.core.gradients import gradient_table
 from dipy.io.gradients import read_bvals_bvecs
 from dipy.io.image import load_nifti, load_nifti_data
@@ -615,6 +616,7 @@ with Tee(log_file):
 				                              "--verbose", 'True']
 
 			run_command("ANTs command", command)
+
 			print("ANTs command: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 
@@ -866,12 +868,14 @@ with Tee(log_file):
 
 		
 		if PARCELLATION_TABLE_NAME == 'Destrieux': 
+
 			print("*****************************************")
 			print("Compute one point per region")
 			print("*****************************************")
 
 			compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
 		
+
 
 		print("*****************************************")
 		print("Combine the labeled subcorticals")
@@ -913,9 +917,6 @@ with Tee(log_file):
 			#                              , landmark file ,input        , displacement file       , output in DWI space
 			command=[pathPOLY_TRANSTOOL_EXE, "--fiber_file",outputSurface, "-D", ConcatedWarp, "-o", subsAllDWISpace, "--inverty", "--invertx"]
 			run_command("POLY_TRANSTOOL_EXE: combining subcortical data transform into DWISpace", command)
-
-
-
 
 
 
@@ -1108,7 +1109,6 @@ with Tee(log_file):
 	OutSurfaceName = os.path.join(OUT_TRACTOGRAPHY, "OutputSurfaces" + overlapName)
 	if not os.path.exists(OutSurfaceName):
 	    os.mkdir(OutSurfaceName)
-
 
 
 	if not DO_REGISTRATION: 
@@ -1307,6 +1307,9 @@ with Tee(log_file):
 
 
 
+
+
+
 	# *****************************************
 	# Tractography with MRtrix 
 	# *****************************************
@@ -1381,8 +1384,8 @@ with Tee(log_file):
 			print("Convert T1 image to nifti format")
 			print("*****************************************")
 
-			#if not DO_REGISTRATION: 
-			#	T1_OUT_NRRD = T1_DATA
+			if not DO_REGISTRATION: 
+				T1_OUT_NRRD = T1_DATA
 
 			T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
 			if os.path.exists(T1_nifti):
@@ -1484,6 +1487,10 @@ with Tee(log_file):
 		# *****************************************
 		# Initialize connectome and tractography
 		# *****************************************
+
+		now = datetime.datetime.now()
+		print(now.strftime("Script running Mrtrix: %H:%M %m-%d-%Y"))
+		start = time.time()
 
 		# Create connectome and open seed.txt file to compute tractography:
 		connectome = np.zeros( (number_region_all, number_region_all) )
@@ -1787,6 +1794,8 @@ with Tee(log_file):
 
 		np.savetxt(connectome_mrtrix, connectome.astype(float),  fmt='%f', delimiter='  ')
 
+		print("End of MRtrix: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+
 		
 
 
@@ -1805,10 +1814,14 @@ with Tee(log_file):
 
 	elif tractography_model == "DIPY":
 		
+
 		print("*****************************************")
 		print("Run tractography with DIPY")
 		print("*****************************************")
-		# https://dipy.org/documentation/1.4.0./examples_built/tracking_probabilistic/#example-tracking-probabilistic
+
+		now = datetime.datetime.now()
+		print(now.strftime("Beginning of DIPY: %H:%M %m-%d-%Y"))
+		start = time.time()
 
 		# *****************************************
 		# Output folder for MRtrix and DIPY 
@@ -1818,10 +1831,11 @@ with Tee(log_file):
 		if not os.path.exists(OUT_DIPY):
 			os.mkdir(OUT_DIPY)
 
+
+
 		print("*****************************************")
 		print("Convert DWI image to nifti format")
 		print("*****************************************")
-
 
 		DWI_nifti = os.path.join(OUT_DIPY, ID + "-T1_SkullStripped_scaled.nii.gz")
 		if os.path.exists(DWI_nifti):
@@ -1843,15 +1857,11 @@ with Tee(log_file):
 		data, affine, img = load_nifti(DWI_nifti, return_img=True) 
 		print(data.shape)
 	
-		# https://dipy.org/documentation/1.1.1./reference/dipy.data/#dipy.data.gradient_table
 		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
 
 		# White matter mask to restrict tracking to the white matter
-		#white_matter = DiffusionBrainMask # DiffusionBrainMask = nifti of brainmas
-
-
 		white_matter_nifti = os.path.join(OUT_DIPY, "white_matter.nii.gz")
-		'''
+	
 		if os.path.exists(white_matter_nifti):
 		    print("Brain mask FSL file: Found Skipping convertion")
 		else: 
@@ -1863,52 +1873,18 @@ with Tee(log_file):
 									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 									                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 
-		'''
-
-		reader = vtk.vtkPolyDataReader()
-		reader.SetFileName(SURFACE)
-		reader.Update()
-		# Save nifti:
-		writer = vtk.vtkNIFTIImageWriter()
-		writer.SetInputData(reader.GetOutput())
-		writer.SetFileName(white_matter_nifti)
-		writer.SetInformation(reader.GetInformation())
-		writer.Write()
-
 
 		data_white_matter = load_nifti_data(white_matter_nifti) 
-		white_matter = data_white_matter
-
+		white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1])
+		
 		print(white_matter.shape)
-
-
-		'''
-		b'ERROR: In ../Common/ExecutionModel/vtkDemandDrivenPipeline.cxx, line 809\nvtkCompositeDataPipeline (0x559346b5d630): Input for connection index 0 on input port 
-		index 0 for algorithm vtkNIFTIImageWriter(0x559346e84670) is of type vtkPolyData, but a vtkImageData is required.\n\nERROR: In ../Common/ExecutionModel/
-		vtkDemandDrivenPipeline.cxx, line 809\nvtkCompositeDataPipeline (0x559346b5d630): Input for connection index 0 on input port index 0 for algorithm 
-		vtkNIFTIImageWriter(0x559346e84670) is of type vtkPolyData, but a vtkImageData is required.\n\nTraceback (most recent call last):\n  
-		File "/home/elodie/.local/lib/python3.7/site-packages/nibabel/loadsave.py", line 42, in load\n    stat_result = os.stat(filename)\nFileNotFoundError: [Errno 2] 
-		No such file or directory: \'/BAND/USERS/elodie/testing/output_CONTINUITY_DIPY/T0054-1-1-6yr/Tractography/DIPY/nodif_brain_mask_withoutUpsampling.nii.gz\'\n\nDuring 
-		handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File "/BAND/USERS/elodie/CONTINUITY/CONTINUITY_completed_script.py",
-		line 1879, in <module>\n    data_brainMask = load_nifti_data(DiffusionBrainMask_withoutUpsampling) \n  File "/home/elodie/.local/lib/python3.7/site-packages/dipy/io/image.py",
-		 line 27, in load_nifti_data\n    img = nib.load(fname)\n  File "/home/elodie/.local/lib/python3.7/site-packages/nibabel/loadsave.py", line 44, in load\n    r
-		 aise FileNotFoundError(f"No such file or no access: \'{filename}\'")\nFileNotFoundError: No such file or no access: 
-		 \'/BAND/USERS/elodie/testing/output_CONTINUITY_DIPY/T0054-1-1-6yr/Tractography/DIPY/nodif_brain_mask_withoutUpsampling.nii.gz\'\n'
-		'''
-
-
-
-
-
-
-
 
         #*****************************************
 		# Method for getting directions from a diffusion data set
 		#*****************************************
 
 		# https://dipy.org/documentation/1.2.0./examples_built/reconst_csd/
-		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.2)   #single shell    0.7: adult brain 
+		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.6)   #single shell    0.7: adult brain 
 
 		# Multi-Shell Multi-Tissue: used auto_response_msmt
 		#https://dipy.org/documentation/1.2.0./examples_built/reconst_mcsd/       csd: single shell
@@ -1954,7 +1930,7 @@ with Tee(log_file):
 	    #*****************************************
 
 		# Initialization of LocalTracking: 
-		streamline_generator = LocalTracking(prob_dg, stopping_criterion, seeds, affine, step_size=.5)
+		streamlines_generator = LocalTracking(prob_dg, stopping_criterion, seeds, affine, step_size=.5)
 
 		# Generate streamlines object: 
 		streamlines = Streamlines(streamlines_generator)
@@ -1969,4 +1945,5 @@ with Tee(log_file):
 
 
 		# output file name must be "fdt_network_matrix" !!!!
-		
+
+		print("Output of DIPY: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
