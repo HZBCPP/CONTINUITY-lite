@@ -8,7 +8,8 @@ from termcolor import colored
 import time
 import datetime
 from PyQt5 import QtWidgets, uic, QtGui
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QCheckBox, QGridLayout, QLabel, QTableWidgetItem, QMessageBox, QInputDialog, QLineEdit
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QCheckBox, QGridLayout, QLabel, QTableWidgetItem, QMessageBox, QInputDialog, QLineEdit, QMessageBox
+
 from PyQt5.QtCore import Qt
 
 from main_CONTINUITY import * 
@@ -96,14 +97,9 @@ class Ui(QtWidgets.QTabWidget):
             Ui.no_registration_surface_data_clicked2(self)
 
 
-        # ID: text and help 
+        # ID: text and help for registration and no registration
         self.job_name_lineEdit.setText( json_setup_object['Arguments']["ID"]["default"] )
-        self.question_job_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
-
-        # NO registration ID: text and help 
         self.job_name_no_registration_lineEdit.setText( json_setup_object['Arguments']["ID"]["default"] )
-        self.question_job_name_textEdit_2.setStyleSheet("color: transparent;"  "background-color: transparent")
-
 
         # Parcellation table for registration and non registration:
         self.PARCELLATION_TABLE_textEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE"]["default"])
@@ -115,15 +111,7 @@ class Ui(QtWidgets.QTabWidget):
 
         # Labelset name: text and help: 
         self.labelset_lineEdit.setText( json_setup_object['Arguments']["labelSetName"]["default"] ) 
-        self.question_labelset_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
-
         self.labelset_lineEdit_no_registration.setText( json_setup_object['Arguments']["labelSetName"]["default"] ) 
-        self.question_labelset_name_textEdit_no_registration.setStyleSheet("color: transparent;"  "background-color: transparent")
-
-
-        # Label cortical surfaces for registration and not registration:
-        self.question_cortical_labeled_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
-        self.NO_registration_question_cortical_labeled_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
 
         # Surface_already_labeled and NO_registration_surface_already_labeled:
         self.surface_already_labeled_groupBox.setChecked(json_setup_object['Parameters']["surface_already_labeled"]["default"])
@@ -257,6 +245,7 @@ class Ui(QtWidgets.QTabWidget):
                 json_user_object['Arguments'][button_name]["value"] = fileName
             Ui.update_user_json_file()
 
+            
 
 
     # *****************************************
@@ -323,26 +312,12 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def question_job_name_pushButton_clicked(self):
-        if self.question_job_name_pushButton.text() == "Help":
-            self.question_job_name_pushButton.setText("close help")
-            self.question_job_name_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
-        else: # self.question_job_name_pushButton.text() == "X":
-            self.question_job_name_pushButton.setText("Help")
-            self.question_job_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
-
-
-
-    # *****************************************
-    # No registration: Button help which display explanations
-    # *****************************************
-
-    def question_job_name_no_registration_pushButton_clicked(self):
-        if self.question_job_name_no_registration_pushButton.text() == "Help":
-            self.question_job_name_no_registration_pushButton.setText("close help")
-            self.question_job_name_textEdit_2.setStyleSheet("color: blue;"  "background-color: transparent")
-        else: # self.question_job_name_pushButton.text() == "X":
-            self.question_job_name_no_registration_pushButton.setText("Help")
-            self.question_job_name_textEdit_2.setStyleSheet("color: transparent;"  "background-color: transparent")
+        msg = QMessageBox()
+        msg.setWindowTitle("Help: Job name")
+        msg.setText('Specify the ID/name of the subject. This ID/name gonna be the name of the directory containing all outputs of the tractography'+ 
+            'You had to provide the same name as in your filename')
+        msg.setIcon(QMessageBox.Information)
+        x = msg.exec_()
 
 
 
@@ -381,25 +356,37 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def remove_bval_groupBox_clicked(self):
+
         if self.remove_bval_groupBox.isChecked: 
-            list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"])
+            if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
+                list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"])
 
-        # int to str: 
-        for i in range(len(list_bval)): 
-            list_bval[i] = str(list_bval[i])
+                # int to str: 
+                for i in range(len(list_bval)): 
+                    list_bval[i] = str(list_bval[i])
 
-        # Clear the list and add all names:
-        self.bval_in_bvalfile_listWidget.clear()
-        self.bval_in_bvalfile_listWidget.addItems(list_bval)
+                # Clear the list and add all names:
+                self.bval_in_bvalfile_listWidget.clear()
+                self.bval_in_bvalfile_listWidget.addItems(list_bval)
 
-        # Set parameters: 
-        for i in range(self.bval_in_bvalfile_listWidget.count()):
-            item = self.bval_in_bvalfile_listWidget.item(i) 
-            item.setCheckState(not Qt.Checked)
+                # Set parameters: 
+                for i in range(self.bval_in_bvalfile_listWidget.count()):
+                    item = self.bval_in_bvalfile_listWidget.item(i) 
+                    item.setCheckState(not Qt.Checked)
 
 
-        # Set a signal to do something if the user click on a region: 
-        self.bval_in_bvalfile_listWidget.itemClicked.connect(self.change_bval)
+                # Set a signal to do something if the user click on a region: 
+                self.bval_in_bvalfile_listWidget.itemClicked.connect(self.change_bval)
+
+            else: 
+                msg = QMessageBox()
+                msg.setWindowTitle("DWI bvals file")
+                msg.setText('Please provide a DWI bvals file (tab "Path to your data")')
+                msg.setIcon(QMessageBox.Information)
+                x = msg.exec_()
+
+                self.remove_bval_groupBox.setChecked(False)
+
 
             
 
@@ -441,27 +428,37 @@ class Ui(QtWidgets.QTabWidget):
 
     def no_registration_remove_bval_groupBox_clicked(self):
         if self.no_registration_remove_bval_groupBox.isChecked: 
-            no_registration_list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"])
+            if json_user_object['Arguments']['DWI_DATA_bvals']['value'] != "":
+                no_registration_list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"])
 
-        # int to str: 
-        for i in range(len(no_registration_list_bval)): 
-            no_registration_list_bval[i] = str(no_registration_list_bval[i])
+                # int to str: 
+                for i in range(len(no_registration_list_bval)): 
+                    no_registration_list_bval[i] = str(no_registration_list_bval[i])
 
-        # Clear the list and add all names:
-        self.no_registration_bval_in_bvalfile_listWidget.clear()
-        self.no_registration_bval_in_bvalfile_listWidget.addItems(no_registration_list_bval)
+                # Clear the list and add all names:
+                self.no_registration_bval_in_bvalfile_listWidget.clear()
+                self.no_registration_bval_in_bvalfile_listWidget.addItems(no_registration_list_bval)
 
-        # Set parameters: 
-        for i in range(self.no_registration_bval_in_bvalfile_listWidget.count()):
-            item = self.no_registration_bval_in_bvalfile_listWidget.item(i) 
-            item.setCheckState(not Qt.Checked)
+                # Set parameters: 
+                for i in range(self.no_registration_bval_in_bvalfile_listWidget.count()):
+                    item = self.no_registration_bval_in_bvalfile_listWidget.item(i) 
+                    item.setCheckState(not Qt.Checked)
 
 
-        # Set a signal to do something if the user click on a region: 
-        self.no_registration_bval_in_bvalfile_listWidget.itemClicked.connect(self.no_registration_change_bval)
+                # Set a signal to do something if the user click on a region: 
+                self.no_registration_bval_in_bvalfile_listWidget.itemClicked.connect(self.no_registration_change_bval)
+
+            else: 
+                msg = QMessageBox()
+                msg.setWindowTitle("DWI bvals file")
+                msg.setText('Please provide a DWI bvals file (tab "Path to your data")')
+                msg.setIcon(QMessageBox.Information)
+                x = msg.exec_()
+
+                self.no_registration_remove_bval_groupBox.setChecked(False)
+
 
             
-
     # *****************************************
     # Update bval that will be deleted
     # *****************************************  
@@ -506,7 +503,7 @@ class Ui(QtWidgets.QTabWidget):
 
     def T2_remove_pushButton_clicked(self):
         self.T2_DATA_textEdit.setText("No file selected.")
-        json_user_object['Arguments']["T2_DATA"]["value"] = " "
+        json_user_object['Arguments']["T2_DATA"]["value"] = ""
         Ui.update_user_json_file()
 
 
@@ -516,12 +513,11 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def question_cortical_labeled_pushButton_clicked(self):
-        if self.question_cortical_labeled_pushButton.text() == "Help":
-            self.question_cortical_labeled_pushButton.setText("close help")
-            self.question_cortical_labeled_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
-        else: # self.question_cortical_labeled_pushButton.text() == "X":
-            self.question_cortical_labeled_pushButton.setText("Help")
-            self.question_cortical_labeled_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
+        msg = QMessageBox()
+        msg.setWindowTitle("Help: cortical labeled files")
+        msg.setText('Structure of each file: "NUMBER_OF_POINTS="  then "DIMENSION=" then "TYPE=" then values')
+        msg.setIcon(QMessageBox.Information)
+        x = msg.exec_()
 
 
 
@@ -530,13 +526,11 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def NO_registration_question_cortical_labeled_pushButton_clicked(self):
-        if self.NO_registration_question_cortical_labeled_pushButton.text() == "Help":
-            self.NO_registration_question_cortical_labeled_pushButton.setText("close help")
-            self.NO_registration_question_cortical_labeled_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
-        else: # self.NO_registration_question_cortical_labeled_pushButton.text() == "X":
-            self.NO_registration_question_cortical_labeled_pushButton.setText("Help")
-            self.NO_registration_question_cortical_labeled_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
-
+        msg = QMessageBox()
+        msg.setWindowTitle("Help: cortical labeled files")
+        msg.setText('Structure of each file: "NUMBER_OF_POINTS="  then "DIMENSION=" then "TYPE=" then values')
+        msg.setIcon(QMessageBox.Information)
+        x = msg.exec_()
 
 
     # *****************************************
@@ -566,23 +560,11 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************       
 
     def question_labelset_name_pushButton_clicked(self):
-        if self.question_labelset_name_pushButton.text() == "Help":
-            self.question_labelset_name_pushButton.setText("close help")
-            self.question_labelset_name_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
-            
-        else: 
-            self.question_labelset_name_pushButton.setText("Help")
-            self.question_labelset_name_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")  
-
-
-    def no_registration_question_labelset_name_pushButton_clicked(self):
-        if self.question_labelset_name_pushButton_no_registration.text() == "Help":
-            self.question_labelset_name_pushButton_no_registration.setText("close help")
-            self.question_labelset_name_textEdit_no_registration.setStyleSheet("color: blue;"  "background-color: transparent")
-            
-        else: 
-            self.question_labelset_name_pushButton_no_registration.setText("Help")
-            self.question_labelset_name_textEdit_no_registration.setStyleSheet("color: transparent;"  "background-color: transparent")   
+        msg = QMessageBox()
+        msg.setWindowTitle("Help: labelset name")
+        msg.setText('In the VTK file containing labels, the labelset is identified by an ID. ')
+        msg.setIcon(QMessageBox.Information)
+        x = msg.exec_()  
 
     
 
@@ -642,6 +624,7 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def integrate_sc_data_groupBox_valueChanged(self):
+
         json_user_object['Parameters']["INTEGRATE_SC_DATA"]["value"] = False
         self.question_SALT_pushButton.setStyleSheet( "background-color: white")
         self.question_KWM_pushButton.setStyleSheet( "background-color: white")
@@ -652,51 +635,68 @@ class Ui(QtWidgets.QTabWidget):
             self.question_KWM_pushButton.setStyleSheet( "background-color: blue")
 
             list_regions_name, list_subcortical = ([], [])
-            
-            with open(json_user_object['Arguments']["PARCELLATION_TABLE"]["value"]) as data_file:    
-                    data = json.load(data_file)
 
-            for key in data:
-                list_regions_name.append(key['name'])
-                try: 
-                    if key['subcortical']:
-                        list_subcortical.append(1)
-                    else: 
-                        list_subcortical.append(0)
+            if json_user_object['Arguments']["PARCELLATION_TABLE"]["value"] != "": 
                 
-                except: 
-                        list_subcortical.append(0)
+                with open(json_user_object['Arguments']["PARCELLATION_TABLE"]["value"]) as data_file:    
+                        data = json.load(data_file)
+
+                for key in data:
+                    list_regions_name.append(key['name'])
+                    try: 
+                        if key['subcortical']:
+                            list_subcortical.append(1)
+                        else: 
+                            list_subcortical.append(0)
                     
+                    except: 
+                            list_subcortical.append(0)
+                        
 
-            # Clear the list and add all names:
-            self.sc_regions_names_listWidget.clear()
-            self.sc_regions_names_listWidget.addItems(list_regions_name)
+                # Clear the list and add all names:
+                self.sc_regions_names_listWidget.clear()
+                self.sc_regions_names_listWidget.addItems(list_regions_name)
 
-            # Set parameters: 
-            sc, labels_list = ([],[])
-            text = "Subcortical regions found: \n"
-            for i in range(self.sc_regions_names_listWidget.count()):
-                item = self.sc_regions_names_listWidget.item(i) 
+                # Set parameters: 
+                sc, labels_list = ([],[])
+                text = "Subcortical regions found: \n"
+                for i in range(self.sc_regions_names_listWidget.count()):
+                    item = self.sc_regions_names_listWidget.item(i) 
 
-                if list_subcortical[i]: 
-                    item.setCheckState(Qt.Checked)
-                    item.setForeground(QtGui.QColor("green"))
-                    sc.append(list_regions_name[i])
-                    labels_list.append(0)
-                    text += str(list_regions_name[i]) + '\n'
-                else:
-                    item.setCheckState(not Qt.Checked)
+                    if list_subcortical[i]: 
+                        item.setCheckState(Qt.Checked)
+                        item.setForeground(QtGui.QColor("green"))
+                        sc.append(list_regions_name[i])
+                        labels_list.append(0)
+                        text += str(list_regions_name[i]) + '\n'
+                    else:
+                        item.setCheckState(not Qt.Checked)
 
-            json_user_object['Parameters']["subcorticals_region_names"]["value"] = sc 
-            json_user_object['Parameters']["subcorticals_region_labels"]["value"] = labels_list
+                json_user_object['Parameters']["subcorticals_region_names"]["value"] = sc 
+                json_user_object['Parameters']["subcorticals_region_labels"]["value"] = labels_list
 
 
-            Ui.update_user_json_file() 
+                Ui.update_user_json_file() 
 
-            self.Subcortical_regions_textEdit.setText(text)
+                self.Subcortical_regions_textEdit.setText(text)
 
-            # Set a signal to do something if the user click on a region: 
-            self.sc_regions_names_listWidget.itemClicked.connect(self.subcortical_region_name_checkbox)
+                # Set a signal to do something if the user click on a region: 
+                self.sc_regions_names_listWidget.itemClicked.connect(self.subcortical_region_name_checkbox)
+
+                # Create table with subcortical regions to be able to change the label (in case of create SALT option)
+                Ui.complete_label_name_sc_region(self)
+
+
+            else:  
+                msg = QMessageBox()
+                msg.setWindowTitle("Need a parcellation table")
+                msg.setText("Please provide a parcellation table to be able to check and add subcortical regions ( tab 'Data specification' and then 'parcellation table'")
+                msg.setIcon(QMessageBox.Warning)
+                x = msg.exec_()
+
+                self.integrate_sc_data_groupBox.setChecked(False)
+
+
 
             
 
@@ -744,6 +744,8 @@ class Ui(QtWidgets.QTabWidget):
             self.question_SALT_pushButton.setStyleSheet( "background-color: blue")
             self.question_KWM_pushButton.setStyleSheet( "background-color: blue")
             self.INTEGRATE_SC_DATA_by_generated_sc_surf_groupBox.setChecked(False)
+
+
         else: 
             self.INTEGRATE_SC_DATA_by_generated_sc_surf_groupBox.setChecked(True)
 
@@ -802,59 +804,79 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def tab_name_sc_region_clicked(self):
-        if self.SALTDir_textEdit.toPlainText() != "No file selected." and self.KWMDir_textEdit.toPlainText() != "No file selected.":
+        check_region = False
+        index = self.tabWidget.currentIndex()
+        
+        if self.tabWidget.tabText(index) == "Name of subcortical regions":
+            check_region = True
 
-            # Extract name of the subcortical regions: 
-            list_sc_region_SALT, list_sc_region_KWM = extract_name_sc_region(json_user_object['Arguments']["SALTDir"]["value"], 
-                                                                             json_user_object['Arguments']["KWMDir"]["value"],
-                                                                             json_user_object['Arguments']["ID"]["value"],
-                                                                             json_user_object['Parameters']["subcorticals_region_names"]["value"])
-            region_only_SALTDir, region_only_KWMDir = ([], [])
+        if check_region:
 
-            # Compare lists to extract common regions: 
-            for region_SALT in list_sc_region_SALT:
-                if not(region_SALT in list_sc_region_KWM): 
-                    region_only_SALTDir.append(region_SALT)
-         
-            for region_KWM in list_sc_region_KWM:
-                if not(region_KWM in list_sc_region_SALT): 
-                    region_only_KWMDir.append(region_KWM)
+            if self.job_name_lineEdit.text() != "" and self.SALTDir_textEdit.toPlainText() != "" and self.KWMDir_textEdit.toPlainText() != "":
 
-            # Concatenate all regions without copie: 
-            all_sc_region = sorted(list_sc_region_SALT + region_only_KWMDir)
+                # Extract name of the subcortical regions: 
+                list_sc_region_SALT, list_sc_region_KWM = extract_name_sc_region(json_user_object['Arguments']["SALTDir"]["value"], 
+                                                                                 json_user_object['Arguments']["KWMDir"]["value"],
+                                                                                 json_user_object['Arguments']["ID"]["value"],
+                                                                                 json_user_object['Parameters']["subcorticals_region_names"]["value"])
+                region_only_SALTDir, region_only_KWMDir = ([], [])
 
-            # Add color code explanation
-            self.color_sc_textEdit.setText('<font color="green">Checkbox in green</font>: file for this region in the SALT and KWM directory \n' + 
-                                           '<font color="red">Checkbox in red</font>: file for this region only in the KWM directory \n' + '\n'
-                                           '<font color="purple">Checkbox in purple</font>: file for this region only in the SALT directory') 
-            # Clear the list and add all names
-            self.list_sc_listWidget.clear()
-            self.list_sc_listWidget.addItems(all_sc_region)
+                # Compare lists to extract common regions: 
+                for region_SALT in list_sc_region_SALT:
+                    if not(region_SALT in list_sc_region_KWM): 
+                        region_only_SALTDir.append(region_SALT)
+             
+                for region_KWM in list_sc_region_KWM:
+                    if not(region_KWM in list_sc_region_SALT): 
+                        region_only_KWMDir.append(region_KWM)
 
-            # Set parameters: 
-            for i in range(self.list_sc_listWidget.count()):
-                item = self.list_sc_listWidget.item(i) 
+                # Concatenate all regions without copie: 
+                all_sc_region = sorted(list_sc_region_SALT + region_only_KWMDir)
 
-                if (item.text() not in region_only_SALTDir) and (item.text() not in region_only_KWMDir):  item.setForeground(QtGui.QColor("green"))
-                elif item.text() in region_only_SALTDir:                                                  item.setForeground(QtGui.QColor("purple"))
-                else:                                                                                     item.setForeground(QtGui.QColor("red"))
-                
-                
+                # Add color code explanation
+                self.color_sc_textEdit.setText('<font color="green">Checkbox in green</font>: file for this region in the SALT and KWM directory \n' + 
+                                               '<font color="red">Checkbox in red</font>: file for this region only in the KWM directory \n' + '\n'
+                                               '<font color="purple">Checkbox in purple</font>: file for this region only in the SALT directory') 
+                # Clear the list and add all names
+                self.list_sc_listWidget.clear()
+                self.list_sc_listWidget.addItems(all_sc_region)
+
+                # Set parameters: 
+                for i in range(self.list_sc_listWidget.count()):
+                    item = self.list_sc_listWidget.item(i) 
+
+                    if (item.text() not in region_only_SALTDir) and (item.text() not in region_only_KWMDir):  item.setForeground(QtGui.QColor("green"))
+                    elif item.text() in region_only_SALTDir:                                                  item.setForeground(QtGui.QColor("purple"))
+                    else:                                                                                     item.setForeground(QtGui.QColor("red"))
+                    
+                    
+            else: 
+                msg = QMessageBox()
+                msg.setWindowTitle("Need SALT and KWM folders")
+                msg.setText("Please provide a SALT and KWM folders to be able to check files for each subcortical regions (tab 'Input subcortical files')" +
+                    "and a job name")
+                msg.setIcon(QMessageBox.Warning)
+                x = msg.exec_()
+
+
+       
+
+
     # *****************************************
     # Button help which display explanations
     # *****************************************       
 
     def question_SALT_pushButton_clicked(self):
-        if self.question_SALT_pushButton.text() == "Help":
-            self.question_SALT_pushButton.setText("close help")
-            self.question_SALT_textEdit.setText('SALT directory : directory with one subfolder per subcortical <font color="red">region</font>. '+
-                                                'In each subfolder, you need to provide a file with a name like that: "job_name-T1_SkullStripped_scaled_label_'+
-                                                '<font color="red">region</font>_..."  \n where "job_name" is the same name that specify in the first tab')
-            self.question_SALT_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
-        else: 
-            self.question_SALT_pushButton.setText("Help")
-            self.question_SALT_textEdit.setText("")
-            self.question_SALT_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
+        msg = QMessageBox()
+        msg.setWindowTitle("Help: SALT folder")
+        msg.setText('SALT directory : directory with one subfolder per subcortical <font color="red">region</font>. '+
+                    'In each subfolder, you need to provide a file with a name like that: "job_name-T1_SkullStripped_scaled_label_'+
+                    '<font color="red">region</font>_..." where "job_name" is the same name that specify in the first tab')
+        msg.setIcon(QMessageBox.Information)
+        x = msg.exec_()
+
+      
+          
 
 
 
@@ -863,15 +885,12 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************             
 
     def question_KWM_pushButton_clicked(self):
-        if self.question_KWM_pushButton.text() == "Help":
-            self.question_KWM_pushButton.setText("close help")
-            self.question_KWM_textEdit.setText('KWM directory : directory with a txt file per subcortical region. For each subcortical region, you need to provide a file' +
+        msg = QMessageBox()
+        msg.setWindowTitle("Help: KWM folder")
+        msg.setText('KWM directory : directory with a txt file per subcortical region. For each subcortical region, you need to provide a file' +
                                                ' which contains the name of the subcortical region in his name.')
-            self.question_KWM_textEdit.setStyleSheet("color: blue;"  "background-color: transparent")
-        else: 
-            self.question_KWM_pushButton.setText("Help")
-            self.question_KWM_textEdit.setText("")
-            self.question_KWM_textEdit.setStyleSheet("color: transparent;"  "background-color: transparent")
+        msg.setIcon(QMessageBox.Information)
+        x = msg.exec_()
 
 
 
@@ -1322,7 +1341,20 @@ class Ui(QtWidgets.QTabWidget):
     def bedpostx_gpu_checkbox_clicked(self):
         json_user_object['Parameters']["run_bedpostx_gpu"]["value"] = False
         if self.bedpostx_gpu_checkBox.isChecked():
-            json_user_object['Parameters']["run_bedpostx_gpu"]["value"] = True
+            
+
+            if json_user_object['Executables']['bedpostx_gpu']['value'] == "" or json_user_object['Executables']['bedpostx_gpu']['value'] == "False":
+                msg = QMessageBox()
+                msg.setWindowTitle("Bedpostx_gpu")
+                msg.setText('Please specify a path to your bedpostx_gpu executable (tab "System set up" and then "Executables for FSL and MRtrix models"')
+                msg.setIcon(QMessageBox.Warning)
+                x = msg.exec_()
+
+                self.bedpostx_gpu_checkBox.setChecked(False)
+
+            else: 
+                json_user_object['Parameters']["run_bedpostx_gpu"]["value"] = True
+
         Ui.update_user_json_file()
 
 
@@ -1333,7 +1365,19 @@ class Ui(QtWidgets.QTabWidget):
     def probtrackx2_gpu_checkbox_clicked(self):
         json_user_object['Parameters']["run_probtrackx2_gpu"]["value"] = False
         if self.probtrackx2_gpu_checkBox.isChecked():
-            json_user_object['Parameters']["run_probtrackx2_gpu"]["value"] = True
+
+            if json_user_object['Executables']['probtrackx2_gpu']['value'] == "" or json_user_object['Executables']['probtrackx2_gpu']['value'] == "False":
+                msg = QMessageBox()
+                msg.setWindowTitle("Probtrackx2_gpu")
+                msg.setText('Please specify a path to your probtrackx2_gpu executable (tab "System set up" and then "Executables for FSL and MRtrix models"')
+                msg.setIcon(QMessageBox.Warning)
+                x = msg.exec_()
+
+                self.probtrackx2_gpu_checkBox.setChecked(False)
+
+
+            else: 
+                json_user_object['Parameters']["run_probtrackx2_gpu"]["value"] = True
         Ui.update_user_json_file()
 
 
@@ -1505,7 +1549,6 @@ class Ui(QtWidgets.QTabWidget):
         DirName= QtWidgets.QFileDialog.getExistingDirectory(self)
         if DirName:
             self.OUT_PATH_textEdit.setText(DirName) 
-        
             json_user_object['Parameters']["OUT_PATH"]["value"] = DirName
             Ui.update_user_json_file() 
 
@@ -1605,9 +1648,17 @@ class Ui(QtWidgets.QTabWidget):
 
 
     def start_tractography_remotely_pushButton_clicked(self):
-        cluster(json_user_object['Parameters']["OUT_PATH"]["value"] + "/" +
-                json_user_object['Arguments']["ID"]["value"] + "/slurm-job", json_user_object['Parameters']["cluster_command_line"]["value"]
-                , json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"], user_json_filename )
+        if json_user_object['Parameters']["OUT_PATH"]["value"] != "" and json_user_object['Arguments']["ID"]["value"] != "":
+            cluster(json_user_object['Parameters']["OUT_PATH"]["value"] + "/" +
+                    json_user_object['Arguments']["ID"]["value"] + "/slurm-job", json_user_object['Parameters']["cluster_command_line"]["value"]
+                    , json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"], user_json_filename )
+        else:
+            msg = QMessageBox()
+            msg.setWindowTitle("Run tractography remotly")
+            msg.setText('Please be sure to provide an output path (Button "output directory") and a job name')
+            msg.setIcon(QMessageBox.Warning)
+            x = msg.exec_()
+
 
 
 
@@ -1616,8 +1667,16 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def open_log_file_pushButton_clicked(self):
-        log_file = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"], json_user_object['Arguments']["ID"]["value"],"log.txt") 
-        Ui.run_command("Open log file", ['xdg-open', log_file]) 
+        if json_user_object['Parameters']["OUT_PATH"]["value"] != "" and json_user_object['Arguments']["ID"]["value"] != "":
+            log_file = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"], json_user_object['Arguments']["ID"]["value"],"log.txt") 
+            Ui.run_command("Open log file", ['xdg-open', log_file]) 
+        else: 
+            msg = QMessageBox()
+            msg.setWindowTitle("Open log file")
+            msg.setText('Please be sure to provide an output path (Button "output directory") and a job name')
+            msg.setIcon(QMessageBox.Warning)
+            x = msg.exec_()
+
 
 
 
@@ -1628,9 +1687,18 @@ class Ui(QtWidgets.QTabWidget):
     def open_visualisation_button_clicked(self):
         Ui.run_command("Open visualization interface", [sys.executable, os.path.realpath(os.path.dirname(__file__)) + "/CONTINUITY_QC/main_interface_visualization.py", default_json_filename, user_json_filename])
 
-    def open_slicer_first_interface_button_clicked(self):
-        Ui.run_command("Open slicer with the first interface", [sys.executable, os.path.realpath(os.path.dirname(__file__)) +"/CONTINUITY_QC/slicer_QC.py", user_json_filename])
 
+
+    def open_slicer_first_interface_button_clicked(self):
+        if json_user_object['Executables']["slicer"]["value"] != "":
+            Ui.run_command("Open slicer with the first interface", [sys.executable, os.path.realpath(os.path.dirname(__file__)) +"/CONTINUITY_QC/slicer_QC.py", user_json_filename])
+
+        else: 
+            msg = QMessageBox()
+            msg.setWindowTitle("Open Slicer")
+            msg.setText('Please be sure to provide an Slicer path (tab "System set up" and then "Executables for DWIConvert and Slicer"')
+            msg.setIcon(QMessageBox.Warning)
+            x = msg.exec_()
 
 
     # *****************************************
