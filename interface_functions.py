@@ -915,7 +915,7 @@ class Ui(QtWidgets.QTabWidget):
         for i in range(self.sc_regions_labels_listWidget.count()):
             item = self.sc_regions_labels_listWidget.item(i) 
 
-        self.sc_regions_labels_listWidget.itemDoubleClicked.connect(self.subcortical_label_changed )#, type= Qt.UniqueConnection)   
+        self.sc_regions_labels_listWidget.itemDoubleClicked.connect(self.subcortical_label_changed )   
 
     
     # *****************************************
@@ -923,8 +923,6 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def subcortical_label_changed(self, item):
-        
-        #self.sc_regions_labels_listWidget.blockSignals(True)
         index = self.sc_regions_labels_listWidget.row(item)
 
         text, okPressed = QInputDialog.getText(self, "Region selected" + item.text(), "Label of " 
@@ -941,9 +939,11 @@ class Ui(QtWidgets.QTabWidget):
                 item.setText('Region ' + json_user_object['Parameters']["subcorticals_region_names"]["value"][index] + ":   " + str(text))
 
             except:
-                self.error_label.setText('<font color="red">Please write a number</font>')
-
-        #self.sc_regions_labels_listWidget.blockSignals(False) 
+                msg = QMessageBox()
+                msg.setWindowTitle("Error")
+                msg.setText('Please write a number')
+                msg.setIcon(QMessageBox.Warning)
+                x = msg.exec_()
         
 
 
@@ -1690,13 +1690,16 @@ class Ui(QtWidgets.QTabWidget):
 
 
     def open_slicer_first_interface_button_clicked(self):
-        if json_user_object['Executables']["slicer"]["value"] != "":
+        if (json_user_object['Executables']["slicer"]["value"] != "False" and json_user_object['Parameters']["OUT_PATH"]["value"] != "" 
+                                                                         and json_user_object['Parameters']["ID"]["value"] != "" 
+                                                                         and json_user_object['Parameters']["PARCELLATION_TABLE_NAME"]["value"] != ""):
             Ui.run_command("Open slicer with the first interface", [sys.executable, os.path.realpath(os.path.dirname(__file__)) +"/CONTINUITY_QC/slicer_QC.py", user_json_filename])
 
         else: 
             msg = QMessageBox()
             msg.setWindowTitle("Open Slicer")
-            msg.setText('Please be sure to provide an Slicer path (tab "System set up" and then "Executables for DWIConvert and Slicer"')
+            msg.setText('Please be sure to provide an Slicer path (tab "System set up" and then "Executables for DWIConvert and Slicer"),'+ 
+                        ' an ID, a parcellation table name and an output folder')
             msg.setIcon(QMessageBox.Warning)
             x = msg.exec_()
 

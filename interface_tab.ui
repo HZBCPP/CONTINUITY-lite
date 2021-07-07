@@ -88,7 +88,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
@@ -1880,23 +1880,9 @@ p, li { white-space: pre-wrap; }
  (name in the parcellation table): </string>
              </property>
             </widget>
-            <widget class="QLabel" name="error_label">
-             <property name="geometry">
-              <rect>
-               <x>300</x>
-               <y>240</y>
-               <width>171</width>
-               <height>71</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
             <zorder>color_sc_textEdit_3</zorder>
             <zorder>label_4</zorder>
             <zorder>sc_regions_labels_listWidget</zorder>
-            <zorder>error_label</zorder>
            </widget>
            <widget class="QWidget" name="tab_18">
             <attribute name="title">
@@ -2804,7 +2790,7 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_25">
       <attribute name="title">
