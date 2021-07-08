@@ -1477,7 +1477,7 @@ class Ui(QtWidgets.QTabWidget):
             json_user_object['Parameters']["filtering_with_tcksift"]["value"] = True  
 
             if self.optimisation_with_tcksift2_checkBox.isChecked():
-                self.optimisation_with_tcksift2_checkBox.isChecked(False)
+                self.optimisation_with_tcksift2_checkBox.setChecked(False)
                 json_user_object['Parameters']["optimisation_with_tcksift2"]["value"] = False
         Ui.update_user_json_file()
 
@@ -1492,7 +1492,7 @@ class Ui(QtWidgets.QTabWidget):
             json_user_object['Parameters']["optimisation_with_tcksift2"]["value"] = True   
 
             if self.filtering_with_tcksift_checkBox.isChecked():
-                self.filtering_with_tcksift_checkBox.isChecked(False)
+                self.filtering_with_tcksift_checkBox.setChecked(False)
                 json_user_object['Parameters']["filtering_with_tcksift"]["value"] = False
         Ui.update_user_json_file()
 
