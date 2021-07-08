@@ -14,14 +14,15 @@ import numpy as np
 
 import dipy 
 from dipy.tracking import utils
-from dipy.core.gradients import gradient_table
+from dipy.core.gradients import gradient_table, unique_bvals_tolerance
 from dipy.io.gradients import read_bvals_bvecs
 from dipy.io.image import load_nifti, load_nifti_data
 
-from dipy.reconst.csdeconv import (ConstrainedSphericalDeconvModel, auto_response_ssst)
+from dipy.reconst.csdeconv import ConstrainedSphericalDeconvModel, auto_response_ssst
+
 
 from dipy.reconst.shm import CsaOdfModel
-from dipy.data import (default_sphere, small_sphere )
+from dipy.data import default_sphere, small_sphere
 from dipy.direction import peaks_from_model
 
 from dipy.tracking.stopping_criterion import ThresholdStoppingCriterion
@@ -31,8 +32,14 @@ from dipy.direction import ProbabilisticDirectionGetter
 from dipy.tracking.local_tracking import LocalTracking
 from dipy.tracking.streamline import Streamlines
 
+from dipy.reconst.mcsd import MultiShellDeconvModel, multi_shell_fiber_response
+from dipy.reconst.mcsd import (auto_response_msmt,
+                               mask_for_response_msmt,
+                               response_from_mask_msmt)
+
 from dipy.io.stateful_tractogram import Space, StatefulTractogram
 from dipy.io.streamline import save_trk
+import dipy.reconst.shm as shm
 
 
 from CONTINUITY_functions import *
@@ -709,7 +716,14 @@ with Tee(log_file):
 
 	# Copy the original parcellation table to be able to build an other specific with only good subcortical regions ( = with good KWM and SALT files)
 	only_matrix_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'only_matrix_parcellation_table' )
-	shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
+	Destrieux_points_already_compute = False 
+	
+	if not os.path.exists(only_matrix_parcellation_table): 
+		shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
+	else: 
+		Destrieux_points_already_compute = True 
+
+
 
 	if subcorticals_region_names == []: 
 		#Open parcellation table file with subcortical regions:
@@ -873,7 +887,8 @@ with Tee(log_file):
 			print("Compute one point per region")
 			print("*****************************************")
 
-			compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
+			if not Destrieux_points_already_compute: 
+				compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
 		
 
 
@@ -1813,6 +1828,7 @@ with Tee(log_file):
 
 
 	elif tractography_model == "DIPY":
+		# Doc: https://dipy.org/documentation/1.4.1./reference/ 
 		
 
 		print("*****************************************")
@@ -1851,17 +1867,21 @@ with Tee(log_file):
 
 		
 		#*****************************************
-		# Data and gradient
+		# Data and gradient table
 		#*****************************************
 		
-		data, affine, img = load_nifti(DWI_nifti, return_img=True) 
-		print(data.shape)
-	
+		data, affine, img = load_nifti(DWI_nifti, return_img=True) 	
+
+		# Gradient_table: create diffusion MR gradients: loads scanner parameters like the b-values and b-vectors so that they can be useful during the reconstruction process.
 		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
 
-		# White matter mask to restrict tracking to the white matter
+
+
+		#*****************************************
+		# White matter mask to restrict tracking to the white matter: use BRAINMASK ! 
+		#*****************************************
+
 		white_matter_nifti = os.path.join(OUT_DIPY, "white_matter.nii.gz")
-	
 		if os.path.exists(white_matter_nifti):
 		    print("Brain mask FSL file: Found Skipping convertion")
 		else: 
@@ -1873,27 +1893,59 @@ with Tee(log_file):
 									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 									                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 
-
+		# Load_nifti_data: load only the data array from a nifti file.
 		data_white_matter = load_nifti_data(white_matter_nifti) 
+
+		# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67) 
 		white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1])
 		
-		print(white_matter.shape)
 
+	
         #*****************************************
 		# Method for getting directions from a diffusion data set
 		#*****************************************
 
-		# https://dipy.org/documentation/1.2.0./examples_built/reconst_csd/
-		response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.6)   #single shell    0.7: adult brain 
+		# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
+		# auto_response_msmt: Automatic estimation of MULTI-SHELL multi-tissue (msmt) response
 
-		# Multi-Shell Multi-Tissue: used auto_response_msmt
-		#https://dipy.org/documentation/1.2.0./examples_built/reconst_mcsd/       csd: single shell
+		if not multi_shell_DWI: 
+			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.6)   # 0.7: adult brain 
+			# Fit a Constrained Spherical Deconvolution (CSD) model.
+			csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
+			csd_fit = csd_model.fit(data, mask=white_matter) 
 
 
+		else: 
+			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10,
+                                                    wm_fa_thr=0.7,
+                                                    gm_fa_thr=0.3,
+                                                    csf_fa_thr=0.15,
+                                                    gm_md_thr=0.001,
+                                                    csf_md_thr=0.0032)
+			response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data,
+                                                                 mask_wm,
+                                                                 mask_gm,
+                                                                 mask_csf)
 
-		# Fit a Constrained Spherical Deconvolution (CSD) model.
-		csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
-		csd_fit = csd_model.fit(data, mask=white_matter) 
+			auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10)
+
+			ubvals = unique_bvals_tolerance(gtab.bvals)
+
+			response_mcsd = multi_shell_fiber_response(sh_order=8,
+                                           bvals=ubvals,
+                                           wm_rf=response_wm,
+                                           gm_rf=response_gm,
+                                           csf_rf=response_csf)
+
+			response = np.array([response_wm, response_gm, response_csf])
+			
+			mcsd_model_simple_response = MultiShellDeconvModel(gtab, response, sh_order=8)
+
+			mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
+			#mcsd_fit = mcsd_model.fit(denoised_arr[:, :, 10:11])
+
+
+		print("End of fit model: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 
         #*****************************************
@@ -1908,6 +1960,8 @@ with Tee(log_file):
 		# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the generalized fractional anisotropy (GFA)
 		stopping_criterion = ThresholdStoppingCriterion(gfa, .25) 
 
+		print("End of stopping criterion method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+
 
         #*****************************************
 		# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
@@ -1918,11 +1972,20 @@ with Tee(log_file):
 
 		# The peaks of an ODF are good estimates for the orientation of tract segments at a point in the image
 		# peaks_from_model: fit the data and calculated the fiber directions in all voxels of the white matter
-		peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
+		if not multi_shell_DWI: 
+			peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
+		else: 
+			peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
+
 		fod_coeff = peaks.shm_coeff
+
+		print("End of peaks of an ODF method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 		# Discrete FOD used by the ProbabilisticDirectionGetter as a PMF for sampling tracking directions.
 		prob_dg = ProbabilisticDirectionGetter.from_shcoeff(fod_coeff, max_angle=30., sphere=default_sphere) 
+
+		print("End of create FOD: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+
 
 
         #*****************************************
@@ -1935,6 +1998,8 @@ with Tee(log_file):
 		# Generate streamlines object: 
 		streamlines = Streamlines(streamlines_generator)
 
+		print("End of generate steamlines: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+
 
         #*****************************************
 		# Save the streamlines as a Trackvis file
@@ -1946,4 +2011,4 @@ with Tee(log_file):
 
 		# output file name must be "fdt_network_matrix" !!!!
 
-		print("Output of DIPY: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+		print("End of DIPY: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
