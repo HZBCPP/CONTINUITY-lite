@@ -9,37 +9,30 @@ import subprocess
 import time
 import datetime
 from termcolor import colored
-from vtk import *
 import numpy as np
+import vtk
+from vtk.util.numpy_support import vtk_to_numpy
 
 import dipy 
-from dipy.tracking import utils
 from dipy.core.gradients import gradient_table, unique_bvals_tolerance
 from dipy.io.gradients import read_bvals_bvecs
 from dipy.io.image import load_nifti, load_nifti_data
 
 from dipy.reconst.csdeconv import ConstrainedSphericalDeconvModel, auto_response_ssst
-
-
+from dipy.reconst.mcsd import MultiShellDeconvModel, multi_shell_fiber_response, auto_response_msmt, mask_for_response_msmt, response_from_mask_msmt
 from dipy.reconst.shm import CsaOdfModel
+import dipy.reconst.shm as shm
+
 from dipy.data import default_sphere, small_sphere
-from dipy.direction import peaks_from_model
+from dipy.direction import peaks_from_model, ProbabilisticDirectionGetter
 
+from dipy.tracking import utils
 from dipy.tracking.stopping_criterion import ThresholdStoppingCriterion
-
-from dipy.direction import ProbabilisticDirectionGetter
-
 from dipy.tracking.local_tracking import LocalTracking
 from dipy.tracking.streamline import Streamlines
 
-from dipy.reconst.mcsd import MultiShellDeconvModel, multi_shell_fiber_response
-from dipy.reconst.mcsd import (auto_response_msmt,
-                               mask_for_response_msmt,
-                               response_from_mask_msmt)
-
 from dipy.io.stateful_tractogram import Space, StatefulTractogram
 from dipy.io.streamline import save_trk
-import dipy.reconst.shm as shm
 
 
 from CONTINUITY_functions import *
@@ -165,13 +158,10 @@ ParaToSPHARMMeshCLPPath   = json_user_object["Executables"]["ParaToSPHARMMeshCLP
 
 writeSeedListScript       = os.path.realpath(os.path.dirname(__file__)) + "/writeSeedList.py" 
 
-
+# Environment variables: 
 os.environ["ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS"] = str(nb_threads)
 os.environ["OMP_NUM_THREADS"] = str(nb_threads)
 
-
-
-# data: /Human/twin-gilmore/AUTOSEG_4-6year_T1andMultiAtlas/Data/T0054-1-1-6yr/AutoSegTissue_1year_v2-MultiAtlas
 
 # *****************************************
 # Create folder and complete log file
@@ -263,7 +253,7 @@ with Tee(log_file):
 	# *****************************************
 
 	# Convert DWI nifti input to nrrd:  
-	[path, afile] =os.path.split(DWI_DATA) #os.path.realpath(os.path.dirname(__file__)) + '/input_CONTINUITY'    and   T0054-1-1-6yr-T1_SkullStripped_scaled.nrrd
+	[path, afile] = os.path.split(DWI_DATA) # split path and file name(nrrd)
 
 	if afile.endswith('nii.gz'): 
 
@@ -279,8 +269,6 @@ with Tee(log_file):
 			for line in bval_file:
 				line = int(line.strip('\n') )
 				all_bvals.append(line)
-
-			print("all_bvals", all_bvals)
 		
 			# Write txt file with all bval that will be deleted: 
 			txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_FOLDER, "txt_file_with_bval_that_will_be_deleted.txt")
@@ -289,7 +277,7 @@ with Tee(log_file):
 				for listitem in txt_file_with_bval_that_will_be_deleted:
 					filebval.write('%s\n' % listitem)
 
-					# write other nerest b-values: 
+					# Write other nerest b-values: 
 					for i in range(20):
 						if int((listitem-10)) + i in all_bvals:
 							filebval.write('%s\n' % int((listitem-10)) + i)
@@ -311,27 +299,22 @@ with Tee(log_file):
 				line = int(line.strip('\n') )
 				new_bvals.append(line)
 
-			print("new_bvals", new_bvals)
-
 
 		print("*****************************************")
 		print("Convert DWI FSL2Nrrd")
-		print("*****************************************")
-
-		new_name = afile[:-7] + '.nrrd'
+		print("*****************************************") 
 		
 		# New folder: 
 		OUT_FOLDER_nifti2nrrd = os.path.join(OUT_FOLDER, 'nifti2nrrd') 
 		if not os.path.exists(OUT_FOLDER_nifti2nrrd):
 			os.mkdir(OUT_FOLDER_nifti2nrrd)
 
-		output_nrrd = os.path.join(OUT_FOLDER_nifti2nrrd, new_name)
+		output_nrrd = os.path.join(OUT_FOLDER_nifti2nrrd, afile[:-7] + '.nrrd')
 
 		run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", DWI_DATA, 
-														                             "--conversionMode", "FSLToNrrd", 
-														                             "--outputVolume", output_nrrd, 
-														                             "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
-
+														                             				   "--conversionMode", "FSLToNrrd", 
+														                             				   "--outputVolume", output_nrrd, 
+														                             				   "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
 		# New path :
 		DWI_DATA = output_nrrd
 			
@@ -429,7 +412,6 @@ with Tee(log_file):
 			print("No resample DWI err: ", colored("\n" + str(err) + "\n", 'red'))     
 		   
 
-
 		# Interpolation / upsampling DWI MASK
 		if os.path.exists( DWI_MASK ):
 		    print("Files Found: Skipping Upsampling DWIMask")
@@ -515,7 +497,7 @@ with Tee(log_file):
 		else:
 			print("*****************************************")
 			print("FA generation using DTI process")      
-			print("*****************************************")    #                                           ,    FA output , max eigenvalue output
+			print("*****************************************") 
 			
 			command = [pathdtiprocess, '--version']
 			run = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -771,13 +753,11 @@ with Tee(log_file):
 			if data_region_find == False:
 				print(" NO information about ", region, "in your parcellation table with subcortical data")
 				
-				
 				if INTEGRATE_SC_DATA_by_generated_sc_surf:
 					print( "OR the label for this region = 0: this region won't be integrate ")
 					subcorticals_list_labels_checked = subcorticals_region_labels.remove(index)
 				
 				subcorticals_list_names_checked = subcorticals_list_names_checked.remove(region)
-
 
 		
 		if INTEGRATE_SC_DATA_by_generated_sc_surf:
@@ -824,7 +804,6 @@ with Tee(log_file):
 			first_line_list = first_line.split("=") 
 			number_of_points =int(first_line_list[1].strip()) #"NUMBER_OF_POINTS=1002"
 		
-		
 
 
 		print("*****************************************")
@@ -838,7 +817,6 @@ with Tee(log_file):
 			#​The KWM files are intermediate .txt files for labeling the vertices on the respective subcortical SPHARM surfaces with a parcellation specific label number.
 			KWMFile = os.path.join(KWMDir, region + "_" + str(number_of_points) + "_KWM.txt")
 			SPHARMSurf = os.path.join(SALTDir, ID + "-T1_SkullStripped_scaled_label_" + region + "_pp_surfSPHARM.vtk")
-
 
 			if not os.path.exists(SPHARMSurf) or not os.path.exists(KWMFile): 
 				# Delete info of this region in the new-parcellation-table:
@@ -904,8 +882,8 @@ with Tee(log_file):
 			print("OutputSurface file found: Skipping combine the labeled subcorticals ")
 		else:
 			# Add the first 2 subcortical regions to create an initial output file
-			s1=os.path.join(OUT_LABELS, ID + "-T1_SkullStripped_scaled_label_" + subcorticals_list_names_checked_with_surfaces[0] + "_pp_SPHARM_labeled.vtk")
-			s2=os.path.join(OUT_LABELS, ID + "-T1_SkullStripped_scaled_label_" + subcorticals_list_names_checked_with_surfaces[1] + "_pp_SPHARM_labeled.vtk") 
+			s1 = os.path.join(OUT_LABELS, ID + "-T1_SkullStripped_scaled_label_" + subcorticals_list_names_checked_with_surfaces[0] + "_pp_SPHARM_labeled.vtk")
+			s2 = os.path.join(OUT_LABELS, ID + "-T1_SkullStripped_scaled_label_" + subcorticals_list_names_checked_with_surfaces[1] + "_pp_SPHARM_labeled.vtk") 
 
             # Combine the labeled subcorticals 
 			print("For ", subcorticals_list_names_checked_with_surfaces[0], "region: ") 
@@ -930,7 +908,7 @@ with Tee(log_file):
 		else: 
 			# Transform a PolyData with a displacement field: apply T1 to DWI WARP (ie displacement field)
 			#                              , landmark file ,input        , displacement file       , output in DWI space
-			command=[pathPOLY_TRANSTOOL_EXE, "--fiber_file",outputSurface, "-D", ConcatedWarp, "-o", subsAllDWISpace, "--inverty", "--invertx"]
+			command = [pathPOLY_TRANSTOOL_EXE, "--fiber_file",outputSurface, "-D", ConcatedWarp, "-o", subsAllDWISpace, "--inverty", "--invertx"]
 			run_command("POLY_TRANSTOOL_EXE: combining subcortical data transform into DWISpace", command)
 
 
@@ -1066,12 +1044,11 @@ with Tee(log_file):
 			# Integration of subcortical data
 			polydatamerge_ascii(subsAllDWISpace, SURFACE, outputSurfaceFullMerge)
 
-
 			# Add outputSurfaceFullMerge in INPUTDATA folder for visualization 
 			shutil.copy(outputSurfaceFullMerge, OUT_SLICER)
 
 		SURFACE = outputSurfaceFullMerge
-	
+
 
 	# Add SURFACE in INPUTDATA folder for visualization 
 	shutil.copy(SURFACE, OUT_SLICER)
@@ -1238,18 +1215,15 @@ with Tee(log_file):
 
 			now = datetime.datetime.now()
 			print (now.strftime("Script running bedpostx command since: %H:%M %m-%d-%Y"))
-			start = time.time() #                , INPUT directory           
+			start = time.time()    
 
 
 			if not run_bedpostx_gpu: 
-				if os.path.exists(FSLPath+'/bedpostx'):
-					command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)]
+				command = [FSLPath + '/bedpostx', OUT_DIFFUSION, "-n", str(nb_fibers)]
 
-			else:  #run bepostx_gpu
-				command = [bedpostx_gpuPath, OUT_DIFFUSION, 
-											"-n", str(nb_fibers),
-											"-NJOBS", str(nb_jobs_bedpostx_gpu) ] #-NJOBS (number of jobs to queue, the data is divided in NJOBS parts, usefull 
-											                       				  # for a GPU cluster, default 4)
+			else: 
+				command = [bedpostx_gpuPath, OUT_DIFFUSION, "-n", str(nb_fibers), "-NJOBS", str(nb_jobs_bedpostx_gpu) ] 
+				#-NJOBS (number of jobs to queue, the data is divided in NJOBS parts, usefull for a GPU cluster, default 4)
 
 			run_command("bedpostx", command)
 			print("bedpostx command: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
@@ -1312,8 +1286,6 @@ with Tee(log_file):
 			save_connectivity_matrix('row_column', row_column_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
 		
 		
-
-
 
 
 
@@ -1591,10 +1563,7 @@ with Tee(log_file):
 						output_track_tckgen_tck = output_track_tckgen_tck_seed
 					else:
 						polydatamerge_ascii(output_track_tckgen_tck_seed, output_track_tckgen_tck, output_track_tckgen_tck)
-				
-				
 				'''
-
 
 				# Type of algorithm and their specification:
 				if tractography_model == "MRtrix (default: IFOD2) ":
@@ -1617,7 +1586,6 @@ with Tee(log_file):
 					command.append('-act')
 					command.append(fivett_img)
 					
-
 				# Add common parameters: 
 				#command.append('-select')
 				#command.append(nb_fibers) #=2 !
@@ -1774,7 +1742,6 @@ with Tee(log_file):
 					weight_file = open(weight_txt_file, 'r')
 					
 
-
 				# Compute value: Value in connectome matrix between this two region: sum of weight of each streamlines 
 				if weight_file != 'nan':
 					# Sum each weight of each streamline: (just one line file)
@@ -1811,7 +1778,6 @@ with Tee(log_file):
 
 		print("End of MRtrix: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
-		
 
 
 
@@ -1848,7 +1814,6 @@ with Tee(log_file):
 			os.mkdir(OUT_DIPY)
 
 
-
 		print("*****************************************")
 		print("Convert DWI image to nifti format")
 		print("*****************************************")
@@ -1865,7 +1830,6 @@ with Tee(log_file):
 															                             "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
 															                             "--outputBVectors", os.path.join(OUT_DIPY, "bvecs")])
 
-		
 		#*****************************************
 		# Data and gradient table
 		#*****************************************
@@ -1916,34 +1880,18 @@ with Tee(log_file):
 
 
 		else: 
-			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10,
-                                                    wm_fa_thr=0.7,
-                                                    gm_fa_thr=0.3,
-                                                    csf_fa_thr=0.15,
-                                                    gm_md_thr=0.001,
-                                                    csf_md_thr=0.0032)
-			response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data,
-                                                                 mask_wm,
-                                                                 mask_gm,
-                                                                 mask_csf)
-
+			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
+			response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data, mask_wm, mask_gm, mask_csf)
 			auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10)
 
 			ubvals = unique_bvals_tolerance(gtab.bvals)
+			response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=response_wm, gm_rf=response_gm, csf_rf=response_csf)
 
-			response_mcsd = multi_shell_fiber_response(sh_order=8,
-                                           bvals=ubvals,
-                                           wm_rf=response_wm,
-                                           gm_rf=response_gm,
-                                           csf_rf=response_csf)
-
-			response = np.array([response_wm, response_gm, response_csf])
-			
-			mcsd_model_simple_response = MultiShellDeconvModel(gtab, response, sh_order=8)
+			#response = np.array([response_wm, response_gm, response_csf])
+			#mcsd_model_simple_response = MultiShellDeconvModel(gtab, response, sh_order=8)
 
 			mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
 			#mcsd_fit = mcsd_model.fit(denoised_arr[:, :, 10:11])
-
 
 		print("End of fit model: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
@@ -2006,9 +1954,31 @@ with Tee(log_file):
 		#*****************************************
 
 		sft = StatefulTractogram(streamlines, img, Space.RASMM)
-		save_trk(sft, "tractogram.trk", streamlines)
+		save_trk(sft, os.path.join(OUT_DIPY,"tractogram.trk"), streamlines)
 
 
-		# output file name must be "fdt_network_matrix" !!!!
+        #*****************************************
+		# Extract the connectivity matrix
+		#*****************************************
+		
+		# Read the source file
+		reader = vtk.vtkPolyDataReader() 
+		reader.SetFileName(SURFACE)
+		reader.Update()  
+		array_SURFACE = vtk_to_numpy(reader1.GetOutput().GetPointData().GetArray(1)) # Check:   Array 1 name = Destrieux' [11106. 11166. 11112. ... 11166.]
+
+
+		M, grouping = utils.connectivity_matrix(streamlines, affine, array_SURFACE, return_mapping=True, mapping_as_streamlines=True)
+		M[:3, :] = 0
+		M[:, :3] = 0
+
+		M_modif = np.log1p(M)
+
+		matrix = os.path.join(OUT_DIPY, "fdt_network_matrix") 
+		np.savetxt(matrix, M_modif.astype(float),  fmt='%f', delimiter='  ')
+
+
+		plt.imshow(np.log1p(M), interpolation='nearest')
+		plt.savefig("connectivity.png")
 
 		print("End of DIPY: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
