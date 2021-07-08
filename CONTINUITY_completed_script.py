@@ -1981,7 +1981,7 @@ with Tee(log_file):
 
 
         # *****************************************
-		# Convert tck to vtk format       FOR VISUALIZATION
+		# Convert tck to vtk format    FOR VISUALIZATION
 		# *****************************************
 			
 		if os.path.exists(MRtrixPath + "/tckconvert"): 
