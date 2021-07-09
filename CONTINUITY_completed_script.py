@@ -1815,7 +1815,7 @@ with Tee(log_file):
 			os.mkdir(OUT_DIPY)
 		
 		tractogram = os.path.join(OUT_DIPY,"tractogram.trk")
-
+		
 		print("*****************************************")
 		print("Run tractography with DIPY")
 		print("*****************************************")
@@ -1963,12 +1963,12 @@ with Tee(log_file):
 		sft = StatefulTractogram(streamlines, img, Space.RASMM)
 		save_trk(sft, tractogram, streamlines)
 
-		
+		'''
 		scene = window.Scene()
 		scene.add(actor.line(streamlines, colormap.line_colors(streamlines)))
 		window.record(scene, out_path='tractogram_deterministic_dg.png', size=(800, 800))
 		window.show(scene)
-		
+		'''
 
 
 		# Conversion trk to tck 
@@ -1992,7 +1992,7 @@ with Tee(log_file):
 			else:
 				print("Convert tck to vtk")									
 				run_command("Convert to vtk", [MRtrixPath + "/tckconvert", tractogram_tck, tractogram_vtk]) 
-				
+		
 
 
         #*****************************************
@@ -2001,13 +2001,43 @@ with Tee(log_file):
 		matrix = os.path.join(OUT_DIPY, "fdt_network_matrix") 
 		if not os.path.exists(matrix): 
 			# Read the source file
+
+			
 			reader = vtk.vtkPolyDataReader() 
 			reader.SetFileName(SURFACE)
 			reader.Update()  
-			array_SURFACE = vtk_to_numpy(reader.GetOutput().GetPointData().GetArray(0)) # Check:   Array 1 name = Destrieux' [11106. 11166. 11112. ... 11166.]
+			array_SURFACE = vtk_to_numpy(reader.GetOutput().GetPointData().GetArray(0)) 
+			#volume = vtk_to_numpy(reader.GetOutput().GetPointData())
+
+			volume = vtk_to_numpy(reader.GetOutput().GetPoints().GetData())
+			print(volume)
 
 
-			M, grouping = utils.connectivity_matrix(streamlines, affine, array_SURFACE, return_mapping=True, mapping_as_streamlines=True)
+
+			'''
+			reader = vtk.vtkPolyDataReader() 
+			reader.SetFileName(SURFACE)
+			reader.ReadAllScalarsOn()
+			reader.ReadAllVectorsOn()
+			pa = v.vtkPassArrays()
+			pa.SetInputConnection(reader.GetOutputPort())
+			pa.AddArray( 0, 'label' ) # 0 for PointData, 1 for CellData, 2 for FieldData
+			writer = v.vtkDataSetWriter()
+			writer.SetFileName('test.vtk')
+			writer.SetInputConnection(pa.GetOutputPort())
+			writer.Update()
+			writer.Write()
+			'''
+
+			reader2 = v.vtkUnstructuredGridReader()
+			reader2.SetFileName("/Home/test.vtk")
+			reader2.ReadAllScalarsOn()
+			reader2.ReadAllVectorsOn()
+			reader2.Update()
+			test2 = reader2.GetOutput()
+
+			
+			M, grouping = utils.connectivity_matrix(streamlines, affine, test2, return_mapping=True, mapping_as_streamlines=True)
 			M[:3, :] = 0
 			M[:, :3] = 0
 
@@ -2015,7 +2045,7 @@ with Tee(log_file):
 
 			print("Write connectivity matrix")
 			np.savetxt(matrix, M_modif.astype(float),  fmt='%f', delimiter='  ')
-
+			
 
 			plt.imshow(np.log1p(M), interpolation='nearest')
 			plt.savefig(os.path.join(OUT_DIPY, "connectivity.png"))
