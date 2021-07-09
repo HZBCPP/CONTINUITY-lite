@@ -354,7 +354,7 @@
         },
         "json_config_file": {
             "type": "str",
-            "help": "json config file with user configuration",
+            "help": "path for json user configuration file (save thanks to the interface) ",
             "default": ""
         },
         "list_bval_that_will_be_deleted": {

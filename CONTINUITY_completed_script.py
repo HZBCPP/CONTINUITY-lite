@@ -1825,13 +1825,13 @@ with Tee(log_file):
 		print("Convert DWI image to nifti format")
 		print("*****************************************")
 
-		DWI_nifti = os.path.join(OUT_DIPY, ID + "-T1_SkullStripped_scaled.nii.gz")
+		DWI_nifti = os.path.join(OUT_DIPY, ID + "-DWI.nii.gz")
 		if os.path.exists(DWI_nifti):
 		    print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
 		else:
 			print("Convert DWI image to nifti format ")
 			
-			run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA,  
+			run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA,    #input data 
 															                             "--conversionMode", "NrrdToFSL", 
 															                             "--outputVolume", DWI_nifti, 
 															                             "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
@@ -1857,8 +1857,8 @@ with Tee(log_file):
 		    print("Brain mask FSL file: Found Skipping convertion")
 		else: 
 			print("DWIConvert BRAINMASK to FSL format")
-			
-			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK, 
+
+			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK, #DWI_MASK, 
 									                                    "--conversionMode", "NrrdToFSL", 
 									                                    "--outputVolume", white_matter_nifti, 
 									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
@@ -1876,20 +1876,25 @@ with Tee(log_file):
 		# Method for getting directions from a diffusion data set
 		#*****************************************
 
-		# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
-		# auto_response_msmt: Automatic estimation of MULTI-SHELL multi-tissue (msmt) response
-
 		if not multi_shell_DWI: 
-			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.6)   # 0.7: adult brain 
+			# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
+			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.4)   # 0.7: adult 
+
 			# Fit a Constrained Spherical Deconvolution (CSD) model.
 			csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
 			csd_fit = csd_model.fit(data, mask=white_matter) 
 
 
 		else: 
-			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
+			# Computation of masks for multi-shell multi-tissue (msmt) response: 
+			#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
+			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.4, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
+			
+			#Computation of multi-shell multi-tissue (msmt) response  (functions from given tissues masks)
 			response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data, mask_wm, mask_gm, mask_csf)
-			auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10)
+			
+			# Automatic estimation of multi-shell multi-tissue (msmt) response: (functions using FA and MD)
+			#auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10)
 
 			ubvals = unique_bvals_tolerance(gtab.bvals)
 			response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=response_wm, gm_rf=response_gm, csf_rf=response_csf)
@@ -1921,6 +1926,9 @@ with Tee(log_file):
         #*****************************************
 		# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
 		#*****************************************
+
+		if not DO_REGISTRATION: 
+			DiffusionBrainMask = BRAINMASK
 
 		seed_mask = DiffusionBrainMask
 		seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
@@ -2007,11 +2015,9 @@ with Tee(log_file):
 			reader.SetFileName(SURFACE)
 			reader.Update()  
 			array_SURFACE = vtk_to_numpy(reader.GetOutput().GetPointData().GetArray(0)) 
+
 			#volume = vtk_to_numpy(reader.GetOutput().GetPointData())
-
-			volume = vtk_to_numpy(reader.GetOutput().GetPoints().GetData())
-			print(volume)
-
+			#volume1 = vtk_to_numpy(reader.GetOutput().GetPoints().GetData())  # Get points 
 
 
 			'''
@@ -2021,23 +2027,40 @@ with Tee(log_file):
 			reader.ReadAllVectorsOn()
 			pa = v.vtkPassArrays()
 			pa.SetInputConnection(reader.GetOutputPort())
-			pa.AddArray( 0, 'label' ) # 0 for PointData, 1 for CellData, 2 for FieldData
+			pa.AddArray( 0, 'label' ) [12106. 12166. 12112. ... 12181. 12181. 12181.]  --> not a 3D array ! 
 			writer = v.vtkDataSetWriter()
 			writer.SetFileName('test.vtk')
 			writer.SetInputConnection(pa.GetOutputPort())
 			writer.Update()
 			writer.Write()
-			'''
 
-			reader2 = v.vtkUnstructuredGridReader()
+			reader2 = vtk.vtkUnstructuredGridReader()
 			reader2.SetFileName("/Home/test.vtk")
 			reader2.ReadAllScalarsOn()
 			reader2.ReadAllVectorsOn()
 			reader2.Update()
 			test2 = reader2.GetOutput()
+			'''
 
+
+			labeled_image_nifti = os.path.join(OUT_DIPY, "labeled_image.nii.gz")
+			if os.path.exists(labeled_image_nifti):
+			    print("FSL file: Found Skipping convertion")
+			else: 
+				print("DWIConvert T1 labeled to FSL format")
+				
+				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", labeled_image, 
+									                                    "--conversionMode", "NrrdToFSL", 
+									                                    "--outputVolume", labeled_image_nifti, 
+									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
+									                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 			
-			M, grouping = utils.connectivity_matrix(streamlines, affine, test2, return_mapping=True, mapping_as_streamlines=True)
+			T1_labeled = load_nifti_data(labeled_image_nifti)
+
+			print("Before create connectivity matrix: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+
+
+			M, grouping = utils.connectivity_matrix(streamlines, affine, T1_labeled, return_mapping=True, mapping_as_streamlines=True)
 			M[:3, :] = 0
 			M[:, :3] = 0
 
