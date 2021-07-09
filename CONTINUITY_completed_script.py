@@ -97,7 +97,7 @@ run_bedpostx_gpu                        = json_user_object["Parameters"]["run_be
 run_probtrackx2_gpu                     = json_user_object["Parameters"]["run_probtrackx2_gpu"]['value'] 
 filtering_with_tcksift					= json_user_object["Parameters"]["filtering_with_tcksift"]['value']
 optimisation_with_tcksift2				= json_user_object["Parameters"]["optimisation_with_tcksift2"]['value']
-multi_shell_DWI                         = json_user_object["Parameters"]["multi_shell_DWI"]['value']
+#multi_shell_DWI                         = json_user_object["Parameters"]["multi_shell_DWI"]['value']
 act_option				                = json_user_object["Parameters"]["act_option"]['value']
 UPSAMPLING_DWI                          = json_user_object["Parameters"]["UPSAMPLING_DWI"]['value']
 DO_REGISTRATION                         = json_user_object["Parameters"]["DO_REGISTRATION"]['value']
@@ -280,7 +280,7 @@ with Tee(log_file):
 			txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_FOLDER, "txt_file_with_bval_that_will_be_deleted.txt")
 
 			with open(txt_file_with_bval_that_will_be_deleted, 'w') as filebval:
-				for listitem in txt_file_with_bval_that_will_be_deleted:
+				for listitem in list_bval_that_will_be_deleted:
 					filebval.write('%s\n' % listitem)
 
 					# Write other nerest b-values: 
@@ -303,7 +303,8 @@ with Tee(log_file):
 			bval_file = open(DWI_DATA_bvals, 'r')     
 			for line in bval_file:
 				line = int(line.strip('\n') )
-				new_bvals.append(line)
+				if not line in new_bvals:
+					new_bvals.append(line)
 
 
 		print("*****************************************")
@@ -1147,6 +1148,18 @@ with Tee(log_file):
 							                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
 							                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
 
+	# Find all b-values: 
+	try: 
+		test = len(new_bvals)
+	except: 
+		new_bvals = []
+		bval_file = open(os.path.join(OUT_DIFFUSION, "bvals"), 'r')     
+		for line in bval_file:
+				line = int(line.strip('\n') )
+				if not line in new_bvals:
+					new_bvals.append(line)
+	print("new_bvals after convertion: ", new_bvals)
+
 
 
 	print("*****************************************")
@@ -1303,6 +1316,17 @@ with Tee(log_file):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 	# *****************************************
 	# Tractography with MRtrix 
 	# *****************************************
@@ -1325,6 +1349,7 @@ with Tee(log_file):
 		if not os.path.exists(OUT_MRTRIX):
 			os.mkdir(OUT_MRTRIX)
 
+		
 		# *****************************************
 		# Response function estimation: Estimate response function(s) for spherical deconvolution
 		# *****************************************
@@ -1337,11 +1362,10 @@ with Tee(log_file):
 												   				Response_function_estimation_txt, #output
 												                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 												                '-scratch', os.path.join(OUT_MRTRIX),
-												                '-nthreads', str(nb_threads)]
-
-			if multi_shell_DWI: 
+												                '-nthreads', str(nb_threads) ]
+			for element in new_bvals:  
 				command.append('-shells')
-				command.append(new_bvals)
+				command.append(str(element))
 
 			run_command("Response function estimation (err ok)", command)
 
@@ -1359,11 +1383,10 @@ with Tee(log_file):
 								    FOD_nii, # ouput
 								   	'-mask', DiffusionBrainMask, # input
 								    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
-								    '-nthreads', str(nb_threads) ]
-
-			if multi_shell_DWI: 
+								    '-nthreads', str(nb_threads)]
+			for element in new_bvals:  
 				command.append('-shells')
-				command.append(new_bvals)
+				command.append(str(element))
 
 			run_command("FOD estimation", command)
 
@@ -1876,7 +1899,7 @@ with Tee(log_file):
 		# Method for getting directions from a diffusion data set
 		#*****************************************
 
-		if not multi_shell_DWI: 
+		if len(new_bvals) == 1: # single shell_DWI: 
 			# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
 			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.4)   # 0.7: adult 
 
@@ -1885,7 +1908,7 @@ with Tee(log_file):
 			csd_fit = csd_model.fit(data, mask=white_matter) 
 
 
-		else: 
+		else: # multi shell DWI
 			# Computation of masks for multi-shell multi-tissue (msmt) response: 
 			#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
 			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.4, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
@@ -1927,15 +1950,12 @@ with Tee(log_file):
 		# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
 		#*****************************************
 
-		if not DO_REGISTRATION: 
-			DiffusionBrainMask = BRAINMASK
-
-		seed_mask = DiffusionBrainMask
+		seed_mask = BRAINMASK #DiffusionBrainMask
 		seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
 
 		# The peaks of an ODF are good estimates for the orientation of tract segments at a point in the image
 		# peaks_from_model: fit the data and calculated the fiber directions in all voxels of the white matter
-		if not multi_shell_DWI: 
+		if len(new_bvals) == 1: # single shell_DWI: 
 			peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
 		else: 
 			peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
