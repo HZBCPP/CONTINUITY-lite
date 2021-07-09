@@ -120,9 +120,7 @@ if __name__ == '__main__':
         for key in infos: 
             # change 'default' by 'value'
             d = data_user[categories][key]
-            print("main ", d)
             d['value'] = d.pop('default')
-            print("main after", d)
 
         with open(user_filename, "w+") as user_file: 
             user_file.write(json.dumps(data_user, indent=4)) 

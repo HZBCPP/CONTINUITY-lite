@@ -1978,14 +1978,12 @@ with Tee(log_file):
 		window.show(scene)
 		'''
 
-
 		# Conversion trk to tck 
 		tractogram_tck = os.path.join(OUT_DIPY,"tractogram.tck")
 		
 		if not os.path.exists(tractogram_tck): 
 			trk = nib.streamlines.load(tractogram)
 			nib.streamlines.save(trk.tractogram, tractogram_tck)
-
 
 
         # *****************************************
@@ -2002,15 +2000,13 @@ with Tee(log_file):
 				run_command("Convert to vtk", [MRtrixPath + "/tckconvert", tractogram_tck, tractogram_vtk]) 
 		
 
-
         #*****************************************
 		# Extract the connectivity matrix
 		#*****************************************
 		matrix = os.path.join(OUT_DIPY, "fdt_network_matrix") 
 		if not os.path.exists(matrix): 
-			# Read the source file
-
 			
+			# Read the source file
 			reader = vtk.vtkPolyDataReader() 
 			reader.SetFileName(SURFACE)
 			reader.Update()  
@@ -2019,15 +2015,12 @@ with Tee(log_file):
 			#volume = vtk_to_numpy(reader.GetOutput().GetPointData())
 			#volume1 = vtk_to_numpy(reader.GetOutput().GetPoints().GetData())  # Get points 
 
-
 			'''
-			reader = vtk.vtkPolyDataReader() 
-			reader.SetFileName(SURFACE)
 			reader.ReadAllScalarsOn()
 			reader.ReadAllVectorsOn()
 			pa = v.vtkPassArrays()
 			pa.SetInputConnection(reader.GetOutputPort())
-			pa.AddArray( 0, 'label' ) [12106. 12166. 12112. ... 12181. 12181. 12181.]  --> not a 3D array ! 
+			pa.AddArray( 0, 'label' ) [12106. 12166. 12112. ... 12181. 12181. 12181.]  --> not a 3D array 
 			writer = v.vtkDataSetWriter()
 			writer.SetFileName('test.vtk')
 			writer.SetInputConnection(pa.GetOutputPort())

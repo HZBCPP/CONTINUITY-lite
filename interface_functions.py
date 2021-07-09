@@ -1583,11 +1583,8 @@ class Ui(QtWidgets.QTabWidget):
     def save_config_file_pushButton_clicked(self):
         shutil.copy(user_json_filename, json_user_object['Parameters']["json_config_file"]["value"]) 
 
-        name = os.path.split(user_json_filename)
-        print("name", name[-1] )
-
+        name = os.path.split(user_json_filename) # Split the directorie and the name of the json file
         user_filename = json_user_object['Parameters']["json_config_file"]["value"] + "/" + str(name[-1])
-        print(user_filename)
 
         # Initialization of user file with default values in json default file provide by the user 
         with open(user_filename) as user_file:
@@ -1598,9 +1595,7 @@ class Ui(QtWidgets.QTabWidget):
             for key in infos: 
                 # change 'default' by 'value'
                 d = data_user[categories][key]
-                print(" ", d)
                 d['default'] = d.pop('value')
-                print(" after", d)
 
             with open(user_filename, "w+") as user_file: 
                 user_file.write(json.dumps(data_user, indent=4)) 
