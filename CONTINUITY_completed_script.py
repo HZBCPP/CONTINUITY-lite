@@ -1298,7 +1298,7 @@ with Tee(log_file):
 		print("Normalize connectivity matrix and save plot as PDF file")
 		print("*****************************************")
 
-		if not cluster: #can't display on Longleaf
+		if not cluster: #can't display before saving on Longleaf
 			save_connectivity_matrix('no_normalization', no_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
 			save_connectivity_matrix('whole', whole_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
 			save_connectivity_matrix('row_region', row_region_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
@@ -1384,8 +1384,8 @@ with Tee(log_file):
 								   	'-mask', DiffusionBrainMask, # input
 								    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
 								    '-nthreads', str(nb_threads)]
+			command.append('-shells')
 			for element in new_bvals:  
-				command.append('-shells')
 				command.append(str(element))
 
 			run_command("FOD estimation", command)
@@ -1901,7 +1901,7 @@ with Tee(log_file):
 
 		if len(new_bvals) == 1: # single shell_DWI: 
 			# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
-			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.4)   # 0.7: adult 
+			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.2)   # 0.7: adult 
 
 			# Fit a Constrained Spherical Deconvolution (CSD) model.
 			csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
@@ -1911,7 +1911,7 @@ with Tee(log_file):
 		else: # multi shell DWI
 			# Computation of masks for multi-shell multi-tissue (msmt) response: 
 			#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
-			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.4, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
+			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.2, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
 			
 			#Computation of multi-shell multi-tissue (msmt) response  (functions from given tissues masks)
 			response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data, mask_wm, mask_gm, mask_csf)
@@ -2061,7 +2061,7 @@ with Tee(log_file):
 			    print("FSL file: Found Skipping convertion")
 			else: 
 				print("DWIConvert T1 labeled to FSL format")
-				
+
 				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", labeled_image, 
 									                                    "--conversionMode", "NrrdToFSL", 
 									                                    "--outputVolume", labeled_image_nifti, 
@@ -2072,7 +2072,8 @@ with Tee(log_file):
 
 			print("Before create connectivity matrix: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
-
+			# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#connectivity-matrix
+			# https://dipy.org/documentation/1.0.0./examples_built/streamline_tools/
 			M, grouping = utils.connectivity_matrix(streamlines, affine, T1_labeled, return_mapping=True, mapping_as_streamlines=True)
 			M[:3, :] = 0
 			M[:, :3] = 0
