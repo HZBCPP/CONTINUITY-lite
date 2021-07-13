@@ -29,7 +29,6 @@ from functools import partial
 
 sys.path.insert(1, os.path.split(os.getcwd())[0])  # if you want to open the second interface alone
 sys.path.insert(1, os.getcwd())                    # if you want to open the second interface with the first interface
-
 sys.path.insert(1, os.path.realpath(os.path.dirname(__file__)))
 
 from CONTINUITY_functions import *
@@ -246,11 +245,6 @@ class Ui_visu(QtWidgets.QTabWidget):
 
 
 
-
-
-
-
-
     # *****************************************
     # Convert name of data in comboBox (QT) to name of param in script
     # *****************************************
@@ -445,10 +439,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         if not event.inaxes:
             return
 
-        # *****************************************
-        # Left click
-        # *****************************************
-
+        # Right click
         if event.button == 1:  
             x, y = event.xdata, event.ydata
             numrows, numcols = len(a_matrix[0]), len(a_matrix[1])
@@ -469,14 +460,10 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             text = "Column " + str(col) + ": " + str(list_name_matrix[col]) + " \nRow " + str(row) + ": " + str(list_name_matrix[row]) + " \nValue: " + str(z) 
             self.label_matrix.setText(text)
-
             self.fig_normalize_matrix.canvas.draw()
 
 
-        # *****************************************
         # Left click
-        # *****************************************
-
         elif event.button == 3: 
 
             annot.set_visible(False)
@@ -904,10 +891,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         node_angles = node_angles * np.pi / 180
         node_angles_copy_event = node_angles
 
-        # *****************************************
         # Left click
-        # *****************************************
-
         if event.button == 1:  
             # Click must be near node radius
             if event.ydata != "None": 
@@ -922,10 +906,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                     fig=my_fig, axes=axes, indices=indices, n_nodes=len(label_names), node_angles=node_angles_copy)
 
 
-        # *****************************************
         # Right click
-        # *****************************************
-
         elif event.button == 3: 
             # Remove previous node label: 
             loop = len(axes.texts)
@@ -1110,7 +1091,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             x = msg.exec_()
 
        
-    
 
     # *****************************************
     # Display the brain connectome
@@ -1259,7 +1239,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                     list_z_sagittal_right.append(z)
 
 
-
             # *****************************************
             # Get the normalize connectivity matrix: 
             # *****************************************
@@ -1340,9 +1319,8 @@ class Ui_visu(QtWidgets.QTabWidget):
                             cax3 = self.ax3.plot(x_values, z_values, lw=1.5, color= plt.cm.RdBu(norm_coronal(my_norm)), 
                                                             marker = '.'  ,gid="Line between: " + name_region1 + ":" + name_region2)
 
-                        
-
-                           # Specific threshold for sagittal slice (give by the range of the colorbar):
+        
+                        # Specific threshold for sagittal slice (give by the range of the colorbar):
                         if my_norm <= vmax_sagittal and my_norm >= vmin_sagittal:
 
                             if self.sagittal_left_checkBox.isChecked():
@@ -1502,10 +1480,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         list_axes = [self.ax1, self.ax2, self.ax3]
 
-        # *****************************************
         # Right click
-        # *****************************************
-
         if event.button == 1:  
            for ax in list_axes:
                 if event.inaxes == ax:
@@ -1533,8 +1508,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                         elif list_axes.index(ax) == 1: self.text_connectome2.setText('2: ' + new_text)
                         elif list_axes.index(ax) == 2: self.text_connectome3.setText('3: ' + new_text)
 
-
-
                         annots[list_axes.index(ax)].set_text(str(list_axes.index(ax)+1))
                         annots[list_axes.index(ax)].set_visible(True)
 
@@ -1546,10 +1519,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                     self.fig_brain_connectome.canvas.draw()
 
                        
-        # *****************************************
         # Left click
-        # *****************************************
-
         elif event.button == 3: 
             for ax in list_axes:
                 if event.inaxes == ax:
@@ -1893,7 +1863,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.ren.GetActiveCamera().Zoom(1.3)
             self.iren.Initialize()
 
-
             already_build = True
             print("End display 3D brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
@@ -1904,6 +1873,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             msg.setText('Please be sure to provide a parcellation table and a connectivity matrix (tab "Setup connectivity visualization") ')
             msg.setIcon(QMessageBox.Warning)
             x = msg.exec_()
+
 
 
     # *****************************************
@@ -2011,7 +1981,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.ren.GetActiveCamera().Zoom(1.3)
             self.iren.Initialize()
 
-
         else: 
             msg = QMessageBox()
             msg.setWindowTitle("Display brain connectome in 3D")
@@ -2020,7 +1989,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             x = msg.exec_()
 
 
-    
+
     # *****************************************
     # Update points size 
     # ***************************************** 
@@ -2226,12 +2195,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.select_vtk_file_textEdit.setText(fileName) 
 
 
-
-
-
-
-
-
   
 # *****************************************
 # AddObserver for the 3D connectome
@@ -2250,21 +2213,20 @@ class MouseInteractorHighLightActor(vtk.vtkInteractorStyleTrackballCamera):
         picker = vtk.vtkPropPicker()
         picker.Pick(clickPos[0], clickPos[1], 0, self.GetDefaultRenderer())
       
-        # get the new
+        # Get the new actor: 
         self.NewPickedActor = picker.GetActor()
 
-        # If something was selected
+        # If something was selected: 
         if self.NewPickedActor:
 
-            # If we picked something before, reset its property
+            # If we picked something before, reset its property:
             if self.LastPickedActor:
                 self.LastPickedActor.GetProperty().DeepCopy(self.LastPickedProperty)
 
-            # Save the property of the picked actor so that we can
-            # restore it next time
+            # Save the property of the picked actor so that we can restore it next time:
             self.LastPickedProperty.DeepCopy(self.NewPickedActor.GetProperty())
         
-            # save the last picked actor
+            # save the last picked actor: 
             self.LastPickedActor = self.NewPickedActor
 
         self.OnLeftButtonDown()

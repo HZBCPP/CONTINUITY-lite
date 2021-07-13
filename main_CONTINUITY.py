@@ -28,33 +28,7 @@ def run_command(text_printed, command):
 
 
 
-
-if __name__ == '__main__':
-
-
-    #test = extract_bvals("/work/elodie/testing/bvals_test")
-    
-
-    '''
-    left = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_left_hires.vtk"
-    right = "/work/elodie/CONTINUITY with all data/CONTINUITY_QC/Destrieux_points/icbm_avg_mid_sym_mc_right_hires.vtk"
-    out = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.vtk"
-
-    polydatamerge_ascii(left, right, out)
-
-    out_nifti = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.nii.gz"
-
-    slicer.util.saveNode(slicer.util.loadVolume(out), out_nifti)
-
-
-
-
-    out_nrrd = "/work/elodie/CONTINUITY/CONTINUITY_QC/icbm_merge.nrrd"
-    run_command("template", ["/tools/bin_linux64/DWIConvert", "--inputVolume", out_nifti, 
-                                                                                   "--conversionMode", "FSLToNrrd", 
-                                                                                   "--outputVolume", out_nrrd] )
-    '''
-    
+if __name__ == '__main__':   
 
     dir_path = os.path.realpath(os.path.dirname(__file__))
    
@@ -125,10 +99,6 @@ if __name__ == '__main__':
         with open(user_filename, "w+") as user_file: 
             user_file.write(json.dumps(data_user, indent=4)) 
 
-    
-
-    #write_csv_file_prisma_data("/work/elodie/testing/csv_CONTINUITY.csv", default_config_filename)
-
 
 
     # *****************************************
@@ -184,7 +154,7 @@ if __name__ == '__main__':
                 if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
                     os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
 
-                OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
+                OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"])
                 if not os.path.exists( OUT_FOLDER ):
                     os.mkdir(OUT_FOLDER)
                 cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
@@ -236,7 +206,7 @@ if __name__ == '__main__':
                         if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
                             os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
 
-                        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
+                        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"])
                         if not os.path.exists( OUT_FOLDER ):
                             os.mkdir(OUT_FOLDER)
                         cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 

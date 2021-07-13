@@ -37,7 +37,7 @@ from dipy.tracking.streamline import Streamlines
 from dipy.io.stateful_tractogram import Space, StatefulTractogram
 from dipy.io.streamline import save_trk, save_vtk_streamlines
 
-#from dipy.viz import window, actor, colormap
+#from dipy.viz import window, actor, colormap  #FURY
 
 
 from CONTINUITY_functions import *
@@ -1125,7 +1125,7 @@ with Tee(log_file):
 
 	# DWIConvert BRAINMASK: NrrdToFSL: .nrrd file format to FSL format (.nii.gz)     # Err: "No gradient vectors found " --> it is normal 
 	if os.path.exists(DiffusionBrainMask):
-	    print("Brain mask FSL file: Found Skipping convertion")
+	    print("Brain mask FSL file: Found Skipping conversion")
 	else: 
 		print("DWIConvert BRAINMASK to FSL format")
 		
@@ -1137,7 +1137,7 @@ with Tee(log_file):
 
 	# DWIConvert DWI: Nrrd to FSL format
 	if os.path.exists(DiffusionData):
-	    print("DWI FSL file: Found Skipping convertion")
+	    print("DWI FSL file: Found Skipping conversion")
 	else:
 		print("DWIConvert DWI to FSL format")
 		
@@ -1157,7 +1157,7 @@ with Tee(log_file):
 				line = int(line.strip('\n') )
 				if not line in new_bvals:
 					new_bvals.append(line)
-	print("new_bvals after convertion: ", new_bvals)
+	print("new_bvals after conversion: ", new_bvals)
 
 
 
@@ -1318,7 +1318,16 @@ with Tee(log_file):
 
 
 
-
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # ****************************************  Run Mrtrix  ********************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
 
 
 
@@ -1333,7 +1342,7 @@ with Tee(log_file):
 	if tractography_model == "MRtrix (default: IFOD2) " or tractography_model == "MRtrix (Tensor-Prob)" or tractography_model == "MRtrix (iFOD1)": 
 
 		print("*****************************************")
-		print("Run tractography with " + tractography_model )
+		print("Run tractography with " + tractography_model.replace(" ", "") )
 		print("*****************************************")
 
 	 	# *****************************************
@@ -1344,7 +1353,7 @@ with Tee(log_file):
 		if filtering_with_tcksift:     add = '_tcksif'
 		if optimisation_with_tcksift2: add = '_tcksif2'
 
-		OUT_MRTRIX = os.path.join(OUT_TRACTOGRAPHY, tractography_model + add) 
+		OUT_MRTRIX = os.path.join(OUT_TRACTOGRAPHY, tractography_model.replace(" ", "") + add) 
 		if not os.path.exists(OUT_MRTRIX):
 			os.mkdir(OUT_MRTRIX)
 
@@ -1414,7 +1423,7 @@ with Tee(log_file):
 																                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
 																                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
 
-			# First choice: use T1_OUT_NRRD (after convertion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
+			# First choice: use T1_OUT_NRRD (after conversion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
 			fivett_img = os.path.join(OUT_MRTRIX,"5tt.nii.gz")
 			if os.path.exists(fivett_img):
 			    print("5tt image already compute")
@@ -1616,7 +1625,7 @@ with Tee(log_file):
 					
 				# Add common parameters: 
 				#command.append('-select')
-				#command.append(nb_fibers) #=2 !
+				#command.append(nb_fibers) # =2 !
 				
 				command.append('-fslgrad')
 				command.append(os.path.join(OUT_DIFFUSION, "bvecs"))
@@ -1639,7 +1648,7 @@ with Tee(log_file):
 				'''
 				output_track_tckgen_vtk = os.path.join(OUT_MRTRIX_vtk, "output_track_tckgen_tck_" + number_region  + ".vtk")
 				if os.path.exists(output_track_tckgen_vtk):
-				    print("Convertion to vtk already done")
+				    print("conversion to vtk already done")
 				else:
 					print("Convert tck to vtk")									
 					run_command("Convert to vtk", [MRtrixPath + "/tckconvert", output_track_tckgen_tck, output_track_tckgen_vtk])
@@ -1667,7 +1676,7 @@ with Tee(log_file):
 				'''
 				output_tcksift_vtk = os.path.join(tcksift_vtk,"output_tcksift_" + number_region  + ".vtk")
 				if os.path.exists(output_tcksift_vtk):
-				    print("Convertion to vtk already done")
+				    print("conversion to vtk already done")
 				else:
 					print("Convert tck to vtk")									
 					run_command("Convert to vtk", [MRtrixPath + "/tckconvert", output_tcksift_tck, output_tcksift_vtk]) 
@@ -1818,11 +1827,24 @@ with Tee(log_file):
 
 
 
-
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # ****************************************  Run DIPY   *********************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
+    # **************************************************************************************************************************************************
 
 
 	elif tractography_model == "DIPY":
 		# Doc: https://dipy.org/documentation/1.4.1./reference/ 
+
+		print("*****************************************")
+		print("Run tractography with DIPY")
+		print("*****************************************")
 
 		# *****************************************
 		# Output folder for MRtrix and DIPY 
@@ -1832,15 +1854,11 @@ with Tee(log_file):
 		start = time.time()
 
 
-		OUT_DIPY = os.path.join(OUT_TRACTOGRAPHY, tractography_model) 
+		OUT_DIPY = os.path.join(OUT_TRACTOGRAPHY, tractography_model.replace(" ", "")) 
 		if not os.path.exists(OUT_DIPY):
 			os.mkdir(OUT_DIPY)
 		
 		tractogram = os.path.join(OUT_DIPY,"tractogram.trk")
-		
-		print("*****************************************")
-		print("Run tractography with DIPY")
-		print("*****************************************")
 
 	
 		print("*****************************************")
@@ -1865,7 +1883,7 @@ with Tee(log_file):
 		
 		data, affine, img = load_nifti(DWI_nifti, return_img=True) 	
 
-		# Gradient_table: create diffusion MR gradients: loads scanner parameters like the b-values and b-vectors so that they can be useful during the reconstruction process.
+		# Gradient_table: create diffusion MR gradients: loads scanner parameters like the b-values and b-vectors
 		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
 
 
@@ -1876,7 +1894,7 @@ with Tee(log_file):
 
 		white_matter_nifti = os.path.join(OUT_DIPY, "white_matter.nii.gz")
 		if os.path.exists(white_matter_nifti):
-		    print("Brain mask FSL file: Found Skipping convertion")
+		    print("Brain mask FSL file: Found Skipping conversion")
 		else: 
 			print("DWIConvert BRAINMASK to FSL format")
 
@@ -1886,10 +1904,10 @@ with Tee(log_file):
 									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 									                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 
-		# Load_nifti_data: load only the data array from a nifti file.
+		# Load_nifti_data: load only the data array from a nifti file
 		data_white_matter = load_nifti_data(white_matter_nifti) 
 
-		# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67) 
+		# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
 		white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1])
 		
 
@@ -1929,7 +1947,7 @@ with Tee(log_file):
 			mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
 			#mcsd_fit = mcsd_model.fit(denoised_arr[:, :, 10:11])
 
-		print("End of fit model: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+		print("End of getting directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 
         #*****************************************
@@ -1972,7 +1990,7 @@ with Tee(log_file):
 		# from_shcoeff: Probabilistic direction getter from a distribution of directions on the sphere
 		prob_dg = ProbabilisticDirectionGetter.from_shcoeff(fod_coeff, max_angle=30., sphere=default_sphere) 
 
-		print("End of create FOD: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+		print("End of tracking directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 
 
@@ -1992,7 +2010,7 @@ with Tee(log_file):
 		save_vtk_streamlines(streamlines, streamline_vtk, to_lps=True, binary=False)
 
 
-		print("End of generate steamlines: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+		print("End of generate streamlines: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 
         #*****************************************
@@ -2025,7 +2043,7 @@ with Tee(log_file):
 
 			tractogram_vtk = os.path.join(OUT_DIPY,"tractogram.vtk")
 			if os.path.exists(tractogram_vtk):
-			    print("Convertion to vtk already done")
+			    print("conversion to vtk already done")
 			else:
 				print("Convert tck to vtk")									
 				run_command("Convert to vtk", [MRtrixPath + "/tckconvert", tractogram_tck, tractogram_vtk]) 
@@ -2068,10 +2086,9 @@ with Tee(log_file):
 			test2 = reader2.GetOutput()
 			'''
 
-
 			labeled_image_nifti = os.path.join(OUT_DIPY, "labeled_image.nii.gz")
 			if os.path.exists(labeled_image_nifti):
-			    print("FSL file: Found Skipping convertion")
+			    print("FSL file: Found Skipping conversion")
 			else: 
 				print("DWIConvert T1 labeled to FSL format")
 
@@ -2096,7 +2113,6 @@ with Tee(log_file):
 			print("Write connectivity matrix")
 			np.savetxt(matrix, M_modif.astype(float),  fmt='%f', delimiter='  ')
 			
-
 			plt.imshow(np.log1p(M), interpolation='nearest')
 			plt.savefig(os.path.join(OUT_DIPY, "connectivity.png"))
 
