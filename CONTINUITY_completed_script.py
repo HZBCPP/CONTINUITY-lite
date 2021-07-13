@@ -35,10 +35,9 @@ from dipy.tracking.local_tracking import LocalTracking
 from dipy.tracking.streamline import Streamlines
 
 from dipy.io.stateful_tractogram import Space, StatefulTractogram
-from dipy.io.streamline import save_trk
+from dipy.io.streamline import save_trk, save_vtk_streamlines
 
-from dipy.viz import window, actor, colormap
-
+#from dipy.viz import window, actor, colormap
 
 
 from CONTINUITY_functions import *
@@ -1903,9 +1902,9 @@ with Tee(log_file):
 			# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
 			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.2)   # 0.7: adult 
 
-			# Fit a Constrained Spherical Deconvolution (CSD) model.
+			# Fit a Constrained Spherical Deconvolution (CSD) model: 
 			csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
-			csd_fit = csd_model.fit(data, mask=white_matter) 
+			#csd_fit = csd_model.fit(data, mask=white_matter) 
 
 
 		else: # multi shell DWI
@@ -1913,18 +1912,20 @@ with Tee(log_file):
 			#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
 			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.2, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
 			
-			#Computation of multi-shell multi-tissue (msmt) response  (functions from given tissues masks)
+			#Computation of multi-shell multi-tissue (msmt) response  (functions from given tissues masks): the estimation of every tissue’s response function.
 			response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data, mask_wm, mask_gm, mask_csf)
 			
 			# Automatic estimation of multi-shell multi-tissue (msmt) response: (functions using FA and MD)
 			#auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10)
 
+			# Fiber response function estimation for multi-shell data: 
 			ubvals = unique_bvals_tolerance(gtab.bvals)
 			response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=response_wm, gm_rf=response_gm, csf_rf=response_csf)
 
 			#response = np.array([response_wm, response_gm, response_csf])
 			#mcsd_model_simple_response = MultiShellDeconvModel(gtab, response, sh_order=8)
 
+			# Fit a Constrained Spherical Deconvolution (CSD) model: 
 			mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
 			#mcsd_fit = mcsd_model.fit(denoised_arr[:, :, 10:11])
 
@@ -1935,12 +1936,12 @@ with Tee(log_file):
 		# Stopping criterion: a method for identifying when the tracking must stop: restricting the fiber tracking to areas with good directionality information
 		#*****************************************
 
-		# We use the GFA of the CSA model to build a stopping criterion.
+		# We use the GFA (similar to FA but ODF based models) of the CSA model to build a stopping criterion.
 		# Fit the data to a Constant Solid Angle ODF Model: estimate the Orientation Distribution Function (ODF) at each voxel
 		csa_model = CsaOdfModel(gtab, sh_order=6) 
 		gfa = csa_model.fit(data, mask=white_matter).gfa 
 
-		# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the generalized fractional anisotropy (GFA)
+		# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the Generalized Fractional Anisotropy (GFA)
 		stopping_criterion = ThresholdStoppingCriterion(gfa, .25) 
 
 		print("End of stopping criterion method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
@@ -1951,6 +1952,7 @@ with Tee(log_file):
 		#*****************************************
 
 		seed_mask = BRAINMASK #DiffusionBrainMask
+		# Create seeds for fiber tracking from a binary mask: 
 		seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
 
 		# The peaks of an ODF are good estimates for the orientation of tract segments at a point in the image
@@ -1960,11 +1962,14 @@ with Tee(log_file):
 		else: 
 			peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
 
+		# shm_coeff: the spherical harmonic coefficients of the odf: 
 		fod_coeff = peaks.shm_coeff
 
 		print("End of peaks of an ODF method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
-		# Discrete FOD used by the ProbabilisticDirectionGetter as a PMF for sampling tracking directions.
+		# Discrete Fiber Orientation Distribution (FOD) used by the ProbabilisticDirectionGetter as a PMF for sampling tracking directions.
+		# ProbabilisticDirectionGetter: Randomly samples direction of a sphere based on probability mass function (PMF) 
+		# from_shcoeff: Probabilistic direction getter from a distribution of directions on the sphere
 		prob_dg = ProbabilisticDirectionGetter.from_shcoeff(fod_coeff, max_angle=30., sphere=default_sphere) 
 
 		print("End of create FOD: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
@@ -1975,11 +1980,17 @@ with Tee(log_file):
 	    # Generate streamlines
 	    #*****************************************
 
-		# Initialization of LocalTracking: 
+		# Initialization of LocalTracking: Creates streamlines by using local fiber-tracking
 		streamlines_generator = LocalTracking(prob_dg, stopping_criterion, seeds, affine, step_size=.5)
 
-		# Generate streamlines object: 
+		# Generate streamlines object:  streamlines = ArraySequence object
+		# Streamlines: alias of nibabel.streamlines.array_sequence.ArraySequence
 		streamlines = Streamlines(streamlines_generator)
+
+		#test: 
+		streamline_vtk = os.path.join(OUT_DIPY,"streamlines.vtk")
+		save_vtk_streamlines(streamlines, streamline_vtk, to_lps=True, binary=False)
+
 
 		print("End of generate steamlines: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
@@ -1987,16 +1998,16 @@ with Tee(log_file):
         #*****************************************
 		# Save the streamlines as a Trackvis file
 		#*****************************************
-
+		'''
 		sft = StatefulTractogram(streamlines, img, Space.RASMM)
 		save_trk(sft, tractogram, streamlines)
 
-		'''
+		''
 		scene = window.Scene()
 		scene.add(actor.line(streamlines, colormap.line_colors(streamlines)))
 		window.record(scene, out_path='tractogram_deterministic_dg.png', size=(800, 800))
 		window.show(scene)
-		'''
+		''
 
 		# Conversion trk to tck 
 		tractogram_tck = os.path.join(OUT_DIPY,"tractogram.tck")
@@ -2019,13 +2030,15 @@ with Tee(log_file):
 				print("Convert tck to vtk")									
 				run_command("Convert to vtk", [MRtrixPath + "/tckconvert", tractogram_tck, tractogram_vtk]) 
 		
+		'''
+
 
         #*****************************************
 		# Extract the connectivity matrix
 		#*****************************************
 		matrix = os.path.join(OUT_DIPY, "fdt_network_matrix") 
 		if not os.path.exists(matrix): 
-			
+			'''
 			# Read the source file
 			reader = vtk.vtkPolyDataReader() 
 			reader.SetFileName(SURFACE)
@@ -2035,7 +2048,7 @@ with Tee(log_file):
 			#volume = vtk_to_numpy(reader.GetOutput().GetPointData())
 			#volume1 = vtk_to_numpy(reader.GetOutput().GetPoints().GetData())  # Get points 
 
-			'''
+			
 			reader.ReadAllScalarsOn()
 			reader.ReadAllVectorsOn()
 			pa = v.vtkPassArrays()
