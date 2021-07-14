@@ -155,6 +155,7 @@ class Ui(QtWidgets.QTabWidget):
 
         # Initialization of doubleSpinBox:
         list_param_setValue_doubleSpinBox = ["gradient_field_sigma", "deformation_field_sigma", "SyN_param", "steplength", "sampvox", "sx", "sy", "sz"]
+                                            #"wm_fa_thr", "gm_fa_thr", "csf_fa_thr", "gm_md_thr", "csf_md_thr" ]
         for item in list_param_setValue_doubleSpinBox:
             eval("self." + item + "_doubleSpinBox.setValue(float(json_setup_object['Parameters'][item]['default']))")
   
@@ -978,6 +979,12 @@ class Ui(QtWidgets.QTabWidget):
 
 
 
+
+
+
+
+
+
     # *****************************************
     # GenParaMeshCLP function: number of iteration
     # ***************************************** 
@@ -1516,18 +1523,39 @@ class Ui(QtWidgets.QTabWidget):
             Ui.update_user_json_file() 
 
 
-    def mult_shell_DWI_MRtrix_checkBox_clicked(self):
-        json_user_object['Parameters']["multi_shell_DWI"]["value"] = False
-        if self.mult_shell_DWI_MRtrix_checkBox.isChecked(): 
-            json_user_object['Parameters']["multi_shell_DWI"]["value"] = True
+    '''
+    def wm_fa_thr_valueChanged(self):
+        json_user_object['Parameters']["wm_fa_thr"]["value"] = self.wm_fa_thr_doubleSpinBox.value()
         Ui.update_user_json_file()
 
-    def mult_shell_DWI_DIPY_checkBox_clicked(self):
-        json_user_object['Parameters']["multi_shell_DWI"]["value"] = False
-        if self.mult_shell_DWI_DIPY_checkBox.isChecked(): 
-            json_user_object['Parameters']["multi_shell_DWI"]["value"] = True
+    def gm_fa_thr_valueChanged(self):
+        json_user_object['Parameters']["gm_fa_thr"]["value"] = self.gm_fa_thr_doubleSpinBox.value()
         Ui.update_user_json_file()
 
+    def csf_fa_thr_valueChanged(self):
+        json_user_object['Parameters']["csf_fa_thr"]["value"] = self.csf_fa_thr_doubleSpinBox.value()
+        Ui.update_user_json_file()
+
+    def gm_md_thr_valueChanged(self):
+        json_user_object['Parameters']["gm_md_thr"]["value"] = self.gm_md_thr_doubleSpinBox.value()
+        Ui.update_user_json_file()
+
+    def csf_md_thr_valueChanged(self):
+        json_user_object['Parameters']["csf_md_thr"]["value"] = self.csf_md_thr_doubleSpinBox.value()
+        Ui.update_user_json_file()
+
+
+    # *****************************************
+    # DIPY: Select the labeled image
+    # *****************************************
+
+    def select_labeled_image_DIPY(self): 
+        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
+        if fileName:
+            self.labeled_image_DIPY_textEdit.setText(fileName)
+            json_user_object['Arguments']["labeled_image"]["value"] = fileName
+            Ui.update_user_json_file()
+    '''
 
 
     # **************************************************************************************************************************************************

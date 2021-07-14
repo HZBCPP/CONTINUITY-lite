@@ -139,6 +139,15 @@ nb_iteration_GenParaMeshCLP  			= json_user_object["Parameters"]["nb_iteration_G
 spharmDegree  			                = json_user_object["Parameters"]["spharmDegree"]['value']
 subdivLevel  			                = json_user_object["Parameters"]["subdivLevel"]['value']
 list_bval_that_will_be_deleted          = json_user_object["Parameters"]["list_bval_that_will_be_deleted"]['value']
+
+list_bval_that_will_be_used_for_the_tractography = json_user_object["Parameters"]["list_bval_that_will_be_used_for_the_tractography"]['value']
+wm_fa_thr                               = json_user_object["Parameters"]["wm_fa_thr"]['value']
+gm_fa_thr                               = json_user_object["Parameters"]["gm_fa_thr"]['value']
+csf_fa_thr                              = json_user_object["Parameters"]["csf_fa_thr"]['value']
+gm_md_thr                               = json_user_object["Parameters"]["gm_md_thr"]['value']
+csf_md_thr                              = json_user_object["Parameters"]["csf_md_thr"]['value']
+
+
 OUT_PATH                                = json_user_object["Parameters"]["OUT_PATH"]['value']
 
 # Executables
@@ -1918,7 +1927,7 @@ with Tee(log_file):
 
 		if len(new_bvals) == 1: # single shell_DWI: 
 			# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
-			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.2)   # 0.7: adult 
+			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.4)   # 0.7: adult 
 
 			# Fit a Constrained Spherical Deconvolution (CSD) model: 
 			csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
@@ -1928,7 +1937,7 @@ with Tee(log_file):
 		else: # multi shell DWI
 			# Computation of masks for multi-shell multi-tissue (msmt) response: 
 			#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
-			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.2, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
+			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.4, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
 			
 			#Computation of multi-shell multi-tissue (msmt) response  (functions from given tissues masks): the estimation of every tissue’s response function.
 			response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data, mask_wm, mask_gm, mask_csf)
