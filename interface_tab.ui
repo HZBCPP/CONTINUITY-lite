@@ -3986,7 +3986,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -4380,19 +4380,6 @@ p, li { white-space: pre-wrap; }
       <property name="title">
        <string>Single or multi shell</string>
       </property>
-      <widget class="QCheckBox" name="mult_shell_DWI_MRtrix_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>161</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>multi-shell DWI</string>
-       </property>
-      </widget>
      </widget>
      <widget class="QGroupBox" name="groupBox_5">
       <property name="geometry">
@@ -4566,19 +4553,6 @@ p, li { white-space: pre-wrap; }
       <property name="title">
        <string>Single or multi shell</string>
       </property>
-      <widget class="QCheckBox" name="mult_shell_DWI_DIPY_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>161</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>multi-shell DWI</string>
-       </property>
-      </widget>
      </widget>
     </widget>
    </widget>
@@ -8248,38 +8222,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>mult_shell_DWI_MRtrix_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>mult_shell_DWI_MRtrix_checkBox_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>114</x>
-     <y>409</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>568</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>mult_shell_DWI_DIPY_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>mult_shell_DWI_DIPY_checkBox_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>114</x>
-     <y>119</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>568</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>act_option_T1_DATA_pushButton</sender>
    <signal>clicked()</signal>
    <receiver>TabWidget</receiver>
@@ -8655,8 +8597,6 @@ p, li { white-space: pre-wrap; }
   <slot>question_job_name_no_registration_pushButton_clicked()</slot>
   <slot>no_registration_Brainmask_button_clicked()</slot>
   <slot>remove_bval_groupBox_clicked()</slot>
-  <slot>mult_shell_DWI_MRtrix_checkBox_clicked()</slot>
-  <slot>mult_shell_DWI_DIPY_checkBox_clicked()</slot>
   <slot>act_option_T1_clicked()</slot>
   <slot>no_registration_remove_bval_groupBox_clicked()</slot>
   <slot>bedpostx_gpu_checkbox_clicked()</slot>

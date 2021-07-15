@@ -142,11 +142,6 @@
             "help": "Optimisation_with_tcksift2 if Tractography model == MRtrix",
             "default": true
         },
-        "multi_shell_DWI": {
-            "type": "bool",
-            "help": "multi shell DWI data",
-            "default": false
-        },
         "act_option": {
             "type": "bool",
             "help": "Use the Anatomically-Constrained Tractography framework during tracking",
