@@ -1927,7 +1927,7 @@ with Tee(log_file):
 
 		if len(new_bvals) == 1: # single shell_DWI: 
 			# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
-			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.4)   # 0.7: adult 
+			response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.9)   # 0.7: adult 
 
 			# Fit a Constrained Spherical Deconvolution (CSD) model: 
 			csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
@@ -1937,7 +1937,7 @@ with Tee(log_file):
 		else: # multi shell DWI
 			# Computation of masks for multi-shell multi-tissue (msmt) response: 
 			#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
-			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.4, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
+			mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.9, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
 			
 			#Computation of multi-shell multi-tissue (msmt) response  (functions from given tissues masks): the estimation of every tissue’s response function.
 			response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data, mask_wm, mask_gm, mask_csf)
