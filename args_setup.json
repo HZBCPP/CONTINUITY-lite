@@ -360,7 +360,7 @@
 
 
         
-        "list_bval_that_will_be_used_for_the_tractography": {
+        "list_bval_for_the_tractography": {
             "type": "list",
             "help": "List of bval that will be used for the tractography",
             "default": []

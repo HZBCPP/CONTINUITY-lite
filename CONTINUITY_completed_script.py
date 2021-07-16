@@ -140,7 +140,7 @@ spharmDegree  			                = json_user_object["Parameters"]["spharmDegree"
 subdivLevel  			                = json_user_object["Parameters"]["subdivLevel"]['value']
 list_bval_that_will_be_deleted          = json_user_object["Parameters"]["list_bval_that_will_be_deleted"]['value']
 
-list_bval_that_will_be_used_for_the_tractography = json_user_object["Parameters"]["list_bval_that_will_be_used_for_the_tractography"]['value']
+list_bval_for_the_tractography          = json_user_object["Parameters"]["list_bval_for_the_tractography"]['value']
 wm_fa_thr                               = json_user_object["Parameters"]["wm_fa_thr"]['value']
 gm_fa_thr                               = json_user_object["Parameters"]["gm_fa_thr"]['value']
 csf_fa_thr                              = json_user_object["Parameters"]["csf_fa_thr"]['value']
@@ -1160,12 +1160,15 @@ with Tee(log_file):
 	try: 
 		test = len(new_bvals)
 	except: 
-		new_bvals = []
-		bval_file = open(os.path.join(OUT_DIFFUSION, "bvals"), 'r')     
-		for line in bval_file:
-				line = int(line.strip('\n') )
-				if not line in new_bvals:
-					new_bvals.append(line)
+		if len(list_bval_for_the_tractography) == 0: #bval not specify by the user 
+			new_bvals = []
+			bval_file = open(os.path.join(OUT_DIFFUSION, "bvals"), 'r')     
+			for line in bval_file:
+					line = int(line.strip('\n') )
+					if not line in new_bvals:
+						new_bvals.append(line)
+		else: 
+			new_bvals = list_bval_for_the_tractography
 	print("new_bvals after conversion: ", new_bvals)
 
 
@@ -1367,6 +1370,47 @@ with Tee(log_file):
 			os.mkdir(OUT_MRTRIX)
 
 		
+
+
+		# *****************************************
+		# Create 5tt   
+		# *****************************************	    
+		#if act_option: 
+		print("*****************************************")
+		print("Convert T1 image to nifti format")
+		print("*****************************************")
+
+		if not DO_REGISTRATION: 
+			T1_OUT_NRRD = T1_DATA
+
+		T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
+		if os.path.exists(T1_nifti):
+		    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
+		else:
+			print("Convert T1 image to nifti format ")
+			
+			run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
+															                             "--conversionMode", "NrrdToFSL", 
+															                             "--outputVolume", T1_nifti, 
+															                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
+															                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
+
+		# First choice: use T1_OUT_NRRD (after conversion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
+		fivett_img = os.path.join(OUT_MRTRIX,"5tt.nii.gz")
+		if os.path.exists(fivett_img):
+		    print("5tt image already compute")
+		else: 
+			print("Create 5tt image (~20min )")      
+			now = datetime.datetime.now()
+			print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
+			start = time.time()
+			run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_nifti, fivett_img, '-scratch', os.path.join(OUT_MRTRIX), '-nthreads', str(nb_threads) ])
+			print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
+			
+
+
+
+
 		# *****************************************
 		# Response function estimation: Estimate response function(s) for spherical deconvolution
 		# *****************************************
@@ -1383,19 +1427,43 @@ with Tee(log_file):
 			for element in new_bvals:  
 				command.append('-shells')
 				command.append(str(element))
-
+			
 			run_command("Response function estimation (err ok)", command)
+
+
+
+			if len(new_bvals) != 1: # multi shell_DWI: need other file for the next step  
+
+				response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
+				response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
+				response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
+
+				command = [MRtrixPath + "/dwi2response",'msmt_5tt', DiffusionData, # input
+																	fivett_img, 
+																	response_wm_txt, 
+																	response_gm_txt, 
+																	response_csf_txt,
+												                	'-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
+												                	'-scratch', os.path.join(OUT_MRTRIX),
+												                	'-nthreads', str(nb_threads) ]
+				for element in new_bvals:  
+					command.append('-shells')
+					command.append(str(element))
+
+				run_command("msmt_5tt", command)
+
+
 
 		# *****************************************
 		# Fibre Orientation Distribution estimation: Estimate fibre orientation distributions from diffusion data using spherical deconvolution
 		# *****************************************
 
 		FOD_nii = os.path.join(OUT_MRTRIX, "FOD.nii.gz")
-		response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
+		
 		wmfod_mif = os.path.join(OUT_MRTRIX, "wmfod.mif")
-		response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
+		
 		gm_mif = os.path.join(OUT_MRTRIX, "gm.mif")
-		response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
+		
 		csf_mif = os.path.join(OUT_MRTRIX, "csf.mif")
 
 
@@ -1421,12 +1489,13 @@ with Tee(log_file):
 									    DiffusionData, # input
 									    Response_function_estimation_txt, # input
 									    FOD_nii, # ouput
-										response_wm_txt,# ouput
-										wmfod_mif,# ouput
-										response_gm_txt,# ouput
-										gm_mif,# ouput
-										response_csf_txt,# ouput
-										csf_mif,# ouput
+										response_wm_txt,  # input
+										wmfod_mif, # ouput
+										response_gm_txt,  # input
+										gm_mif, # ouput
+										response_csf_txt,  # input
+										csf_mif, # ouput
+
 									   	'-mask', DiffusionBrainMask, # input
 									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
 									    '-nthreads', str(nb_threads)]
@@ -1439,41 +1508,6 @@ with Tee(log_file):
 
 
 
-		# *****************************************
-		# Create 5tt   
-		# *****************************************	    
-		if act_option: 
-			print("*****************************************")
-			print("Convert T1 image to nifti format")
-			print("*****************************************")
-
-			if not DO_REGISTRATION: 
-				T1_OUT_NRRD = T1_DATA
-
-			T1_nifti = os.path.join(NETWORK_DIR, ID + "-T1_SkullStripped_scaled.nii.gz")
-			if os.path.exists(T1_nifti):
-			    print("T1_nifti file: Found Skipping Convert T1 image to nifti format ")
-			else:
-				print("Convert T1 image to nifti format ")
-				
-				run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
-																                             "--conversionMode", "NrrdToFSL", 
-																                             "--outputVolume", T1_nifti, 
-																                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
-																                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
-
-			# First choice: use T1_OUT_NRRD (after conversion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
-			fivett_img = os.path.join(OUT_MRTRIX,"5tt.nii.gz")
-			if os.path.exists(fivett_img):
-			    print("5tt image already compute")
-			else: 
-				print("Create 5tt image (~20min )")      
-				now = datetime.datetime.now()
-				print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
-				start = time.time()
-				run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_nifti, fivett_img, '-scratch', os.path.join(OUT_MRTRIX), '-nthreads', str(nb_threads) ])
-				print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
-			
 
 		# *****************************************
 		# Output folder

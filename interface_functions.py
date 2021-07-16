@@ -380,15 +380,126 @@ class Ui(QtWidgets.QTabWidget):
                 self.bval_in_bvalfile_listWidget.itemClicked.connect(self.change_bval)
 
             else: 
-                msg = QMessageBox()
-                msg.setWindowTitle("DWI bvals file")
-                msg.setText('Please provide a DWI bvals file (tab "Path to your data")')
-                msg.setIcon(QMessageBox.Information)
-                x = msg.exec_()
+                if not json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                                        
+                    print("*****************************************")
+                    print("Convert DWI image to nifti format")
+                    print("*****************************************")
 
-                self.remove_bval_groupBox.setChecked(False)
+                    OUT_FOLDER = os.path.join(OUT_PATH,ID) #ID
+                    if not os.path.exists( OUT_FOLDER ):
+                        os.mkdir(OUT_FOLDER)
+
+                    DWI_nifti = os.path.join(OUT_FOLDER, ID + "_DWI.nii.gz")
+                    if os.path.exists(DWI_nifti):
+                        print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
+                    else:
+                        print("Convert DWI image to nifti format ")
+                        
+                        run_command("DWIConvert: convert DWI to nifti format", [json_user_object["Executables"]["DWIConvert"]['value'], 
+                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], #input data 
+                                                                                "--conversionMode", "NrrdToFSL", 
+                                                                                "--outputVolume", DWI_nifti, 
+                                                                                "--outputBValues", os.path.join(OUT_FOLDER, "bvals"), 
+                                                                                "--outputBVectors", os.path.join(OUT_FOLDER, "bvecs")])
+                        # Update path
+                        json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
+                        json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
+
+                        # update interface 
+                        self.no_registration_DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
+                        self.no_registration_DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
+
+                        Ui.update_user_json_file()
+
+                        # call function again 
+                        Ui.remove_bval_groupBox_clicked()
 
 
+                else: 
+
+                    msg = QMessageBox()
+                    msg.setWindowTitle("DWI bvals file missing")
+                    msg.setText('Please provide a DWI bvals file (with a nifti file) or a DWI file (nrrd) (tab "Path to your data")')
+                    msg.setIcon(QMessageBox.Information)
+                    x = msg.exec_()
+
+                    self.remove_bval_groupBox.setChecked(False)
+
+
+
+
+    # *****************************************
+    # ADD bval for the tractography
+    # *****************************************  
+
+    def add_bval_for_tractography_groupBox_clicked(self):
+
+        if self.add_bval_groupBox.isChecked: 
+            if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
+                list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"])
+
+                # int to str: 
+                for i in range(len(list_bval)): 
+                    list_bval[i] = str(list_bval[i])
+
+                # Clear the list and add all names:
+                self.add_bval_in_bvalfile_listWidget.clear()
+                self.add_bval_in_bvalfile_listWidget.addItems(list_bval)
+
+                # Set parameters: 
+                for i in range(self.add_bval_in_bvalfile_listWidget.count()):
+                    item = self.add_bval_in_bvalfile_listWidget.item(i) 
+                    item.setCheckState(not Qt.Checked)
+
+
+                # Set a signal to do something if the user click on a region: 
+                self.add_bval_in_bvalfile_listWidget.itemClicked.connect(self.add_change_bval)
+
+            else: 
+                if not json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                    print("*****************************************")
+                    print("Convert DWI image to nifti format")
+                    print("*****************************************")
+
+                    OUT_FOLDER = os.path.join(OUT_PATH,ID) #ID
+                    if not os.path.exists( OUT_FOLDER ):
+                        os.mkdir(OUT_FOLDER)
+
+                    DWI_nifti = os.path.join(OUT_FOLDER, ID + "_DWI.nii.gz")
+                    if os.path.exists(DWI_nifti):
+                        print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
+                    else:
+                        print("Convert DWI image to nifti format ")
+                        
+                        run_command("DWIConvert: convert DWI to nifti format", [json_user_object["Executables"]["DWIConvert"]['value'], 
+                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], #input data 
+                                                                                "--conversionMode", "NrrdToFSL", 
+                                                                                "--outputVolume", DWI_nifti, 
+                                                                                "--outputBValues", os.path.join(OUT_FOLDER, "bvals"), 
+                                                                                "--outputBVectors", os.path.join(OUT_FOLDER, "bvecs")])
+                        # Update path
+                        json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
+                        json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
+
+                        # update interface 
+                        self.no_registration_DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
+                        self.no_registration_DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
+
+                        Ui.update_user_json_file()
+
+                        #call function again 
+                        Ui.add_bval_for_tractography_groupBox_clicked()
+
+                else: 
+
+                    msg = QMessageBox()
+                    msg.setWindowTitle("DWI bvals file missing")
+                    msg.setText('Please provide a DWI bvals file (with a nifti file) or a DWI file (nrrd) (tab "Path to your data")')
+                    msg.setIcon(QMessageBox.Information)
+                    x = msg.exec_()
+
+                    self.remove_bval_groupBox.setChecked(False)
             
 
     # *****************************************
@@ -417,6 +528,35 @@ class Ui(QtWidgets.QTabWidget):
         self.bval_removing_textEdit.setText(text)
 
         self.bval_in_bvalfile_listWidget.blockSignals(False) 
+
+
+
+    # *****************************************
+    # Update bval that will be used for the tractography 
+    # *****************************************  
+
+    def add_change_bval(self, item):
+        self.add_bval_in_bvalfile_listWidget.blockSignals(True)
+        list_bval_for_the_tractography = json_user_object['Parameters']["list_bval_for_the_tractography"]["value"]
+       
+        if item.checkState() == Qt.Unchecked: 
+            if int(item.text()) in list_bval_for_the_tractography: 
+                del list_bval_for_the_tractography[list_bval_for_the_tractography.index(int(item.text()))]
+
+        if item.checkState() == Qt.Checked:             
+            if int(item.text()) not in list_bval_for_the_tractography:
+                list_bval_for_the_tractography.append(int(item.text()))
+
+        json_user_object['Parameters']["list_bval_for_the_tractography"]["value"] = list_bval_for_the_tractography
+        Ui.update_user_json_file() 
+
+        text = 'bval that will be deleted:  \n'
+        for i in range(len(list_bval_for_the_tractography)): 
+            text+= str(list_bval_for_the_tractography[i]) + '\n'
+
+        self.add_bval_removing_textEdit.setText(text)
+
+        self.add_bval_in_bvalfile_listWidget.blockSignals(False) 
 
 
 
@@ -450,13 +590,48 @@ class Ui(QtWidgets.QTabWidget):
                 self.no_registration_bval_in_bvalfile_listWidget.itemClicked.connect(self.no_registration_change_bval)
 
             else: 
-                msg = QMessageBox()
-                msg.setWindowTitle("DWI bvals file")
-                msg.setText('Please provide a DWI bvals file (tab "Path to your data")')
-                msg.setIcon(QMessageBox.Information)
-                x = msg.exec_()
+                if not json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                    print("*****************************************")
+                    print("Convert DWI image to nifti format")
+                    print("*****************************************")
 
-                self.no_registration_remove_bval_groupBox.setChecked(False)
+                    OUT_FOLDER = os.path.join(OUT_PATH,ID) #ID
+                    if not os.path.exists( OUT_FOLDER ):
+                        os.mkdir(OUT_FOLDER)
+
+                    DWI_nifti = os.path.join(OUT_FOLDER, ID + "_DWI.nii.gz")
+                    if os.path.exists(DWI_nifti):
+                        print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
+                    else:
+                        print("Convert DWI image to nifti format ")
+                        
+                        run_command("DWIConvert: convert DWI to nifti format", [json_user_object["Executables"]["DWIConvert"]['value'], 
+                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], #input data 
+                                                                                "--conversionMode", "NrrdToFSL", 
+                                                                                "--outputVolume", DWI_nifti, 
+                                                                                "--outputBValues", os.path.join(OUT_FOLDER, "bvals"), 
+                                                                                "--outputBVectors", os.path.join(OUT_FOLDER, "bvecs")])
+                        # Update path
+                        json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
+                        json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
+
+                        # update interface 
+                        self.no_registration_DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
+                        self.no_registration_DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
+
+                        Ui.update_user_json_file()
+
+                        # call function again 
+                        Ui.no_registration_remove_bval_groupBox_clicked()
+                else: 
+
+                    msg = QMessageBox()
+                    msg.setWindowTitle("DWI bvals file missing")
+                    msg.setText('Please provide a DWI bvals file (with a nifti file) or a DWI file (nrrd) (tab "Path to your data")')
+                    msg.setIcon(QMessageBox.Information)
+                    x = msg.exec_()
+
+                    self.no_registration_remove_bval_groupBox.setChecked(False)
 
 
             
