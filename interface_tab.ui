@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1129</width>
+    <width>1127</width>
     <height>631</height>
    </rect>
   </property>
@@ -132,7 +132,7 @@
              </rect>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="tab_28">
              <attribute name="title">
@@ -3986,7 +3986,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -4366,193 +4366,286 @@ p, li { white-space: pre-wrap; }
     </widget>
     <widget class="QWidget" name="tab_6">
      <attribute name="title">
-      <string>MRtrix</string>
+      <string>MRtrix and DIPY</string>
      </attribute>
-     <widget class="QGroupBox" name="groupBox_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>360</y>
-        <width>1091</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Single or multi shell</string>
-      </property>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_5">
+     <widget class="QTabWidget" name="tabWidget_12">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
         <width>1091</width>
-        <height>61</height>
+        <height>531</height>
        </rect>
       </property>
-      <property name="title">
-       <string>SIFT or SIFT2 </string>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <widget class="QCheckBox" name="optimisation_with_tcksift2_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>230</x>
-         <y>30</y>
-         <width>291</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Use the optimation algorithm SIFT2</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="filtering_with_tcksift_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>211</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Filtering with SIFT         OR </string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_12">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>1091</width>
-        <height>251</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>ACT</string>
-      </property>
-      <widget class="QCheckBox" name="act_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>711</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>'-act option': use the Anatomically-Constrained Tractography framework during tracking</string>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_23">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>1071</width>
-         <height>171</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>In case of no registration with this tool, CONTINUITY need a T1 image to use -act option</string>
-       </property>
-       <widget class="QTextEdit" name="act_option_T1_DATA_textEdit">
+      <widget class="QWidget" name="tab_33">
+       <attribute name="title">
+        <string>DWI bvals</string>
+       </attribute>
+       <widget class="QGroupBox" name="add_bval_groupBox">
         <property name="geometry">
          <rect>
-          <x>11</x>
-          <y>64</y>
-          <width>1051</width>
-          <height>101</height>
+          <x>10</x>
+          <y>10</y>
+          <width>1071</width>
+          <height>361</height>
          </rect>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
+        <property name="title">
+         <string>specify bvals that will be used for the tractography ( all values will be used by default) </string>
         </property>
-        <property name="readOnly">
+        <property name="checkable">
          <bool>true</bool>
         </property>
-        <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <widget class="QListWidget" name="add_bval_in_bvalfile_listWidget">
+         <property name="geometry">
+          <rect>
+           <x>240</x>
+           <y>30</y>
+           <width>361</width>
+           <height>291</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="add_bval_removing_textEdit">
+         <property name="geometry">
+          <rect>
+           <x>610</x>
+           <y>30</y>
+           <width>371</width>
+           <height>321</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bval that will be used for the tractography: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="color_sc_textEdit_7">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>211</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : rgb(243, 243, 243)
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check a b-value to add it to the list of bvals that will be used for the tractography &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;(b-value +- 10)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_85">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>241</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>b-values in your b-values file: </string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_24">
+       <attribute name="title">
+        <string>MRtrix</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox_12">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>1071</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>ACT</string>
+        </property>
+        <widget class="QCheckBox" name="act_checkBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>711</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>'-act option': use the Anatomically-Constrained Tractography framework during tracking</string>
+         </property>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_23">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>70</y>
+           <width>1051</width>
+           <height>151</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>In case of no registration with this tool, CONTINUITY need a T1 image to use -act option</string>
+         </property>
+         <widget class="QTextEdit" name="act_option_T1_DATA_textEdit">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>64</y>
+            <width>1031</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
+          </property>
+         </widget>
+         <widget class="QWidget" name="layoutWidget_5">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>315</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_45">
+           <item>
+            <widget class="QLabel" name="label_78">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>T1 / first modality (.nrrd):</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="act_option_T1_DATA_pushButton">
+             <property name="text">
+              <string>Browser...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_47">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </widget>
-       <widget class="QWidget" name="layoutWidget_5">
+       <widget class="QGroupBox" name="groupBox_5">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>30</y>
-          <width>315</width>
-          <height>27</height>
+          <y>10</y>
+          <width>1071</width>
+          <height>61</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_45">
-         <item>
-          <widget class="QLabel" name="label_78">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-             <underline>true</underline>
-            </font>
-           </property>
-           <property name="text">
-            <string>T1 / first modality (.nrrd):</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="act_option_T1_DATA_pushButton">
-           <property name="text">
-            <string>Browser...</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_47">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+        <property name="title">
+         <string>SIFT or SIFT2 </string>
+        </property>
+        <widget class="QCheckBox" name="optimisation_with_tcksift2_checkBox">
+         <property name="geometry">
+          <rect>
+           <x>230</x>
+           <y>30</y>
+           <width>291</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Use the optimation algorithm SIFT2</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="filtering_with_tcksift_checkBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>211</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Filtering with SIFT         OR </string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
        </widget>
       </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_7">
-     <attribute name="title">
-      <string>DIPY</string>
-     </attribute>
-     <widget class="QGroupBox" name="groupBox_22">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>1091</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Single or multi shell</string>
-      </property>
+      <widget class="QWidget" name="tab_32">
+       <attribute name="title">
+        <string>DIPY</string>
+       </attribute>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -7454,102 +7547,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>nb_fiber_per_seed_spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>nb_fibers_per_seed_spinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>287</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>steplength_doubleSpinBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>step_length_doubleSpinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>597</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sampvox_doubleSpinBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>sample_doubleSpinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1058</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ignore_label_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>ignore_label_checkBox_checked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>288</x>
-     <y>545</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ignore_label_lineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>ignore_label_lineEdit_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>852</x>
-     <y>545</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>overlapping_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>overlapping_checkBox_checked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>569</x>
-     <y>578</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>tractography_model_comboBox</sender>
    <signal>currentTextChanged(QString)</signal>
    <receiver>TabWidget</receiver>
@@ -7934,22 +7931,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>act_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>act_checkBox_checked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>409</x>
-     <y>179</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>565</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>ExtractLabelSurfaces_pushButton</sender>
    <signal>clicked()</signal>
    <receiver>TabWidget</receiver>
@@ -8222,22 +8203,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>act_option_T1_DATA_pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>act_option_T1_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>271</x>
-     <y>271</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>568</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>no_registration_remove_bval_groupBox</sender>
    <signal>clicked()</signal>
    <receiver>TabWidget</receiver>
@@ -8302,70 +8267,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>nb_fibers_spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>nb_fibers_spinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>623</x>
-     <y>159</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>only_bedpostx_checkBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>only_bedpostx_checkBox_stateChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>204</x>
-     <y>219</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>564</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>bedpostx_gpu_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>bedpostx_gpu_checkbox_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>564</x>
-     <y>219</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>568</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>nb_jobs_bedpostx_gpu_spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>nb_jobs_bedpostx_gpu_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>880</x>
-     <y>190</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>568</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>bedpostx_gpu_pushButton</sender>
    <signal>clicked()</signal>
    <receiver>TabWidget</receiver>
@@ -8374,22 +8275,6 @@ p, li { white-space: pre-wrap; }
     <hint type="sourcelabel">
      <x>187</x>
      <y>268</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>568</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>probtrackx2_gpu_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>probtrackx2_gpu_checkbox_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>799</x>
-     <y>463</y>
     </hint>
     <hint type="destinationlabel">
      <x>568</x>
@@ -8446,6 +8331,86 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
+   <sender>nb_fibers_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>nb_fibers_spinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>623</x>
+     <y>159</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>act_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>act_checkBox_checked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>179</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>overlapping_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>overlapping_checkBox_checked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>569</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sampvox_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>sample_doubleSpinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1058</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ignore_label_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>ignore_label_checkBox_checked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>288</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>filtering_with_tcksift_checkBox</sender>
    <signal>clicked()</signal>
    <receiver>TabWidget</receiver>
@@ -8462,6 +8427,86 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
+   <sender>act_option_T1_DATA_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>act_option_T1_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>271</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>only_bedpostx_checkBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>only_bedpostx_checkBox_stateChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ignore_label_lineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>ignore_label_lineEdit_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>852</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nb_fiber_per_seed_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>nb_fibers_per_seed_spinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>steplength_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>step_length_doubleSpinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>597</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>optimisation_with_tcksift2_checkBox</sender>
    <signal>clicked()</signal>
    <receiver>TabWidget</receiver>
@@ -8473,6 +8518,70 @@ p, li { white-space: pre-wrap; }
     </hint>
     <hint type="destinationlabel">
      <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nb_jobs_bedpostx_gpu_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>nb_jobs_bedpostx_gpu_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>880</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bedpostx_gpu_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>bedpostx_gpu_checkbox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>564</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>probtrackx2_gpu_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>probtrackx2_gpu_checkbox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>799</x>
+     <y>463</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>add_bval_groupBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>add_bval_for_tractography_groupBox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>571</x>
+     <y>297</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
      <y>315</y>
     </hint>
    </hints>
@@ -8602,5 +8711,6 @@ p, li { white-space: pre-wrap; }
   <slot>bedpostx_gpu_checkbox_clicked()</slot>
   <slot>nb_jobs_bedpostx_gpu_valueChanged()</slot>
   <slot>probtrackx2_gpu_checkbox_clicked()</slot>
+  <slot>add_bval_for_tractography_groupBox_clicked()</slot>
  </slots>
 </ui>

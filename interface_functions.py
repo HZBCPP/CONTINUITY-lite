@@ -380,7 +380,7 @@ class Ui(QtWidgets.QTabWidget):
                 self.bval_in_bvalfile_listWidget.itemClicked.connect(self.change_bval)
 
             else: 
-                if not json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                if json_user_object['Arguments']["DWI_DATA"]["value"] != "":
                                         
                     print("*****************************************")
                     print("Convert DWI image to nifti format")
@@ -420,7 +420,8 @@ class Ui(QtWidgets.QTabWidget):
 
                     msg = QMessageBox()
                     msg.setWindowTitle("DWI bvals file missing")
-                    msg.setText('Please provide a DWI bvals file (with a nifti file) or a DWI file (nrrd) (tab "Path to your data")')
+                    msg.setText('Please provide a DWI bvals file (with a nifti file) (tab "Path to your data") ' + 
+                                '\n or a DWI file (nrrd) (tab "Path to your data") and an output path folder (tab "Submit job and results")')                    
                     msg.setIcon(QMessageBox.Information)
                     x = msg.exec_()
 
@@ -444,20 +445,36 @@ class Ui(QtWidgets.QTabWidget):
                     list_bval[i] = str(list_bval[i])
 
                 # Clear the list and add all names:
+                list_bval_for_the_tractography = []
                 self.add_bval_in_bvalfile_listWidget.clear()
                 self.add_bval_in_bvalfile_listWidget.addItems(list_bval)
+
 
                 # Set parameters: 
                 for i in range(self.add_bval_in_bvalfile_listWidget.count()):
                     item = self.add_bval_in_bvalfile_listWidget.item(i) 
-                    item.setCheckState(not Qt.Checked)
+                    item.setCheckState(Qt.Checked)
+
 
 
                 # Set a signal to do something if the user click on a region: 
                 self.add_bval_in_bvalfile_listWidget.itemClicked.connect(self.add_change_bval)
 
+                list_bval_int = []
+                text = 'bval that will be add for the tractography :  \n'
+                for i in range(len(list_bval)): 
+                    text+= str(list_bval[i]) + '\n'
+                    list_bval_int.append(int(list_bval[i]))
+
+
+                self.add_bval_removing_textEdit.setText(text)
+
+                json_user_object['Parameters']["list_bval_for_the_tractography"]["value"] = list_bval_int
+                Ui.update_user_json_file() 
+
+
             else: 
-                if not json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                if json_user_object['Arguments']["DWI_DATA"]["value"] != "":
                     print("*****************************************")
                     print("Convert DWI image to nifti format")
                     print("*****************************************")
@@ -495,11 +512,12 @@ class Ui(QtWidgets.QTabWidget):
 
                     msg = QMessageBox()
                     msg.setWindowTitle("DWI bvals file missing")
-                    msg.setText('Please provide a DWI bvals file (with a nifti file) or a DWI file (nrrd) (tab "Path to your data")')
+                    msg.setText('Please provide a DWI bvals file (with a nifti file) (tab "Path to your data") ' + 
+                                '\n or a DWI file (nrrd) (tab "Path to your data") and an output path folder (tab "Submit job and results")')                    
                     msg.setIcon(QMessageBox.Information)
                     x = msg.exec_()
 
-                    self.remove_bval_groupBox.setChecked(False)
+                    self.add_bval_groupBox.setChecked(False)
             
 
     # *****************************************
@@ -540,8 +558,14 @@ class Ui(QtWidgets.QTabWidget):
         list_bval_for_the_tractography = json_user_object['Parameters']["list_bval_for_the_tractography"]["value"]
        
         if item.checkState() == Qt.Unchecked: 
+            print("unchecked")
+            print("before",list_bval_for_the_tractography )
             if int(item.text()) in list_bval_for_the_tractography: 
+                
                 del list_bval_for_the_tractography[list_bval_for_the_tractography.index(int(item.text()))]
+
+                print("after",list_bval_for_the_tractography )
+
 
         if item.checkState() == Qt.Checked:             
             if int(item.text()) not in list_bval_for_the_tractography:
@@ -549,8 +573,13 @@ class Ui(QtWidgets.QTabWidget):
 
         json_user_object['Parameters']["list_bval_for_the_tractography"]["value"] = list_bval_for_the_tractography
         Ui.update_user_json_file() 
+                
+        self.add_bval_removing_textEdit.setText("")
 
-        text = 'bval that will be deleted:  \n'
+        print("after 2",list_bval_for_the_tractography )
+
+
+        text = 'bval that will be add for the tractography :  \n'
         for i in range(len(list_bval_for_the_tractography)): 
             text+= str(list_bval_for_the_tractography[i]) + '\n'
 
@@ -590,7 +619,7 @@ class Ui(QtWidgets.QTabWidget):
                 self.no_registration_bval_in_bvalfile_listWidget.itemClicked.connect(self.no_registration_change_bval)
 
             else: 
-                if not json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                if json_user_object['Arguments']["DWI_DATA"]["value"] != "":
                     print("*****************************************")
                     print("Convert DWI image to nifti format")
                     print("*****************************************")
@@ -627,7 +656,8 @@ class Ui(QtWidgets.QTabWidget):
 
                     msg = QMessageBox()
                     msg.setWindowTitle("DWI bvals file missing")
-                    msg.setText('Please provide a DWI bvals file (with a nifti file) or a DWI file (nrrd) (tab "Path to your data")')
+                    msg.setText('Please provide a DWI bvals file (with a nifti file) (tab "Path to your data") ' + 
+                                '\n or a DWI file (nrrd) (tab "Path to your data") and an output path folder (tab "Submit job and results")')
                     msg.setIcon(QMessageBox.Information)
                     x = msg.exec_()
 
