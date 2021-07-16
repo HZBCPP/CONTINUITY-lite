@@ -453,7 +453,11 @@ class Ui(QtWidgets.QTabWidget):
                 # Set parameters: 
                 for i in range(self.add_bval_in_bvalfile_listWidget.count()):
                     item = self.add_bval_in_bvalfile_listWidget.item(i) 
-                    item.setCheckState(Qt.Checked)
+                    if int(item.text()) not in json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"]: 
+                        item.setCheckState(Qt.Checked)
+                    else: 
+                        print("not")
+                        item.setCheckState(not Qt.Checked)
 
 
 
@@ -467,10 +471,19 @@ class Ui(QtWidgets.QTabWidget):
                     list_bval_int.append(int(list_bval[i]))
 
 
-                self.add_bval_removing_textEdit.setText(text)
-
                 json_user_object['Parameters']["list_bval_for_the_tractography"]["value"] = list_bval_int
                 Ui.update_user_json_file() 
+
+                if len(json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"]) != 0: 
+                    text += '\n '
+                    text += '( REMINDER: these bvals will be removed (so you can\'t checked them): '
+                    for i in range(len(json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"])): 
+                        text+= str(json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"][i]) + '   '
+                    text += ")"
+
+
+                self.add_bval_removing_textEdit.setText(text)
+                    
 
 
             else: 
@@ -558,30 +571,33 @@ class Ui(QtWidgets.QTabWidget):
         list_bval_for_the_tractography = json_user_object['Parameters']["list_bval_for_the_tractography"]["value"]
        
         if item.checkState() == Qt.Unchecked: 
-            print("unchecked")
-            print("before",list_bval_for_the_tractography )
             if int(item.text()) in list_bval_for_the_tractography: 
-                
                 del list_bval_for_the_tractography[list_bval_for_the_tractography.index(int(item.text()))]
 
-                print("after",list_bval_for_the_tractography )
-
-
         if item.checkState() == Qt.Checked:             
-            if int(item.text()) not in list_bval_for_the_tractography:
-                list_bval_for_the_tractography.append(int(item.text()))
+
+                if int(item.text()) not in json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"]: 
+                    if int(item.text()) not in list_bval_for_the_tractography:
+                        list_bval_for_the_tractography.append(int(item.text()))
+                else:                         
+                    item.setCheckState(not Qt.Checked)
+
 
         json_user_object['Parameters']["list_bval_for_the_tractography"]["value"] = list_bval_for_the_tractography
         Ui.update_user_json_file() 
                 
         self.add_bval_removing_textEdit.setText("")
 
-        print("after 2",list_bval_for_the_tractography )
-
-
         text = 'bval that will be add for the tractography :  \n'
         for i in range(len(list_bval_for_the_tractography)): 
             text+= str(list_bval_for_the_tractography[i]) + '\n'
+
+        if len(json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"]) != 0: 
+                text += '\n '
+                text += '( REMINDER: these bvals will be removed (so you can\'t checked them): '
+                for i in range(len(json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"])): 
+                    text+= str(json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"][i]) + '   '
+                text += ")"
 
         self.add_bval_removing_textEdit.setText(text)
 
