@@ -1391,6 +1391,15 @@ with Tee(log_file):
 		# *****************************************
 
 		FOD_nii = os.path.join(OUT_MRTRIX, "FOD.nii.gz")
+		response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
+		wmfod_mif = os.path.join(OUT_MRTRIX, "wmfod.mif")
+		response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
+		gm_mif = os.path.join(OUT_MRTRIX, "gm.mif")
+		response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
+		csf_mif = os.path.join(OUT_MRTRIX, "csf.mif")
+
+
+
 		if os.path.exists(FOD_nii):
 		    print("Fibre Orientation Distribution estimation already compute")
 		else: 
@@ -1412,6 +1421,12 @@ with Tee(log_file):
 									    DiffusionData, # input
 									    Response_function_estimation_txt, # input
 									    FOD_nii, # ouput
+										response_wm_txt,# ouput
+										wmfod_mif,# ouput
+										response_gm_txt,# ouput
+										gm_mif,# ouput
+										response_csf_txt,# ouput
+										csf_mif,# ouput
 									   	'-mask', DiffusionBrainMask, # input
 									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
 									    '-nthreads', str(nb_threads)]
