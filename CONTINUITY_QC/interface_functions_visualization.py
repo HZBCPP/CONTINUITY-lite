@@ -10,10 +10,12 @@ import datetime
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QCheckBox, QGridLayout, QLabel, QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtCore import Qt
+
 import vtk
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 import numpy as np
+
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -23,6 +25,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 import mne
 from mne.viz import circular_layout, plot_connectivity_circle
+
 import nrrd
 
 from functools import partial
@@ -219,13 +222,13 @@ class Ui_visu(QtWidgets.QTabWidget):
 
     def open_slicer_clicked(self): 
         if (json_user_object['Executables']["slicer"]["value"] != "False" and  json_user_object['Parameters']["OUT_PATH"]["value"] != ""
-                                                                         and json_user_object['Parameters']["ID"]["value"] != ""
-                                                                         and json_user_object['Parameters']["PARCELLATION_TABLE_NAME"]["value"] != ""):
+                                                                          and json_user_object['Parameters']["ID"]["value"] != ""
+                                                                          and json_user_object['Parameters']["PARCELLATION_TABLE_NAME"]["value"] != ""):
             Ui_visu.run_command("Open slicer WITH specific parameters", [sys.executable, os.path.realpath(os.path.dirname(__file__)) + "/slicer_QC.py", user_json_filename])
 
         else: 
             msg = QMessageBox()
-            msg.setWindowTitle("Open Slicer")
+            msg.setWindowTitle("Open Slicer with specific parameters")
             msg.setText('Please be sure to provide an Slicer path, an output folder, an ID and a parcellation table name')
             msg.setIcon(QMessageBox.Warning)
             x = msg.exec_()
@@ -238,7 +241,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         else: 
             msg = QMessageBox()
-            msg.setWindowTitle("Open Slicer")
+            msg.setWindowTitle("Open Slicer without configuration")
             msg.setText('Please be sure to provide an Slicer path')
             msg.setIcon(QMessageBox.Warning)
             x = msg.exec_()
@@ -377,7 +380,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                 self.error_label.setText(' ')
 
                 im = ax_matrix.imshow(a_matrix, interpolation='nearest', vmin = self.vmin_normalize_matrix_spinBox.value(), 
-                                                                          vmax = self.vmax_normalize_matrix_spinBox.value())
+                                                                         vmax = self.vmax_normalize_matrix_spinBox.value())
 
                 divider = make_axes_locatable(ax_matrix)
                 cax = divider.new_vertical(size="3%", pad=0.7, pack_start=True)
@@ -465,7 +468,6 @@ class Ui_visu(QtWidgets.QTabWidget):
 
         # Left click
         elif event.button == 3: 
-
             annot.set_visible(False)
             lhor.set_ydata(-1)
             lver.set_xdata(-1)
@@ -524,7 +526,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                 self.vmin_vmax_regions_checkBox.setChecked(False)
                 Ui_visu.display_normalize_matrix_pushButton_clicked(self)
 
-
         elif checkbox_name == "vmin_vmax_real_values_checkBox":
             if self.vmin_vmax_real_values_checkBox.isChecked(): 
                 self.vmin_vmax_percentage_checkBox.setChecked(False)
@@ -557,7 +558,6 @@ class Ui_visu(QtWidgets.QTabWidget):
     def plot_circle_connectome(self):
         if (self.connectivity_matrix_textEdit.toPlainText() != "" and self.parcellation_table_textEdit.toPlainText() != ""): 
     
-
             # *****************************************
             # Extract name of each regions and create a circular layout
             # *****************************************

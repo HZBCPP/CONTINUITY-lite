@@ -2025,16 +2025,16 @@ with Tee(log_file):
         #*****************************************
 		# Save the streamlines as a Trackvis file
 		#*****************************************
-		'''
+		
 		sft = StatefulTractogram(streamlines, img, Space.RASMM)
 		save_trk(sft, tractogram, streamlines)
 
-		''
+		'''
 		scene = window.Scene()
 		scene.add(actor.line(streamlines, colormap.line_colors(streamlines)))
 		window.record(scene, out_path='tractogram_deterministic_dg.png', size=(800, 800))
 		window.show(scene)
-		''
+		'''
 
 		# Conversion trk to tck 
 		tractogram_tck = os.path.join(OUT_DIPY,"tractogram.tck")
@@ -2044,8 +2044,9 @@ with Tee(log_file):
 			nib.streamlines.save(trk.tractogram, tractogram_tck)
 
 
+
         # *****************************************
-		# Convert tck to vtk format    FOR VISUALIZATION
+		# Convert tck to vtk format
 		# *****************************************
 			
 		if os.path.exists(MRtrixPath + "/tckconvert"): 
@@ -2057,7 +2058,7 @@ with Tee(log_file):
 				print("Convert tck to vtk")									
 				run_command("Convert to vtk", [MRtrixPath + "/tckconvert", tractogram_tck, tractogram_vtk]) 
 		
-		'''
+		
 
 
         #*****************************************
