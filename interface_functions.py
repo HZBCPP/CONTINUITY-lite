@@ -380,17 +380,17 @@ class Ui(QtWidgets.QTabWidget):
                 self.bval_in_bvalfile_listWidget.itemClicked.connect(self.change_bval)
 
             else: 
-                if json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                if json_user_object['Arguments']["DWI_DATA"]["value"] != "" and json_user_object['Parameters']["OUT_PATH"]["value"] != "":
                                         
                     print("*****************************************")
                     print("Convert DWI image to nifti format")
                     print("*****************************************")
 
-                    OUT_FOLDER = os.path.join(OUT_PATH,ID) #ID
+                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) #ID
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
-                    DWI_nifti = os.path.join(OUT_FOLDER, ID + "_DWI.nii.gz")
+                    DWI_nifti = os.path.join(OUT_FOLDER, json_user_object['Arguments']["ID"]["value"] + "_DWI.nii.gz")
                     if os.path.exists(DWI_nifti):
                         print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
                     else:
@@ -402,18 +402,17 @@ class Ui(QtWidgets.QTabWidget):
                                                                                 "--outputVolume", DWI_nifti, 
                                                                                 "--outputBValues", os.path.join(OUT_FOLDER, "bvals"), 
                                                                                 "--outputBVectors", os.path.join(OUT_FOLDER, "bvecs")])
-                        # Update path
-                        json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
-                        json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
+                    # Update path
+                    json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
+                    json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
 
-                        # update interface 
-                        self.no_registration_DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
-                        self.no_registration_DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
+                    # update interface 
+                    self.DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
+                    self.DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
+                    Ui.update_user_json_file()
 
-                        Ui.update_user_json_file()
-
-                        # call function again 
-                        Ui.remove_bval_groupBox_clicked()
+                    # call function again 
+                    Ui.remove_bval_groupBox_clicked(self)
 
 
                 else: 
@@ -435,7 +434,7 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def add_bval_for_tractography_groupBox_clicked(self):
-
+    
         if self.add_bval_groupBox.isChecked: 
             if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
                 list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"])
@@ -451,12 +450,13 @@ class Ui(QtWidgets.QTabWidget):
 
 
                 # Set parameters: 
+                list_checked = []
                 for i in range(self.add_bval_in_bvalfile_listWidget.count()):
                     item = self.add_bval_in_bvalfile_listWidget.item(i) 
-                    if int(item.text()) not in json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"]: 
+                    if int(item.text()) not in json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"] and int(item.text()) != 0: 
                         item.setCheckState(Qt.Checked)
+                        list_checked.append(int(item.text()))
                     else: 
-                        print("not")
                         item.setCheckState(not Qt.Checked)
 
 
@@ -466,11 +466,11 @@ class Ui(QtWidgets.QTabWidget):
 
                 list_bval_int = []
                 text = 'bval that will be add for the tractography :  \n'
-                for i in range(len(list_bval)): 
-                    text+= str(list_bval[i]) + '\n'
-                    list_bval_int.append(int(list_bval[i]))
+                for i in range(len(list_checked)): 
+                    text+= str(list_checked[i]) + '\n'
+                    list_bval_int.append(int(list_checked[i]))
 
-
+                print("param", list_bval_int)
                 json_user_object['Parameters']["list_bval_for_the_tractography"]["value"] = list_bval_int
                 Ui.update_user_json_file() 
 
@@ -487,16 +487,16 @@ class Ui(QtWidgets.QTabWidget):
 
 
             else: 
-                if json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                if json_user_object['Arguments']["DWI_DATA"]["value"] != "" and  json_user_object['Parameters']["OUT_PATH"]["value"] != "":
                     print("*****************************************")
                     print("Convert DWI image to nifti format")
                     print("*****************************************")
 
-                    OUT_FOLDER = os.path.join(OUT_PATH,ID) #ID
+                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) #ID
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
-                    DWI_nifti = os.path.join(OUT_FOLDER, ID + "_DWI.nii.gz")
+                    DWI_nifti = os.path.join(OUT_FOLDER, json_user_object['Arguments']["ID"]["value"] + "_DWI.nii.gz")
                     if os.path.exists(DWI_nifti):
                         print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
                     else:
@@ -508,18 +508,21 @@ class Ui(QtWidgets.QTabWidget):
                                                                                 "--outputVolume", DWI_nifti, 
                                                                                 "--outputBValues", os.path.join(OUT_FOLDER, "bvals"), 
                                                                                 "--outputBVectors", os.path.join(OUT_FOLDER, "bvecs")])
-                        # Update path
-                        json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
-                        json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
+                    # Update path
+                    json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
+                    json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
 
-                        # update interface 
-                        self.no_registration_DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
-                        self.no_registration_DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
+                    # update interface 
+                    self.no_registration_DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
+                    self.no_registration_DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
 
-                        Ui.update_user_json_file()
+                    self.DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
+                    self.DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
 
-                        #call function again 
-                        Ui.add_bval_for_tractography_groupBox_clicked()
+                    Ui.update_user_json_file()
+
+                    #call function again 
+                    Ui.add_bval_for_tractography_groupBox_clicked(self)
 
                 else: 
 
@@ -635,16 +638,16 @@ class Ui(QtWidgets.QTabWidget):
                 self.no_registration_bval_in_bvalfile_listWidget.itemClicked.connect(self.no_registration_change_bval)
 
             else: 
-                if json_user_object['Arguments']["DWI_DATA"]["value"] != "":
+                if json_user_object['Arguments']["DWI_DATA"]["value"] != "" and json_user_object['Parameters']["OUT_PATH"]["value"] != "" :
                     print("*****************************************")
                     print("Convert DWI image to nifti format")
                     print("*****************************************")
 
-                    OUT_FOLDER = os.path.join(OUT_PATH,ID) #ID
+                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) #ID
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
-                    DWI_nifti = os.path.join(OUT_FOLDER, ID + "_DWI.nii.gz")
+                    DWI_nifti = os.path.join(OUT_FOLDER, json_user_object['Arguments']["ID"]["value"] + "_DWI.nii.gz")
                     if os.path.exists(DWI_nifti):
                         print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
                     else:
@@ -656,18 +659,20 @@ class Ui(QtWidgets.QTabWidget):
                                                                                 "--outputVolume", DWI_nifti, 
                                                                                 "--outputBValues", os.path.join(OUT_FOLDER, "bvals"), 
                                                                                 "--outputBVectors", os.path.join(OUT_FOLDER, "bvecs")])
-                        # Update path
-                        json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
-                        json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
+                    # Update path
+                    json_user_object['Arguments']["DWI_DATA_bvecs"]["value"] = os.path.join(OUT_FOLDER, "bvecs")
+                    json_user_object['Arguments']["DWI_DATA_bvals"]["value"] = os.path.join(OUT_FOLDER, "bvals")
 
-                        # update interface 
-                        self.no_registration_DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
-                        self.no_registration_DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
+                    # update interface 
+                    self.no_registration_DWI_DATA_bvecs_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvecs")))
+                    self.no_registration_DWI_DATA_bvals_textEdit.setText(str(os.path.join(OUT_FOLDER, "bvals")))
 
-                        Ui.update_user_json_file()
+                    Ui.update_user_json_file()
 
-                        # call function again 
-                        Ui.no_registration_remove_bval_groupBox_clicked()
+                    # call function again 
+                    Ui.no_registration_remove_bval_groupBox_clicked(self)
+
+
                 else: 
 
                     msg = QMessageBox()

@@ -969,7 +969,7 @@ def extract_bvals(bval_file_name):
 
     for val in list_bval[1:]:
         for bval in group:
-       
+
             if abs(bval - val) < 10: 
                 index = group.index(bval)
                 list_list_bval[index].append(val)
@@ -990,6 +990,8 @@ def extract_bvals(bval_file_name):
     for i in range(len(list_list_bval)):
         if list_list_bval[i] != []:
             list_bval_clean.append(int(sum(list_list_bval[i]) / len(list_list_bval[i])))
+
+
 
     return list_bval_clean 
 
