@@ -470,11 +470,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSpinBox" name="size_of_bvals_groups_DWI_remove_spinBox">
-                  <property name="value">
-                   <number>10</number>
-                  </property>
-                 </widget>
+                 <widget class="QSpinBox" name="size_of_bvals_groups_DWI_remove_spinBox"/>
                 </item>
                </layout>
               </widget>
@@ -3307,11 +3303,7 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="size_of_bvals_groups_DWI_no_registration_remove_spinBox">
-              <property name="value">
-               <number>10</number>
-              </property>
-             </widget>
+             <widget class="QSpinBox" name="size_of_bvals_groups_DWI_no_registration_remove_spinBox"/>
             </item>
            </layout>
           </widget>
@@ -4553,11 +4545,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="size_of_bvals_groups_DWI_add_spinBox">
-            <property name="value">
-             <number>10</number>
-            </property>
-           </widget>
+           <widget class="QSpinBox" name="size_of_bvals_groups_DWI_add_spinBox"/>
           </item>
          </layout>
         </widget>

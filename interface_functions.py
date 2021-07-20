@@ -360,7 +360,7 @@ class Ui(QtWidgets.QTabWidget):
     # Group bvals
     # *****************************************     
     def size_of_bvals_groups_DWI_remove_no_registration_valueChanged(self):
-        json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"] = self.size_of_bvals_groups_DWI_remove_no_registration_spinBox.value()
+        json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"] = self.size_of_bvals_groups_DWI_no_registration_remove_spinBox.value()
         Ui.update_user_json_file()
         Ui.remove_bval_groupBox_clicked(self)
 
