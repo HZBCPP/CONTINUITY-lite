@@ -2323,8 +2323,12 @@ with Tee(log_file):
 											                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 					
 					T1_labeled = load_nifti_data(labeled_image_nifti)
-					print("T1_labeled",T1_labeled )
-					print("T1_labeled shape ",T1_labeled.shape())
+					#print("T1_labeled",T1_labeled )
+					print("T1_labeled shape ",T1_labeled.shape)
+
+					#T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
+					#print("T1_labeled_reshape shape ",T1_labeled_reshape.shape)
+
 
 
 					print("*****************************************")
