@@ -2790,7 +2790,7 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_25">
       <attribute name="title">
@@ -3637,151 +3637,155 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </widget>
-         <widget class="QWidget" name="layoutWidget">
+         <widget class="QWidget" name="">
           <property name="geometry">
            <rect>
-            <x>11</x>
+            <x>530</x>
             <y>220</y>
-            <width>1041</width>
-            <height>29</height>
+            <width>521</width>
+            <height>27</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_32">
+          <layout class="QHBoxLayout" name="horizontalLayout_42">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_42">
-             <item>
-              <widget class="QLabel" name="WMR_surface_diffusion_label">
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                 <underline>true</underline>
-                </font>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Right surface data&lt;span style=&quot; color:#ef2929;&quot;&gt; in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="WM_R_Surf_NON_REGISTRATION_pushButton">
-               <property name="text">
-                <string>Browser...</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_14">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+            <widget class="QLabel" name="WMR_surface_diffusion_label">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Right surface data&lt;span style=&quot; color:#ef2929;&quot;&gt; in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_43">
-             <item>
-              <widget class="QLabel" name="WML_surface_diffusion_label">
-               <property name="font">
-                <font>
-                 <pointsize>11</pointsize>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                 <underline>true</underline>
-                 <strikeout>false</strikeout>
-                </font>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Left surface data &lt;span style=&quot; color:#ef2929;&quot;&gt;in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="WM_L_Surf_NON_REGISTRATION_pushButton">
-               <property name="text">
-                <string>Browser...</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_15">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+            <widget class="QPushButton" name="WM_R_Surf_NON_REGISTRATION_pushButton">
+             <property name="text">
+              <string>Browser...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="layoutWidget">
+         <widget class="QWidget" name="">
           <property name="geometry">
            <rect>
-            <x>11</x>
-            <y>250</y>
-            <width>1041</width>
-            <height>72</height>
+            <x>14</x>
+            <y>220</y>
+            <width>512</width>
+            <height>27</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_44">
+          <layout class="QHBoxLayout" name="horizontalLayout_43">
            <item>
-            <widget class="QTextEdit" name="WM_R_Surf_NON_REGISTRATION_textEdit">
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
+            <widget class="QLabel" name="WML_surface_diffusion_label">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+               <strikeout>false</strikeout>
+              </font>
              </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="overwriteMode">
-              <bool>true</bool>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Left surface data &lt;span style=&quot; color:#ef2929;&quot;&gt;in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QTextEdit" name="WM_L_Surf_NON_REGISTRATION_textEdit">
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="overwriteMode">
-              <bool>true</bool>
+            <widget class="QPushButton" name="WM_L_Surf_NON_REGISTRATION_pushButton">
+             <property name="text">
+              <string>Browser...</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
+         </widget>
+         <widget class="QTextEdit" name="WM_R_Surf_NON_REGISTRATION_textEdit">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>250</y>
+            <width>517</width>
+            <height>70</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="overwriteMode">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QTextEdit" name="WM_L_Surf_NON_REGISTRATION_textEdit">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>250</y>
+            <width>516</width>
+            <height>70</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="overwriteMode">
+           <bool>true</bool>
+          </property>
          </widget>
         </widget>
         <widget class="QGroupBox" name="left_right_combined_groupBox">
@@ -4378,7 +4382,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_33">
        <attribute name="title">
@@ -4495,7 +4499,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="title">
-         <string>ACT</string>
+         <string>ACT and multi-shell</string>
         </property>
         <widget class="QCheckBox" name="act_checkBox">
          <property name="geometry">
@@ -4520,7 +4524,7 @@ p, li { white-space: pre-wrap; }
           </rect>
          </property>
          <property name="title">
-          <string>In case of no registration with this tool, CONTINUITY need a T1 image to use -act option</string>
+          <string>In case of no registration with this tool, CONTINUITY need a T1 image in DWI space to use -act option and integrate multi-shell DWI: </string>
          </property>
          <widget class="QTextEdit" name="act_option_T1_DATA_textEdit">
           <property name="geometry">
@@ -4552,7 +4556,7 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>10</x>
             <y>30</y>
-            <width>315</width>
+            <width>370</width>
             <height>27</height>
            </rect>
           </property>
@@ -4567,7 +4571,7 @@ p, li { white-space: pre-wrap; }
               </font>
              </property>
              <property name="text">
-              <string>T1 / first modality (.nrrd):</string>
+              <string>T1 / first modality in DWI space (.nrrd):</string>
              </property>
             </widget>
            </item>
