@@ -948,7 +948,7 @@ def get_number_of_points(SALTDir):
 # Extract b-values from a bval txt file
 # *************************************************************************************
 
-def extract_bvals(bval_file_name):
+def extract_bvals(bval_file_name, size_of_bvals_groups_DWI):
     list_bval, list_bval_clean = ([], [])
 
     bval_file = open(bval_file_name, 'r')     
@@ -970,15 +970,15 @@ def extract_bvals(bval_file_name):
     for val in list_bval[1:]:
         for bval in group:
 
-            if abs(bval - val) < 10: 
+            if abs(bval - val) < size_of_bvals_groups_DWI: 
                 index = group.index(bval)
                 list_list_bval[index].append(val)
 
             else: 
                 not_in_list = True
 
-                for i in range(20):
-                    if (val-10)+i in group:
+                for i in range(size_of_bvals_groups_DWI*2):
+                    if (val-size_of_bvals_groups_DWI)+i in group:
                         not_in_list = False
                 
                 if not_in_list:

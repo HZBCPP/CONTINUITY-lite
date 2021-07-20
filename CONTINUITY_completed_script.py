@@ -139,8 +139,13 @@ nb_iteration_GenParaMeshCLP  			= json_user_object["Parameters"]["nb_iteration_G
 spharmDegree  			                = json_user_object["Parameters"]["spharmDegree"]['value']
 subdivLevel  			                = json_user_object["Parameters"]["subdivLevel"]['value']
 list_bval_that_will_be_deleted          = json_user_object["Parameters"]["list_bval_that_will_be_deleted"]['value']
-
 list_bval_for_the_tractography          = json_user_object["Parameters"]["list_bval_for_the_tractography"]['value']
+
+
+
+
+size_of_bvals_groups_DWI                = json_user_object["Parameters"]["size_of_bvals_groups_DWI"]['value']
+
 wm_fa_thr                               = json_user_object["Parameters"]["wm_fa_thr"]['value']
 gm_fa_thr                               = json_user_object["Parameters"]["gm_fa_thr"]['value']
 csf_fa_thr                              = json_user_object["Parameters"]["csf_fa_thr"]['value']
@@ -215,37 +220,40 @@ class Tee(object):
 with Tee(log_file):
 
 	OUT_INPUT_CONTINUITY_DWISPACE = os.path.join(OUT_FOLDER,"Input_CONTINUITY_DWISpace") #ID --> Input_CONTINUITY_DWISpace
-	if not os.path.exists( OUT_INPUT_CONTINUITY_DWISPACE ): os.mkdir(OUT_INPUT_CONTINUITY_DWISPACE)
+	if not os.path.exists(OUT_INPUT_CONTINUITY_DWISPACE): os.mkdir(OUT_INPUT_CONTINUITY_DWISPACE)
 	
 	OUT_SALT = os.path.join(OUT_FOLDER, "Salt") #ID --> SALT
 	if not os.path.exists(OUT_SALT): os.mkdir(OUT_SALT)
 
 	OUT_T1TODWISPACE = os.path.join(OUT_FOLDER,"T1ToDWISpace") #ID --> T1ToDWISpace
-	if not os.path.exists( OUT_T1TODWISPACE ): os.mkdir(OUT_T1TODWISPACE)
+	if not os.path.exists(OUT_T1TODWISPACE): os.mkdir(OUT_T1TODWISPACE)
 
 	OUT_00_QC_VISUALIZATION = os.path.join(OUT_T1TODWISPACE,"00_QC_Visualization") #ID --> T1ToDWISpace --> 00_QC_Visualization
-	if not os.path.exists( OUT_00_QC_VISUALIZATION ): os.mkdir(OUT_00_QC_VISUALIZATION)
+	if not os.path.exists(OUT_00_QC_VISUALIZATION): os.mkdir(OUT_00_QC_VISUALIZATION)
 
 	OUT_INTERMEDIATEFILES = os.path.join(OUT_T1TODWISPACE,"IntermediateFiles") #ID --> T1ToDWISpace --> IntermediateFiles
-	if not os.path.exists( OUT_INTERMEDIATEFILES ): os.mkdir(OUT_INTERMEDIATEFILES)
+	if not os.path.exists(OUT_INTERMEDIATEFILES): os.mkdir(OUT_INTERMEDIATEFILES)
 
 	OUT_DTI = os.path.join(OUT_INTERMEDIATEFILES,"DTI") #ID --> T1ToDWISpace --> IntermediateFiles --> DTI
-	if not os.path.exists( OUT_DTI ): os.mkdir(OUT_DTI)
+	if not os.path.exists(OUT_DTI): os.mkdir(OUT_DTI)
 	
 	OUT_SURFACE = os.path.join(OUT_DTI, "Surface") #ID --> T1ToDWISpace --> IntermediateFiles --> DTI --> Surface
-	if not os.path.exists( OUT_SURFACE ): os.mkdir(OUT_SURFACE)
+	if not os.path.exists(OUT_SURFACE): os.mkdir(OUT_SURFACE)
 
 	OUT_WARPS = os.path.join(OUT_T1TODWISPACE, "Warps") #ID --> T1ToDWISpace --> WARP
-	if not os.path.exists( OUT_WARPS ): os.mkdir(OUT_WARPS)
+	if not os.path.exists(OUT_WARPS): os.mkdir(OUT_WARPS)
 
 	OUT_SLICER = os.path.join(OUT_FOLDER, "InputDataForSlicer") #ID --> INPUTDATA: for visualization
-	if not os.path.exists( OUT_SLICER ): os.mkdir(OUT_SLICER)
+	if not os.path.exists(OUT_SLICER): os.mkdir(OUT_SLICER)
 
 	OUT_TRACTOGRAPHY = os.path.join(OUT_FOLDER, "Tractography") #ID --> Tractography
 	if not os.path.exists(OUT_TRACTOGRAPHY): os.mkdir(OUT_TRACTOGRAPHY)
 
 	OUT_DIFFUSION = os.path.join(OUT_TRACTOGRAPHY, "Diffusion") #ID --> Tractography --> Diffusion
-	if not os.path.exists( OUT_DIFFUSION ): os.mkdir(OUT_DIFFUSION)
+	if not os.path.exists(OUT_DIFFUSION): os.mkdir(OUT_DIFFUSION)
+
+	OUT_DWI = os.path.join(OUT_FOLDER,"DWI files") #ID --> DWI files
+	if not os.path.exists(OUT_DWI): os.mkdir(OUT_DWI)
 
 
 	# *****************************************
@@ -262,71 +270,84 @@ with Tee(log_file):
 	    print(text_printed, "err: ", colored("\n" + str(err) + "\n", 'red'))
 
 
+
 	# *****************************************
-	# Function to convert inputs in nifti format to nrrd format 
+	# Function to convert DWI in nifti format to nrrd format 
 	# *****************************************
 
 	# Convert DWI nifti input to nrrd:  
 	[path, afile] = os.path.split(DWI_DATA) # split path and file name(nrrd)
 
-	if afile.endswith('nii.gz'): 
+	if len(txt_file_with_bval_that_will_be_deleted) != 0: 
 
-		if len(txt_file_with_bval_that_will_be_deleted) != 0: 
+		if not afile.endswith('nii.gz'): 
+			# DWI data in nrrd format: need to be converted 
 
 			print("*****************************************")
-			print("Remove bval from DWI")
-			print("*****************************************")
+            print("Convert DWI image to nifti format")
+            print("*****************************************")           
 
-			# Find all b-values: 
-			all_bvals = []
-			bval_file = open(DWI_DATA_bvals, 'r')     
-			for line in bval_file:
-				line = int(line.strip('\n') )
-				all_bvals.append(line)
-		
-			# Write txt file with all bval that will be deleted: 
-			txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_FOLDER, "txt_file_with_bval_that_will_be_deleted.txt")
+            DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI_before_remove_bvals.nii.gz")
+            if os.path.exists(DWI_nifti):
+                print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
+            else:
+                print("Convert DWI image to nifti format ")
+                
+                run_command("DWIConvert: convert DWI to nifti format", [DWIConvertPath, 
+                                                                        "--inputVolume", DWI_DATA, #input data 
+                                                                        "--conversionMode", "NrrdToFSL", 
+                                                                        "--outputVolume", DWI_nifti, 
+                                                                        "--outputBValues", os.path.join(OUT_DWI, "bvals"), 
+                                                                        "--outputBVectors", os.path.join(OUT_DWI, "bvecs")])
+            # Update the path of DWI: 
+			DWI_DATA_bvals = os.path.join(OUT_DWI, "bvals")
+			DWI_DATA_bvecs = os.path.join(OUT_DWI, "bvecs")
+			DWI_DATA       = DWI_nifti
+                    
+			
+		# DWI data in nifti format 
+		print("*****************************************")
+		print("Remove bval from DWI")
+		print("*****************************************")
 
-			with open(txt_file_with_bval_that_will_be_deleted, 'w') as filebval:
-				for listitem in list_bval_that_will_be_deleted:
-					filebval.write('%s\n' % listitem)
+		# Find all b-values: 
+		all_bvals = []
+		bval_file = open(DWI_DATA_bvals, 'r')     
+		for line in bval_file:
+			line = int(line.strip('\n') )
+			all_bvals.append(line)
+	
+		# Write txt file with all bval that will be deleted: 
+		txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_DWI, "txt_file_with_bval_that_will_be_deleted.txt")
 
-					# Write other nerest b-values: 
-					for i in range(20):
-						if int((listitem-10)) + i in all_bvals:
-							filebval.write('%s\n' % int((listitem-10)) + i)
+		with open(txt_file_with_bval_that_will_be_deleted, 'w') as filebval:
+			for listitem in list_bval_that_will_be_deleted:
+				filebval.write('%s\n' % listitem)
+
+				# Write other nerest b-values: 
+				for i in range(size_of_bvals_groups_DWI*2):
+					if int((listitem-size_of_bvals_groups_DWI)) + i in all_bvals:
+						filebval.write('%s\n' % int((listitem-size_of_bvals_groups_DWI)) + i)
 
 
-			# Filtering DWI: 
-			remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI_DATA, DWI_DATA_bvecs, DWI_DATA_bvals, OUT_FOLDER, ID, FSLPath)
+		# Filtering DWI: 
+		remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI_DATA, DWI_DATA_bvecs, DWI_DATA_bvals, OUT_DWI, ID, FSLPath)
 
-			# Update the path of DWI: 
-			DWI_DATA_bvals = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bval')
-			DWI_DATA_bvecs = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.bvec')
-			DWI_DATA       = os.path.join(OUT_FOLDER, ID + '_DWI_filtered.nii.gz')
+		# Update the path of DWI: 
+		DWI_DATA_bvals = os.path.join(OUT_DWI, ID + '_DWI_filtered.bval')
+		DWI_DATA_bvecs = os.path.join(OUT_DWI, ID + '_DWI_filtered.bvec')
+		DWI_DATA       = os.path.join(OUT_DWI, ID + '_DWI_filtered.nii.gz')
 
 
-			# Find all b-values after filtered: 
-			new_bvals = []
-			bval_file = open(DWI_DATA_bvals, 'r')     
-			for line in bval_file:
-				line = int(line.strip('\n') )
-				if not line in new_bvals and line != 0:
-					new_bvals.append(line)
 
-			print("before script, list of bvals: ", new_bvals)
-
+	[path, afile] = os.path.split(DWI_DATA) # split path and file name(nrrd)
+	if afile.endswith('nii.gz'):
 
 		print("*****************************************")
 		print("Convert DWI FSL2Nrrd")
 		print("*****************************************") 
-		
-		# New folder: 
-		OUT_FOLDER_nifti2nrrd = os.path.join(OUT_FOLDER, 'nifti2nrrd') 
-		if not os.path.exists(OUT_FOLDER_nifti2nrrd):
-			os.mkdir(OUT_FOLDER_nifti2nrrd)
 
-		output_nrrd = os.path.join(OUT_FOLDER_nifti2nrrd, afile[:-7] + '.nrrd')
+		output_nrrd = os.path.join(OUT_DWI, afile[:-7] + '.nrrd') #filtered or not
 
 		run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", DWI_DATA, 
 														                             				   "--conversionMode", "FSLToNrrd", 
@@ -334,7 +355,31 @@ with Tee(log_file):
 														                             				   "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
 		# New path :
 		DWI_DATA = output_nrrd
-			
+
+
+	# nothing to remove but the script need to have a list of bvals so need to convert a nrrd file 
+	else: 
+		# DWI data in nrrd format: need to be converted 
+		print("*****************************************")
+        print("Convert DWI image to nifti format")
+        print("*****************************************")           
+
+        DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI.nii.gz")
+        if os.path.exists(DWI_nifti):
+            print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
+        else:
+            print("Convert DWI image to nifti format ")
+            
+            run_command("DWIConvert: convert DWI to nifti format", [DWIConvertPath, 
+                                                                    "--inputVolume", DWI_DATA, #input data 
+                                                                    "--conversionMode", "NrrdToFSL", 
+                                                                    "--outputVolume", DWI_nifti, 
+                                                                    "--outputBValues", os.path.join(OUT_DWI, "bvals"), 
+                                                                    "--outputBVectors", os.path.join(OUT_DWI, "bvecs")])
+        # Update the path of DWI: 
+		DWI_DATA_bvals = os.path.join(OUT_DWI, "bvals")
+		DWI_DATA_bvecs = os.path.join(OUT_DWI, "bvecs")
+
 
 
 	########################################################################
@@ -827,7 +872,7 @@ with Tee(log_file):
 		print("Apply label after validation of subcortical regions")
 		print("*****************************************")
 
-		# For each region label the SALT file with the Atlas label value. Create SPHARM surface labeled with the new atlas label. 
+		# For each region label the SALT file with the Atlas label value. Create SPHARM surfaextract_bvalsce labeled with the new atlas label. 
 		subcorticals_list_names_checked_with_surfaces = []
 		for region in subcorticals_list_names_checked:
 
@@ -1158,22 +1203,6 @@ with Tee(log_file):
 							                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
 							                                         "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals")])
 
-	# Find all b-values: 
-	try: 
-		test = len(new_bvals)
-	except: 
-		if len(list_bval_for_the_tractography) == 0: #bval not specify by the user 
-			new_bvals = []
-			bval_file = open(os.path.join(OUT_DIFFUSION, "bvals"), 'r')     
-			for line in bval_file:
-					line = int(line.strip('\n') )
-					if not line in new_bvals and line != 0:
-						new_bvals.append(line)
-		else: 
-			new_bvals = list_bval_for_the_tractography
-	print("new_bvals after conversion: ", new_bvals)
-
-
 
 	print("*****************************************")
 	print("Create labelSurfaces (~2h30 or 4h with subcortical regions)")
@@ -1325,6 +1354,39 @@ with Tee(log_file):
 
 
 
+
+	# Find all b-values: 
+		if len(list_bval_for_the_tractography) == 0: #bval not specify by the user: by default: all bvals used except 0
+			new_bvals = []
+			bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')     
+			for line in bval_file:
+					line = int(line.strip('\n') )
+					if not line in new_bvals and line != 0:
+						new_bvals.append(line)
+
+
+		else: # bvals 'grouping' specify by the user: need to add the nereast value 
+			new_bvals,all_bval = ([],[])
+
+			bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')    
+
+			for line in bval_file:
+				# Extraction of bval: 
+				line = int(line.strip('\n') )
+				all_bval.append(line)
+
+				# Check if user want of not this value 
+				for listitem in list_bval_for_the_tractography:
+		
+					# Other nerest b-values: 
+					for i in range(size_of_bvals_groups_DWI*2):
+						if int((line-size_of_bvals_groups_DWI)) + i == listitem:
+							if not line in new_bvals:
+								new_bvals.append(line)
+
+		print("list_bval_for_the_tractography", list_bval_for_the_tractography)	
+		print("all_bval", all_bval)			
+		print("new_bvals after conversion: ", new_bvals)
 
 
 
@@ -2215,9 +2277,10 @@ with Tee(log_file):
 		        #*****************************************
 				# Extract the connectivity matrix
 				#*****************************************
-				'''
+			
 				matrix = os.path.join(OUT_DIPY, "fdt_network_matrix") 
 				if not os.path.exists(matrix): 
+					print("create connectivity matrix")
 
 					T1_OUT_NRRD_labeled = os.path.join(OUT_DIPY, ID + "_T1_SkullStripped_scaled_DWISpace_labeled.nrrd")
 
@@ -2265,7 +2328,7 @@ with Tee(log_file):
 					
 					plt.imshow(np.log1p(M), interpolation='nearest')
 					plt.savefig(os.path.join(OUT_DIPY, "connectivity.png"))
-				'''
+				
 
 				print("*****************************************")
 				print("End of DIPY: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))

@@ -356,15 +356,23 @@
             "type": "list",
             "help": "List of bval that will be deleted in the DWI multi-shell",
             "default": []
-        }, 
-
-
-        
+        },         
         "list_bval_for_the_tractography": {
             "type": "list",
             "help": "List of bval that will be used for the tractography",
             "default": []
         }, 
+
+
+
+
+        "size_of_bvals_groups_DWI": {
+            "type": "int",
+            "help": "Groups bvals with this value",
+            "default": 10
+        }, 
+
+
         "wm_fa_thr": { 
             "type": "float",
             "help": "DIPY param: wm_fa_thr",
@@ -390,6 +398,12 @@
             "help": "csf_md_thr",
             "default": 0.0032
         }, 
+
+
+
+
+
+
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
