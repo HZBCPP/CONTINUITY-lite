@@ -154,7 +154,13 @@ class Ui(QtWidgets.QTabWidget):
         for item in list_param_setValue_spinBox:
             eval("self." + item + "_spinBox.setValue(int(json_setup_object['Parameters'][item]['default']))")
 
+        self.remove_bval_groupBox.setChecked(False)
+        self.no_registration_remove_bval_groupBox.setChecked(False)
+        self.add_bval_groupBox.setChecked(False)
 
+        self.size_of_bvals_groups_DWI_remove_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
+        self.size_of_bvals_groups_DWI_no_registration_remove_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))         
+        self.size_of_bvals_groups_DWI_add_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
 
         # Initialization of doubleSpinBox:
         list_param_setValue_doubleSpinBox = ["gradient_field_sigma", "deformation_field_sigma", "SyN_param", "steplength", "sampvox", "sx", "sy", "sz"]
@@ -361,18 +367,28 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************     
     def size_of_bvals_groups_DWI_remove_no_registration_valueChanged(self):
         json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"] = self.size_of_bvals_groups_DWI_no_registration_remove_spinBox.value()
+        self.size_of_bvals_groups_DWI_remove_spinBox.setValue(self.size_of_bvals_groups_DWI_no_registration_remove_spinBox.value())
+        self.size_of_bvals_groups_DWI_add_spinBox.setValue(self.size_of_bvals_groups_DWI_no_registration_remove_spinBox.value())
         Ui.update_user_json_file()
-        Ui.remove_bval_groupBox_clicked(self)
+        if self.no_registration_remove_bval_groupBox.isChecked():
+            Ui.no_registration_remove_bval_groupBox_clicked(self)
 
     def size_of_bvals_groups_DWI_remove_valueChanged(self):
         json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"] = self.size_of_bvals_groups_DWI_remove_spinBox.value()
+        self.size_of_bvals_groups_DWI_no_registration_remove_spinBox.setValue(self.size_of_bvals_groups_DWI_remove_spinBox.value())
+        self.size_of_bvals_groups_DWI_add_spinBox.setValue(self.size_of_bvals_groups_DWI_remove_spinBox.value())
         Ui.update_user_json_file()
-        Ui.no_registration_remove_bval_groupBox_clicked(self)
+        if self.remove_bval_groupBox.isChecked():
+            Ui.remove_bval_groupBox_clicked(self)
 
     def size_of_bvals_groups_DWI_add_valueChanged(self):
         json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"] = self.size_of_bvals_groups_DWI_add_spinBox.value()
+        self.size_of_bvals_groups_DWI_no_registration_remove_spinBox.setValue(self.size_of_bvals_groups_DWI_remove_spinBox.value())
+        self.size_of_bvals_groups_DWI_remove_spinBox.setValue(self.size_of_bvals_groups_DWI_remove_spinBox.value())
         Ui.update_user_json_file()
-        Ui.add_bval_for_tractography_groupBox_clicked(self)
+        if self.add_bval_groupBox.isChecked():
+            Ui.add_bval_for_tractography_groupBox_clicked(self)
+
 
 
     # *****************************************
@@ -381,7 +397,7 @@ class Ui(QtWidgets.QTabWidget):
 
     def remove_bval_groupBox_clicked(self):
 
-        if self.remove_bval_groupBox.isChecked: 
+        if self.remove_bval_groupBox.isChecked(): 
             if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
                 list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"])
 
@@ -413,7 +429,7 @@ class Ui(QtWidgets.QTabWidget):
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
-                    OUT_DWI = os.path.join(OUT_FOLDER, "DWI files") #ID
+                    OUT_DWI = os.path.join(OUT_FOLDER, "DWI_files") #ID
                     if not os.path.exists( OUT_DWI ):
                         os.mkdir(OUT_DWI)
 
@@ -463,7 +479,7 @@ class Ui(QtWidgets.QTabWidget):
 
     def add_bval_for_tractography_groupBox_clicked(self):
     
-        if self.add_bval_groupBox.isChecked: 
+        if self.add_bval_groupBox.isChecked(): 
             if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
                 list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"] )
 
@@ -524,7 +540,7 @@ class Ui(QtWidgets.QTabWidget):
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
-                    OUT_DWI = os.path.join(OUT_FOLDER, "DWI files")
+                    OUT_DWI = os.path.join(OUT_FOLDER, "DWI_files")
                     if not os.path.exists( OUT_DWI ):
                         os.mkdir(OUT_DWI)
 
@@ -649,7 +665,7 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def no_registration_remove_bval_groupBox_clicked(self):
-        if self.no_registration_remove_bval_groupBox.isChecked: 
+        if self.no_registration_remove_bval_groupBox.isChecked(): 
             if json_user_object['Arguments']['DWI_DATA_bvals']['value'] != "":
                 no_registration_list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"])
 
@@ -680,7 +696,7 @@ class Ui(QtWidgets.QTabWidget):
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
-                    OUT_DWI = os.path.join(OUT_FOLDER, "DWI files") #ID
+                    OUT_DWI = os.path.join(OUT_FOLDER, "DWI_files") #ID
                     if not os.path.exists( OUT_DWI ):
                         os.mkdir(OUT_DWI)             
 

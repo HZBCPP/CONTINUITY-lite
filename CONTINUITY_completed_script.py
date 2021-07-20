@@ -250,7 +250,7 @@ with Tee(log_file):
 	OUT_DIFFUSION = os.path.join(OUT_TRACTOGRAPHY, "Diffusion") #ID --> Tractography --> Diffusion
 	if not os.path.exists(OUT_DIFFUSION): os.mkdir(OUT_DIFFUSION)
 
-	OUT_DWI = os.path.join(OUT_FOLDER,"DWI files") #ID --> DWI files
+	OUT_DWI = os.path.join(OUT_FOLDER,"DWI_files") #ID --> DWI files
 	if not os.path.exists(OUT_DWI): os.mkdir(OUT_DWI)
 
 
@@ -276,13 +276,13 @@ with Tee(log_file):
 	# Convert DWI nifti input to nrrd:  
 	[path, afile] = os.path.split(DWI_DATA) # split path and file name(nrrd)
 
-	if len(txt_file_with_bval_that_will_be_deleted) != 0: 
+	if len(list_bval_that_will_be_deleted) != 0: 
 
 		if not afile.endswith('nii.gz'): 
 			# DWI data in nrrd format: need to be converted 
 
 			print("*****************************************")
-			print("Convert DWI image to nifti format")
+			print("Preprocessing: Convert DWI image to nifti format")
 			print("*****************************************")           
 
 			DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI_before_remove_bvals.nii.gz")
@@ -342,7 +342,7 @@ with Tee(log_file):
 	if afile.endswith('nii.gz'):
 
 		print("*****************************************")
-		print("Convert DWI FSL2Nrrd")
+		print("Preprocessing: Convert DWI FSL2Nrrd")
 		print("*****************************************") 
 
 		output_nrrd = os.path.join(OUT_DWI, afile[:-7] + '.nrrd') #filtered or not
@@ -359,7 +359,7 @@ with Tee(log_file):
 	else: 
 		# DWI data in nrrd format: need to be converted 
 		print("*****************************************")
-		print("Convert DWI image to nifti format")
+		print("Preprocessing: Convert DWI image to nifti format")
 		print("*****************************************")           
 
 		DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI.nii.gz")
@@ -1349,42 +1349,41 @@ with Tee(log_file):
 
 
 
-
-
-
-
 	# Find all b-values: 
-		if len(list_bval_for_the_tractography) == 0: #bval not specify by the user: by default: all bvals used except 0
-			new_bvals = []
-			bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')     
-			for line in bval_file:
-					line = int(line.strip('\n') )
-					if not line in new_bvals and line != 0:
-						new_bvals.append(line)
-
-
-		else: # bvals 'grouping' specify by the user: need to add the nereast value 
-			new_bvals,all_bval = ([],[])
-
-			bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')    
-
-			for line in bval_file:
-				# Extraction of bval: 
+	if len(list_bval_for_the_tractography) == 0: #bval not specify by the user: by default: all bvals used except 0
+		print("here")
+		new_bvals,all_bval = ([],[])
+		bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')     
+		for line in bval_file:
 				line = int(line.strip('\n') )
+				if not line in new_bvals and line != 0:
+					new_bvals.append(line)
+					all_bval.append(line)
+
+
+	else: # bvals 'grouping' specify by the user: need to add the nereast value 
+		new_bvals,all_bval = ([],[])
+
+		bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')    
+
+		for line in bval_file:
+			# Extraction of bval: 
+			line = int(line.strip('\n') )
+			if not line in all_bval:
 				all_bval.append(line)
 
-				# Check if user want of not this value 
-				for listitem in list_bval_for_the_tractography:
-		
-					# Other nerest b-values: 
-					for i in range(size_of_bvals_groups_DWI*2):
-						if int((line-size_of_bvals_groups_DWI)) + i == listitem:
-							if not line in new_bvals:
-								new_bvals.append(line)
+			# Check if user want of not this value 
+			for listitem in list_bval_for_the_tractography:
+	
+				# Other nerest b-values: 
+				for i in range(size_of_bvals_groups_DWI*2):
+					if int((line-size_of_bvals_groups_DWI)) + i == listitem:
+						if not line in new_bvals:
+							new_bvals.append(line)
 
-		print("list_bval_for_the_tractography", list_bval_for_the_tractography)	
-		print("all_bval", all_bval)			
-		print("new_bvals after conversion: ", new_bvals)
+	print("list_bval_for_the_tractography", list_bval_for_the_tractography)	
+	print("all_bval", all_bval)			
+	print("new_bvals after conversion: ", new_bvals)
 
 
 
@@ -1508,8 +1507,8 @@ with Tee(log_file):
 												                	'-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 												                	'-scratch', os.path.join(OUT_MRTRIX),
 												                	'-nthreads', str(nb_threads) ]
+				command.append('-shells')
 				for element in new_bvals:  
-					command.append('-shells')
 					command.append(str(element))
 
 				run_command("msmt_5tt", command)
@@ -1564,6 +1563,25 @@ with Tee(log_file):
 				command.append('-shells')
 				for element in new_bvals:  
 					command.append(str(element))
+
+				'''
+				/home/elodie/miniconda3/envs/CONTINUITY_env/bin/dwi2fod msmt_csd 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/Diffusion/data.nii.gz 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/Response_function_estimation.txt 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/FOD.nii.gz 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/response_wm.txt 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/wmfod.mif 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/response_gm.txt 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/gm.mif 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/response_csf.txt 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/csf.mif 
+
+				-mask /BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/Diffusion/nodif_brain_mask.nii.gz
+				-fslgrad /BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/Diffusion/bvecs 
+				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/Diffusion/bvals 
+				-nthreads 6 
+				-shells 5 1490 1495 1500 2990 3000 2985 2995 3005 1505 1485 3010
+				'''
 
 
 			run_command("FOD estimation", command)
@@ -2305,8 +2323,9 @@ with Tee(log_file):
 											                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 					
 					T1_labeled = load_nifti_data(labeled_image_nifti)
+					print("T1_labeled",T1_labeled )
+					print("T1_labeled shape ",T1_labeled.shape())
 
-					T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
 
 					print("*****************************************")
 					print("Before create connectivity matrix: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
@@ -2314,7 +2333,7 @@ with Tee(log_file):
 
 					# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#connectivity-matrix
 					# https://dipy.org/documentation/1.0.0./examples_built/streamline_tools/
-					M, grouping = utils.connectivity_matrix(streamlines, affine, T1_labeled_reshape, return_mapping=True, mapping_as_streamlines=True)
+					M, grouping = utils.connectivity_matrix(streamlines, affine, T1_labeled, return_mapping=True, mapping_as_streamlines=True)
 					M[:3, :] = 0
 					M[:, :3] = 0
 
