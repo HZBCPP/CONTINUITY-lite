@@ -149,11 +149,15 @@ class Ui(QtWidgets.QTabWidget):
         # Initialization of spinBox:
         list_param_setValue_spinBox = ["first_metric_weight", "first_radius", "second_metric_weight", "second_radius", 
                                        "iteration1", "iteration2", "iteration3", 
-                                       "nb_fibers", "nb_fiber_per_seed", "nb_threads", "nb_jobs_bedpostx_gpu", "spharmDegree", "subdivLevel", "nb_iteration_GenParaMeshCLP",
-                                       "size_of_bvals_groups_DWI" ]
+                                       "nb_fibers", "nb_fiber_per_seed", "nb_threads", "nb_jobs_bedpostx_gpu", "spharmDegree", "subdivLevel", "nb_iteration_GenParaMeshCLP" ]
                                        
         for item in list_param_setValue_spinBox:
             eval("self." + item + "_spinBox.setValue(int(json_setup_object['Parameters'][item]['default']))")
+
+        self.size_of_bvals_groups_DWI_remove_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
+        self.size_of_bvals_groups_DWI_remove_no_registration_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
+        self.size_of_bvals_groups_DWI_add_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
+
 
         # Initialization of doubleSpinBox:
         list_param_setValue_doubleSpinBox = ["gradient_field_sigma", "deformation_field_sigma", "SyN_param", "steplength", "sampvox", "sx", "sy", "sz"]

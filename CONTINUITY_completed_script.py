@@ -142,8 +142,6 @@ list_bval_that_will_be_deleted          = json_user_object["Parameters"]["list_b
 list_bval_for_the_tractography          = json_user_object["Parameters"]["list_bval_for_the_tractography"]['value']
 
 
-
-
 size_of_bvals_groups_DWI                = json_user_object["Parameters"]["size_of_bvals_groups_DWI"]['value']
 
 wm_fa_thr                               = json_user_object["Parameters"]["wm_fa_thr"]['value']
@@ -284,26 +282,26 @@ with Tee(log_file):
 			# DWI data in nrrd format: need to be converted 
 
 			print("*****************************************")
-            print("Convert DWI image to nifti format")
-            print("*****************************************")           
+			print("Convert DWI image to nifti format")
+			print("*****************************************")           
 
-            DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI_before_remove_bvals.nii.gz")
-            if os.path.exists(DWI_nifti):
-                print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
-            else:
-                print("Convert DWI image to nifti format ")
-                
-                run_command("DWIConvert: convert DWI to nifti format", [DWIConvertPath, 
+			DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI_before_remove_bvals.nii.gz")
+			if os.path.exists(DWI_nifti):
+				print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
+			else:
+				print("Convert DWI image to nifti format ")
+
+				run_command("DWIConvert: convert DWI to nifti format", [DWIConvertPath, 
                                                                         "--inputVolume", DWI_DATA, #input data 
                                                                         "--conversionMode", "NrrdToFSL", 
                                                                         "--outputVolume", DWI_nifti, 
                                                                         "--outputBValues", os.path.join(OUT_DWI, "bvals"), 
                                                                         "--outputBVectors", os.path.join(OUT_DWI, "bvecs")])
-            # Update the path of DWI: 
+			# Update the path of DWI: 
 			DWI_DATA_bvals = os.path.join(OUT_DWI, "bvals")
 			DWI_DATA_bvecs = os.path.join(OUT_DWI, "bvecs")
 			DWI_DATA       = DWI_nifti
-                    
+
 			
 		# DWI data in nifti format 
 		print("*****************************************")
@@ -361,22 +359,22 @@ with Tee(log_file):
 	else: 
 		# DWI data in nrrd format: need to be converted 
 		print("*****************************************")
-        print("Convert DWI image to nifti format")
-        print("*****************************************")           
+		print("Convert DWI image to nifti format")
+		print("*****************************************")           
 
-        DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI.nii.gz")
-        if os.path.exists(DWI_nifti):
-            print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
-        else:
-            print("Convert DWI image to nifti format ")
-            
-            run_command("DWIConvert: convert DWI to nifti format", [DWIConvertPath, 
+		DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI.nii.gz")
+		if os.path.exists(DWI_nifti):
+			print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
+		else:
+			print("Convert DWI image to nifti format ")
+
+			run_command("DWIConvert: convert DWI to nifti format", [DWIConvertPath, 
                                                                     "--inputVolume", DWI_DATA, #input data 
                                                                     "--conversionMode", "NrrdToFSL", 
                                                                     "--outputVolume", DWI_nifti, 
                                                                     "--outputBValues", os.path.join(OUT_DWI, "bvals"), 
                                                                     "--outputBVectors", os.path.join(OUT_DWI, "bvecs")])
-        # Update the path of DWI: 
+		# Update the path of DWI: 
 		DWI_DATA_bvals = os.path.join(OUT_DWI, "bvals")
 		DWI_DATA_bvecs = os.path.join(OUT_DWI, "bvecs")
 
@@ -2308,13 +2306,15 @@ with Tee(log_file):
 					
 					T1_labeled = load_nifti_data(labeled_image_nifti)
 
+					T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
+
 					print("*****************************************")
 					print("Before create connectivity matrix: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 					print("*****************************************")
 
 					# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#connectivity-matrix
 					# https://dipy.org/documentation/1.0.0./examples_built/streamline_tools/
-					M, grouping = utils.connectivity_matrix(streamlines, affine, T1_labeled, return_mapping=True, mapping_as_streamlines=True)
+					M, grouping = utils.connectivity_matrix(streamlines, affine, T1_labeled_reshape, return_mapping=True, mapping_as_streamlines=True)
 					M[:3, :] = 0
 					M[:, :3] = 0
 

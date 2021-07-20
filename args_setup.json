@@ -364,8 +364,6 @@
         }, 
 
 
-
-
         "size_of_bvals_groups_DWI": {
             "type": "int",
             "help": "Groups bvals with this value",
