@@ -154,9 +154,6 @@ class Ui(QtWidgets.QTabWidget):
         for item in list_param_setValue_spinBox:
             eval("self." + item + "_spinBox.setValue(int(json_setup_object['Parameters'][item]['default']))")
 
-        self.size_of_bvals_groups_DWI_remove_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
-        self.size_of_bvals_groups_DWI_remove_no_registration_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
-        self.size_of_bvals_groups_DWI_add_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
 
 
         # Initialization of doubleSpinBox:
@@ -386,7 +383,7 @@ class Ui(QtWidgets.QTabWidget):
 
         if self.remove_bval_groupBox.isChecked: 
             if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
-                list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["extract_bvals"]["value"])
+                list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"])
 
                 # int to str: 
                 for i in range(len(list_bval)): 
@@ -468,7 +465,7 @@ class Ui(QtWidgets.QTabWidget):
     
         if self.add_bval_groupBox.isChecked: 
             if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
-                list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["extract_bvals"]["value"] )
+                list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"] )
 
                 # int to str: 
                 for i in range(len(list_bval)): 
@@ -654,7 +651,7 @@ class Ui(QtWidgets.QTabWidget):
     def no_registration_remove_bval_groupBox_clicked(self):
         if self.no_registration_remove_bval_groupBox.isChecked: 
             if json_user_object['Arguments']['DWI_DATA_bvals']['value'] != "":
-                no_registration_list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["extract_bvals"]["value"])
+                no_registration_list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"])
 
                 # int to str: 
                 for i in range(len(no_registration_list_bval)): 
