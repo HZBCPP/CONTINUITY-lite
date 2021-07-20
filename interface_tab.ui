@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>1</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -452,7 +452,7 @@ p, li { white-space: pre-wrap; }
                 <string>b-values in your b-values file: </string>
                </property>
               </widget>
-              <widget class="QWidget" name="">
+              <widget class="QWidget" name="layoutWidget">
                <property name="geometry">
                 <rect>
                  <x>10</x>
@@ -470,7 +470,11 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSpinBox" name="size_of_bvals_groups_DWI_remove_spinBox"/>
+                 <widget class="QSpinBox" name="size_of_bvals_groups_DWI_remove_spinBox">
+                  <property name="value">
+                   <number>10</number>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -3303,7 +3307,11 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="size_of_bvals_groups_DWI_no_registration_remove_spinBox"/>
+             <widget class="QSpinBox" name="size_of_bvals_groups_DWI_no_registration_remove_spinBox">
+              <property name="value">
+               <number>10</number>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -4545,7 +4553,11 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="size_of_bvals_groups_DWI_add_spinBox"/>
+           <widget class="QSpinBox" name="size_of_bvals_groups_DWI_add_spinBox">
+            <property name="value">
+             <number>10</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
