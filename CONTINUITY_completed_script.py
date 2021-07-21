@@ -1344,14 +1344,9 @@ with Tee(log_file):
 			save_connectivity_matrix('row_region', row_region_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
 			save_connectivity_matrix('row_column', row_column_normalization(matrixFile), NETWORK_DIR, ID, overlapName, loopcheck)
 		
-		
-
-
-
 
 	# Find all b-values: 
 	if len(list_bval_for_the_tractography) == 0: #bval not specify by the user: by default: all bvals used except 0
-		print("here")
 		new_bvals,all_bval = ([],[])
 		bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')     
 		for line in bval_file:
@@ -1494,21 +1489,24 @@ with Tee(log_file):
 
 
 			if len(new_bvals) != 1: # multi shell_DWI: need other file for the next step  
+				print("multi shell dwi2response")
 
 				response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
 				response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
 				response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
 
-				command = [MRtrixPath + "/dwi2response",'msmt_5tt', DiffusionData, # input
-																	fivett_img, 
-																	response_wm_txt, 
-																	response_gm_txt, 
-																	response_csf_txt,
-												                	'-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
-												                	'-scratch', os.path.join(OUT_MRTRIX),
-												                	'-nthreads', str(nb_threads) ]
-				command.append('-shells')
+				command = [MRtrixPath + "/dwi2response",'msmt_5tt', 
+														DiffusionData, # input
+														fivett_img, # input
+
+														response_wm_txt,  #output
+														response_gm_txt,  #output
+														response_csf_txt, #output
+												        '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
+												        '-scratch', os.path.join(OUT_MRTRIX),
+												        '-nthreads', str(nb_threads) ]
 				for element in new_bvals:  
+					command.append('-shells')
 					command.append(str(element))
 
 				run_command("msmt_5tt", command)
@@ -1520,14 +1518,9 @@ with Tee(log_file):
 		# *****************************************
 
 		FOD_nii = os.path.join(OUT_MRTRIX, "FOD.nii.gz")
-		
 		wmfod_mif = os.path.join(OUT_MRTRIX, "wmfod.mif")
-		
 		gm_mif = os.path.join(OUT_MRTRIX, "gm.mif")
-		
 		csf_mif = os.path.join(OUT_MRTRIX, "csf.mif")
-
-
 
 		if os.path.exists(FOD_nii):
 		    print("Fibre Orientation Distribution estimation already compute")
@@ -1548,12 +1541,15 @@ with Tee(log_file):
 			else: # multi shell 
 				command = [MRtrixPath + "/dwi2fod", 'msmt_csd',
 									    DiffusionData, # input
-									    Response_function_estimation_txt, # input
-									    FOD_nii, # ouput
+									    #Response_function_estimation_txt, # input
+									    #FOD_nii, # ouput
+
 										response_wm_txt,  # input
 										wmfod_mif, # ouput
+
 										response_gm_txt,  # input
 										gm_mif, # ouput
+
 										response_csf_txt,  # input
 										csf_mif, # ouput
 
@@ -1563,6 +1559,7 @@ with Tee(log_file):
 				command.append('-shells')
 				for element in new_bvals:  
 					command.append(str(element))
+
 
 				'''
 				/home/elodie/miniconda3/envs/CONTINUITY_env/bin/dwi2fod msmt_csd 
@@ -1795,6 +1792,7 @@ with Tee(log_file):
 				print("MRtrix tractography", "err: ", colored("\n" + str(err) + "\n", 'red'))	   
 				
 
+				'''
 				# *****************************************
 				# Convert tractography tck file to vtk format    FOR VISUALIZATION
 				# *****************************************
@@ -1805,7 +1803,7 @@ with Tee(log_file):
 				else:
 					print("Convert tck to vtk")									
 					run_command("Convert to vtk", [MRtrixPath + "/tckconvert", output_track_tckgen_tck, output_track_tckgen_vtk])
-				
+				'''
 				
 
 			# Run tcksift: 
@@ -1823,6 +1821,7 @@ with Tee(log_file):
 					run_command("tcksift ", [MRtrixPath + "/tcksift", output_track_tckgen_tck, FOD_nii, output_tcksift_tck, '-nthreads', str(nb_threads)])	
 
 				  
+				'''
 				# *****************************************
 				# Convert tcksif tck file to vtk format       FOR VISUALIZATION
 				# *****************************************
@@ -1833,7 +1832,7 @@ with Tee(log_file):
 				else:
 					print("Convert tck to vtk")									
 					run_command("Convert to vtk", [MRtrixPath + "/tckconvert", output_tcksift_tck, output_tcksift_vtk]) 
-				
+				'''
 				
 			
 			# *****************************************
@@ -1890,7 +1889,7 @@ with Tee(log_file):
 					run = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 					out, err = run.communicate()
 					print("tckedit ", "out: ", colored("\n" + str(out) + "\n", 'green')) 
-					print("tckedit ", "err: ", colored("\n" + str(err) + "\n", 'red'))	 
+					print("tckedit ", "err: ", colored("\n" + str(err) + "\n", 'red'))	
 					
 
 				# tcksift2:
@@ -2012,8 +2011,8 @@ with Tee(log_file):
 
 		
 
-		wm_fa_thr_list = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9]
-		gm_fa_thr= [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9]
+		wm_fa_thr_list = [ 0.3]#0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9]
+		gm_fa_thr= [ 0.2]#, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9]
 
 
 		for i in range(len(gm_fa_thr)): 
@@ -2025,12 +2024,12 @@ with Tee(log_file):
 			for i in range(len(wm_fa_thr_list)): 
 
 				OUT_DIPY = os.path.join(OUT_DIPY_second, "wm_fa_thr"+ str(wm_fa_thr_list[i]) ) 
-
 				if not os.path.exists(OUT_DIPY):
 					os.mkdir(OUT_DIPY)
-				
-				#tractogram = os.path.join(OUT_DIPY,"tractogram.trk")
 
+				tractogram = os.path.join(OUT_DIPY,"tractogram.trk")
+				
+				
 
 				print("*****************************************")
 				print("Convert DWI image to nifti format")
@@ -2078,225 +2077,118 @@ with Tee(log_file):
 
 				# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
 				white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1])
-				
-
-			
-		        #*****************************************
-				# Method for getting directions from a diffusion data set
-				#*****************************************
-
-				if len(new_bvals) == 1: # single shell_DWI: 
-					print("single shell")
-					# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
-					response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=wm_fa_thr_list[i])   # 0.7: adult 
-
-					print("response", response)
-					print("ratio", ratio)
-
-					# Fit a Constrained Spherical Deconvolution (CSD) model: 
-					csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
 					
-					#csd_fit = csd_model.fit(data, mask=white_matter) 
-
-
-				else: # multi shell DWI
-					print("multi shell")
-					# Computation of masks for multi-shell multi-tissue (msmt) response: 
-					#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
-						#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.1, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
-
-					#Computation of multi-shell multi-tissue (msmt) response  (functions from given tissues masks): the estimation of every tissue’s response function.
-						#response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data, mask_wm, mask_gm, mask_csf)
-
-					# Fiber response function estimation for multi-shell data: 
-					ubvals = unique_bvals_tolerance(gtab.bvals)
-					print("ubvals", ubvals) #[   0. 1004.] 
-
-					# https://dipy.org/documentation/1.4.1./reference/dipy.reconst/#multi-shell-fiber-response
-						#response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=response_wm, gm_rf=response_gm, csf_rf=response_csf)
-						#print("response_mcsd", response_mcsd) # <dipy.reconst.mcsd.MultiShellResponse object at 0x7f1754f42210>      # MultiShellResponse object.
-
-					#response = np.array([response_wm, response_gm, response_csf])
-					#mcsd_model_simple_response = MultiShellDeconvModel(gtab, response, sh_order=8)
-
-
-					# Need to be test:
-					# Automatic estimation of multi-shell multi-tissue (msmt) response: (functions using FA and MD)
-					auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=wm_fa_thr_list[i], 
-																														gm_fa_thr=gm_fa_thr[i], 
-																														csf_fa_thr=0.15, 
-																														gm_md_thr=0.001, 
-																														csf_md_thr=0.0032)
-					response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=auto_response_wm, gm_rf=auto_response_gm, csf_rf=auto_response_csf)
-					print("auto_response_wm", auto_response_wm) 
-					print("auto_response_gm", auto_response_gm) 
-					print("auto_response_csf", auto_response_csf)
-
-					# Fit a Constrained Spherical Deconvolution (CSD) model: 
-					# mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
-
-					# Need to be test:
-					mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
-
-					print("mcsd_model",mcsd_model ) #<dipy.reconst.mcsd.MultiShellDeconvModel object at 0x7f171150e110>
-
-					#mcsd_fit = mcsd_model.fit(denoised_arr[:, :, 10:11])
-				
-
-				print("*****************************************")
-				print("End of getting directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-				print("*****************************************")
-
-		        #*****************************************
-				# Stopping criterion: a method for identifying when the tracking must stop: restricting the fiber tracking to areas with good directionality information
-				#*****************************************
-
-				# We use the GFA (similar to FA but ODF based models) of the CSA model to build a stopping criterion.
-				# Fit the data to a Constant Solid Angle ODF Model: estimate the Orientation Distribution Function (ODF) at each voxel
-				csa_model = CsaOdfModel(gtab, sh_order=6) 
-				gfa = csa_model.fit(data, mask=white_matter).gfa 
-				csd_fit = csa_model.fit(data, mask=white_matter) #remove
-
-				'''
-				csd_odf = csd_fit.odf(default_sphere)#remove
-				ren = window.Scene()#remove
-				fodf_spheres = actor.odf_slicer(csd_odf, sphere=default_sphere, scale=0.9,
-		                                norm=False, colormap='plasma')#remove
-				ren.add(fodf_spheres)#remove
-				window.record(ren, out_path=os.path.join(OUT_DIPY, 'csd_odfs.png'), size=(600, 600))#remove
-				'''
 
 
 
-				# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the Generalized Fractional Anisotropy (GFA)
-				# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#thresholdstoppingcriterion 
-				stopping_criterion = ThresholdStoppingCriterion(gfa, .25)  # default value: .25
-
-				print("*****************************************")
-				print("End of stopping criterion method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-				print("*****************************************")
-
-
-		        #*****************************************
-				# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
-				#*****************************************
-
-				seed_mask = white_matter #BRAINMASK #DiffusionBrainMask
-				# Create seeds for fiber tracking from a binary mask: 
-				seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
-				print("seeds", seeds ) 
-
-				# The peaks of an ODF are good estimates for the orientation of tract segments at a point in the image
-				# peaks_from_model: fit the data and calculated the fiber directions in all voxels of the white matter
-				# https://dipy.org/documentation/1.4.1./reference/dipy.workflows/#peaks-from-model 
-				# .peaks_from_model(model, data, sphere, relative_peak_threshold, min_separation_angle, mask=None, return_sh=True, gfa_thr=0, parallel=False ...)
-				if len(new_bvals) == 1: # single shell: 
-					peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
-				else: 
-					peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
-
-				# shm_coeff: the spherical harmonic coefficients of the odf: 
-				fod_coeff = peaks.shm_coeff
-
-				'''
-				window.clear(ren)#remove
-				fodf_peaks = actor.peak_slicer(peaks.peak_dirs, peaks.peak_values)#remove
-				ren.add(fodf_peaks)#remove
-
-				window.record(ren, out_path=os.path.join(OUT_DIPY, 'csd_peaks.png'), size=(600, 600))#remove
-
-				ap = shm.anisotropic_power(peaks.shm_coeff)#remove
-
-				plt.matshow(np.rot90(ap[:, :, 10]), cmap=plt.cm.bone)#remove
-				plt.savefig(os.path.join(OUT_DIPY, "anisotropic_power_map.png"))#remove
-				plt.close()#remove
-				'''
-
-
-				print("*****************************************")
-				print("End of peaks of an ODF method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-				print("*****************************************")
-
-
-				# Discrete Fiber Orientation Distribution (FOD) used by the ProbabilisticDirectionGetter as a PMF for sampling tracking directions.
-				# ProbabilisticDirectionGetter: Randomly samples direction of a sphere based on probability mass function (PMF) 
-				# from_shcoeff: Probabilistic direction getter from a distribution of directions on the sphere
-				prob_dg = ProbabilisticDirectionGetter.from_shcoeff(fod_coeff, max_angle=30., sphere=default_sphere) 
-
-				print("*****************************************")
-				print("End of tracking directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-				print("*****************************************")
 
 
 
-		        #*****************************************
-			    # Generate streamlines
-			    #*****************************************
+				if not os.path.exists(tractogram):
 
-				# Initialization of LocalTracking: Creates streamlines by using local fiber-tracking
-				streamlines_generator = LocalTracking(prob_dg, stopping_criterion, seeds, affine, step_size=.5)
+			        #*****************************************
+					# Method for getting directions from a diffusion data set
+					#*****************************************
 
-				# Generate streamlines object:  streamlines = ArraySequence object
-				# Streamlines: alias of nibabel.streamlines.array_sequence.ArraySequence
-				streamlines = Streamlines(streamlines_generator)
+					if len(new_bvals) == 1: # single shell_DWI: 
+						print("single shell")
+						# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
+						response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=wm_fa_thr_list[i])   # 0.7: adult 
 
-				#test: 
-				streamline_vtk = os.path.join(OUT_DIPY,"streamlines.vtk")
-				save_vtk_streamlines(streamlines, streamline_vtk, to_lps=True, binary=False)
+						print("response", response)
+						print("ratio", ratio)
 
-				print("*****************************************")
-				print("End of generate streamlines: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-				print("*****************************************")
-
-
-				'''
-		        #*****************************************
-				# Save the streamlines as a Trackvis file
-				#*****************************************
-				
-				sft = StatefulTractogram(streamlines, img, Space.RASMM)
-				save_trk(sft, tractogram, streamlines)
-
-				''
-				scene = window.Scene()
-				scene.add(actor.line(streamlines, colormap.line_colors(streamlines)))
-				window.record(scene, out_path= os.path.join(OUT_DIPY, 'tractogram_probabilistic.png'), size=(800, 800))
-				#window.show(scene)
-				''
-				
-
-				# Conversion trk to tck 
-				tractogram_tck = os.path.join(OUT_DIPY,"tractogram.tck")
-				
-				if not os.path.exists(tractogram_tck): 
-					trk = nib.streamlines.load(tractogram)
-					nib.streamlines.save(trk.tractogram, tractogram_tck)
+						# Fit a Constrained Spherical Deconvolution (CSD) model: 
+						csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
+						
+						#csd_fit = csd_model.fit(data, mask=white_matter) 
 
 
+					else: # multi shell DWI
+						print("multi shell")
+						# Computation of masks for multi-shell multi-tissue (msmt) response: 
+						#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.7, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
+							#mask_wm, mask_gm, mask_csf = mask_for_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=0.1, gm_fa_thr=0.3, csf_fa_thr=0.15, gm_md_thr=0.001, csf_md_thr=0.0032)
 
-		        # *****************************************
-				# Convert tck to vtk format
-				# *****************************************
+						#Computation of multi-shell multi-tissue (msmt) response  (functions from given tissues masks): the estimation of every tissue’s response function.
+							#response_wm, response_gm, response_csf = response_from_mask_msmt(gtab, data, mask_wm, mask_gm, mask_csf)
+
+						# Fiber response function estimation for multi-shell data: 
+						ubvals = unique_bvals_tolerance(gtab.bvals)
+						print("ubvals", ubvals) #[   0. 1004.] 
+
+						# https://dipy.org/documentation/1.4.1./reference/dipy.reconst/#multi-shell-fiber-response
+							#response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=response_wm, gm_rf=response_gm, csf_rf=response_csf)
+							#print("response_mcsd", response_mcsd) # <dipy.reconst.mcsd.MultiShellResponse object at 0x7f1754f42210>      # MultiShellResponse object.
+
+						#response = np.array([response_wm, response_gm, response_csf])
+						#mcsd_model_simple_response = MultiShellDeconvModel(gtab, response, sh_order=8)
+
+
+						# Need to be test:
+						# Automatic estimation of multi-shell multi-tissue (msmt) response: (functions using FA and MD)
+						auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=wm_fa_thr_list[i], 
+																															gm_fa_thr=gm_fa_thr[i], 
+																															csf_fa_thr=0.15, 
+																															gm_md_thr=0.001, 
+																															csf_md_thr=0.0032)
+						response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=auto_response_wm, gm_rf=auto_response_gm, csf_rf=auto_response_csf)
+						print("auto_response_wm", auto_response_wm) 
+						print("auto_response_gm", auto_response_gm) 
+						print("auto_response_csf", auto_response_csf)
+
+						# Fit a Constrained Spherical Deconvolution (CSD) model: 
+						# mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
+
+						# Need to be test:
+						mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
+
+						print("mcsd_model",mcsd_model ) #<dipy.reconst.mcsd.MultiShellDeconvModel object at 0x7f171150e110>
+
+						#mcsd_fit = mcsd_model.fit(denoised_arr[:, :, 10:11])
 					
-				if os.path.exists(MRtrixPath + "/tckconvert"): 
 
-					tractogram_vtk = os.path.join(OUT_DIPY,"tractogram.vtk")
-					if os.path.exists(tractogram_vtk):
-					    print("conversion to vtk already done")
-					else:
-						print("Convert tck to vtk")									
-						run_command("Convert to vtk", [MRtrixPath + "/tckconvert", tractogram_tck, tractogram_vtk]) 
-				'''
-				
+					print("*****************************************")
+					print("End of getting directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+					print("*****************************************")
+
+			        #*****************************************
+					# Stopping criterion: a method for identifying when the tracking must stop: restricting the fiber tracking to areas with good directionality information
+					#*****************************************
+
+					# We use the GFA (similar to FA but ODF based models) of the CSA model to build a stopping criterion.
+					# Fit the data to a Constant Solid Angle ODF Model: estimate the Orientation Distribution Function (ODF) at each voxel
+					csa_model = CsaOdfModel(gtab, sh_order=6) 
+					gfa = csa_model.fit(data, mask=white_matter).gfa 
+					csd_fit = csa_model.fit(data, mask=white_matter) #remove
+
+					'''
+					csd_odf = csd_fit.odf(default_sphere)#remove
+					ren = window.Scene()#remove
+					fodf_spheres = actor.odf_slicer(csd_odf, sphere=default_sphere, scale=0.9,
+			                                norm=False, colormap='plasma')#remove
+					ren.add(fodf_spheres)#remove
+					window.record(ren, out_path=os.path.join(OUT_DIPY, 'csd_odfs.png'), size=(600, 600))#remove
+					'''
 
 
-		        #*****************************************
-				# Extract the connectivity matrix
-				#*****************************************
-			
-				matrix = os.path.join(OUT_DIPY, "fdt_network_matrix") 
-				if not os.path.exists(matrix): 
-					print("create connectivity matrix")
+
+					# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the Generalized Fractional Anisotropy (GFA)
+					# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#thresholdstoppingcriterion 
+					stopping_criterion = ThresholdStoppingCriterion(gfa, .25)  # default value: .25
+
+					print("*****************************************")
+					print("End of stopping criterion method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+					print("*****************************************")
+
+
+			        #*****************************************
+					# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
+					#*****************************************
+
+
+
+
 
 					T1_OUT_NRRD_labeled = os.path.join(OUT_DIPY, ID + "_T1_SkullStripped_scaled_DWISpace_labeled.nrrd")
 
@@ -2326,9 +2218,192 @@ with Tee(log_file):
 					#print("T1_labeled",T1_labeled )
 					print("T1_labeled shape ",T1_labeled.shape)
 
-					#T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
-					#print("T1_labeled_reshape shape ",T1_labeled_reshape.shape)
+					T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
+					print("T1_labeled_reshape shape ",T1_labeled_reshape.shape)
 
+
+
+
+					seed_mask = white_matter #BRAINMASK #DiffusionBrainMask T1_labeled_reshape
+					# Create seeds for fiber tracking from a binary mask: 
+					seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
+					print("seeds", seeds ) 
+
+					# The peaks of an ODF are good estimates for the orientation of tract segments at a point in the image
+					# peaks_from_model: fit the data and calculated the fiber directions in all voxels of the white matter
+					# https://dipy.org/documentation/1.4.1./reference/dipy.workflows/#peaks-from-model 
+					# .peaks_from_model(model, data, sphere, relative_peak_threshold, min_separation_angle, mask=None, return_sh=True, gfa_thr=0, parallel=False ...)
+					if len(new_bvals) == 1: # single shell: 
+						peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
+					else: 
+						peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
+
+					# shm_coeff: the spherical harmonic coefficients of the odf: 
+					fod_coeff = peaks.shm_coeff
+
+					'''
+					window.clear(ren)#remove
+					fodf_peaks = actor.peak_slicer(peaks.peak_dirs, peaks.peak_values)#remove
+					ren.add(fodf_peaks)#remove
+
+					window.record(ren, out_path=os.path.join(OUT_DIPY, 'csd_peaks.png'), size=(600, 600))#remove
+
+					ap = shm.anisotropic_power(peaks.shm_coeff)#remove
+
+					plt.matshow(np.rot90(ap[:, :, 10]), cmap=plt.cm.bone)#remove
+					plt.savefig(os.path.join(OUT_DIPY, "anisotropic_power_map.png"))#remove
+					plt.close()#remove
+					'''
+
+
+					print("*****************************************")
+					print("End of peaks of an ODF method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+					print("*****************************************")
+
+
+					# Discrete Fiber Orientation Distribution (FOD) used by the ProbabilisticDirectionGetter as a PMF for sampling tracking directions.
+					# ProbabilisticDirectionGetter: Randomly samples direction of a sphere based on probability mass function (PMF) 
+					# from_shcoeff: Probabilistic direction getter from a distribution of directions on the sphere
+					prob_dg = ProbabilisticDirectionGetter.from_shcoeff(fod_coeff, max_angle=30., sphere=default_sphere) 
+
+					print("*****************************************")
+					print("End of tracking directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+					print("*****************************************")
+
+
+
+			        #*****************************************
+				    # Generate streamlines
+				    #*****************************************
+
+					# Initialization of LocalTracking: Creates streamlines by using local fiber-tracking
+					streamlines_generator = LocalTracking(prob_dg, stopping_criterion, seeds, affine, step_size=.5, return_all=False)
+
+					# Generate streamlines object:  streamlines = ArraySequence object
+					# Streamlines: alias of nibabel.streamlines.array_sequence.ArraySequence
+					streamlines = Streamlines(streamlines_generator)
+
+					print(streamlines)
+
+					#test: 
+					streamline_vtk = os.path.join(OUT_DIPY,"streamlines.vtk")
+					save_vtk_streamlines(streamlines, streamline_vtk, to_lps=True, binary=False)
+
+					print("*****************************************")
+					print("End of generate streamlines: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+					print("*****************************************")
+
+
+					
+			        #*****************************************
+					# Save the streamlines as a Trackvis file
+					#*****************************************
+					
+					sft = StatefulTractogram(streamlines, img, Space.RASMM)
+					save_trk(sft, tractogram, streamlines)
+
+
+					'''
+					scene = window.Scene()
+					scene.add(actor.line(streamlines, colormap.line_colors(streamlines)))
+					window.record(scene, out_path= os.path.join(OUT_DIPY, 'tractogram_probabilistic.png'), size=(800, 800))
+					#window.show(scene)
+					'''
+					
+
+					# Conversion trk to tck 
+					tractogram_tck = os.path.join(OUT_DIPY,"tractogram.tck")
+					
+					if not os.path.exists(tractogram_tck): 
+						trk = nib.streamlines.load(tractogram)
+						nib.streamlines.save(trk.tractogram, tractogram_tck)
+
+					'''
+			        # *****************************************
+					# Convert tck to vtk format
+					# *****************************************
+						
+					if os.path.exists(MRtrixPath + "/tckconvert"): 
+
+						tractogram_vtk = os.path.join(OUT_DIPY,"tractogram.vtk")
+						if os.path.exists(tractogram_vtk):
+						    print("conversion to vtk already done")
+						else:
+							print("Convert tck to vtk")									
+							run_command("Convert to vtk", [MRtrixPath + "/tckconvert", tractogram_tck, tractogram_vtk]) 
+					'''
+
+
+
+
+				else: # tractogram already compute 
+					print("Tractogram found: load tractogram and streamlines")
+					trk = nib.streamlines.load(tractogram)
+					streamlines = trk.streamlines
+
+
+					print(streamlines)
+					cpt =0 
+					for i in streamlines:
+						#print("test:", i) #test: [[-1.8750229  40.17018    16.117546  ]
+						if i == []:
+								print("i", i)
+
+						for j in i: 
+							if j == []:
+								print("j",j) #nothing
+
+								cpt +=1 
+
+							if cpt == 10:
+								exit()
+
+						
+
+		        #*****************************************
+				# Extract the connectivity matrix
+				#*****************************************
+			
+				matrix = os.path.join(OUT_DIPY, "fdt_network_matrix") 
+				if not os.path.exists(matrix): 
+					print("create connectivity matrix")
+					
+					T1_OUT_NRRD_labeled = os.path.join(OUT_DIPY, ID + "_T1_SkullStripped_scaled_DWISpace_labeled.nrrd")
+
+					print("*****************************************")
+					print("T1 labeled resample in DWI space")
+					print("*****************************************")
+
+					run_command("WARP_TRANSFORM: T1 labeled resample in DWI space", [pathWARP_TRANSFORM, "3", labeled_image,
+					 																						  T1_OUT_NRRD_labeled, 
+					 																						  "-R", B0_BiasCorrect_NRRD, 
+					 																						  Warp, Affine])
+
+
+					labeled_image_nifti = os.path.join(OUT_DIPY, "labeled_image.nii.gz")
+					if os.path.exists(labeled_image_nifti):
+					    print("FSL file: Found Skipping conversion")
+					else: 
+						print("DWIConvert T1 labeled in DWI space to FSL format")
+
+						run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD_labeled,
+											                                    "--conversionMode", "NrrdToFSL", 
+											                                    "--outputVolume", labeled_image_nifti, 
+											                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
+											                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+					
+					
+					data_labeled, affine_labeled, img_labeled = load_nifti(labeled_image_nifti, return_img=True) 
+					print(data_labeled.shape)	
+					#data_labeled_reshape = data_labeled.reshape(data_labeled[0:-1])
+
+					T1_labeled = load_nifti_data(labeled_image_nifti)
+					#print("T1_labeled",T1_labeled )
+					print("T1_labeled shape ",T1_labeled.shape)
+
+					T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
+					print("T1_labeled_reshape shape ",T1_labeled_reshape.shape)
+					
 
 
 					print("*****************************************")
@@ -2337,7 +2412,10 @@ with Tee(log_file):
 
 					# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#connectivity-matrix
 					# https://dipy.org/documentation/1.0.0./examples_built/streamline_tools/
-					M, grouping = utils.connectivity_matrix(streamlines, affine, T1_labeled, return_mapping=True, mapping_as_streamlines=True)
+					M, grouping = utils.connectivity_matrix(streamlines, affine_labeled, #affine, 
+																		T1_labeled, #T1_labeled_reshape, 
+																		inclusive = True, 
+																		return_mapping=True, mapping_as_streamlines=True)
 					M[:3, :] = 0
 					M[:, :3] = 0
 
