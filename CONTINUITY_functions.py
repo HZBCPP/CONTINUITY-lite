@@ -959,7 +959,7 @@ def extract_bvals(bval_file_name, size_of_bvals_groups_DWI):
     # remove duplicate
     list_bval = list(dict.fromkeys(list_bval))
 
-    #print("list_bval", list_bval ) #[0, 300, 301, 302, 199, 404, 400, 402, 401, 1004]
+    #print("function list_bval", list_bval ) #[0, 300, 301, 302, 199, 404, 400, 402, 401, 1004]
 
     list_list_bval = [[] for i in range(len(list_bval))]
     group = []
@@ -985,14 +985,14 @@ def extract_bvals(bval_file_name, size_of_bvals_groups_DWI):
                     if val not in group:
                         group.append(val)
     
-    #print(list_list_bval)# [[300, 301, 302], [199], [404, 400, 402, 401], [1004]]
+    #print("function list_list_bval", list_list_bval)# [[300, 301, 302], [199], [404, 400, 402, 401], [1004]]
 
     for i in range(len(list_list_bval)):
         if list_list_bval[i] != []:
             list_bval_clean.append(int(sum(list_list_bval[i]) / len(list_list_bval[i])))
 
 
-
+    #print("function list_bval_clean", list_bval_clean)
     return list_bval_clean 
 
 

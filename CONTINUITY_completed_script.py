@@ -309,11 +309,11 @@ with Tee(log_file):
 		print("*****************************************")
 
 		# Find all b-values: 
-		all_bvals = []
+		all_bval_with_duplicates = []
 		bval_file = open(DWI_DATA_bvals, 'r')     
 		for line in bval_file:
 			line = int(line.strip('\n') )
-			all_bvals.append(line)
+			all_bval_with_duplicates.append(line)
 	
 		# Write txt file with all bval that will be deleted: 
 		txt_file_with_bval_that_will_be_deleted = os.path.join(OUT_DWI, "txt_file_with_bval_that_will_be_deleted.txt")
@@ -324,7 +324,7 @@ with Tee(log_file):
 
 				# Write other nerest b-values: 
 				for i in range(size_of_bvals_groups_DWI*2):
-					if int((listitem-size_of_bvals_groups_DWI)) + i in all_bvals:
+					if int((listitem-size_of_bvals_groups_DWI)) + i in all_bval_with_duplicates:
 						filebval.write('%s\n' % int((listitem-size_of_bvals_groups_DWI)) + i)
 
 
@@ -1347,25 +1347,29 @@ with Tee(log_file):
 
 	# Find all b-values: 
 	if len(list_bval_for_the_tractography) == 0: #bval not specify by the user: by default: all bvals used except 0
-		new_bvals,all_bval = ([],[])
+		list_bval_for_the_tractography = extract_bvals(DWI_DATA_bvals, size_of_bvals_groups_DWI)
+
+		list_bval_for_the_tractography = [x for x in list_bval_for_the_tractography if x > size_of_bvals_groups_DWI] # remove 0 or nerest values
+
+		user_bval_with_nearest_values_without_duplicate,all_bval_with_duplicate = ([],[])
 		bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')     
 		for line in bval_file:
 				line = int(line.strip('\n') )
-				if not line in new_bvals and line != 0:
-					new_bvals.append(line)
-					all_bval.append(line)
+				if not line in user_bval_with_nearest_values_without_duplicate and line != 0:
+					user_bval_with_nearest_values_without_duplicate.append(line)
+					all_bval_with_duplicate.append(line)
 
 
 	else: # bvals 'grouping' specify by the user: need to add the nereast value 
-		new_bvals,all_bval = ([],[])
+		user_bval_with_nearest_values_without_duplicate, all_bval_with_duplicate = ([],[])
 
 		bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')    
 
 		for line in bval_file:
 			# Extraction of bval: 
 			line = int(line.strip('\n') )
-			if not line in all_bval:
-				all_bval.append(line)
+			if not line in all_bval_with_duplicate:
+				all_bval_with_duplicate.append(line)
 
 			# Check if user want of not this value 
 			for listitem in list_bval_for_the_tractography:
@@ -1373,16 +1377,12 @@ with Tee(log_file):
 				# Other nerest b-values: 
 				for i in range(size_of_bvals_groups_DWI*2):
 					if int((line-size_of_bvals_groups_DWI)) + i == listitem:
-						if not line in new_bvals:
-							new_bvals.append(line)
+						if not line in user_bval_with_nearest_values_without_duplicate:
+							user_bval_with_nearest_values_without_duplicate.append(line)
 
 	print("list_bval_for_the_tractography", list_bval_for_the_tractography)	
-	print("all_bval", all_bval)			
-	print("new_bvals after conversion: ", new_bvals)
-
-
-
-
+	print("all_bval_with_duplicate", all_bval_with_duplicate)			
+	print("user_bval_with_nearest_values_without_duplicate after conversion: ", user_bval_with_nearest_values_without_duplicate)
 
 
 
@@ -1396,16 +1396,6 @@ with Tee(log_file):
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
-
-
-
-
-
-
-
-	# *****************************************
-	# Tractography with MRtrix 
-	# *****************************************
 
 	if tractography_model == "MRtrix (default: IFOD2) " or tractography_model == "MRtrix (Tensor-Prob)" or tractography_model == "MRtrix (iFOD1)": 
 
@@ -1426,12 +1416,10 @@ with Tee(log_file):
 			os.mkdir(OUT_MRTRIX)
 
 		
-
-
 		# *****************************************
 		# Create 5tt   
 		# *****************************************	    
-		if act_option or len(new_bvals) != 1: # multi shell
+		if act_option or len(list_bval_for_the_tractography) != 1: # multi shell
 			print("*****************************************")
 			print("Convert T1 image to nifti format")
 			print("*****************************************")
@@ -1480,34 +1468,40 @@ with Tee(log_file):
 												                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 												                '-scratch', os.path.join(OUT_MRTRIX),
 												                '-nthreads', str(nb_threads) ]
-			for element in new_bvals:  
+			for element in list_bval_for_the_tractography:  
 				command.append('-shells')
 				command.append(str(element))
 			
 			run_command("Response function estimation (err ok)", command)
 
 
+		if len(list_bval_for_the_tractography) != 1: # multi shell_DWI: need other file for the next step  
+			print("multi shell dwi2response")
 
-			if len(new_bvals) != 1: # multi shell_DWI: need other file for the next step  
-				print("multi shell dwi2response")
+			response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
+			response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
+			response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
 
-				response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
-				response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
-				response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
 
+			if os.path.exists(response_wm_txt): 
+				print("Multi shell: response_wm_txt already compute ")
+			else: 
+											        
 				command = [MRtrixPath + "/dwi2response",'msmt_5tt', 
-														DiffusionData, # input
-														fivett_img, # input
+															DiffusionData, # input
+															fivett_img, # input
 
-														response_wm_txt,  #output
-														response_gm_txt,  #output
-														response_csf_txt, #output
-												        '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
-												        '-scratch', os.path.join(OUT_MRTRIX),
-												        '-nthreads', str(nb_threads) ]
-				for element in new_bvals:  
+															response_wm_txt,  #output
+															response_gm_txt,  #output
+															response_csf_txt, #output
+													        '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
+													        '-scratch', os.path.join(OUT_MRTRIX),
+													        '-nthreads', str(nb_threads) ]
+
+				for element in list_bval_for_the_tractography:  
 					command.append('-shells')
 					command.append(str(element))
+
 
 				run_command("msmt_5tt", command)
 
@@ -1525,7 +1519,7 @@ with Tee(log_file):
 		if os.path.exists(FOD_nii):
 		    print("Fibre Orientation Distribution estimation already compute")
 		else: 
-			if len(new_bvals) == 1: # single shell_DWI: 
+			if len(list_bval_for_the_tractography) == 1: # single shell_DWI: 
 				command = [MRtrixPath + "/dwi2fod", 'csd',
 									    DiffusionData, # input
 									    Response_function_estimation_txt, # input
@@ -1534,7 +1528,7 @@ with Tee(log_file):
 									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
 									    '-nthreads', str(nb_threads)]
 				command.append('-shells')
-				for element in new_bvals:  
+				for element in list_bval_for_the_tractography:  
 					command.append(str(element))
 			
 
@@ -1556,30 +1550,10 @@ with Tee(log_file):
 									   	'-mask', DiffusionBrainMask, # input
 									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
 									    '-nthreads', str(nb_threads)]
+				
 				command.append('-shells')
-				for element in new_bvals:  
+				for element in list_bval_for_the_tractography:  
 					command.append(str(element))
-
-
-				'''
-				/home/elodie/miniconda3/envs/CONTINUITY_env/bin/dwi2fod msmt_csd 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/Diffusion/data.nii.gz 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/Response_function_estimation.txt 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/FOD.nii.gz 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/response_wm.txt 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/wmfod.mif 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/response_gm.txt 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/gm.mif 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/response_csf.txt 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/csf.mif 
-
-				-mask /BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/Diffusion/nodif_brain_mask.nii.gz
-				-fslgrad /BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/Diffusion/bvecs 
-				/BAND/USERS/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/Diffusion/bvals 
-				-nthreads 6 
-				-shells 5 1490 1495 1500 2990 3000 2985 2995 3005 1505 1485 3010
-				'''
-
 
 			run_command("FOD estimation", command)
 
@@ -2011,8 +1985,8 @@ with Tee(log_file):
 
 		
 
-		wm_fa_thr_list = [ 0.3]#0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9]
-		gm_fa_thr= [ 0.2]#, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9]
+		wm_fa_thr_list = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9]
+		gm_fa_thr= [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9]
 
 
 		for i in range(len(gm_fa_thr)): 
@@ -2090,7 +2064,7 @@ with Tee(log_file):
 					# Method for getting directions from a diffusion data set
 					#*****************************************
 
-					if len(new_bvals) == 1: # single shell_DWI: 
+					if len(user_bval_with_nearest_values_without_duplicate) == 1: # single shell_DWI: 
 						print("single shell")
 						# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
 						response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=wm_fa_thr_list[i])   # 0.7: adult 
@@ -2233,7 +2207,7 @@ with Tee(log_file):
 					# peaks_from_model: fit the data and calculated the fiber directions in all voxels of the white matter
 					# https://dipy.org/documentation/1.4.1./reference/dipy.workflows/#peaks-from-model 
 					# .peaks_from_model(model, data, sphere, relative_peak_threshold, min_separation_angle, mask=None, return_sh=True, gfa_thr=0, parallel=False ...)
-					if len(new_bvals) == 1: # single shell: 
+					if len(user_bval_with_nearest_values_without_duplicate) == 1: # single shell: 
 						peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
 					else: 
 						peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
@@ -2280,7 +2254,6 @@ with Tee(log_file):
 					streamlines_generator = LocalTracking(prob_dg, stopping_criterion, seeds, affine, step_size=.5, return_all=False)
 
 					# Generate streamlines object:  streamlines = ArraySequence object
-					# Streamlines: alias of nibabel.streamlines.array_sequence.ArraySequence
 					streamlines = Streamlines(streamlines_generator)
 
 					print(streamlines)
@@ -2318,46 +2291,12 @@ with Tee(log_file):
 						trk = nib.streamlines.load(tractogram)
 						nib.streamlines.save(trk.tractogram, tractogram_tck)
 
-					'''
-			        # *****************************************
-					# Convert tck to vtk format
-					# *****************************************
-						
-					if os.path.exists(MRtrixPath + "/tckconvert"): 
-
-						tractogram_vtk = os.path.join(OUT_DIPY,"tractogram.vtk")
-						if os.path.exists(tractogram_vtk):
-						    print("conversion to vtk already done")
-						else:
-							print("Convert tck to vtk")									
-							run_command("Convert to vtk", [MRtrixPath + "/tckconvert", tractogram_tck, tractogram_vtk]) 
-					'''
-
-
 
 
 				else: # tractogram already compute 
 					print("Tractogram found: load tractogram and streamlines")
 					trk = nib.streamlines.load(tractogram)
 					streamlines = trk.streamlines
-
-
-					print(streamlines)
-					cpt =0 
-					for i in streamlines:
-						#print("test:", i) #test: [[-1.8750229  40.17018    16.117546  ]
-						if i == []:
-								print("i", i)
-
-						for j in i: 
-							if j == []:
-								print("j",j) #nothing
-
-								cpt +=1 
-
-							if cpt == 10:
-								exit()
-
 						
 
 		        #*****************************************
@@ -2413,7 +2352,7 @@ with Tee(log_file):
 					# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#connectivity-matrix
 					# https://dipy.org/documentation/1.0.0./examples_built/streamline_tools/
 					M, grouping = utils.connectivity_matrix(streamlines, affine_labeled, #affine, 
-																		T1_labeled, #T1_labeled_reshape, 
+																		T1_labeled_reshape, #T1_labeled_reshape, 
 																		inclusive = True, 
 																		return_mapping=True, mapping_as_streamlines=True)
 					M[:3, :] = 0

@@ -497,7 +497,9 @@ class Ui(QtWidgets.QTabWidget):
                 list_checked = []
                 for i in range(self.add_bval_in_bvalfile_listWidget.count()):
                     item = self.add_bval_in_bvalfile_listWidget.item(i) 
-                    if int(item.text()) not in json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"] and int(item.text()) != 0: 
+                    if int(item.text()) not in json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"] 
+                       and int(item.text()) < json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"]: 
+                       
                         item.setCheckState(Qt.Checked)
                         list_checked.append(int(item.text()))
                     else: 
