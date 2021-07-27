@@ -127,8 +127,6 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.fig_file_textEdit.setText(json_user_object['Parameters']["OUT_PATH"]["value"])   
 
         # Normalize matrix
-        global already_build
-        already_build = False
         self.Layout_normalize_matrix = QGridLayout()
         self.normalize_matrix_groupBox.setLayout(self.Layout_normalize_matrix)
         self.path_normalize_matrix_textEdit.setText(json_user_object['Parameters']["OUT_PATH"]["value"])
@@ -1863,7 +1861,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.ren.GetActiveCamera().Zoom(1.3)
             self.iren.Initialize()
 
-            already_build = True
+         
             print("End display 3D brain connectome: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 
 
@@ -1881,7 +1879,7 @@ class Ui_visu(QtWidgets.QTabWidget):
     # ***************************************** 
 
     def update_3D_connectome(self): 
-        if already_build: 
+        try: 
             # New range colorbar: 
             vmin_3D,vmax_3D  = (self.min_colorbar_brain_3D_connectome_doubleSpinBox.value() / 100, self.max_colorbar_brain_3D_connectome_doubleSpinBox.value() / 100)
 
@@ -1981,7 +1979,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.ren.GetActiveCamera().Zoom(1.3)
             self.iren.Initialize()
 
-        else: 
+        except: 
             msg = QMessageBox()
             msg.setWindowTitle("Display brain connectome in 3D")
             msg.setText('Click on "Display brain connectome in 3D" first')
@@ -1995,7 +1993,7 @@ class Ui_visu(QtWidgets.QTabWidget):
     # ***************************************** 
 
     def update_points_size(self):
-        if already_build : 
+        try: 
             # Update actor:
             actors = self.ren.GetActors()
             actors.InitTraversal()
@@ -2014,7 +2012,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.iren.Initialize()
 
 
-        else: 
+        except: 
             msg = QMessageBox()
             msg.setWindowTitle("Display brain connectome in 3D")
             msg.setText('Click on "Display brain connectome in 3D" first and be sure to select an output path ("configuration folder")')
@@ -2028,7 +2026,7 @@ class Ui_visu(QtWidgets.QTabWidget):
     # ***************************************** 
 
     def update_lines_size(self):
-        if already_build : 
+        try: 
 
             # Update actor:
             actors = self.ren.GetActors()
@@ -2049,7 +2047,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.ren.GetActiveCamera().Zoom(1.3)
             self.iren.Initialize()
 
-        else: 
+        except: 
             msg = QMessageBox()
             msg.setWindowTitle("Display brain connectome in 3D")
             msg.setText('Click on "Display brain connectome in 3D" first and be sure to select an output path ("configuration folder")')
@@ -2063,7 +2061,7 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
 
     def updata_opacity(self):
-        if already_build : 
+        try: 
             # Update actor:
             actors = vtk.vtkPropCollection() 
             actors = self.ren.GetViewProps()
@@ -2078,7 +2076,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.iren.Initialize()
 
 
-        else: 
+        except: 
             msg = QMessageBox()
             msg.setWindowTitle("Display brain connectome in 3D")
             msg.setText('Click on "Display brain connectome in 3D" first and be sure to select an output path ("configuration folder")')
