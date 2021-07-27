@@ -35,7 +35,9 @@ from dipy.tracking.local_tracking import LocalTracking
 from dipy.tracking.streamline import Streamlines
 
 from dipy.io.stateful_tractogram import Space, StatefulTractogram
-from dipy.io.streamline import save_trk, save_vtk_streamlines
+from dipy.io.streamline import save_trk, save_vtk_streamlines, load_vtk
+from dipy.io.vtk import load_polydata
+
 
 #from dipy.viz import window, actor, colormap  #FURY
 
@@ -346,11 +348,14 @@ with Tee(log_file):
 		print("*****************************************") 
 
 		output_nrrd = os.path.join(OUT_DWI, afile[:-7] + '.nrrd') #filtered or not
+		if os.path.exists(output_nrrd):
+			print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
+		else:
 
-		run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", DWI_DATA, 
-														                             				   "--conversionMode", "FSLToNrrd", 
-														                             				   "--outputVolume", output_nrrd, 
-														                             				   "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
+			run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", DWI_DATA, 
+														                             				       "--conversionMode", "FSLToNrrd", 
+														                             				       "--outputVolume", output_nrrd, 
+														                             				       "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
 		# New path :
 		DWI_DATA = output_nrrd
 
@@ -1448,31 +1453,43 @@ with Tee(log_file):
 				now = datetime.datetime.now()
 				print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
 				start = time.time()
-				run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', T1_nifti, fivett_img, '-scratch', os.path.join(OUT_MRTRIX), '-nthreads', str(nb_threads) ])
+				run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', 
+																					T1_nifti, # input
+																					fivett_img, #output
+
+																					'-scratch', os.path.join(OUT_MRTRIX), 
+																					'-nthreads', str(nb_threads) ])
 				print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 				
 
 
 
+		if len(list_bval_for_the_tractography) == 1: # single shell_DWI: 
 
-		# *****************************************
-		# Response function estimation: Estimate response function(s) for spherical deconvolution
-		# *****************************************
+			# *****************************************
+			# Response function estimation: Estimate response function(s) for spherical deconvolution
+			# *****************************************
 
-		Response_function_estimation_txt = os.path.join(OUT_MRTRIX,'Response_function_estimation.txt')
-		if os.path.exists(Response_function_estimation_txt):
-		    print("Response function estimation already compute ")
-		else: 
-			command = [MRtrixPath + "/dwi2response",'tournier', DiffusionData, # input
-												   				Response_function_estimation_txt, #output
-												                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
-												                '-scratch', os.path.join(OUT_MRTRIX),
-												                '-nthreads', str(nb_threads) ]
-			for element in list_bval_for_the_tractography:  
-				command.append('-shells')
-				command.append(str(element))
-			
-			run_command("Response function estimation (err ok)", command)
+			Response_function_estimation_txt = os.path.join(OUT_MRTRIX,'Response_function_estimation.txt')
+			if os.path.exists(Response_function_estimation_txt):
+			    print("Response function estimation already compute ")
+			else: 
+				command = [MRtrixPath + "/dwi2response",'tournier', DiffusionData, # input
+													   				Response_function_estimation_txt, #output
+
+													   				'-mask', DiffusionBrainMask, # input
+													                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
+													                '-scratch', os.path.join(OUT_MRTRIX),
+													                '-nthreads', str(nb_threads) ]
+				for element in list_bval_for_the_tractography:  
+					command.append('-shells')
+					command.append(str(element))
+				
+				run_command("Response function estimation (err ok)", command)
+
+
+
+
 
 
 		if len(list_bval_for_the_tractography) != 1: # multi shell_DWI: need other file for the next step  
@@ -1494,14 +1511,18 @@ with Tee(log_file):
 															response_wm_txt,  #output
 															response_gm_txt,  #output
 															response_csf_txt, #output
+
+															'-mask', DiffusionBrainMask, # input
 													        '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 													        '-scratch', os.path.join(OUT_MRTRIX),
 													        '-nthreads', str(nb_threads) ]
-
-				for element in list_bval_for_the_tractography:  
-					command.append('-shells')
-					command.append(str(element))
-
+				command.append('-shells')
+				shells = ""
+				for idx, element in enumerate(list_bval_for_the_tractography):	#user_bval_with_nearest_values_without_duplicate				
+					shells += str(element)
+					if idx < len(list_bval_for_the_tractography) - 1: #user_bval_with_nearest_values_without_duplicate
+						shells += ","
+				command.append(shells)
 
 				run_command("msmt_5tt", command)
 
@@ -1528,15 +1549,17 @@ with Tee(log_file):
 									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
 									    '-nthreads', str(nb_threads)]
 				command.append('-shells')
-				for element in list_bval_for_the_tractography:  
-					command.append(str(element))
+				shells = ""
+				for idx, element in enumerate(list_bval_for_the_tractography):	#user_bval_with_nearest_values_without_duplicate				
+					shells += str(element)
+					if idx < len(list_bval_for_the_tractography) - 1: #user_bval_with_nearest_values_without_duplicate
+						shells += ","
+				command.append(shells)
 			
 
 			else: # multi shell 
 				command = [MRtrixPath + "/dwi2fod", 'msmt_csd',
 									    DiffusionData, # input
-									    #Response_function_estimation_txt, # input
-									    #FOD_nii, # ouput
 
 										response_wm_txt,  # input
 										wmfod_mif, # ouput
@@ -1552,8 +1575,12 @@ with Tee(log_file):
 									    '-nthreads', str(nb_threads)]
 				
 				command.append('-shells')
-				for element in list_bval_for_the_tractography:  
-					command.append(str(element))
+				shells = ""
+				for idx, element in enumerate(list_bval_for_the_tractography):	#user_bval_with_nearest_values_without_duplicate				
+					shells += str(element)
+					if idx < len(list_bval_for_the_tractography) - 1: #user_bval_with_nearest_values_without_duplicate
+						shells += ","
+				command.append(shells)
 
 			run_command("FOD estimation", command)
 
@@ -1944,15 +1971,6 @@ with Tee(log_file):
 
 
 
-
-
-
-
-
-
-
-
-
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
@@ -1983,10 +2001,9 @@ with Tee(log_file):
 		if not os.path.exists(OUT_DIPY_first):
 			os.mkdir(OUT_DIPY_first)
 
-		
 
-		wm_fa_thr_list = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9]
-		gm_fa_thr= [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9]
+		wm_fa_thr_list = [ 0.3]#0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9]
+		gm_fa_thr= [ 0.2]#, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9]
 
 
 		for i in range(len(gm_fa_thr)): 
@@ -2003,7 +2020,6 @@ with Tee(log_file):
 
 				tractogram = os.path.join(OUT_DIPY,"tractogram.trk")
 				
-				
 
 				print("*****************************************")
 				print("Convert DWI image to nifti format")
@@ -2014,12 +2030,11 @@ with Tee(log_file):
 				    print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
 				else:
 					print("Convert DWI image to nifti format ")
-					
-					run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA,    #input data 
-																	                             "--conversionMode", "NrrdToFSL", 
-																	                             "--outputVolume", DWI_nifti, 
-																	                             "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
-																	                             "--outputBVectors", os.path.join(OUT_DIPY, "bvecs")])
+					run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA, #input data 
+																	                              "--conversionMode", "NrrdToFSL", 
+																	                              "--outputVolume", DWI_nifti, 
+																	                              "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
+																	                              "--outputBVectors", os.path.join(OUT_DIPY, "bvecs")])
 				#*****************************************
 				# Data and gradient table
 				#*****************************************
@@ -2053,28 +2068,19 @@ with Tee(log_file):
 				white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1])
 					
 
-
-
-
-
-
 				if not os.path.exists(tractogram):
 
 			        #*****************************************
 					# Method for getting directions from a diffusion data set
 					#*****************************************
 
-					if len(user_bval_with_nearest_values_without_duplicate) == 1: # single shell_DWI: 
+					if len(list_bval_for_the_tractography) == 1: # single shell_DWI: 
 						print("single shell")
-						# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response     csd: single shell
-						response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=wm_fa_thr_list[i])   # 0.7: adult 
-
-						print("response", response)
-						print("ratio", ratio)
+						# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response
+						response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=wm_fa_thr_list[i]) # 0.7: adult 
 
 						# Fit a Constrained Spherical Deconvolution (CSD) model: 
 						csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
-						
 						#csd_fit = csd_model.fit(data, mask=white_matter) 
 
 
@@ -2093,14 +2099,11 @@ with Tee(log_file):
 
 						# https://dipy.org/documentation/1.4.1./reference/dipy.reconst/#multi-shell-fiber-response
 							#response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=response_wm, gm_rf=response_gm, csf_rf=response_csf)
-							#print("response_mcsd", response_mcsd) # <dipy.reconst.mcsd.MultiShellResponse object at 0x7f1754f42210>      # MultiShellResponse object.
 
 						#response = np.array([response_wm, response_gm, response_csf])
 						#mcsd_model_simple_response = MultiShellDeconvModel(gtab, response, sh_order=8)
 
-
-						# Need to be test:
-						# Automatic estimation of multi-shell multi-tissue (msmt) response: (functions using FA and MD)
+						# Automatic estimation of multi-shell multi-tissue (msmt) response: 
 						auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=wm_fa_thr_list[i], 
 																															gm_fa_thr=gm_fa_thr[i], 
 																															csf_fa_thr=0.15, 
@@ -2112,13 +2115,7 @@ with Tee(log_file):
 						print("auto_response_csf", auto_response_csf)
 
 						# Fit a Constrained Spherical Deconvolution (CSD) model: 
-						# mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
-
-						# Need to be test:
 						mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
-
-						print("mcsd_model",mcsd_model ) #<dipy.reconst.mcsd.MultiShellDeconvModel object at 0x7f171150e110>
-
 						#mcsd_fit = mcsd_model.fit(denoised_arr[:, :, 10:11])
 					
 
@@ -2134,17 +2131,6 @@ with Tee(log_file):
 					# Fit the data to a Constant Solid Angle ODF Model: estimate the Orientation Distribution Function (ODF) at each voxel
 					csa_model = CsaOdfModel(gtab, sh_order=6) 
 					gfa = csa_model.fit(data, mask=white_matter).gfa 
-					csd_fit = csa_model.fit(data, mask=white_matter) #remove
-
-					'''
-					csd_odf = csd_fit.odf(default_sphere)#remove
-					ren = window.Scene()#remove
-					fodf_spheres = actor.odf_slicer(csd_odf, sphere=default_sphere, scale=0.9,
-			                                norm=False, colormap='plasma')#remove
-					ren.add(fodf_spheres)#remove
-					window.record(ren, out_path=os.path.join(OUT_DIPY, 'csd_odfs.png'), size=(600, 600))#remove
-					'''
-
 
 
 					# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the Generalized Fractional Anisotropy (GFA)
@@ -2160,44 +2146,6 @@ with Tee(log_file):
 					# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
 					#*****************************************
 
-
-
-
-
-					T1_OUT_NRRD_labeled = os.path.join(OUT_DIPY, ID + "_T1_SkullStripped_scaled_DWISpace_labeled.nrrd")
-
-					print("*****************************************")
-					print("T1 labeled resample in DWI space")
-					print("*****************************************")
-
-					run_command("WARP_TRANSFORM: T1 labeled resample in DWI space", [pathWARP_TRANSFORM, "3", labeled_image,
-					 																						  T1_OUT_NRRD_labeled, 
-					 																						  "-R", B0_BiasCorrect_NRRD, 
-					 																						  Warp, Affine])
-
-
-					labeled_image_nifti = os.path.join(OUT_DIPY, "labeled_image.nii.gz")
-					if os.path.exists(labeled_image_nifti):
-					    print("FSL file: Found Skipping conversion")
-					else: 
-						print("DWIConvert T1 labeled in DWI space to FSL format")
-
-						run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD_labeled,
-											                                    "--conversionMode", "NrrdToFSL", 
-											                                    "--outputVolume", labeled_image_nifti, 
-											                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
-											                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
-					
-					T1_labeled = load_nifti_data(labeled_image_nifti)
-					#print("T1_labeled",T1_labeled )
-					print("T1_labeled shape ",T1_labeled.shape)
-
-					T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
-					print("T1_labeled_reshape shape ",T1_labeled_reshape.shape)
-
-
-
-
 					seed_mask = white_matter #BRAINMASK #DiffusionBrainMask T1_labeled_reshape
 					# Create seeds for fiber tracking from a binary mask: 
 					seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
@@ -2207,27 +2155,13 @@ with Tee(log_file):
 					# peaks_from_model: fit the data and calculated the fiber directions in all voxels of the white matter
 					# https://dipy.org/documentation/1.4.1./reference/dipy.workflows/#peaks-from-model 
 					# .peaks_from_model(model, data, sphere, relative_peak_threshold, min_separation_angle, mask=None, return_sh=True, gfa_thr=0, parallel=False ...)
-					if len(user_bval_with_nearest_values_without_duplicate) == 1: # single shell: 
+					if len(list_bval_for_the_tractography) == 1: # single shell: 
 						peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
 					else: 
 						peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
 
 					# shm_coeff: the spherical harmonic coefficients of the odf: 
 					fod_coeff = peaks.shm_coeff
-
-					'''
-					window.clear(ren)#remove
-					fodf_peaks = actor.peak_slicer(peaks.peak_dirs, peaks.peak_values)#remove
-					ren.add(fodf_peaks)#remove
-
-					window.record(ren, out_path=os.path.join(OUT_DIPY, 'csd_peaks.png'), size=(600, 600))#remove
-
-					ap = shm.anisotropic_power(peaks.shm_coeff)#remove
-
-					plt.matshow(np.rot90(ap[:, :, 10]), cmap=plt.cm.bone)#remove
-					plt.savefig(os.path.join(OUT_DIPY, "anisotropic_power_map.png"))#remove
-					plt.close()#remove
-					'''
 
 
 					print("*****************************************")
@@ -2274,15 +2208,6 @@ with Tee(log_file):
 					
 					sft = StatefulTractogram(streamlines, img, Space.RASMM)
 					save_trk(sft, tractogram, streamlines)
-
-
-					'''
-					scene = window.Scene()
-					scene.add(actor.line(streamlines, colormap.line_colors(streamlines)))
-					window.record(scene, out_path= os.path.join(OUT_DIPY, 'tractogram_probabilistic.png'), size=(800, 800))
-					#window.show(scene)
-					'''
-					
 
 					# Conversion trk to tck 
 					tractogram_tck = os.path.join(OUT_DIPY,"tractogram.tck")
@@ -2331,18 +2256,58 @@ with Tee(log_file):
 											                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 											                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 					
-					
 					data_labeled, affine_labeled, img_labeled = load_nifti(labeled_image_nifti, return_img=True) 
-					print(data_labeled.shape)	
-					#data_labeled_reshape = data_labeled.reshape(data_labeled[0:-1])
-
 					T1_labeled = load_nifti_data(labeled_image_nifti)
-					#print("T1_labeled",T1_labeled )
-					print("T1_labeled shape ",T1_labeled.shape)
 
 					T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
 					print("T1_labeled_reshape shape ",T1_labeled_reshape.shape)
+
+					print(" T1", T1_labeled_reshape)
 					
+
+
+
+					# Read the source file
+					reader = vtk.vtkPolyDataReader() 
+					reader.SetFileName(SURFACE)
+					reader.Update()  
+
+					array = vtk_to_numpy(reader.GetOutput().GetPointData().GetArray(0)) #[11106. 11166. 11112. ... 11166.]
+					print("array", array)
+					print("array shape ", array.shape)	
+
+
+					numpy_nodes = vtk_to_numpy(reader.GetOutput().GetPoints().GetData())
+
+					print("numpy_nodes",numpy_nodes )
+					print(numpy_nodes.shape)
+
+					d = np.expand_dims(numpy_nodes, axis=-1)
+					print(np.expand_dims(numpy_nodes, axis=-1) )
+					print(np.expand_dims(numpy_nodes, axis=-1).shape)
+
+					#print(np.append(d, array, axis=-1) )
+		
+					
+					#array1 = load_vtk(SURFACE, labeled_image_nifti)
+					#print(array1)
+					#array2 = load_polydata(SURFACE)
+					#print(array2)	
+
+					'''
+					reader2 = vtk.vtkDICOMImageReader()
+					reader2.SetFileName(SURFACE)
+					reader2.Update()  
+
+					height, width, depth = reader2.GetOutput().GetDimensions()
+					print(height, width, depth)
+
+					vtk_data = reader2.GetOutput().GetPointData().GetScalars()
+					data1 =  vtk_to_numpy(vtk_data).reshape(height, width, depth)		
+
+					print("data1", data1)	
+					print("data1 shape", data1.shape)	
+					'''
 
 
 					print("*****************************************")
@@ -2352,13 +2317,19 @@ with Tee(log_file):
 					# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#connectivity-matrix
 					# https://dipy.org/documentation/1.0.0./examples_built/streamline_tools/
 					M, grouping = utils.connectivity_matrix(streamlines, affine_labeled, #affine, 
-																		T1_labeled_reshape, #T1_labeled_reshape, 
+																		d,#T1_labeled_reshape, 
 																		inclusive = True, 
 																		return_mapping=True, mapping_as_streamlines=True)
 					M[:3, :] = 0
 					M[:, :3] = 0
 
 					M_modif = np.log1p(M)
+
+					print(array3.shape())
+
+					
+
+
 
 					print("*****************************************")
 					print("Write connectivity matrix")
