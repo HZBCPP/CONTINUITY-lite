@@ -39,6 +39,9 @@ from dipy.io.streamline import save_trk, save_vtk_streamlines, load_vtk
 from dipy.io.vtk import load_polydata
 
 
+
+import SimpleITK as sitk
+
 #from dipy.viz import window, actor, colormap  #FURY
 
 
@@ -364,7 +367,7 @@ with Tee(log_file):
 	else: 
 		# DWI data in nrrd format: need to be converted 
 		print("*****************************************")
-		print("Preprocessing: Convert DWI image to nifti format")
+		print("Preprocessing: Convert DWI image to nifti format (nothing to remove)")
 		print("*****************************************")           
 
 		DWI_nifti = os.path.join(OUT_DWI, ID + "_DWI.nii.gz")
@@ -763,12 +766,8 @@ with Tee(log_file):
 
 	# Copy the original parcellation table to be able to build an other specific with only good subcortical regions ( = with good KWM and SALT files)
 	only_matrix_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'only_matrix_parcellation_table' )
-	Destrieux_points_already_compute = False 
-	
-	if not os.path.exists(only_matrix_parcellation_table): 
-		shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
-	else: 
-		Destrieux_points_already_compute = True 
+	shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
+
 
 
 
@@ -930,8 +929,7 @@ with Tee(log_file):
 			print("Compute one point per region")
 			print("*****************************************")
 
-			if not Destrieux_points_already_compute: 
-				compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
+			compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
 		
 
 
@@ -1200,7 +1198,7 @@ with Tee(log_file):
 	else:
 		print("DWIConvert DWI to FSL format")
 		
-		run_command("DWIConvert DWI to FSL format", [DWIConvertPath, "--inputVolume", DWI_NRRD, # original: DWI_DATA
+		run_command("DWIConvert DWI to FSL format", [DWIConvertPath, "--inputVolume", DWI_NRRD, 
 							                                         "--conversionMode", "NrrdToFSL", 
 							                                         "--outputVolume", DiffusionData, 
 							                                         "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs"), 
@@ -1391,6 +1389,11 @@ with Tee(log_file):
 
 
 
+
+
+
+
+
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
     # **************************************************************************************************************************************************
@@ -1438,7 +1441,7 @@ with Tee(log_file):
 			else:
 				print("Convert T1 image to nifti format ")
 				
-				run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD, #T1_DATA, 
+				run_command("DWIConvert: convert T1 image to nifti format", [DWIConvertPath, "--inputVolume", T1_OUT_NRRD,
 																                             "--conversionMode", "NrrdToFSL", 
 																                             "--outputVolume", T1_nifti, 
 																                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
@@ -1481,9 +1484,6 @@ with Tee(log_file):
 													                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 													                '-scratch', os.path.join(OUT_MRTRIX),
 													                '-nthreads', str(nb_threads) ]
-				for element in list_bval_for_the_tractography:  
-					command.append('-shells')
-					command.append(str(element))
 				
 				run_command("Response function estimation (err ok)", command)
 
@@ -1493,17 +1493,16 @@ with Tee(log_file):
 
 
 		if len(list_bval_for_the_tractography) != 1: # multi shell_DWI: need other file for the next step  
-			print("multi shell dwi2response")
-
+			
 			response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
 			response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
 			response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
 
 
 			if os.path.exists(response_wm_txt): 
-				print("Multi shell: response_wm_txt already compute ")
+				print("Multi shell dwi2response msmt_5tt: response_wm_txt, response_wm_txt andresponse_csf_txt already compute ")
 			else: 
-											        
+				print("Multi shell dwi2response msmt_5tt")						        
 				command = [MRtrixPath + "/dwi2response",'msmt_5tt', 
 															DiffusionData, # input
 															fivett_img, # input
@@ -2232,6 +2231,7 @@ with Tee(log_file):
 				if not os.path.exists(matrix): 
 					print("create connectivity matrix")
 					
+					
 					T1_OUT_NRRD_labeled = os.path.join(OUT_DIPY, ID + "_T1_SkullStripped_scaled_DWISpace_labeled.nrrd")
 
 					print("*****************************************")
@@ -2260,54 +2260,69 @@ with Tee(log_file):
 					T1_labeled = load_nifti_data(labeled_image_nifti)
 
 					T1_labeled_reshape = T1_labeled.reshape(T1_labeled.shape[0:-1])
-					print("T1_labeled_reshape shape ",T1_labeled_reshape.shape)
+					print("T1_labeled_reshape shape ",T1_labeled_reshape.shape) # (256, 192, 134)
 
-					print(" T1", T1_labeled_reshape)
-					
+					print(" T1", T1_labeled_reshape) # [[ [0 0 0 ... 0 0 0][0 0 0 ... 0 0 0] [0 0 0 ... 0 0 0] ... [0 0 0 ... 0 0 0] [0 0 0 ... 0 0 0] [0 0 0 ... 0 0 0] ]
+													 #	[ [0 0 0 ... 0 0 0][0 0 0 ... 0 0 0] [0 0 0 ... 0 0 0] ... [0 0 0 ... 0 0 0] [0 0 0 ... 0 0 0] [0 0 0 ... 0 0 0] ]
+													 #	   ...	
+													 #	                                                           [0 0 0 ... 0 0 0] [0 0 0 ... 0 0 0] [0 0 0 ... 0 0 0] ]]
 
-
+					label_volume = []
 
 					# Read the source file
 					reader = vtk.vtkPolyDataReader() 
 					reader.SetFileName(SURFACE)
 					reader.Update()  
 
-					array = vtk_to_numpy(reader.GetOutput().GetPointData().GetArray(0)) #[11106. 11166. 11112. ... 11166.]
-					print("array", array)
-					print("array shape ", array.shape)	
+					array = vtk_to_numpy(reader.GetOutput().GetPointData().GetArray(0)) 
+					print("array", array) #[11106. 11166. 11112. ... 11166.]
+					print("array shape ", array.shape)	#(354708,)
 
 
 					numpy_nodes = vtk_to_numpy(reader.GetOutput().GetPoints().GetData())
 
-					print("numpy_nodes",numpy_nodes )
-					print(numpy_nodes.shape)
+					print("numpy_nodes",numpy_nodes ) #[[-36.6685   85.5245   11.6233 ] ... [-58.3593   46.634   -32.0077 ]]
+					print("numpy_nodes shape", numpy_nodes.shape) #(354708, 3, 1)
 
-					d = np.expand_dims(numpy_nodes, axis=-1)
-					print(np.expand_dims(numpy_nodes, axis=-1) )
-					print(np.expand_dims(numpy_nodes, axis=-1).shape)
-
-					#print(np.append(d, array, axis=-1) )
-		
 					
-					#array1 = load_vtk(SURFACE, labeled_image_nifti)
-					#print(array1)
-					#array2 = load_polydata(SURFACE)
-					#print(array2)	
 
+
+
+
+
+					# ITK tranform cordinates to index 
+					
+					#reader = sitk.ImageFileReader()
+					#reader.SetFileName( SURFACE )
+					#image = reader.Execute()
+
+					
+					image = sitk.ReadImage(SURFACE)
+					
+					for point in range(len(numpy_nodes)): 
+						print("cordinates:", numpy_nodes[point] , "index:", image.TransformPhysicalPointToIndex(numpy_nodes[point]), "associate scalar: ", array[point] )
+						
+						#label_volume
+					
+					print("Dimension: ", image.GetSize()[0], image.GetSize()[1], sitk.sitkUInt8 )
+					print("Spacing: ", image.GetSpacing() )
+					print("Origin: ", image.GetOrigin() )
+					print("Direction/ orientation: ", image.GetDirection() )
+					
 					'''
-					reader2 = vtk.vtkDICOMImageReader()
-					reader2.SetFileName(SURFACE)
-					reader2.Update()  
-
-					height, width, depth = reader2.GetOutput().GetDimensions()
-					print(height, width, depth)
-
-					vtk_data = reader2.GetOutput().GetPointData().GetScalars()
-					data1 =  vtk_to_numpy(vtk_data).reshape(height, width, depth)		
-
-					print("data1", data1)	
-					print("data1 shape", data1.shape)	
+					for point in numpy_nodes: 
+						print( image.TransformPhysicalPointToIndex(point) )
 					'''
+					
+
+
+
+
+
+
+	
+
+					print(array3.shape()) # stop the script 
 
 
 					print("*****************************************")
@@ -2317,7 +2332,7 @@ with Tee(log_file):
 					# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#connectivity-matrix
 					# https://dipy.org/documentation/1.0.0./examples_built/streamline_tools/
 					M, grouping = utils.connectivity_matrix(streamlines, affine_labeled, #affine, 
-																		d,#T1_labeled_reshape, 
+																		label_volume,#T1_labeled_reshape, 
 																		inclusive = True, 
 																		return_mapping=True, mapping_as_streamlines=True)
 					M[:3, :] = 0
