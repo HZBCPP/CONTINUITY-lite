@@ -163,8 +163,8 @@ class Ui(QtWidgets.QTabWidget):
         self.size_of_bvals_groups_DWI_add_spinBox.setValue(int(json_setup_object['Parameters']['size_of_bvals_groups_DWI']['default']))
 
         # Initialization of doubleSpinBox:
-        list_param_setValue_doubleSpinBox = ["gradient_field_sigma", "deformation_field_sigma", "SyN_param", "steplength", "sampvox", "sx", "sy", "sz"]
-                                            #"wm_fa_thr", "gm_fa_thr", "csf_fa_thr", "gm_md_thr", "csf_md_thr" ]
+        list_param_setValue_doubleSpinBox = ["gradient_field_sigma", "deformation_field_sigma", "SyN_param", "steplength", "sampvox", "sx", "sy", "sz",
+                                            "wm_fa_thr", "gm_fa_thr", "csf_fa_thr", "gm_md_thr", "csf_md_thr" ]
         for item in list_param_setValue_doubleSpinBox:
             eval("self." + item + "_doubleSpinBox.setValue(float(json_setup_object['Parameters'][item]['default']))")
   
@@ -1243,6 +1243,8 @@ class Ui(QtWidgets.QTabWidget):
 
 
 
+
+
     # *****************************************
     # SegPostProcessCLP function: enforced spacing in x, y and z direction
     # ***************************************** 
@@ -1805,7 +1807,8 @@ class Ui(QtWidgets.QTabWidget):
             Ui.update_user_json_file() 
 
 
-    '''
+
+
     def wm_fa_thr_valueChanged(self):
         json_user_object['Parameters']["wm_fa_thr"]["value"] = self.wm_fa_thr_doubleSpinBox.value()
         Ui.update_user_json_file()
@@ -1827,17 +1830,26 @@ class Ui(QtWidgets.QTabWidget):
         Ui.update_user_json_file()
 
 
-    # *****************************************
-    # DIPY: Select the labeled image
-    # *****************************************
 
-    def select_labeled_image_DIPY(self): 
+
+    def select_wm_mask(self): 
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
         if fileName:
-            self.labeled_image_DIPY_textEdit.setText(fileName)
-            json_user_object['Arguments']["labeled_image"]["value"] = fileName
+            self.wm_mask_textEdit.setText(fileName)
+            json_user_object['Arguments']["wm_mask"]["value"] = fileName
             Ui.update_user_json_file()
-    '''
+
+
+
+    def select_gm_mask(self): 
+        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
+        if fileName:
+            self.gm_mask_textEdit.setText(fileName)
+            json_user_object['Arguments']["gm_mask"]["value"] = fileName
+            Ui.update_user_json_file()
+
+
+
 
 
     # **************************************************************************************************************************************************

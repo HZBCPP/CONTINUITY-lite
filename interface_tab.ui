@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -116,7 +116,7 @@
            </rect>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_13">
            <attribute name="title">
@@ -4426,7 +4426,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_33">
        <attribute name="title">
@@ -4715,6 +4715,272 @@ p, li { white-space: pre-wrap; }
        <attribute name="title">
         <string>DIPY</string>
        </attribute>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>1071</width>
+          <height>301</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Stopping criterion: </string>
+        </property>
+        <widget class="QWidget" name="layoutWidget_21">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>1011</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_93">
+            <item>
+             <widget class="QLabel" name="label_45">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+                <underline>true</underline>
+               </font>
+              </property>
+              <property name="text">
+               <string>White Matter mask/ tissue segmentation: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="wm_mask_pushButton">
+              <property name="text">
+               <string>Browser...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_61">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <widget class="QTextEdit" name="wm_mask_textEdit">
+            <property name="styleSheet">
+             <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_94">
+            <item>
+             <widget class="QLabel" name="label_90">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+                <underline>true</underline>
+               </font>
+              </property>
+              <property name="text">
+               <string>Gray matter mask (optional: don't provide a path if youdon't want to track to GM): </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="gm_mask_pushButton">
+              <property name="text">
+               <string>Browser...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_63">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
+           <widget class="QTextEdit" name="gm_mask_textEdit">
+            <property name="styleSheet">
+             <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_22">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>1061</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Automatic estimation response: </string>
+        </property>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>531</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_95">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_88">
+            <item>
+             <widget class="QLabel" name="label_56">
+              <property name="text">
+               <string>wm_fa_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="wm_fa_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_89">
+            <item>
+             <widget class="QLabel" name="label_86">
+              <property name="text">
+               <string>gm_fa_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="gm_fa_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_90">
+            <item>
+             <widget class="QLabel" name="label_87">
+              <property name="text">
+               <string>csf_fa_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="csf_fa_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>366</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_96">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_91">
+            <item>
+             <widget class="QLabel" name="label_88">
+              <property name="text">
+               <string>gm_md_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="gm_md_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_92">
+            <item>
+             <widget class="QLabel" name="label_89">
+              <property name="text">
+               <string>csf_md_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="csf_md_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -8704,6 +8970,118 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>wm_fa_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>wm_fa_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gm_fa_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>gm_fa_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>173</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>csf_fa_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>csf_fa_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gm_md_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>gm_md_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>164</x>
+     <y>241</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>csf_md_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>csf_md_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>163</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wm_mask_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>select_wm_mask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>393</x>
+     <y>341</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gm_mask_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>select_gm_mask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>678</x>
+     <y>478</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>DWI_button_clicked()</slot>
@@ -8833,5 +9211,12 @@ p, li { white-space: pre-wrap; }
   <slot>size_of_bvals_groups_DWI_remove_valueChanged()</slot>
   <slot>size_of_bvals_groups_DWI_remove_no_registration_valueChanged()</slot>
   <slot>size_of_bvals_groups_DWI_add_valueChanged()</slot>
+  <slot>wm_fa_thr_valueChanged()</slot>
+  <slot>gm_fa_thr_valueChanged()</slot>
+  <slot>csf_fa_thr_valueChanged()</slot>
+  <slot>gm_md_thr_valueChanged()</slot>
+  <slot>csf_md_thr_valueChanged()</slot>
+  <slot>select_wm_mask()</slot>
+  <slot>select_gm_mask()</slot>
  </slots>
 </ui>

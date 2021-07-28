@@ -85,6 +85,8 @@ WM_R_Surf_NON_REGISTRATION = json_user_object["Arguments"]["WM_R_Surf_NON_REGIST
 SALTDir                    = json_user_object["Arguments"]["SALTDir"]['value']
 labeled_image              = json_user_object["Arguments"]["labeled_image"]['value']
 KWMDir                     = json_user_object["Arguments"]["KWMDir"]['value']
+wm_mask					   = json_user_object["Arguments"]["wm_mask"]['value']
+gm_mask					   = json_user_object["Arguments"]["gm_mask"]['value']
 
 # Parameters: 
 cluster_command_line                    = json_user_object["Parameters"]["cluster_command_line"]['value']
@@ -139,17 +141,12 @@ spharmDegree  			                = json_user_object["Parameters"]["spharmDegree"
 subdivLevel  			                = json_user_object["Parameters"]["subdivLevel"]['value']
 list_bval_that_will_be_deleted          = json_user_object["Parameters"]["list_bval_that_will_be_deleted"]['value']
 list_bval_for_the_tractography          = json_user_object["Parameters"]["list_bval_for_the_tractography"]['value']
-
-
 size_of_bvals_groups_DWI                = json_user_object["Parameters"]["size_of_bvals_groups_DWI"]['value']
-
 wm_fa_thr                               = json_user_object["Parameters"]["wm_fa_thr"]['value']
 gm_fa_thr                               = json_user_object["Parameters"]["gm_fa_thr"]['value']
 csf_fa_thr                              = json_user_object["Parameters"]["csf_fa_thr"]['value']
 gm_md_thr                               = json_user_object["Parameters"]["gm_md_thr"]['value']
 csf_md_thr                              = json_user_object["Parameters"]["csf_md_thr"]['value']
-
-
 OUT_PATH                                = json_user_object["Parameters"]["OUT_PATH"]['value']
 
 # Executables
@@ -2045,28 +2042,36 @@ with Tee(log_file):
 		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
 
 
+
+
+
 		#*****************************************
 		# White matter mask to restrict tracking to the white matter: use BRAINMASK ! 
 		#*****************************************
 
 		white_matter_nifti = os.path.join(OUT_DIPY, "white_matter.nii.gz")
+		
 		if os.path.exists(white_matter_nifti):
 		    print("Brain mask FSL file: Found Skipping conversion")
 		else: 
 			print("DWIConvert BRAINMASK to FSL format")
 
-			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK, #DWI_MASK, 
+			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK, #wm_mask NEED TO BE CHANGE !!!!!!!!!!!!!!!
 									                                    "--conversionMode", "NrrdToFSL", 
 									                                    "--outputVolume", white_matter_nifti, 
 									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
 									                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
 
 		# Load_nifti_data: load only the data array from a nifti file
-		data_white_matter = load_nifti_data(white_matter_nifti) 
+		data_white_matter = load_nifti_data(white_matter_nifti)  
 
 		# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
-		white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1])
+		white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1]) 
 			
+
+
+
+
 
 		if not os.path.exists(streamline_vtk):
 
@@ -2118,7 +2123,17 @@ with Tee(log_file):
 
 			# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the Generalized Fractional Anisotropy (GFA)
 			# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#thresholdstoppingcriterion 
-			stopping_criterion = ThresholdStoppingCriterion(gfa, .25)  # default value: .25
+			stopping_criterion = ThresholdStoppingCriterion(gfa, .25)  # default value: .25    
+
+
+
+			# test if gm mask exist and if it is the case: 
+			#merge wm and gm mask as stoppting criterion NEED TO BE CHANGE !!!!!!!!!!!!!!!
+			# else: stopping criterion = just wm
+
+
+
+			
 
 			print("*****************************************")
 			print("End of stopping criterion method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))

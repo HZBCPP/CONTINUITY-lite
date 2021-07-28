@@ -98,6 +98,16 @@
             "type": "str",
             "help": "Set where the labels are stored with specific parcellation",
             "default": ""
+        },
+        "wm_mask": {
+            "type": "str",
+            "help": "white matter wask for DIPY",
+            "default": ""
+        },
+        "gm_mask": {
+            "type": "str",
+            "help": "gray matter wask for DIPY",
+            "default": ""
         }
     },
     "Parameters": {
@@ -362,15 +372,11 @@
             "help": "List of bval that will be used for the tractography",
             "default": []
         }, 
-
-
         "size_of_bvals_groups_DWI": {
             "type": "int",
             "help": "Groups bvals with this value",
             "default": 50
         }, 
-
-
         "wm_fa_thr": { 
             "type": "float",
             "help": "DIPY param: wm_fa_thr",
@@ -396,12 +402,6 @@
             "help": "csf_md_thr",
             "default": 0.0032
         }, 
-
-
-
-
-
-
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
