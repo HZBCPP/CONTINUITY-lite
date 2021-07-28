@@ -1035,3 +1035,66 @@ def remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI, bvec, bva
     os.system(RemoveCommand)
 
     print("Remove b-values from DWI done ! ") 
+
+
+
+
+# *************************************************************************************
+# Extract one fiber from a vtk with all streamlines (from Lucie)
+# *************************************************************************************
+
+def ExtractFiber(surf, list_id) :
+    ids = vtk.vtkIdTypeArray()
+    ids.SetNumberOfComponents(1)
+    ids.InsertNextValue(list_id) 
+
+    # extract a subset from a dataset
+    selectionNode = vtk.vtkSelectionNode() 
+    selectionNode.SetFieldType(0)
+    selectionNode.SetContentType(4)
+    selectionNode.SetSelectionList(ids) 
+
+    # set containing cell to 1 = extract cell
+    selectionNode.GetProperties().Set(vtk.vtkSelectionNode.CONTAINING_CELLS(), 1) 
+
+    selection = vtk.vtkSelection()
+    selection.AddNode(selectionNode)
+
+    # extract the cell from the cluster
+    extractSelection = vtk.vtkExtractSelection()
+    extractSelection.SetInputData(0, surf)
+    extractSelection.SetInputData(1, selection)
+    extractSelection.Update()
+
+    # convert the extract cell to a polygonal type (a line here)
+    geometryFilter = vtk.vtkGeometryFilter()
+    geometryFilter.SetInputData(extractSelection.GetOutput())
+    geometryFilter.Update()
+
+
+
+    # Save fiber in a tube: 
+    tf = vtk.vtkTubeFilter()
+    tf.SetInputData(geometryFilter.GetOutput())
+    tf.SetRadius(10)
+    tf.SetNumberOfSides(20)
+    tf.Update()
+
+    writer = vtk.vtkPolyDataWriter()
+    writer.SetFileName("/work/elodie/test_DIPY_fiber_tube_function.vtk")
+
+    writer.SetInputData(tf.GetOutput())
+    writer.Update()
+
+    print("tube", tf.GetOutput())
+    
+    try:
+        writer.Write()
+        print("Merging done!")
+    except:
+        print("Error while saving file.")
+        exit()
+
+
+
+    return tf.GetOutput() #geometryFilter.GetOutput()

@@ -583,7 +583,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                     if key['name'].endswith('_R'):
                         VisuOrder_associated.append(int(len(label_names)+ number_of_subcortical_regions))
                     else:  #'-L'
-                        VisuOrder_associated.append(int(len(label_names)+30 + number_of_subcortical_regions))
+                        VisuOrder_associated.append(int(len(label_names)+ 30 + number_of_subcortical_regions))
                 
                 # Cortical regions: 
                 else:
