@@ -11,7 +11,7 @@ import datetime
 from termcolor import colored
 import numpy as np
 import vtk
-from vtk.util.numpy_support import vtk_to_numpy
+from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 
 import nibabel as nib
 
@@ -30,7 +30,7 @@ from dipy.data import default_sphere, small_sphere
 from dipy.direction import peaks_from_model, ProbabilisticDirectionGetter
 
 from dipy.tracking import utils
-from dipy.tracking.stopping_criterion import ThresholdStoppingCriterion
+from dipy.tracking.stopping_criterion import ThresholdStoppingCriterion, BinaryStoppingCriterion
 from dipy.tracking.local_tracking import LocalTracking
 from dipy.tracking.streamline import Streamlines
 
@@ -757,7 +757,12 @@ with Tee(log_file):
 
 	# Copy the original parcellation table to be able to build an other specific with only good subcortical regions ( = with good KWM and SALT files)
 	only_matrix_parcellation_table = os.path.join(OUT_TRACTOGRAPHY, 'only_matrix_parcellation_table' )
-	shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
+	
+	if not os.path.exists(only_matrix_parcellation_table): 
+		Destrieux_point_already_computed = False
+		shutil.copy(PARCELLATION_TABLE, only_matrix_parcellation_table)
+	else: 
+		Destrieux_point_already_computed = True 
 
 
 
@@ -919,8 +924,8 @@ with Tee(log_file):
 			print("*****************************************")
 			print("Compute one point per region")
 			print("*****************************************")
-
-			compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
+			if not Destrieux_point_already_computed: 
+				compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
 		
 
 
@@ -2016,8 +2021,7 @@ with Tee(log_file):
 		if not os.path.exists(OUT_DIPY):
 			os.mkdir(OUT_DIPY)
 
-		streamline_vtk = os.path.join(OUT_DIPY,"streamlines.vtk")
-
+	
 		print("*****************************************")
 		print("Convert DWI image to nifti format")
 		print("*****************************************")
@@ -2027,16 +2031,18 @@ with Tee(log_file):
 		    print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
 		else:
 			print("Convert DWI image to nifti format ")
-			run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA, #input data 
+			run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA, #DWI_NRRD, #DWI after resampling
 															                              "--conversionMode", "NrrdToFSL", 
 															                              "--outputVolume", DWI_nifti, 
 															                              "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
 															                              "--outputBVectors", os.path.join(OUT_DIPY, "bvecs")])
+		
+		
 		#*****************************************
 		# Data and gradient table
 		#*****************************************
 		
-		data, affine, img = load_nifti(DWI_nifti, return_img=True) 	
+		data, affine, img = load_nifti(DWI_nifti , return_img=True)
 
 		# Gradient_table: create diffusion MR gradients: loads scanner parameters like the b-values and b-vectors
 		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
@@ -2045,18 +2051,29 @@ with Tee(log_file):
 
 
 
+
+		
+
+		print("*****************************************")
+		print("WM mask resample in DWI space")
+		print("*****************************************")
+		wm_mask_in_DWI_space = os.path.join(OUT_DIPY, "white_matter_mask_in_DWI_space.nrrd")
+		if os.path.exists(wm_mask_in_DWI_space):
+		    print("wm_mask_in_DWI_space FSL file: Found Skipping warp transform")
+		else: 
+			run_command("WARP_TRANSFORM: WM mask resample in DWI space", [pathWARP_TRANSFORM, "3", wm_mask, wm_mask_in_DWI_space, "-R", B0_BiasCorrect_NRRD, Warp, Affine])
+
+
 		#*****************************************
-		# White matter mask to restrict tracking to the white matter: use BRAINMASK ! 
+		# Mask to restrict tracking to the white matter (and gray matter):  
 		#*****************************************
 
 		white_matter_nifti = os.path.join(OUT_DIPY, "white_matter.nii.gz")
-		
 		if os.path.exists(white_matter_nifti):
-		    print("Brain mask FSL file: Found Skipping conversion")
+		    print("WM mask FSL file: Found Skipping conversion")
 		else: 
-			print("DWIConvert BRAINMASK to FSL format")
-
-			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK, #wm_mask NEED TO BE CHANGE !!!!!!!!!!!!!!!
+			print("DWIConvert WM to FSL format")
+			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", wm_mask_in_DWI_space, #wm_mask, #BRAINMASK
 									                                    "--conversionMode", "NrrdToFSL", 
 									                                    "--outputVolume", white_matter_nifti, 
 									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
@@ -2066,13 +2083,149 @@ with Tee(log_file):
 		data_white_matter = load_nifti_data(white_matter_nifti)  
 
 		# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
+		print("data_white_matter before dowmsampling", data_white_matter.shape)
 		white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1]) 
-			
+
+
+		# In case of the user don't upsampling the DWI 
+		if white_matter.shape != data.shape[0:-1] : # need to downsampling wm_mask
+
+			# Preprocessing
+			WM_MASK_dowmsampling = os.path.join(OUT_DIPY, "wm_mask_dowmsample.nrrd")
+
+
+			# Interpolation / upsampling DWI
+			if os.path.exists( WM_MASK_dowmsampling ):
+				print("Files Found: Skipping downsampling wm mask ")
+			else:
+				command = [pathUnu, "resample", "-i", wm_mask_in_DWI_space, "-s", "x0.5", "x0.5", "x0.5", "-k", "cubic:0,0.5"]
+				    
+				p1 = subprocess.Popen(command, stdout=subprocess.PIPE)
+
+				command = [pathUnu,"3op", "clamp", "0",'-', "10000000"]
+				p2 = subprocess.Popen(command, stdin=p1.stdout, stdout=subprocess.PIPE)
+
+				command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", WM_MASK_dowmsampling]
+				p3 = subprocess.Popen(command,stdin=p2.stdout, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				print( colored("\n"+" ".join(command)+"\n", 'blue'))
+				out, err = p3.communicate()
+				print("Resample wm mask out: ", colored("\n" + str(out) + "\n", 'green'))
+				print("Resample wm mask err: ", colored("\n" + str(err) + "\n", 'red'))
+
+
+			# Conversion to nifti again 
+			white_matter_nifti_resamplimg = os.path.join(OUT_DIPY, "white_matter_resampling.nii.gz")
+			if os.path.exists(white_matter_nifti_resamplimg):
+			    print("WM mask FSL file: Found Skipping conversion")
+			else: 
+				print("DWIConvert WM to FSL format")
+				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", WM_MASK_dowmsampling,
+										                                    "--conversionMode", "NrrdToFSL", 
+										                                    "--outputVolume", white_matter_nifti_resamplimg, 
+										                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
+										                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+
+			# Load_nifti_data: load only the data array from a nifti file
+			data_white_matter = load_nifti_data(white_matter_nifti_resamplimg)  
+
+			# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
+			print("data_white_matter after dowmsampling", data_white_matter.shape)
+			white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1]) 
 
 
 
 
 
+
+
+
+		
+		if gm_mask != '': # gray matter mask provided by the user
+		
+			print("*****************************************")
+			print("GM mask resample in DWI space")
+			print("*****************************************")
+
+			gm_mask_in_DWI_space = os.path.join(OUT_DIPY, "gray_matter_mask_in_DWI_space.nrrd")
+			if os.path.exists(gm_mask_in_DWI_space):
+			    print("gm_mask_in_DWI_space mask FSL file: Found Skipping warp")
+			else: 
+				run_command("WARP_TRANSFORM: GM mask resample in DWI space", [pathWARP_TRANSFORM, "3", gm_mask, gm_mask_in_DWI_space, "-R", B0_BiasCorrect_NRRD, Warp, Affine])
+
+
+			#*****************************************
+			# Mask to restrict tracking to the gray matter (and gray matter):  
+			#*****************************************
+
+			gray_matter_nifti = os.path.join(OUT_DIPY, "gray_matter.nii.gz")
+			if os.path.exists(gray_matter_nifti):
+			    print("GM mask FSL file: Found Skipping conversion")
+			else: 
+				print("DWIConvert GM to FSL format")
+				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", gm_mask_in_DWI_space, 
+										                                    "--conversionMode", "NrrdToFSL", 
+										                                    "--outputVolume", gray_matter_nifti, 
+										                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
+										                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+
+			# Load_nifti_data: load only the data array from a nifti file
+			data_gray_matter = load_nifti_data(gray_matter_nifti)  
+
+			# Reshape to have the same shape for DWI (128, 96, 67, 32) and gray matter (128, 96, 67)   (before gm: (128, 96, 67,1)  )
+			print("data_gray_matter before dowmsampling", data_gray_matter.shape)
+			gray_matter = data_gray_matter.reshape(data_gray_matter.shape[0:-1]) 
+
+
+
+			if gray_matter.shape != data.shape[0:-1] : # need to downsampling gm_mask
+
+				# Preprocessing
+				GM_MASK_dowmsampling = os.path.join(OUT_DIPY, "gm_mask_dowmsample.nrrd")
+
+
+				# Interpolation / upsampling DWI
+				if os.path.exists( GM_MASK_dowmsampling ):
+					print("Files Found: Skipping downsampling gm mask ")
+				else:
+					command = [pathUnu, "resample", "-i", gm_mask_in_DWI_space, "-s", "x0.5", "x0.5", "x0.5", "-k", "cubic:0,0.5"]
+					    
+					p1 = subprocess.Popen(command, stdout=subprocess.PIPE)
+
+					command = [pathUnu,"3op", "clamp", "0",'-', "10000000"]
+					p2 = subprocess.Popen(command, stdin=p1.stdout, stdout=subprocess.PIPE)
+
+					command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", GM_MASK_dowmsampling]
+					p3 = subprocess.Popen(command,stdin=p2.stdout, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+					print( colored("\n"+" ".join(command)+"\n", 'blue'))
+					out, err = p3.communicate()
+					print("Resample gm mask out: ", colored("\n" + str(out) + "\n", 'green'))
+					print("Resample gm mask err: ", colored("\n" + str(err) + "\n", 'red'))
+
+
+				# Conversion to nifti again 
+				gray_matter_nifti_resamplimg = os.path.join(OUT_DIPY, "gray_matter_resampling.nii.gz")
+				if os.path.exists(gray_matter_nifti_resamplimg):
+				    print("GM mask FSL file: Found Skipping conversion")
+				else: 
+					print("DWIConvert GM to FSL format")
+					run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", GM_MASK_dowmsampling,
+											                                    "--conversionMode", "NrrdToFSL", 
+											                                    "--outputVolume", gray_matter_nifti_resamplimg, 
+											                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
+											                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+
+				# Load_nifti_data: load only the data array from a nifti file
+				data_gray_matter = load_nifti_data(gray_matter_nifti_resamplimg)  
+
+				# Reshape to have the same shape for DWI (128, 96, 67, 32) and gray matter (128, 96, 67)   (before gm: (128, 96, 67,1)  )
+				print("data_gray_matter after dowmsampling", data_gray_matter.shape)
+				gray_matter = data_gray_matter.reshape(data_gray_matter.shape[0:-1]) 
+
+
+	
+
+
+		streamline_vtk = os.path.join(OUT_DIPY,"streamlines.vtk")
 		if not os.path.exists(streamline_vtk):
 
 	        #*****************************************
@@ -2098,9 +2251,9 @@ with Tee(log_file):
 				# Automatic estimation of multi-shell multi-tissue (msmt) response: 
 				auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=wm_fa_thr,  # 0.7
 																													gm_fa_thr=gm_fa_thr,  # 0.3
-																													csf_fa_thr=0.15, # 0.15
-																													gm_md_thr=0.001, 
-																													csf_md_thr=0.0032)
+																													csf_fa_thr=csf_fa_thr, # 0.15
+																													gm_md_thr=gm_md_thr, # 0.001 
+																													csf_md_thr=csf_md_thr) # 0.0032
 				response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=auto_response_wm, gm_rf=auto_response_gm, csf_rf=auto_response_csf)
 
 				# Fit a Constrained Spherical Deconvolution (CSD) model: 
@@ -2111,29 +2264,55 @@ with Tee(log_file):
 			print("End of getting directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 			print("*****************************************")
 
+
 	        #*****************************************
 			# Stopping criterion: a method for identifying when the tracking must stop: restricting the fiber tracking to areas with good directionality information
 			#*****************************************
 
+			# Conversion to nifti  
+			brain_nifti = os.path.join(OUT_DIPY, "brain.nii.gz")
+			if os.path.exists(brain_nifti):
+			    print("brain_nifti mask FSL file: Found Skipping conversion")
+			else: 
+				print("DWIConvert brain_niftito FSL format")
+				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK,
+										                                    "--conversionMode", "NrrdToFSL", 
+										                                    "--outputVolume", brain_nifti, 
+										                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
+										                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+
+			# Load_nifti_data: load only the data array from a nifti file
+			data_brain= load_nifti_data(brain_nifti)  
+
+			# Reshape to have the same shape for DWI (128, 96, 67, 32) and gray matter (128, 96, 67)   (before gm: (128, 96, 67,1)  )
+			print("data_brain after dowmsampling", data_brain.shape)
+			brainmask_array = data_brain.reshape(data_brain.shape[0:-1]) 
+
+
+
+
 			# We use the GFA (similar to FA but ODF based models) of the CSA model to build a stopping criterion.
 			# Fit the data to a Constant Solid Angle ODF Model: estimate the Orientation Distribution Function (ODF) at each voxel
 			csa_model = CsaOdfModel(gtab, sh_order=6) 
-			gfa = csa_model.fit(data, mask=white_matter).gfa 
+			gfa = csa_model.fit(data, mask= brainmask_array).gfa 
 
 
 			# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the Generalized Fractional Anisotropy (GFA)
 			# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#thresholdstoppingcriterion 
-			stopping_criterion = ThresholdStoppingCriterion(gfa, .25)  # default value: .25    
-
-
-
-			# test if gm mask exist and if it is the case: 
-			#merge wm and gm mask as stoppting criterion NEED TO BE CHANGE !!!!!!!!!!!!!!!
-			# else: stopping criterion = just wm
-
-
+			stopping_criterion = ThresholdStoppingCriterion(gfa, .25)  # default value: data < .25
 
 			
+			
+			#stopping_criterion = BinaryStoppingCriterion(brainmask_array ==1)
+
+
+
+
+
+
+
+
+
 
 			print("*****************************************")
 			print("End of stopping criterion method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
@@ -2144,7 +2323,7 @@ with Tee(log_file):
 			# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
 			#*****************************************
 
-			seed_mask = white_matter #BRAINMASK #DiffusionBrainMask T1_labeled_reshape
+			seed_mask = white_matter #gray_matter #white_matter 
 			# Create seeds for fiber tracking from a binary mask: 
 			seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
 			print("seeds", seeds ) 
@@ -2176,7 +2355,6 @@ with Tee(log_file):
 			print("*****************************************")
 
 
-
 	        #*****************************************
 		    # Generate streamlines
 		    #*****************************************
@@ -2186,8 +2364,6 @@ with Tee(log_file):
 
 			# Generate streamlines object:  streamlines = ArraySequence object
 			streamlines = Streamlines(streamlines_generator)
-			print(streamlines)
-
 			save_vtk_streamlines(streamlines, streamline_vtk, to_lps=True, binary=False)
 
 			print("*****************************************")
@@ -2198,6 +2374,7 @@ with Tee(log_file):
 		else: # tractogram already compute 
 			print("Streamlines already computed")
 				
+
 
         #*****************************************
 		# Extract the connectivity matrix
@@ -2211,109 +2388,11 @@ with Tee(log_file):
 			print("Before create connectivity matrix: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 			print("*****************************************")
 			
-			# Read the source file
-			reader = vtk.vtkPolyDataReader() 
-			reader.SetFileName(SURFACE)
-			reader.Update()  
-
-			# Get all points of my surfaces: 
-			array = vtk_to_numpy(reader.GetOutput().GetPointData().GetArray(0)).tolist()
-			#print("array", array) #[11106. 11166. 11112. ... 11166.]
-			print("array shape ", len(array))	#(354708,)
-
-			# Get all scalars of my surface:  
-			numpy_nodes = vtk_to_numpy(reader.GetOutput().GetPoints().GetData()).tolist()
-
-			#print("numpy_nodes",numpy_nodes ) #[[-36.6685   85.5245   11.6233 ] ... [-58.3593   46.634   -32.0077 ]]
-			print("numpy_nodes shape", len(numpy_nodes)) #(354708, 3, 1)
-
-
-			# Streamlines: 
-			reader_streamlines = vtk.vtkPolyDataReader() 
-			reader_streamlines.SetFileName(streamline_vtk)
-			reader_streamlines.Update()
-			
-			print("streamlines", reader_streamlines.GetOutput())
-
-			nbCell = reader_streamlines.GetOutput().GetNumberOfCells()
-			print("nbCell: ", nbCell)
-
-			for i_cell in range(1):#nbCell):
-
-				vtkfiber = ExtractFiber(reader_streamlines.GetOutput(), i_cell)
-				print("vtkfiber", vtkfiber)
-			
-
-				booleanOperation = vtk.vtkBooleanOperationPolyDataFilter()
-				booleanOperation.SetOperationToIntersection()
-
-				booleanOperation.SetTolerance(0.5)
-
-				booleanOperation.SetInputData(0, reader.GetOutput())  #surface
-				booleanOperation.SetInputData(1, vtkfiber) #fiber
-
-				booleanOperation.Update() 
-				print("booleanOperation", booleanOperation.GetOutput())
-
-
-				# VISUALISATION:
-				''' 
-				polydata = vtk.vtkPolyData()
-				apd = vtk.vtkAppendPolyData()
-
-				apd.AddInputData(booleanOperation.GetOutput())
-				apd.Update()
-				polydata = apd.GetOutput()
-				'''
-
-				writer = vtk.vtkPolyDataWriter()
-				writer.SetFileName("/work/elodie/test_DIPY_vtkBooleanOperationPolyDataFilter.vtk")
-
-				writer.SetInputData(booleanOperation.GetOutput())#polydata)
-				writer.SetFileTypeToASCII()
-				writer.Update()
-
-				try:
-					writer.Write()
-					print("Merging vtkBooleanOperationPolyDataFilter done!")
-				except:
-					print("Error while saving vtkBooleanOperationPolyDataFilter file.")
-					exit()
-
-
-
-
-				array_inter = vtk_to_numpy(booleanOperation.GetOutput().GetPointData().GetArray(1)).tolist()  # change to find the name instead 
-				#print("array_inter", array_inter) 
-				print("array_inter shape ", len(array_inter))	
-
-					
-
-
-
-
-
-
-			print(array3.shape()) # stop the script 
-
-
-	
-
-			
-
-
-
-			print("*****************************************")
-			print("Write connectivity matrix")
-			print("*****************************************")
-
-			# "fdt_network_matrix"
-			# Create connectome:
-
 			# *****************************************
-			# Open seed.txt file to have the number of regions
+			# Initialize connectome
 			# *****************************************
-			'''
+
+			# Open seed.txt file to have the number of regions:
 			number_region_all = 0
 			seed_data = open(os.path.join(OutSurfaceName,"seeds.txt"), "r")
 			for line in seed_data:  
@@ -2322,8 +2401,237 @@ with Tee(log_file):
 			connectome = np.zeros( (number_region_all, number_region_all) )
 
 
+			# *****************************************
+			# Initialize list of region in the same order than Matrix Row:
+			# *****************************************
 
-			np.savetxt(matrix, M_modif.astype(float),  fmt='%f', delimiter='  ')
+			# Get the parcellation table with Cortical and Subcortical regions: 
+			with open(only_matrix_parcellation_table, "r") as table_json_file:
+				table_json_object = json.load(table_json_file)
+
+			# Get data points for connected and unconnected points: 
+			list_region_unordered, list_matrixrow_unordered, list_region = ([],[],[])
+
+			for key in table_json_object:    
+				list_region_unordered.append(int(key["labelValue"]))
+				list_matrixrow_unordered.append(key["MatrixRow"])
+
+			# Sort regions by MatrixRow number: 
+			sorted_indices = np.argsort(list_matrixrow_unordered)
+
+			for i in range(len(list_matrixrow_unordered)):
+				index = sorted_indices[i]
+				list_region.append(list_region_unordered[index])
+
+			#print("list_region", list_region)
+
+
+
+
+			# Read the source file
+			reader = vtk.vtkPolyDataReader() 
+			reader.SetFileName(SURFACE)
+			reader.Update()
+
+			points = vtk_to_numpy( reader.GetOutput().GetPoints().GetData() )
+			#print("before",points )
+			for point in points: 
+				point[0] = - point[0] #x
+				point[1] = - point[1] #y
+
+
+			points_vtk = numpy_to_vtk(points, deep=True)
+		
+			reader.GetOutput().GetPoints().SetData(points_vtk)
+			reader.Update()
+			
+			polydata = reader.GetOutput()
+			points = vtk_to_numpy( polydata.GetPoints().GetData() )
+			#print("after",points )
+
+
+			polydata = vtk.vtkPolyData()
+			apd = vtk.vtkAppendPolyData()
+			apd.AddInputData(reader.GetOutput())
+
+			apd.Update()
+			polydata = apd.GetOutput()
+
+			writer = vtk.vtkPolyDataWriter()
+			writer.SetFileName(os.path.join(OUT_DIPY,"surface_after_transfo.vtk"))
+
+			writer.SetInputData(polydata)
+			writer.SetFileTypeToASCII()
+			writer.Update()
+
+			try:
+				writer.Write()
+				print("Merging done!")
+			except:
+				print("Error while saving file.")
+				exit()
+
+
+
+
+			
+			
+			# Read the source file
+			reader = vtk.vtkPolyDataReader() 
+			reader.SetFileName(os.path.join(OUT_DIPY,"surface_after_transfo.vtk"))
+			reader.Update()  
+
+			# Get all points of my surfaces: 
+			list_scalar_surface_labeled = vtk_to_numpy(reader.GetOutput().GetPointData().GetArray(0)).tolist()
+			#print("list_scalar_surface_labeled", list_scalar_surface_labeled) #[11106. 11166. 11112. ... 11166.]
+			print("list_scalar_surface_labeled shape ", len(list_scalar_surface_labeled))	#(354708,)
+
+			# Get all scalars of my surface:  
+			list_points_surface_labeled = vtk_to_numpy(reader.GetOutput().GetPoints().GetData()).tolist()
+			#print("list_points_surface_labeled",list_points_surface_labeled ) #[[-36.6685   85.5245   11.6233 ] ... [-58.3593   46.634   -32.0077 ]]
+			print("list_points_surface_labeled shape ", len(list_points_surface_labeled)) #(354708, 3, 1)
+
+
+			# Streamlines: 
+			reader_streamlines = vtk.vtkPolyDataReader() 
+			reader_streamlines.SetFileName(streamline_vtk)
+			reader_streamlines.Update()
+			print("streamlines", reader_streamlines.GetOutput())
+
+
+			nbCell = reader_streamlines.GetOutput().GetNumberOfCells()
+			print("nbCell: ", nbCell) #87407
+
+			array_inter = 0
+
+			print("Before loop fibers: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+
+			for i_cell in range(50): #nbCell):
+
+				#vtkfiber = ExtractFiber(reader_streamlines.GetOutput(), i_cell)
+				#print("vtkfiber", vtkfiber)
+				ids = vtk.vtkIdTypeArray()
+				ids.SetNumberOfComponents(1)
+				ids.InsertNextValue(i_cell) 
+
+				# extract a subset from a dataset
+				selectionNode = vtk.vtkSelectionNode() 
+				selectionNode.SetFieldType(0)
+				selectionNode.SetContentType(4)
+				selectionNode.SetSelectionList(ids) 
+
+				# set containing cell to 1 = extract cell
+				selectionNode.GetProperties().Set(vtk.vtkSelectionNode.CONTAINING_CELLS(), 1) 
+
+				selection = vtk.vtkSelection()
+				selection.AddNode(selectionNode)
+
+				# extract the cell from the cluster
+				extractSelection = vtk.vtkExtractSelection()
+				extractSelection.SetInputData(0, reader_streamlines.GetOutput())
+				extractSelection.SetInputData(1, selection)
+				extractSelection.Update()
+
+				# convert the extract cell to a polygonal type (a line here)
+				geometryFilter = vtk.vtkGeometryFilter()
+				geometryFilter.SetInputData(extractSelection.GetOutput())
+				geometryFilter.Update()
+
+				# Save fiber in a tube: 
+				tf = vtk.vtkTubeFilter()
+				tf.SetInputData(geometryFilter.GetOutput())
+				tf.SetRadius(0.1)
+				tf.SetNumberOfSides(20)
+				tf.Update()
+				writer = vtk.vtkPolyDataWriter()
+				writer.SetFileName(os.path.join(OUT_DIPY,"fiber_tube.vtk"))
+				writer.SetInputData(tf.GetOutput())
+				writer.Update()
+				#print("tube", tf.GetOutput())
+				
+				try:
+					writer.Write()
+					#print("Tube created!")
+				except:
+					print("Error while saving tube.")
+					exit()
+
+
+				reader_tube = vtk.vtkPolyDataReader() 
+				reader_tube.SetFileName(os.path.join(OUT_DIPY,"fiber_tube.vtk"))
+				reader_tube.Update()
+
+
+
+				intersectionPolyDataFilter = vtk.vtkIntersectionPolyDataFilter()
+				intersectionPolyDataFilter.SetInputConnection( 0, reader_streamlines.GetOutputPort())
+				intersectionPolyDataFilter.SetInputConnection( 1, reader_tube.GetOutputPort())
+				intersectionPolyDataFilter.SetTolerance(20)
+				intersectionPolyDataFilter.Update()
+
+				print("intersec point:", intersectionPolyDataFilter.GetNumberOfIntersectionPoints(), "intersec line:",intersectionPolyDataFilter.GetNumberOfIntersectionLines())
+
+
+				# VISUALISATION:
+				writer = vtk.vtkPolyDataWriter()
+				writer.SetFileName(os.path.join(OUT_DIPY,"intersectionPolyDataFilter.vtk"))
+
+				writer.SetInputData(intersectionPolyDataFilter.GetOutput())
+				writer.Update()
+
+				try:
+					writer.Write()
+					#print("Merging intersectionPolyDataFilter done!")
+				except:
+					print("Error while saving intersectionPolyDataFilter file.")
+					exit()
+
+
+
+
+				reader_intersection = vtk.vtkPolyDataReader() 
+				reader_intersection.SetFileName(os.path.join(OUT_DIPY,"intersectionPolyDataFilter.vtk"))
+				reader_intersection.Update()
+
+				array_inter += len(vtk_to_numpy(reader_intersection.GetOutput().GetPoints().GetData()).tolist()) #.GetArray(1)).tolist()  # change to find the name instead 
+				#print("array_inter", array_inter)
+
+				# *****************************************
+				# Write connectivity matrix
+				# *****************************************
+
+				# Add value to the connectivity matrix: 
+				if len(vtk_to_numpy(reader_intersection.GetOutput().GetPoints().GetData()).tolist()) !=0: #nb point !=0
+					print("points !")
+
+					# remove duplicate ? 
+
+					'''
+					for first_scalar in vtk_to_numpy(reader_intersection.GetOutput().GetPointData().GetArray(0)).tolist():  #list of scalars in my intersection 
+						for second_scalar in vtk_to_numpy(reader_intersection.GetOutput().GetPointData().GetArray(0)).tolist():  #list of scalars in my intersection 
+							# Get index in the connectivity matrix 
+							first_index = list_region.index(first_scalar)
+							second_index = list_region.index(second_scalar)
+
+							connectome[first_index, second_index] += 1
+					'''
+
+			print("After loop fibers: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
+			print("array_inter ", array_inter)
+
+			print("reader_intersection:", reader_intersection.GetOutput())
+
+					
+
+			print(array3.shape()) # stop the script
+
+
+			
+
+
+			'''
+			# Save the connectivity matrix 
+			np.savetxt(matrix, connectome.astype(float),  fmt='%f', delimiter='  ')
 			
 			plt.imshow(np.log1p(M), interpolation='nearest')
 			plt.savefig(os.path.join(OUT_DIPY, "connectivity.png"))

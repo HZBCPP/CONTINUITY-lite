@@ -1038,7 +1038,7 @@ def remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI, bvec, bva
 
 
 
-
+'''
 # *************************************************************************************
 # Extract one fiber from a vtk with all streamlines (from Lucie)
 # *************************************************************************************
@@ -1079,22 +1079,20 @@ def ExtractFiber(surf, list_id) :
     tf.SetRadius(10)
     tf.SetNumberOfSides(20)
     tf.Update()
-
     writer = vtk.vtkPolyDataWriter()
     writer.SetFileName("/work/elodie/test_DIPY_fiber_tube_function.vtk")
-
     writer.SetInputData(tf.GetOutput())
     writer.Update()
-
     print("tube", tf.GetOutput())
     
     try:
         writer.Write()
-        print("Merging done!")
+        print("Tube created!")
     except:
-        print("Error while saving file.")
+        print("Error while saving tube.")
         exit()
 
 
 
-    return tf.GetOutput() #geometryFilter.GetOutput()
+    return tf.GetOutputPort()#geometryFilter.GetOutputPort() #GetOutput()
+'''
