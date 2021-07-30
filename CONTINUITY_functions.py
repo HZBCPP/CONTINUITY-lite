@@ -173,7 +173,7 @@ def cluster(slurm_job, cluster_command_line, out_path, ID_path, user_json_file )
  
     # Open and write the command line given by the user:
     slurm_job_file = open(str(slurm_job), 'w+') 
-    slurm_job_file.write(cluster_command_line) 
+    slurm_job_file.write(cluster_command_line + '\n') 
     slurm_job_file.write('#SBATCH -e ' + OUT_FOLDER +   '/slurm_error.txt \n') 
     slurm_job_file.write('#SBATCH -o ' + OUT_FOLDER +   '/slurm.out \n') 
     #slurm_job_file.write('module add python \n') 

@@ -1352,43 +1352,44 @@ with Tee(log_file):
 
 
 	# Find all b-values: 
+	user_bval_with_nearest_values_without_duplicate,all_bval_with_duplicate = ([],[])
+
 	if len(list_bval_for_the_tractography) == 0: #bval not specify by the user: by default: all bvals used except 0
 		list_bval_for_the_tractography = extract_bvals(DWI_DATA_bvals, size_of_bvals_groups_DWI)
+		#print("list_bval_for_the_tractography after extraction ", list_bval_for_the_tractography)	
 
 		list_bval_for_the_tractography = [x for x in list_bval_for_the_tractography if x > size_of_bvals_groups_DWI] # remove 0 or nerest values
 
-		user_bval_with_nearest_values_without_duplicate,all_bval_with_duplicate = ([],[])
 		bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')     
 		for line in bval_file:
 				line = int(line.strip('\n') )
+				all_bval_with_duplicate.append(line)
 				if not line in user_bval_with_nearest_values_without_duplicate and line != 0:
 					user_bval_with_nearest_values_without_duplicate.append(line)
-					all_bval_with_duplicate.append(line)
+					
 
 
 	else: # bvals 'grouping' specify by the user: need to add the nereast value 
-		user_bval_with_nearest_values_without_duplicate, all_bval_with_duplicate = ([],[])
-
 		bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')    
 
 		for line in bval_file:
 			# Extraction of bval: 
 			line = int(line.strip('\n') )
-			if not line in all_bval_with_duplicate:
-				all_bval_with_duplicate.append(line)
+			all_bval_with_duplicate.append(line)
 
 			# Check if user want of not this value 
 			for listitem in list_bval_for_the_tractography:
 	
 				# Other nerest b-values: 
 				for i in range(size_of_bvals_groups_DWI*2):
-					if int((line-size_of_bvals_groups_DWI)) + i == listitem:
+					if int((line - size_of_bvals_groups_DWI)) + i == listitem:
 						if not line in user_bval_with_nearest_values_without_duplicate:
 							user_bval_with_nearest_values_without_duplicate.append(line)
 
 	print("list_bval_for_the_tractography", list_bval_for_the_tractography)	
-	print("all_bval_with_duplicate", all_bval_with_duplicate)			
-	print("user_bval_with_nearest_values_without_duplicate after conversion: ", user_bval_with_nearest_values_without_duplicate)
+	#print("all_bval_with_duplicate", all_bval_with_duplicate)			
+	#print("user_bval_with_nearest_values_without_duplicate after conversion: ", user_bval_with_nearest_values_without_duplicate)
+
 
 
 
@@ -1507,11 +1508,40 @@ with Tee(log_file):
 			else: 
 				print("Multi shell dwi2response msmt_5tt")	
 
+				#dwi2response dhollander dwi.mif response_wm.txt response_gm.txt response_csf.txt
+
+				command = [MRtrixPath + "/dwi2response",'dhollander', DiffusionData, # input
+													   			
+													   				response_wm_txt,  #output
+																	response_gm_txt,  #output
+																	response_csf_txt, #output
+
+													   				'-mask', DiffusionBrainMask, # input
+													                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
+													                '-scratch', os.path.join(OUT_MRTRIX),
+													                '-nthreads', str(nb_threads) ]
+				command.append('-shells')
+				shells = ""
+				for idx, element in enumerate(list_bval_for_the_tractography): 				
+					shells += str(element)
+					if idx < len(list_bval_for_the_tractography) - 1:
+						shells += ","
+				command.append(shells)
+
+				run_command("dhollander", command)
+				
+	
 
 
-				command = [MRtrixPath +'/mrconvert', "/work/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/dwi2response-tmp-C3NYFA/mask.mif", "/work/elodie/testing/mask.nii.gz"]
-				run_command("mif to nifti", command)
 
+				#command = [MRtrixPath +'/mrconvert', "/work/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/dwi2response-tmp-C3NYFA/mask.mif", "/work/elodie/testing/mask.nii.gz"]
+				#run_command("mif to nifti", command)
+
+				#command = [MRtrixPath +'/mrconvert', DiffusionData, "/work/elodie/testing/diffusionData.mif"]
+				#run_command("nifti to mif", command)
+
+
+				'''
 				command = [MRtrixPath +'/mrinfo', "/work/elodie/testing/mask.nii.gz"]
 				run_command("mrinfo MRtrix nifti", command)
 
@@ -1520,31 +1550,39 @@ with Tee(log_file):
 
 				command = [MRtrixPath + '/mrinfo', DiffusionBrainMask]
 				run_command("mrinfo original brain mask nifti", command)
+				'''
 
 
 
 
+				'''
 				command = [MRtrixPath + "/dwi2response",'msmt_5tt', 
-															DiffusionData, # input
+															DiffusionData, # "/work/elodie/testing/diffusionData.mif", # input
 															fivett_img, # input
 
 															response_wm_txt,  #output
 															response_gm_txt,  #output
 															response_csf_txt, #output
 
-															'-mask', DiffusionBrainMask, # input
+															'-mask', DiffusionBrainMask, #input
 													        '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 													        '-scratch', os.path.join(OUT_MRTRIX),
 													        '-nthreads', str(nb_threads) ]
 				command.append('-shells')
 				shells = ""
-				for idx, element in enumerate(list_bval_for_the_tractography):	#user_bval_with_nearest_values_without_duplicate				
+				for idx, element in enumerate(list_bval_for_the_tractography): 				
 					shells += str(element)
-					if idx < len(list_bval_for_the_tractography) - 1: #user_bval_with_nearest_values_without_duplicate
+					if idx < len(list_bval_for_the_tractography) - 1:
 						shells += ","
 				command.append(shells)
 
 				run_command("msmt_5tt", command)
+				'''
+				
+
+
+
+
 
 
 
@@ -1570,9 +1608,9 @@ with Tee(log_file):
 									    '-nthreads', str(nb_threads)]
 				command.append('-shells')
 				shells = ""
-				for idx, element in enumerate(list_bval_for_the_tractography):	#user_bval_with_nearest_values_without_duplicate				
+				for idx, element in enumerate(list_bval_for_the_tractography):	
 					shells += str(element)
-					if idx < len(list_bval_for_the_tractography) - 1: #user_bval_with_nearest_values_without_duplicate
+					if idx < len(list_bval_for_the_tractography) - 1: 
 						shells += ","
 				command.append(shells)
 			
@@ -1596,9 +1634,9 @@ with Tee(log_file):
 				
 				command.append('-shells')
 				shells = ""
-				for idx, element in enumerate(list_bval_for_the_tractography):	#user_bval_with_nearest_values_without_duplicate				
+				for idx, element in enumerate(list_bval_for_the_tractography):			
 					shells += str(element)
-					if idx < len(list_bval_for_the_tractography) - 1: #user_bval_with_nearest_values_without_duplicate
+					if idx < len(list_bval_for_the_tractography) - 1: 
 						shells += ","
 				command.append(shells)
 
