@@ -1431,7 +1431,7 @@ with Tee(log_file):
 		# *****************************************
 		# Create 5tt   
 		# *****************************************	    
-		if act_option or len(list_bval_for_the_tractography) != 1: # multi shell
+		if act_option:
 			print("*****************************************")
 			print("Convert T1 image to nifti format")
 			print("*****************************************")
@@ -1470,6 +1470,9 @@ with Tee(log_file):
 				
 
 
+		print("*****************************************")
+		print("Response function estimation: dwi2response")
+		print("*****************************************")
 
 		if len(list_bval_for_the_tractography) == 1: # single shell_DWI: 
 
@@ -1488,20 +1491,13 @@ with Tee(log_file):
 													                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
 													                '-scratch', os.path.join(OUT_MRTRIX),
 													                '-nthreads', str(nb_threads) ]
-				
 				run_command("Response function estimation (err ok)", command)
 
 
-
-
-
-
-		if len(list_bval_for_the_tractography) != 1: # multi shell_DWI: need other file for the next step  
-			
+		else: # multi shell_DWI: need other file for the next step  
 			response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
 			response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
 			response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
-
 
 			if os.path.exists(response_wm_txt): 
 				print("Multi shell dwi2response msmt_5tt: response_wm_txt, response_wm_txt andresponse_csf_txt already compute ")
@@ -1529,30 +1525,9 @@ with Tee(log_file):
 				command.append(shells)
 
 				run_command("dhollander", command)
-				
-	
-
-
-
-				#command = [MRtrixPath +'/mrconvert', "/work/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/dwi2response-tmp-C3NYFA/mask.mif", "/work/elodie/testing/mask.nii.gz"]
-				#run_command("mif to nifti", command)
 
 				#command = [MRtrixPath +'/mrconvert', DiffusionData, "/work/elodie/testing/diffusionData.mif"]
 				#run_command("nifti to mif", command)
-
-
-				'''
-				command = [MRtrixPath +'/mrinfo', "/work/elodie/testing/mask.nii.gz"]
-				run_command("mrinfo MRtrix nifti", command)
-
-				command = [MRtrixPath +'/mrinfo', "/work/elodie/testing/PRISMA/output_CONTINUITY_PRISMA_sift_iFOD2_no_sc_no_registration/neo-0137-2-1-8year/Tractography/MRtrix(default:IFOD2)_tcksif/dwi2response-tmp-C3NYFA/mask.mif"]
-				run_command("mrinfo MRtrix mif", command)
-
-				command = [MRtrixPath + '/mrinfo', DiffusionBrainMask]
-				run_command("mrinfo original brain mask nifti", command)
-				'''
-
-
 
 
 				'''
@@ -1579,10 +1554,6 @@ with Tee(log_file):
 				run_command("msmt_5tt", command)
 				'''
 				
-
-
-
-
 
 
 
@@ -1615,7 +1586,10 @@ with Tee(log_file):
 				command.append(shells)
 			
 
-			else: # multi shell 
+		if os.path.exists(wmfod_mif):
+		    print("White Matter Fibre Orientation Distribution estimation already compute")
+		else: 
+			if len(list_bval_for_the_tractography) != 1: # multi shell 
 				command = [MRtrixPath + "/dwi2fod", 'msmt_csd',
 									    DiffusionData, # input
 
@@ -1639,8 +1613,25 @@ with Tee(log_file):
 					if idx < len(list_bval_for_the_tractography) - 1: 
 						shells += ","
 				command.append(shells)
-
+		
 			run_command("FOD estimation", command)
+
+
+		if len(list_bval_for_the_tractography) != 1:
+			FOD_nii = wmfod_mif
+
+			'''
+			command = [MRtrixPath +'/mrconvert', wmfod_mif , "/work/elodie/testing/wmfod.nii.gz"]
+			run_command("mif to nifti", command)
+			
+			command = [MRtrixPath +'/mrconvert', gm_mif , "/work/elodie/testing/gm.nii.gz"]
+			run_command("mif to nifti", command)
+			
+			command = [MRtrixPath +'/mrconvert', csf_mif , "/work/elodie/testing/csf.nii.gz"]
+			run_command("mif to nifti", command)
+				
+			'''
+
 
 
 
@@ -1707,6 +1698,7 @@ with Tee(log_file):
 			# Extract region name information: 
 			line = line.strip('\n')
 			number_region = line[-9:-4] #remove '.asc' 
+			number_region = number_region.replace("/", "")
 
 			# Compute radius of each seed of this specific region:
 			list_coord_seeds, number_point = compute_radius_of_each_seed(str(line)) 
@@ -2072,8 +2064,8 @@ with Tee(log_file):
 			run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA, #DWI_NRRD, #DWI after resampling
 															                              "--conversionMode", "NrrdToFSL", 
 															                              "--outputVolume", DWI_nifti, 
-															                              "--outputBValues", os.path.join(OUT_DIPY, "bvals"), 
-															                              "--outputBVectors", os.path.join(OUT_DIPY, "bvecs")])
+															                              "--outputBValues", os.path.join(OUT_DIPY, "DWI_nifti_bvals"), 
+															                              "--outputBVectors", os.path.join(OUT_DIPY, "DWI_nifti_bvecs")])
 		
 		
 		#*****************************************
@@ -2083,7 +2075,10 @@ with Tee(log_file):
 		data, affine, img = load_nifti(DWI_nifti , return_img=True)
 
 		# Gradient_table: create diffusion MR gradients: loads scanner parameters like the b-values and b-vectors
-		gtab = gradient_table(os.path.join(OUT_DIPY, "bvals"), os.path.join(OUT_DIPY, "bvecs"))
+		gtab = gradient_table(os.path.join(OUT_DIPY, "DWI_nifti_bvals"), os.path.join(OUT_DIPY, "DWI_nifti_bvecs"))
+
+		print("data (: DWI) shape: ", data.shape)
+
 
 
 
@@ -2106,34 +2101,51 @@ with Tee(log_file):
 		# Mask to restrict tracking to the white matter (and gray matter):  
 		#*****************************************
 
-		white_matter_nifti = os.path.join(OUT_DIPY, "white_matter.nii.gz")
-		if os.path.exists(white_matter_nifti):
+		wm_mask_in_DWI_space_nifti = os.path.join(OUT_DIPY, "white_matter_mask_in_DWI_space_nifti.nii.gz")
+		if os.path.exists(wm_mask_in_DWI_space_nifti):
 		    print("WM mask FSL file: Found Skipping conversion")
 		else: 
 			print("DWIConvert WM to FSL format")
 			run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", wm_mask_in_DWI_space, #wm_mask, #BRAINMASK
 									                                    "--conversionMode", "NrrdToFSL", 
-									                                    "--outputVolume", white_matter_nifti, 
-									                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
-									                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+									                                    "--outputVolume", wm_mask_in_DWI_space_nifti, 
+									                                    "--outputBVectors", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_nifti_bvecs.nodif"), 
+									                                    "--outputBValues", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_nifti_bvals.temp")])
+
+		
+		reader = vtk.vtkNrrdReader()
+		reader.SetFileName(wm_mask_in_DWI_space)
+		reader.Update()
+
+		# Save nifti:
+		writer = vtk.vtkNIFTIImageWriter()
+		writer.SetInputData(reader.GetOutput())
+		writer.SetFileName(os.path.join(OUT_DIPY, "test_white_matter_mask_in_DWI_space_nifti.nii.gz"))
+		writer.SetInformation(reader.GetInformation())
+		writer.Write()
+		
+
+	
+
+
 
 		# Load_nifti_data: load only the data array from a nifti file
-		data_white_matter = load_nifti_data(white_matter_nifti)  
+		data_wm_mask_in_DWI_space_nifti = load_nifti_data(wm_mask_in_DWI_space_nifti)  
 
 		# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
-		print("data_white_matter before dowmsampling", data_white_matter.shape)
-		white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1]) 
+		print("data_wm_mask_in_DWI_space_nifti before dowmsampling", data_wm_mask_in_DWI_space_nifti.shape)
+		white_matter = data_wm_mask_in_DWI_space_nifti.reshape(data_wm_mask_in_DWI_space_nifti.shape[0:-1]) 
 
 
 		# In case of the user don't upsampling the DWI 
-		if white_matter.shape != data.shape[0:-1] : # need to downsampling wm_mask
+		if data_wm_mask_in_DWI_space_nifti.shape != data.shape[0:-1] : # need to downsampling wm_mask
 
 			# Preprocessing
-			WM_MASK_dowmsampling = os.path.join(OUT_DIPY, "wm_mask_dowmsample.nrrd")
+			wm_mask_in_DWI_space_dowmsampling = os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_dowmsampled.nrrd")
 
 
 			# Interpolation / upsampling DWI
-			if os.path.exists( WM_MASK_dowmsampling ):
+			if os.path.exists( wm_mask_in_DWI_space_dowmsampling ):
 				print("Files Found: Skipping downsampling wm mask ")
 			else:
 				command = [pathUnu, "resample", "-i", wm_mask_in_DWI_space, "-s", "x0.5", "x0.5", "x0.5", "-k", "cubic:0,0.5"]
@@ -2143,7 +2155,7 @@ with Tee(log_file):
 				command = [pathUnu,"3op", "clamp", "0",'-', "10000000"]
 				p2 = subprocess.Popen(command, stdin=p1.stdout, stdout=subprocess.PIPE)
 
-				command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", WM_MASK_dowmsampling]
+				command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", wm_mask_in_DWI_space_dowmsampling]
 				p3 = subprocess.Popen(command,stdin=p2.stdout, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 				print( colored("\n"+" ".join(command)+"\n", 'blue'))
 				out, err = p3.communicate()
@@ -2152,23 +2164,23 @@ with Tee(log_file):
 
 
 			# Conversion to nifti again 
-			white_matter_nifti_resamplimg = os.path.join(OUT_DIPY, "white_matter_resampling.nii.gz")
-			if os.path.exists(white_matter_nifti_resamplimg):
+			wm_mask_in_DWI_space_dowmsampling_nifti = os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_dowmsampled_nifti.nii.gz")
+			if os.path.exists(wm_mask_in_DWI_space_dowmsampling_nifti):
 			    print("WM mask FSL file: Found Skipping conversion")
 			else: 
 				print("DWIConvert WM to FSL format")
-				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", WM_MASK_dowmsampling,
+				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", wm_mask_in_DWI_space_dowmsampling,
 										                                    "--conversionMode", "NrrdToFSL", 
-										                                    "--outputVolume", white_matter_nifti_resamplimg, 
-										                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
-										                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+										                                    "--outputVolume", wm_mask_in_DWI_space_dowmsampling_nifti, 
+										                                    "--outputBVectors", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_dowmsampling_nifti_bvecs.nodif"), 
+										                                    "--outputBValues", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_dowmsampling_nifti_bvals.temp")])
 
 			# Load_nifti_data: load only the data array from a nifti file
-			data_white_matter = load_nifti_data(white_matter_nifti_resamplimg)  
+			data_wm_mask_in_DWI_space_dowmsampling_nifti = load_nifti_data(wm_mask_in_DWI_space_dowmsampling_nifti)  
 
 			# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
-			print("data_white_matter after dowmsampling", data_white_matter.shape)
-			white_matter = data_white_matter.reshape(data_white_matter.shape[0:-1]) 
+			print("data_wm_mask_in_DWI_space_dowmsampling_nifti after dowmsampling", data_wm_mask_in_DWI_space_dowmsampling_nifti.shape)
+			white_matter = data_wm_mask_in_DWI_space_dowmsampling_nifti.reshape(data_wm_mask_in_DWI_space_dowmsampling_nifti.shape[0:-1]) 
 
 
 
@@ -2181,48 +2193,47 @@ with Tee(log_file):
 		if gm_mask != '': # gray matter mask provided by the user
 		
 			print("*****************************************")
-			print("GM mask resample in DWI space")
+			print("gm mask resample in DWI space")
 			print("*****************************************")
-
 			gm_mask_in_DWI_space = os.path.join(OUT_DIPY, "gray_matter_mask_in_DWI_space.nrrd")
 			if os.path.exists(gm_mask_in_DWI_space):
-			    print("gm_mask_in_DWI_space mask FSL file: Found Skipping warp")
+			    print("gm_mask_in_DWI_space FSL file: Found Skipping warp transform")
 			else: 
-				run_command("WARP_TRANSFORM: GM mask resample in DWI space", [pathWARP_TRANSFORM, "3", gm_mask, gm_mask_in_DWI_space, "-R", B0_BiasCorrect_NRRD, Warp, Affine])
+				run_command("WARP_TRANSFORM: gm mask resample in DWI space", [pathWARP_TRANSFORM, "3", gm_mask, gm_mask_in_DWI_space, "-R", B0_BiasCorrect_NRRD, Warp, Affine])
 
 
 			#*****************************************
-			# Mask to restrict tracking to the gray matter (and gray matter):  
+			# Mask to restrict tracking to the white matter (and gray matter):  
 			#*****************************************
 
-			gray_matter_nifti = os.path.join(OUT_DIPY, "gray_matter.nii.gz")
-			if os.path.exists(gray_matter_nifti):
-			    print("GM mask FSL file: Found Skipping conversion")
+			gm_mask_in_DWI_space_nifti = os.path.join(OUT_DIPY, "gray_matter_mask_in_DWI_space_nifti.nii.gz")
+			if os.path.exists(gm_mask_in_DWI_space_nifti):
+			    print("gm mask FSL file: Found Skipping conversion")
 			else: 
-				print("DWIConvert GM to FSL format")
-				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", gm_mask_in_DWI_space, 
+				print("DWIConvert gm to FSL format")
+				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", gm_mask_in_DWI_space, #gm_mask, #BRAINMASK
 										                                    "--conversionMode", "NrrdToFSL", 
-										                                    "--outputVolume", gray_matter_nifti, 
-										                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
-										                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+										                                    "--outputVolume", gm_mask_in_DWI_space_nifti, 
+										                                    "--outputBVectors", os.path.join(OUT_DIPY, "gm_mask_in_DWI_space_nifti_bvecs.nodif"), 
+										                                    "--outputBValues", os.path.join(OUT_DIPY, "gm_mask_in_DWI_space_nifti_bvals.temp")])
 
 			# Load_nifti_data: load only the data array from a nifti file
-			data_gray_matter = load_nifti_data(gray_matter_nifti)  
+			data_gm_mask_in_DWI_space_nifti = load_nifti_data(gm_mask_in_DWI_space_nifti)  
 
-			# Reshape to have the same shape for DWI (128, 96, 67, 32) and gray matter (128, 96, 67)   (before gm: (128, 96, 67,1)  )
-			print("data_gray_matter before dowmsampling", data_gray_matter.shape)
-			gray_matter = data_gray_matter.reshape(data_gray_matter.shape[0:-1]) 
+			# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before gm: (128, 96, 67,1)  )
+			print("data_gm_mask_in_DWI_space_nifti before dogmsampling", data_gm_mask_in_DWI_space_nifti.shape)
+			gray_matter = data_gm_mask_in_DWI_space_nifti.reshape(data_gm_mask_in_DWI_space_nifti.shape[0:-1]) 
 
 
-
-			if gray_matter.shape != data.shape[0:-1] : # need to downsampling gm_mask
+			# In case of the user don't upsampling the DWI 
+			if data_gm_mask_in_DWI_space_nifti.shape != data.shape[0:-1] : # need to downsampling gm_mask
 
 				# Preprocessing
-				GM_MASK_dowmsampling = os.path.join(OUT_DIPY, "gm_mask_dowmsample.nrrd")
+				gm_mask_in_DWI_space_dowmsampling = os.path.join(OUT_DIPY, "gm_mask_in_DWI_space_dowmsampled.nrrd")
 
 
 				# Interpolation / upsampling DWI
-				if os.path.exists( GM_MASK_dowmsampling ):
+				if os.path.exists( gm_mask_in_DWI_space_dowmsampling ):
 					print("Files Found: Skipping downsampling gm mask ")
 				else:
 					command = [pathUnu, "resample", "-i", gm_mask_in_DWI_space, "-s", "x0.5", "x0.5", "x0.5", "-k", "cubic:0,0.5"]
@@ -2232,7 +2243,7 @@ with Tee(log_file):
 					command = [pathUnu,"3op", "clamp", "0",'-', "10000000"]
 					p2 = subprocess.Popen(command, stdin=p1.stdout, stdout=subprocess.PIPE)
 
-					command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", GM_MASK_dowmsampling]
+					command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", gm_mask_in_DWI_space_dowmsampling]
 					p3 = subprocess.Popen(command,stdin=p2.stdout, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 					print( colored("\n"+" ".join(command)+"\n", 'blue'))
 					out, err = p3.communicate()
@@ -2241,23 +2252,33 @@ with Tee(log_file):
 
 
 				# Conversion to nifti again 
-				gray_matter_nifti_resamplimg = os.path.join(OUT_DIPY, "gray_matter_resampling.nii.gz")
-				if os.path.exists(gray_matter_nifti_resamplimg):
-				    print("GM mask FSL file: Found Skipping conversion")
+				gm_mask_in_DWI_space_dowmsampling_nifti = os.path.join(OUT_DIPY, "gm_mask_in_DWI_space_dowmsampled_nifti.nii.gz")
+				if os.path.exists(gm_mask_in_DWI_space_dowmsampling_nifti):
+				    print("gm mask FSL file: Found Skipping conversion")
 				else: 
-					print("DWIConvert GM to FSL format")
-					run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", GM_MASK_dowmsampling,
+					print("DWIConvert gm to FSL format")
+					run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", gm_mask_in_DWI_space_dowmsampling,
 											                                    "--conversionMode", "NrrdToFSL", 
-											                                    "--outputVolume", gray_matter_nifti_resamplimg, 
-											                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
-											                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+											                                    "--outputVolume", gm_mask_in_DWI_space_dowmsampling_nifti, 
+											                                    "--outputBVectors", os.path.join(OUT_DIPY, "gm_mask_in_DWI_space_dowmsampling_nifti_bvecs.nodif"), 
+											                                    "--outputBValues", os.path.join(OUT_DIPY, "gm_mask_in_DWI_space_dowmsampling_nifti_bvals.temp")])
 
 				# Load_nifti_data: load only the data array from a nifti file
-				data_gray_matter = load_nifti_data(gray_matter_nifti_resamplimg)  
+				data_gm_mask_in_DWI_space_dowmsampling_nifti = load_nifti_data(gm_mask_in_DWI_space_dowmsampling_nifti)  
 
-				# Reshape to have the same shape for DWI (128, 96, 67, 32) and gray matter (128, 96, 67)   (before gm: (128, 96, 67,1)  )
-				print("data_gray_matter after dowmsampling", data_gray_matter.shape)
-				gray_matter = data_gray_matter.reshape(data_gray_matter.shape[0:-1]) 
+				# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before gm: (128, 96, 67,1)  )
+				print("data_gm_mask_in_DWI_space_dowmsampling_nifti after dowmsampling", data_gm_mask_in_DWI_space_dowmsampling_nifti.shape)
+				gray_matter = data_gm_mask_in_DWI_space_dowmsampling_nifti.reshape(data_gm_mask_in_DWI_space_dowmsampling_nifti.shape[0:-1]) 
+
+
+
+
+
+
+
+
+
+
 
 
 	
@@ -2312,12 +2333,12 @@ with Tee(log_file):
 			if os.path.exists(brain_nifti):
 			    print("brain_nifti mask FSL file: Found Skipping conversion")
 			else: 
-				print("DWIConvert brain_niftito FSL format")
+				print("DWIConvert brain_nifti to FSL format")
 				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK,
 										                                    "--conversionMode", "NrrdToFSL", 
 										                                    "--outputVolume", brain_nifti, 
-										                                    "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.nodif"), 
-										                                    "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp")])
+										                                    "--outputBVectors", os.path.join(OUT_DIPY, "brain_nifti_bvecs.nodif"), 
+										                                    "--outputBValues", os.path.join(OUT_DIPY, "brain_nifti_bvals.temp")])
 
 			# Load_nifti_data: load only the data array from a nifti file
 			data_brain= load_nifti_data(brain_nifti)  
@@ -2342,13 +2363,6 @@ with Tee(log_file):
 			
 			
 			#stopping_criterion = BinaryStoppingCriterion(brainmask_array ==1)
-
-
-
-
-
-
-
 
 
 
@@ -2496,7 +2510,7 @@ with Tee(log_file):
 			polydata = apd.GetOutput()
 
 			writer = vtk.vtkPolyDataWriter()
-			writer.SetFileName(os.path.join(OUT_DIPY,"surface_after_transfo.vtk"))
+			writer.SetFileName(os.path.join(OUT_DIPY,"surface_in_same_space_than_mask.vtk"))
 
 			writer.SetInputData(polydata)
 			writer.SetFileTypeToASCII()
@@ -2516,7 +2530,7 @@ with Tee(log_file):
 			
 			# Read the source file
 			reader = vtk.vtkPolyDataReader() 
-			reader.SetFileName(os.path.join(OUT_DIPY,"surface_after_transfo.vtk"))
+			reader.SetFileName(os.path.join(OUT_DIPY,"surface_in_same_space_than_mask.vtk"))
 			reader.Update()  
 
 			# Get all points of my surfaces: 
@@ -2631,7 +2645,7 @@ with Tee(log_file):
 				reader_intersection.SetFileName(os.path.join(OUT_DIPY,"intersectionPolyDataFilter.vtk"))
 				reader_intersection.Update()
 
-				array_inter += len(vtk_to_numpy(reader_intersection.GetOutput().GetPoints().GetData()).tolist()) #.GetArray(1)).tolist()  # change to find the name instead 
+				array_inter += len(vtk_to_numpy(reader_intersection.GetOutput().GetPoints().GetData()).tolist()) #.GetArray(1)).tolist()  # change to find the name  
 				#print("array_inter", array_inter)
 
 				# *****************************************
@@ -2643,8 +2657,6 @@ with Tee(log_file):
 					print("points !")
 
 					# remove duplicate ? 
-
-					'''
 					for first_scalar in vtk_to_numpy(reader_intersection.GetOutput().GetPointData().GetArray(0)).tolist():  #list of scalars in my intersection 
 						for second_scalar in vtk_to_numpy(reader_intersection.GetOutput().GetPointData().GetArray(0)).tolist():  #list of scalars in my intersection 
 							# Get index in the connectivity matrix 
@@ -2652,7 +2664,7 @@ with Tee(log_file):
 							second_index = list_region.index(second_scalar)
 
 							connectome[first_index, second_index] += 1
-					'''
+					
 
 			print("After loop fibers: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
 			print("array_inter ", array_inter)
@@ -2661,7 +2673,7 @@ with Tee(log_file):
 
 					
 
-			print(array3.shape()) # stop the script
+			exit()
 
 
 			
