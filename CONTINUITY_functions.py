@@ -600,7 +600,7 @@ def compute_radius_of_each_seed(line):
 # Compute one point per Destrieux region
 # *************************************************************************************
 
-def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_with_surfaces, KWMDir, SALTDir, ID):
+def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_with_surfaces, ID):
     # KWM file for left and right surfaces:
     left_KWM  = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/Atlas_Left_Destrieux.KWM.txt'
     right_KWM = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/Destrieux_points/Atlas_Right_Destrieux.KWM.txt'
@@ -692,52 +692,52 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
     # *****************************************
     # Subcortical regions:
     # ***************************************** 
-
-    # Compute the gravity center for each subcortical region: one scalar per region: AmyL AmyR CaudL CaudR GPL GPR HippoL HippoR PutL PutR ThalL ThalR
-    for region in subcorticals_list_checked_with_surfaces:
-        # Extract the scalar: region name --> scalar 
-        with open(new_parcellation_table) as data_file:    
-            data = json.load(data_file)
-        
-        for key in data:
-            if region == key["name"]:
-                scalar = key["labelValue"]
-
-                # Read the surface of this subcortical region: 
-                out_surface_destrieux = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/sc_surf_organize/surface_merge_' + region + '.vtk'
-
-                reader = vtk.vtkPolyDataReader()
-                reader.SetFileName(out_surface_destrieux)
-                reader.Update()
-                
-                # Get points of this region: 
-                numpy_nodes = vtk_to_numpy( reader.GetOutput().GetPoints().GetData() )
-
-                # Initialize the gravity center: 
-                gravity_center_of_this_Region = [0,0,0]
-
-                # Compute the gravity center of this region: average of each coordinates  
-                for i in range(len(numpy_nodes)):
-                    # Compute the average of each cordinates:                    
-                    my_new_tuple = [0,0,0]
-                    for v in range(3):
-                        my_new_tuple[v] = (gravity_center_of_this_Region[v] + numpy_nodes[i][v] ) / 2 #average x, y and z 
+    if len(subcorticals_list_checked_with_surfaces) != 0: 
+        # Compute the gravity center for each subcortical region: one scalar per region: AmyL AmyR CaudL CaudR GPL GPR HippoL HippoR PutL PutR ThalL ThalR
+        for region in subcorticals_list_checked_with_surfaces:
+            # Extract the scalar: region name --> scalar 
+            with open(new_parcellation_table) as data_file:    
+                data = json.load(data_file)
             
-                    # Update the value ot the gravity center: 
-                    gravity_center_of_this_Region = my_new_tuple
+            for key in data:
+                if region == key["name"]:
+                    scalar = key["labelValue"]
 
-                # Initilize the transformation to move subcortical point in DWI space (same space as icbm space)
-                # load surfaces in DWI in Slicer and move each average surfaces thanks to the tab called 'transform' after a threshold to visualize only sc surfaces in the brain surfaces
-                # Output transform: LR: -96, PA: -99, IS: -63 (mm)
-                x_move = 96; y_move = 99; z_move = -63
+                    # Read the surface of this subcortical region: 
+                    out_surface_destrieux = os.path.realpath(os.path.dirname(__file__)) + '/CONTINUITY_QC/sc_surf_organize/surface_merge_' + region + '.vtk'
+
+                    reader = vtk.vtkPolyDataReader()
+                    reader.SetFileName(out_surface_destrieux)
+                    reader.Update()
+                    
+                    # Get points of this region: 
+                    numpy_nodes = vtk_to_numpy( reader.GetOutput().GetPoints().GetData() )
+
+                    # Initialize the gravity center: 
+                    gravity_center_of_this_Region = [0,0,0]
+
+                    # Compute the gravity center of this region: average of each coordinates  
+                    for i in range(len(numpy_nodes)):
+                        # Compute the average of each cordinates:                    
+                        my_new_tuple = [0,0,0]
+                        for v in range(3):
+                            my_new_tuple[v] = (gravity_center_of_this_Region[v] + numpy_nodes[i][v] ) / 2 #average x, y and z 
                 
-                gravity_center_of_this_Region[0] = gravity_center_of_this_Region[0] + x_move
-                gravity_center_of_this_Region[1] = gravity_center_of_this_Region[1] + y_move
-                gravity_center_of_this_Region[2] = gravity_center_of_this_Region[2] + z_move
-                
-                # Add scalar and gravity center of this region: 
-                scalar_sorted_without_duplicate_all.append(int(scalar))
-                gravity_center_of_each_Region_all.append(gravity_center_of_this_Region)
+                        # Update the value ot the gravity center: 
+                        gravity_center_of_this_Region = my_new_tuple
+
+                    # Initilize the transformation to move subcortical point in DWI space (same space as icbm space)
+                    # load surfaces in DWI in Slicer and move each average surfaces thanks to the tab called 'transform' after a threshold to visualize only sc surfaces in the brain surfaces
+                    # Output transform: LR: -96, PA: -99, IS: -63 (mm)
+                    x_move = 96; y_move = 99; z_move = -63
+                    
+                    gravity_center_of_this_Region[0] = gravity_center_of_this_Region[0] + x_move
+                    gravity_center_of_this_Region[1] = gravity_center_of_this_Region[1] + y_move
+                    gravity_center_of_this_Region[2] = gravity_center_of_this_Region[2] + z_move
+                    
+                    # Add scalar and gravity center of this region: 
+                    scalar_sorted_without_duplicate_all.append(int(scalar))
+                    gravity_center_of_each_Region_all.append(gravity_center_of_this_Region)
 
 
     # *****************************************
@@ -797,9 +797,17 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
                 # Processing of Binary Labels: it ensures spherical topology of the segmentation
                 command = [SegPostProcessCLPPath, labeled_image, # Input image to be filtered (Tissue segmentation file)
                                                   PPtarget, # Output filtered
-                                                  '--label', str(Labels[index]), # Extract this label before processing
-                                                  '--rescale', #Enforced spacing in x,y and z direction before any processing
-                                                  '--space ' + str(sx) +',' + str(sy) + ',' + str(sz)  ] #x,y and z directions
+                                                  '--label', str(Labels[index]),#] # Extract this label before processing
+                                                  '--rescale',
+                                                  '--space ' + str(sx) +',' + str(sy) + ',' + str(sz)]
+                '''
+                if do_rescale:
+                    command.append('--rescale') #Enforced spacing in x,y and z direction before any processing
+
+                if do_spacing: 
+                    command.append('--space ' + str(sx) +',' + str(sy) + ',' + str(sz) ) #x,y and z directions
+                '''
+            
                 run_command("SegPostProcessCLP", command) 
 
 

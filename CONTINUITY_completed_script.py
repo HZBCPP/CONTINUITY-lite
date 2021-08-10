@@ -918,14 +918,7 @@ with Tee(log_file):
 			data = json.dump(data, data_file, indent = 2)
 
 
-		
-		if PARCELLATION_TABLE_NAME == 'Destrieux': 
-
-			print("*****************************************")
-			print("Compute one point per region")
-			print("*****************************************")
-			if not Destrieux_point_already_computed: 
-				compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, KWMDir, SALTDir, ID )
+	
 		
 
 
@@ -973,6 +966,7 @@ with Tee(log_file):
 
 
 	else: #no integrate sc data
+		subcorticals_list_names_checked_with_surfaces = []
 		with open(only_matrix_parcellation_table, 'r') as data_file:
 			data = json.load(data_file)
 
@@ -988,6 +982,20 @@ with Tee(log_file):
 
 		with open(only_matrix_parcellation_table, 'w') as data_file:
 			data = json.dump(data, data_file, indent = 2)
+
+
+
+
+
+	if PARCELLATION_TABLE_NAME == 'Destrieux': 
+
+		print("*****************************************")
+		print("Compute one point per region")
+		print("*****************************************")
+		if not Destrieux_point_already_computed: 
+			compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, ID )
+
+
 
 
 
