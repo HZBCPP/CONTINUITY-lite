@@ -4402,7 +4402,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_33">
        <attribute name="title">
@@ -4658,12 +4658,12 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>230</x>
            <y>30</y>
-           <width>291</width>
+           <width>831</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
-          <string>Use the optimization algorithm SIFT2</string>
+          <string>Use the optimization algorithm SIFT2 (can take a long time)</string>
          </property>
          <property name="checked">
           <bool>true</bool>
