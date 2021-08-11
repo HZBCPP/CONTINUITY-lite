@@ -1261,6 +1261,13 @@ class Ui(QtWidgets.QTabWidget):
         Ui.update_user_json_file()
 
 
+    def do_not_rescale_clicked(self):
+        json_user_object['Parameters']["do_not_rescale"]["value"] = False 
+        if self.do_not_rescale_checkbox.isChecked():
+            json_user_object['Parameters']["do_not_rescale"]["value"] = True       
+        Ui.update_user_json_file()
+
+
     # *****************************************
     # GenParaMeshCLP function: number of iteration
     # ***************************************** 
@@ -1933,7 +1940,6 @@ class Ui(QtWidgets.QTabWidget):
         if self.only_registration_checkBox.isChecked():
             json_user_object['Parameters']["only_registration"]["value"] = True       
         Ui.update_user_json_file() 
-
 
 
     # *****************************************

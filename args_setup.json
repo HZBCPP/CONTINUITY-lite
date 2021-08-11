@@ -327,6 +327,11 @@
             "help": "Lookcheck",
             "default": true
         },
+        "do_not_rescale": { 
+            "type": "bool",
+            "help": "SegProcessCLP param (generate SALT files): if false: both --rescale and --space were not specified and set to the internal default values ",
+            "default": true
+        }, 
         "sx": { 
             "type": "float",
             "help": "SegProcessCLP param (generate SALT files): rescale: enforced spacing in x direction ",

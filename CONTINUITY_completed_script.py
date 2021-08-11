@@ -133,6 +133,7 @@ nb_fiber_per_seed                       = json_user_object["Parameters"]["nb_fib
 steplength                              = json_user_object["Parameters"]["steplength"]['value']
 sampvox                                 = json_user_object["Parameters"]["sampvox"]['value']
 loopcheck                               = json_user_object["Parameters"]["loopcheck"]['value']
+do_not_rescale                          = json_user_object["Parameters"]["do_not_rescale"]['value']
 sx  									= json_user_object["Parameters"]["sx"]['value']
 sy  									= json_user_object["Parameters"]["sy"]['value']
 sz  									= json_user_object["Parameters"]["sz"]['value']
@@ -834,7 +835,7 @@ with Tee(log_file):
 				# Generate subcortical surfaces: 
 				generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, subcorticals_list_labels_checked, subcorticals_list_names_checked, 
 					                                                           SegPostProcessCLPPath, GenParaMeshCLPPath, ParaToSPHARMMeshCLPPath,
-					                                                           sx,sy,sz, nb_iteration_GenParaMeshCLP,spharmDegree, subdivLevel)
+					                                                           sx,sy,sz, nb_iteration_GenParaMeshCLP,spharmDegree, subdivLevel, do_not_rescale)
 				print("Generation of subcortical surfaces: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 
 				# Update the localization of SALT surfaces: 

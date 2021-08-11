@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1127</width>
+    <width>1125</width>
     <height>631</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>2</number>
+   <number>0</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -116,7 +116,7 @@
            </rect>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_13">
            <attribute name="title">
@@ -132,7 +132,7 @@
              </rect>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="tab_28">
              <attribute name="title">
@@ -1299,34 +1299,6 @@ p, li { white-space: pre-wrap; }
          <attribute name="title">
           <string>List of subcortical regions</string>
          </attribute>
-         <widget class="QTextEdit" name="color_sc_textEdit_4">
-          <property name="geometry">
-           <rect>
-            <x>440</x>
-            <y>10</y>
-            <width>221</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QTextEdit {
-	background-color : rgb(243, 243, 243)
-}</string>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check subcortical regions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
          <widget class="QListWidget" name="sc_regions_names_listWidget">
           <property name="geometry">
            <rect>
@@ -1375,6 +1347,19 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Subcortical regions: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
+         <widget class="QLabel" name="label_5">
+          <property name="geometry">
+           <rect>
+            <x>430</x>
+            <y>20</y>
+            <width>611</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Subcortical regions that will be integrated are in green in the list and listed below: </string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_23">
          <attribute name="title">
@@ -1390,7 +1375,7 @@ p, li { white-space: pre-wrap; }
            </rect>
           </property>
           <property name="title">
-           <string>Use your own dataset</string>
+           <string>Use your own dataset (first method to integrate subcortical regions) </string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -1687,7 +1672,7 @@ p, li { white-space: pre-wrap; }
            </rect>
           </property>
           <property name="title">
-           <string>Subcortical data creation</string>
+           <string>Subcortical data creation (second method to integrate subcortical regions) </string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -1920,7 +1905,7 @@ p, li { white-space: pre-wrap; }
               </rect>
              </property>
              <property name="currentIndex">
-              <number>2</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="tab_19">
               <attribute name="title">
@@ -1949,9 +1934,9 @@ p, li { white-space: pre-wrap; }
                <property name="geometry">
                 <rect>
                  <x>10</x>
-                 <y>160</y>
+                 <y>120</y>
                  <width>461</width>
-                 <height>101</height>
+                 <height>161</height>
                 </rect>
                </property>
                <property name="title">
@@ -1967,7 +1952,7 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>10</x>
-                  <y>60</y>
+                  <y>120</y>
                   <width>437</width>
                   <height>28</height>
                  </rect>
@@ -2005,29 +1990,33 @@ p, li { white-space: pre-wrap; }
                  </item>
                 </layout>
                </widget>
-               <widget class="QTextEdit" name="KWMDir_textEdit_2">
+               <widget class="QCheckBox" name="do_not_rescale_checkbox">
                 <property name="geometry">
                  <rect>
                   <x>10</x>
                   <y>30</y>
-                  <width>451</width>
-                  <height>31</height>
+                  <width>441</width>
+                  <height>41</height>
                  </rect>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
+                <property name="text">
+                 <string>if checked: both --rescale and --space were not specified</string>
                 </property>
-                <property name="readOnly">
+                <property name="checked">
                  <bool>true</bool>
                 </property>
-                <property name="html">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enforced spacing in x,y and z direction before any processing: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </widget>
+               <widget class="QLabel" name="label_6">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>60</y>
+                  <width>341</width>
+                  <height>17</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>( and set to the internal default values)</string>
                 </property>
                </widget>
               </widget>
@@ -2812,7 +2801,7 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_25">
       <attribute name="title">
@@ -2994,7 +2983,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_30">
          <attribute name="title">
@@ -3005,7 +2994,7 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>991</width>
+            <width>1031</width>
             <height>105</height>
            </rect>
           </property>
@@ -3080,7 +3069,7 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>10</x>
             <y>100</y>
-            <width>991</width>
+            <width>1031</width>
             <height>131</height>
            </rect>
           </property>
@@ -3092,7 +3081,7 @@ p, li { white-space: pre-wrap; }
             <rect>
              <x>10</x>
              <y>30</y>
-             <width>971</width>
+             <width>1011</width>
              <height>105</height>
             </rect>
            </property>
@@ -3224,8 +3213,8 @@ p, li { white-space: pre-wrap; }
            <rect>
             <x>0</x>
             <y>10</y>
-            <width>1001</width>
-            <height>211</height>
+            <width>1041</width>
+            <height>221</height>
            </rect>
           </property>
           <property name="title">
@@ -3243,7 +3232,7 @@ p, li { white-space: pre-wrap; }
              <x>420</x>
              <y>30</y>
              <width>271</width>
-             <height>171</height>
+             <height>161</height>
             </rect>
            </property>
           </widget>
@@ -3357,7 +3346,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>140</y>
-          <width>501</width>
+          <width>371</width>
           <height>27</height>
          </rect>
         </property>
@@ -3383,19 +3372,6 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item>
-          <spacer name="horizontalSpacer_41">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="layoutWidget">
@@ -3420,7 +3396,7 @@ p, li { white-space: pre-wrap; }
               </font>
              </property>
              <property name="text">
-              <string>Parcellation table (.json):</string>
+              <string>Parcellation table (.json): </string>
              </property>
             </widget>
            </item>
@@ -4034,7 +4010,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -4407,7 +4383,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="text">
-        <string>Run probtrackx2_gpu function </string>
+        <string>Run probtrackx2_gpu function  (Waiting librairy for testing)</string>
        </property>
       </widget>
      </widget>
@@ -4572,12 +4548,12 @@ p, li { white-space: pre-wrap; }
           <rect>
            <x>10</x>
            <y>30</y>
-           <width>711</width>
+           <width>1051</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
-          <string>'-act option': use the Anatomically-Constrained Tractography framework during tracking</string>
+          <string>'-act option': use the Anatomically-Constrained Tractography framework during tracking   ( Please do not use this option with multi-shell DWI)</string>
          </property>
         </widget>
         <widget class="QGroupBox" name="groupBox_23">
@@ -9082,6 +9058,22 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>do_not_rescale_checkbox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>do_not_rescale_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>830</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>562</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>DWI_button_clicked()</slot>
@@ -9218,5 +9210,6 @@ p, li { white-space: pre-wrap; }
   <slot>csf_md_thr_valueChanged()</slot>
   <slot>select_wm_mask()</slot>
   <slot>select_gm_mask()</slot>
+  <slot>do_not_rescale_clicked()</slot>
  </slots>
 </ui>

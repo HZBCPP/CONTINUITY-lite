@@ -769,7 +769,8 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
 # *************************************************************************************
 
 def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, LabelNames, 
-                                    SegPostProcessCLPPath, GenParaMeshCLPPath, ParaToSPHARMMeshCLPPath, sx,sy,sz, nb_iteration_GenParaMeshCLP, spharmDegree, subdivLevel): 
+                                    SegPostProcessCLPPath, GenParaMeshCLPPath, ParaToSPHARMMeshCLPPath, 
+                                    sx,sy,sz, nb_iteration_GenParaMeshCLP, spharmDegree, subdivLevel, do_not_rescale): 
 
     #Labels =     ( 1     2    3     4     5      6      40   41    7   8   9    10)
     #LabelNames = (AmyL AmyR CaudL CaudR HippoL HippoR ThalL ThalR GPL GPR PutL PutR)
@@ -795,18 +796,17 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
                 print('SegPostProcessCLP already done')
             else: 
                 # Processing of Binary Labels: it ensures spherical topology of the segmentation
-                command = [SegPostProcessCLPPath, labeled_image, # Input image to be filtered (Tissue segmentation file)
+                if do_not_rescale: 
+                    command = [SegPostProcessCLPPath, labeled_image, # Input image to be filtered (Tissue segmentation file)
+                                                  PPtarget, # Output filtered
+                                                  '--label', str(Labels[index])] # Extract this label before processing
+                else: 
+                    command = [SegPostProcessCLPPath, labeled_image, # Input image to be filtered (Tissue segmentation file)
                                                   PPtarget, # Output filtered
                                                   '--label', str(Labels[index]),#] # Extract this label before processing
                                                   '--rescale',
                                                   '--space ' + str(sx) +',' + str(sy) + ',' + str(sz)]
-                '''
-                if do_rescale:
-                    command.append('--rescale') #Enforced spacing in x,y and z direction before any processing
-
-                if do_spacing: 
-                    command.append('--space ' + str(sx) +',' + str(sy) + ',' + str(sz) ) #x,y and z directions
-                '''
+            
             
                 run_command("SegPostProcessCLP", command) 
 
