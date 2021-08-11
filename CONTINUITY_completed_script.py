@@ -2093,7 +2093,92 @@ with Tee(log_file):
 
 
 
+		print("*****************************************")
+		print("tractography_mask resample in DWI space")
+		print("*****************************************")
+
+
+		tractography_mask = "/work/elodie/input_CONTINUITY/T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_labels_multi_atlas_label_1_threshMask_add.nrrd"
+		convertITKformatsPath = "/tools/bin_linux64/convertITKformats"
+
+		tractography_mask_in_DWI_space = os.path.join(OUT_DIPY, "tractography_mask_reshape_mask_in_DWI_space.nrrd")
+		if os.path.exists(tractography_mask_in_DWI_space):
+		    print("tractography_mask_in_DWI_space FSL file: Found Skipping warp transform")
+		else: 
+			run_command("WARP_TRANSFORM: WM mask resample in DWI space", [pathWARP_TRANSFORM, "3", tractography_mask, tractography_mask_in_DWI_space, "-R", B0_BiasCorrect_NRRD, Warp, Affine])
+
+
+		#*****************************************
+		# Mask to restrict tracking to the white matter (and gray matter):  
+		#*****************************************
+
+		tractography_mask_in_DWI_space_nifti = os.path.join(OUT_DIPY, "tractography_mask_reshape_mask_in_DWI_space_nifti.nii.gz")
+		if os.path.exists(tractography_mask_in_DWI_space_nifti):
+		    print("tractography mask FSL file: Found Skipping conversion")
+		else: 
+			print("convertITKformats tractography mask to FSL format")
+			run_command("convertITKformats ", [convertITKformatsPath, tractography_mask_in_DWI_space, tractography_mask_in_DWI_space_nifti ])
+
+
 		
+		# Load_nifti_data: load only the data array from a nifti file
+		data_tractography_mask_in_DWI_space_nifti = load_nifti_data(tractography_mask_in_DWI_space_nifti)  
+
+		# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
+		print("data_tractography_mask_in_DWI_space_nifti before dowmsampling", data_tractography_mask_in_DWI_space_nifti.shape)
+		try: 
+			tractography_mask_reshape = data_tractography_mask_in_DWI_space_nifti.reshape(data_tractography_mask_in_DWI_space_nifti.shape[0:-1]) 
+		except: 
+			tractography_mask_reshape = data_tractography_mask_in_DWI_space_nifti 
+
+		# In case of the user don't upsampling the DWI 
+		if data_tractography_mask_in_DWI_space_nifti.shape != data.shape[0:-1] : # need to downsampling tractography_mask
+
+			# Preprocessing
+			tractography_mask_in_DWI_space_dowmsampling = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled.nrrd")
+
+
+			# Interpolation / upsampling DWI
+			if os.path.exists( tractography_mask_in_DWI_space_dowmsampling ):
+				print("Files Found: Skipping downsampling wm mask ")
+			else:
+				command = [pathUnu, "resample", "-i", tractography_mask_in_DWI_space, "-s", "x0.5", "x0.5", "x0.5", "-k", "cubic:0,0.5"]
+				    
+				p1 = subprocess.Popen(command, stdout=subprocess.PIPE)
+
+				command = [pathUnu,"3op", "clamp", "0",'-', "10000000"]
+				p2 = subprocess.Popen(command, stdin=p1.stdout, stdout=subprocess.PIPE)
+
+				command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", tractography_mask_in_DWI_space_dowmsampling]
+				p3 = subprocess.Popen(command,stdin=p2.stdout, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				print( colored("\n"+" ".join(command)+"\n", 'blue'))
+				out, err = p3.communicate()
+				print("Resample wm mask out: ", colored("\n" + str(out) + "\n", 'green'))
+				print("Resample wm mask err: ", colored("\n" + str(err) + "\n", 'red'))
+
+
+			# Conversion to nifti again 
+			tractography_mask_in_DWI_space_dowmsampling_nifti = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled_nifti.nii.gz")
+			if os.path.exists(tractography_mask_in_DWI_space_dowmsampling_nifti):
+			    print("WM mask FSL file: Found Skipping conversion")
+			else: 
+				print("DWIConvert WM to FSL format")
+				print("convertITKformats tractography downsampling mask to FSL format")
+				run_command("convertITKformats ", [convertITKformatsPath, tractography_mask_in_DWI_space_dowmsampling, tractography_mask_in_DWI_space_dowmsampling_nifti ])
+
+			# Load_nifti_data: load only the data array from a nifti file
+			data_tractography_mask_in_DWI_space_dowmsampling_nifti = load_nifti_data(tractography_mask_in_DWI_space_dowmsampling_nifti)  
+
+			# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
+			print("data_tractography_mask_in_DWI_space_dowmsampling_nifti after dowmsampling", data_tractography_mask_in_DWI_space_dowmsampling_nifti.shape)
+			try: 
+				tractography_mask_reshape = data_tractography_mask_in_DWI_space_dowmsampling_nifti.reshape(data_tractography_mask_in_DWI_space_dowmsampling_nifti.shape[0:-1]) 
+			except: 
+				tractography_mask_reshape = data_tractography_mask_in_DWI_space_dowmsampling_nifti 
+
+
+
+		'''
 
 		print("*****************************************")
 		print("WM mask resample in DWI space")
@@ -2120,23 +2205,8 @@ with Tee(log_file):
 									                                    "--outputBVectors", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_nifti_bvecs.nodif"), 
 									                                    "--outputBValues", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_nifti_bvals.temp")])
 
-		
-		reader = vtk.vtkNrrdReader()
-		reader.SetFileName(wm_mask_in_DWI_space)
-		reader.Update()
-
-		# Save nifti:
-		writer = vtk.vtkNIFTIImageWriter()
-		writer.SetInputData(reader.GetOutput())
-		writer.SetFileName(os.path.join(OUT_DIPY, "test_white_matter_mask_in_DWI_space_nifti.nii.gz"))
-		writer.SetInformation(reader.GetInformation())
-		writer.Write()
-		
-
 	
-
-
-
+		
 		# Load_nifti_data: load only the data array from a nifti file
 		data_wm_mask_in_DWI_space_nifti = load_nifti_data(wm_mask_in_DWI_space_nifti)  
 
@@ -2278,7 +2348,7 @@ with Tee(log_file):
 				print("data_gm_mask_in_DWI_space_dowmsampling_nifti after dowmsampling", data_gm_mask_in_DWI_space_dowmsampling_nifti.shape)
 				gray_matter = data_gm_mask_in_DWI_space_dowmsampling_nifti.reshape(data_gm_mask_in_DWI_space_dowmsampling_nifti.shape[0:-1]) 
 
-
+		'''
 
 
 
@@ -2361,7 +2431,7 @@ with Tee(log_file):
 			# We use the GFA (similar to FA but ODF based models) of the CSA model to build a stopping criterion.
 			# Fit the data to a Constant Solid Angle ODF Model: estimate the Orientation Distribution Function (ODF) at each voxel
 			csa_model = CsaOdfModel(gtab, sh_order=6) 
-			gfa = csa_model.fit(data, mask= brainmask_array).gfa 
+			gfa = csa_model.fit(data, mask= tractography_mask_reshape).gfa #brainmask_array).gfa 
 
 
 			# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the Generalized Fractional Anisotropy (GFA)
@@ -2383,18 +2453,19 @@ with Tee(log_file):
 			# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
 			#*****************************************
 
-			seed_mask = white_matter #gray_matter #white_matter 
+			seed_mask = tractography_mask_reshape#white_matter #gray_matter #white_matter 
 			# Create seeds for fiber tracking from a binary mask: 
-			seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
+			seeds = utils.seeds_from_mask(seed_mask, affine, density=3) 
+
 			print("seeds", seeds ) 
 
 			# The peaks of an ODF are good estimates for the orientation of tract segments at a point in the image
 			# peaks_from_model: fit the data and calculated the fiber directions in all voxels of the white matter
 			# .peaks_from_model(model, data, sphere, relative_peak_threshold, min_separation_angle, mask=None, return_sh=True, gfa_thr=0, parallel=False ...)
 			if len(list_bval_for_the_tractography) == 1: # single shell: 
-				peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
+				peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=tractography_mask_reshape, return_sh=True, parallel=True) #white_matter, return_sh=True, parallel=True) 
 			else: 
-				peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=white_matter, return_sh=True, parallel=True) 
+				peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=tractography_mask_reshape, return_sh=True, parallel=True)  #white_matter, return_sh=True, parallel=True) 
 
 			# shm_coeff: the spherical harmonic coefficients of the odf: 
 			fod_coeff = peaks.shm_coeff

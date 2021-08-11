@@ -115,7 +115,7 @@
         "cluster_command_line": {
             "type": "str",
             "help": "Run script in a cluster with this specific command line",
-            "default": "#!/bin/zsh \n#SBATCH -p general \n#SBATCH -N 1 \n#SBATCH --mem 32G \n#SBATCH -n 6 \n#SBATCH --time=10-00:00:00 \n#SBATCH --mail-type=end \n#SBATCH --mail-user=elodie@email.unc.edu \n" 
+            "default": "#!/bin/zsh \n#SBATCH -p general \n#SBATCH -N 1 \n#SBATCH --mem 32G \n#SBATCH -n 4 \n#SBATCH --time=10-00:00:00 \n#SBATCH --mail-type=end \n#SBATCH --mail-user=elodie@email.unc.edu \n" 
         },
         "tractography_model": {
             "type": "str",
@@ -290,7 +290,7 @@
         "nb_threads": {
             "type": "int",
             "help": "ANTs: number of threads",
-            "default": 6
+            "default": 4
         },
         "nb_jobs_bedpostx_gpu": {
             "type": "int",

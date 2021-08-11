@@ -1951,19 +1951,21 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def local_run_checkBox_clicked(self):
-        json_user_object['Arguments']["cluster"]["value"] = True         
-        self.remote_run_groupBox.setChecked(True)
+        json_user_object['Arguments']["cluster"]["value"] = False         
+        self.remote_run_groupBox.setChecked(False)
         if self.local_run_groupBox.isChecked():
             json_user_object['Arguments']["cluster"]["value"] = False            
             self.remote_run_groupBox.setChecked(False)
+        Ui.update_user_json_file()
         
 
     def remote_run_checkBox_clicked(self):
         json_user_object['Arguments']["cluster"]["value"] = True            
-        self.local_run_groupBox.setChecked(True)
+        self.local_run_groupBox.setChecked(False)
         if self.remote_run_groupBox.isChecked():
-            json_user_object['Arguments']["cluster"]["value"] = False           
-            self.local_run_groupBox.setChecked(False)          
+            json_user_object['Arguments']["cluster"]["value"] = True           
+            self.local_run_groupBox.setChecked(False)  
+        Ui.update_user_json_file()            
 
 
 
@@ -2048,11 +2050,22 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def update_exec_path(self, button_name):
-        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
-        if fileName:
-            eval("self." + button_name + "_textEdit.setText(fileName)")
-            json_user_object['Executables'][button_name]["value"] = fileName
-            Ui.update_user_json_file()
+        if button_name == "fsl" or button_name == "MRtrix": 
+            DirName= QtWidgets.QFileDialog.getExistingDirectory(self)
+            if DirName:
+                eval("self." + button_name + "_textEdit.setText(DirName)")
+                json_user_object['Executables'][button_name]["value"] = DirName
+                
+
+        else: 
+            fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
+            if fileName:
+                eval("self." + button_name + "_textEdit.setText(fileName)")
+                json_user_object['Executables'][button_name]["value"] = fileName
+        
+        Ui.update_user_json_file()
+            
+
 
 
 
