@@ -145,12 +145,12 @@
         "filtering_with_tcksift": {
             "type": "bool",
             "help": "filtering_with_tcksift if Tractography model == MRtrix ",
-            "default": false
+            "default": true
         },
         "optimisation_with_tcksift2": {
             "type": "bool",
             "help": "Optimisation_with_tcksift2 if Tractography model == MRtrix",
-            "default": true
+            "default": false
         },
         "act_option": {
             "type": "bool",

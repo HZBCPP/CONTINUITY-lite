@@ -964,7 +964,7 @@ with Tee(log_file):
 			run_command("POLY_TRANSTOOL_EXE: combining subcortical data transform into DWISpace", command)
 
 
-
+	'''
 	else: #no integrate sc data
 		subcorticals_list_names_checked_with_surfaces = []
 		with open(only_matrix_parcellation_table, 'r') as data_file:
@@ -982,6 +982,7 @@ with Tee(log_file):
 
 		with open(only_matrix_parcellation_table, 'w') as data_file:
 			data = json.dump(data, data_file, indent = 2)
+	'''
 
 
 
@@ -1747,7 +1748,7 @@ with Tee(log_file):
 				print("MRtrix tractography", "err: ", colored("\n" + str(err) + "\n", 'red'))	   
 				
 
-				'''
+			
 				# *****************************************
 				# Convert tractography tck file to vtk format    FOR VISUALIZATION
 				# *****************************************
@@ -1758,7 +1759,7 @@ with Tee(log_file):
 				else:
 					print("Convert tck to vtk")									
 					run_command("Convert to vtk", [MRtrixPath + "/tckconvert", output_track_tckgen_tck, output_track_tckgen_vtk])
-				'''
+				
 				
 
 			# Run tcksift: 
@@ -1776,7 +1777,7 @@ with Tee(log_file):
 					run_command("tcksift ", [MRtrixPath + "/tcksift", output_track_tckgen_tck, FOD_nii, output_tcksift_tck, '-nthreads', str(nb_threads)])	
 
 				  
-				'''
+				
 				# *****************************************
 				# Convert tcksif tck file to vtk format       FOR VISUALIZATION
 				# *****************************************
@@ -1787,7 +1788,7 @@ with Tee(log_file):
 				else:
 					print("Convert tck to vtk")									
 					run_command("Convert to vtk", [MRtrixPath + "/tckconvert", output_tcksift_tck, output_tcksift_vtk]) 
-				'''
+				
 				
 			
 			# *****************************************
@@ -2053,6 +2054,10 @@ with Tee(log_file):
 				print("Resample wm mask err: ", colored("\n" + str(err) + "\n", 'red'))
 
 
+			
+
+
+
 			# Conversion to nifti again 
 			tractography_mask_in_DWI_space_dowmsampling_nifti = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled_nifti.nii.gz")
 			if os.path.exists(tractography_mask_in_DWI_space_dowmsampling_nifti):
@@ -2062,8 +2067,24 @@ with Tee(log_file):
 				print("convertITKformats tractography downsampling mask to FSL format")
 				run_command("convertITKformats ", [convertITKformatsPath, tractography_mask_in_DWI_space_dowmsampling, tractography_mask_in_DWI_space_dowmsampling_nifti ])
 
+
+			#threshold: 
+			tractography_mask_in_DWI_space_dowmsampling_threshold = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled_thres_nifti.nii.gz")
+
+			command = ["/tools/bin_linux64/ImageMath", tractography_mask_in_DWI_space_dowmsampling_nifti, 
+														"-outfile", tractography_mask_in_DWI_space_dowmsampling_threshold, "-threshold"]
+			thres = ""	
+			thres += str(0.5)
+			thres += ","
+			thres += str(2)	
+			command.append(thres)
+
+			run_command("ImageMath ", command)
+
+
+
 			# Load_nifti_data: load only the data array from a nifti file
-			data_tractography_mask_in_DWI_space_dowmsampling_nifti = load_nifti_data(tractography_mask_in_DWI_space_dowmsampling_nifti)  
+			data_tractography_mask_in_DWI_space_dowmsampling_nifti = load_nifti_data(tractography_mask_in_DWI_space_dowmsampling_threshold)  
 
 			# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
 			print("data_tractography_mask_in_DWI_space_dowmsampling_nifti after dowmsampling", data_tractography_mask_in_DWI_space_dowmsampling_nifti.shape)
@@ -2351,7 +2372,7 @@ with Tee(log_file):
 
 			seed_mask = tractography_mask_reshape#white_matter #gray_matter #white_matter 
 			# Create seeds for fiber tracking from a binary mask: 
-			seeds = utils.seeds_from_mask(seed_mask, affine, density=3) 
+			seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
 
 			print("seeds", seeds ) 
 
