@@ -2038,8 +2038,8 @@ class Ui(QtWidgets.QTabWidget):
 
     def open_slicer_first_interface_button_clicked(self):
         if (json_user_object['Executables']["slicer"]["value"] != "False" and json_user_object['Parameters']["OUT_PATH"]["value"] != "" 
-                                                                         and json_user_object['Parameters']["ID"]["value"] != "" 
-                                                                         and json_user_object['Parameters']["PARCELLATION_TABLE_NAME"]["value"] != ""):
+                                                                         and json_user_object['Arguments']["ID"]["value"] != "" 
+                                                                         and json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"] != ""):
             Ui.run_command("Open slicer with the first interface", [sys.executable, os.path.realpath(os.path.dirname(__file__)) +"/CONTINUITY_QC/slicer_QC.py", user_json_filename])
 
         else: 

@@ -220,8 +220,8 @@ class Ui_visu(QtWidgets.QTabWidget):
 
     def open_slicer_clicked(self): 
         if (json_user_object['Executables']["slicer"]["value"] != "False" and  json_user_object['Parameters']["OUT_PATH"]["value"] != ""
-                                                                          and json_user_object['Parameters']["ID"]["value"] != ""
-                                                                          and json_user_object['Parameters']["PARCELLATION_TABLE_NAME"]["value"] != ""):
+                                                                          and json_user_object['Arguments']["ID"]["value"] != ""
+                                                                          and json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"] != ""):
             Ui_visu.run_command("Open slicer WITH specific parameters", [sys.executable, os.path.realpath(os.path.dirname(__file__)) + "/slicer_QC.py", user_json_filename])
 
         else: 
