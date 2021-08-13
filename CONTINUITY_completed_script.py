@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import argparse
 import json
 import os 
@@ -10,13 +9,14 @@ import time
 import datetime
 from termcolor import colored
 import numpy as np
+
 import vtk
 from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 
 import nibabel as nib
 
-import dipy 
 
+import dipy 
 from dipy.core.gradients import gradient_table, unique_bvals_tolerance
 from dipy.io.gradients import read_bvals_bvecs
 from dipy.io.image import load_nifti, load_nifti_data
@@ -346,15 +346,15 @@ with Tee(log_file):
 			print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
 		else:
 
-			run_command("DWIConvert: convert input image in nifti format to nrrd format", [DWIConvertPath, "--inputVolume", DWI_DATA, 
-														                             				       "--conversionMode", "FSLToNrrd", 
-														                             				       "--outputVolume", output_nrrd, 
-														                             				       "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
+			run_command("DWIConvert: convert input image in nifti to nrrd", [DWIConvertPath, "--inputVolume", DWI_DATA, 
+														                             	     "--conversionMode", "FSLToNrrd", 
+														                             	     "--outputVolume", output_nrrd, 
+														                             	     "--inputBValues",DWI_DATA_bvals, "--inputBVectors",DWI_DATA_bvecs])
 		# New path :
 		DWI_DATA = output_nrrd
 
 
-	# nothing to remove but the script need to have a list of bvals so need to convert a nrrd file 
+	# Nothing to remove but the script need to have a list of bvals so need to convert a nrrd file 
 	else: 
 		# DWI data in nrrd format: need to be converted 
 		print("*****************************************")
@@ -964,30 +964,6 @@ with Tee(log_file):
 			run_command("POLY_TRANSTOOL_EXE: combining subcortical data transform into DWISpace", command)
 
 
-	'''
-	else: #no integrate sc data
-		subcorticals_list_names_checked_with_surfaces = []
-		with open(only_matrix_parcellation_table, 'r') as data_file:
-			data = json.load(data_file)
-
-		i = 0 
-		while i < len(data)-1:
-
-			if data[i]['name'] in subcorticals_region_names:  
-				subcorticals_region_names.remove(data[i]['name'])
-				data.pop(i)
-				i -= 1
-			else: 
-				i +=1
-
-		with open(only_matrix_parcellation_table, 'w') as data_file:
-			data = json.dump(data, data_file, indent = 2)
-	'''
-
-
-
-
-
 	if PARCELLATION_TABLE_NAME == 'Destrieux': 
 
 		print("*****************************************")
@@ -995,9 +971,6 @@ with Tee(log_file):
 		print("*****************************************")
 		if not Destrieux_point_already_computed: 
 			compute_point_destrieux(only_matrix_parcellation_table, subcorticals_list_names_checked_with_surfaces, ID )
-
-
-
 
 
 	print("*****************************************")
@@ -1096,7 +1069,6 @@ with Tee(log_file):
 			polydatamerge_ascii(RSL_WM_L_Surf_labeled, RSL_WM_R_Surf_labeled, SURFACE)
 
 
-
 	if INTEGRATE_SC_DATA: 
 		print("*****************************************")
 		print("Start the integration of subcortical data: Combine subcortical with cortical vtk file in DWI Space of choice (Destrieux, AAL, etc)")
@@ -1117,10 +1089,8 @@ with Tee(log_file):
 
 		SURFACE = outputSurfaceFullMerge
 
-
 	# Add SURFACE in INPUTDATA folder for visualization 
 	shutil.copy(SURFACE, OUT_SLICER)
-
 
 	if only_registration: 
 		exit()
@@ -1176,7 +1146,6 @@ with Tee(log_file):
 		DWI_NRRD = DWI_DATA
 
 
-
 	print("*****************************************")
 	print("DWIConvert BRAINMASK and DWI: nrrd to nii")
 	print("*****************************************")
@@ -1185,7 +1154,7 @@ with Tee(log_file):
 	DiffusionData      = os.path.join(OUT_DIFFUSION, "data.nii.gz") 
 	DiffusionBrainMask = os.path.join(OUT_DIFFUSION, "nodif_brain_mask.nii.gz")
 
-	# DWIConvert BRAINMASK: NrrdToFSL: .nrrd file format to FSL format (.nii.gz)     # Err: "No gradient vectors found " --> it is normal 
+	# DWIConvert BRAINMASK: NrrdToFSL: .nrrd file format to FSL format (.nii.gz)
 	if os.path.exists(DiffusionBrainMask):
 	    print("Brain mask FSL file: Found Skipping conversion")
 	else: 
@@ -1296,7 +1265,6 @@ with Tee(log_file):
 			print("bedpostx command: ",time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
 
 
-
 		if only_bedpostx: 
 			exit()
 
@@ -1354,12 +1322,6 @@ with Tee(log_file):
 		
 
 
-
-
-
-
-
-
 	# Find all b-values: 
 	user_bval_with_nearest_values_without_duplicate,all_bval_with_duplicate = ([],[])
 
@@ -1376,7 +1338,6 @@ with Tee(log_file):
 				if not line in user_bval_with_nearest_values_without_duplicate and line != 0:
 					user_bval_with_nearest_values_without_duplicate.append(line)
 					
-
 
 	else: # bvals 'grouping' specify by the user: need to add the nereast value 
 		bval_file = open(os.path.join(OUT_DWI, "bvals"), 'r')    
@@ -1396,14 +1357,6 @@ with Tee(log_file):
 							user_bval_with_nearest_values_without_duplicate.append(line)
 
 	print("list_bval_for_the_tractography", list_bval_for_the_tractography)	
-	#print("all_bval_with_duplicate", all_bval_with_duplicate)			
-	#print("user_bval_with_nearest_values_without_duplicate after conversion: ", user_bval_with_nearest_values_without_duplicate)
-
-
-
-
-
-
 
 
 
@@ -1439,7 +1392,8 @@ with Tee(log_file):
 		
 		# *****************************************
 		# Create 5tt   
-		# *****************************************	    
+		# *****************************************	
+
 		if act_option:
 			print("*****************************************")
 			print("Convert T1 image to nifti format")
@@ -1460,7 +1414,6 @@ with Tee(log_file):
 																                             "--outputBValues", os.path.join(OUT_DIFFUSION, "bvals.temp"), 
 																                             "--outputBVectors", os.path.join(OUT_DIFFUSION, "bvecs.temp")])
 
-			# First choice: use T1_OUT_NRRD (after conversion in nifti): T1 in DWI space (second choice: use T1_nifti: T1 in structural space + add the transformation: affine )
 			fivett_img = os.path.join(OUT_MRTRIX,"5tt.nii.gz")
 			if os.path.exists(fivett_img):
 			    print("5tt image already compute")
@@ -1470,9 +1423,8 @@ with Tee(log_file):
 				print (now.strftime("Script to create 5tt image running since: %H:%M %m-%d-%Y"))
 				start = time.time()
 				run_command("create 5tt", [sys.executable, MRtrixPath + "/5ttgen", 'fsl', 
-																					T1_nifti, # input
+																					T1_nifti, #input
 																					fivett_img, #output
-
 																					'-scratch', os.path.join(OUT_MRTRIX), 
 																					'-nthreads', str(nb_threads) ])
 				print("Create 5tt image: ", time.strftime("%H h: %M min: %S s",time.gmtime(time.time() - start)))
@@ -1483,46 +1435,35 @@ with Tee(log_file):
 		print("Response function estimation: dwi2response")
 		print("*****************************************")
 
-		if len(list_bval_for_the_tractography) == 1: # single shell_DWI: 
-
-			# *****************************************
-			# Response function estimation: Estimate response function(s) for spherical deconvolution
-			# *****************************************
-
+		if len(list_bval_for_the_tractography) == 1: # single shell_DWI:
 			Response_function_estimation_txt = os.path.join(OUT_MRTRIX,'Response_function_estimation.txt')
 			if os.path.exists(Response_function_estimation_txt):
 			    print("Response function estimation already compute ")
 			else: 
-				command = [MRtrixPath + "/dwi2response",'tournier', DiffusionData, # input
+				command = [MRtrixPath + "/dwi2response",'tournier', DiffusionData, #input
 													   				Response_function_estimation_txt, #output
-
-													   				'-mask', DiffusionBrainMask, # input
-													                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
+													   				'-mask', DiffusionBrainMask, #input
+													                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), #input
 													                '-scratch', os.path.join(OUT_MRTRIX),
 													                '-nthreads', str(nb_threads) ]
 				run_command("Response function estimation (err ok)", command)
 
 
 		else: # multi shell_DWI: need other file for the next step  
-			response_wm_txt = os.path.join(OUT_MRTRIX, "response_wm.txt")
-			response_gm_txt = os.path.join(OUT_MRTRIX, "response_gm.txt")
+			response_wm_txt  = os.path.join(OUT_MRTRIX, "response_wm.txt")
+			response_gm_txt  = os.path.join(OUT_MRTRIX, "response_gm.txt")
 			response_csf_txt = os.path.join(OUT_MRTRIX, "response_csf.txt")
 
 			if os.path.exists(response_wm_txt): 
 				print("Multi shell dwi2response msmt_5tt: response_wm_txt, response_wm_txt andresponse_csf_txt already compute ")
 			else: 
 				print("Multi shell dwi2response msmt_5tt")	
-
-				#dwi2response dhollander dwi.mif response_wm.txt response_gm.txt response_csf.txt
-
-				command = [MRtrixPath + "/dwi2response",'dhollander', DiffusionData, # input
-													   			
-													   				response_wm_txt,  #output
-																	response_gm_txt,  #output
+				command = [MRtrixPath + "/dwi2response",'dhollander', DiffusionData, #input
+													   				response_wm_txt, #output
+																	response_gm_txt, #output
 																	response_csf_txt, #output
-
-													   				'-mask', DiffusionBrainMask, # input
-													                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), # input
+													   				'-mask', DiffusionBrainMask, #input
+													                '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"), #input
 													                '-scratch', os.path.join(OUT_MRTRIX),
 													                '-nthreads', str(nb_threads) ]
 				command.append('-shells')
@@ -1536,25 +1477,25 @@ with Tee(log_file):
 				run_command("dhollander", command)
 
 
-		# *****************************************
-		# Fibre Orientation Distribution estimation: Estimate fibre orientation distributions from diffusion data using spherical deconvolution
-		# *****************************************
+		print("*****************************************")
+		print("Fibre Orientation Distribution estimation")
+		print("*****************************************")
 
-		FOD_nii = os.path.join(OUT_MRTRIX, "FOD.nii.gz")
+		FOD_nii   = os.path.join(OUT_MRTRIX, "FOD.nii.gz")
 		wmfod_mif = os.path.join(OUT_MRTRIX, "wmfod.mif")
-		gm_mif = os.path.join(OUT_MRTRIX, "gm.mif")
-		csf_mif = os.path.join(OUT_MRTRIX, "csf.mif")
+		gm_mif    = os.path.join(OUT_MRTRIX, "gm.mif")
+		csf_mif   = os.path.join(OUT_MRTRIX, "csf.mif")
 
 		if os.path.exists(FOD_nii):
 		    print("Fibre Orientation Distribution estimation already compute")
 		else: 
 			if len(list_bval_for_the_tractography) == 1: # single shell_DWI: 
 				command = [MRtrixPath + "/dwi2fod", 'csd',
-									    DiffusionData, # input
-									    Response_function_estimation_txt, # input
-									    FOD_nii, # ouput
-									   	'-mask', DiffusionBrainMask, # input
-									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
+									    DiffusionData, #input
+									    Response_function_estimation_txt, #input
+									    FOD_nii, #ouput
+									   	'-mask', DiffusionBrainMask, #input
+									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),#input
 									    '-nthreads', str(nb_threads)]
 				command.append('-shells')
 				shells = ""
@@ -1568,21 +1509,21 @@ with Tee(log_file):
 		if os.path.exists(wmfod_mif):
 		    print("White Matter Fibre Orientation Distribution estimation already compute")
 		else: 
-			if len(list_bval_for_the_tractography) != 1: # multi shell 
+			if len(list_bval_for_the_tractography) != 1: #multi shell 
 				command = [MRtrixPath + "/dwi2fod", 'msmt_csd',
-									    DiffusionData, # input
+									    DiffusionData, #input
 
-										response_wm_txt,  # input
-										wmfod_mif, # ouput
+										response_wm_txt, #input
+										wmfod_mif, #ouput
 
-										response_gm_txt,  # input
-										gm_mif, # ouput
+										response_gm_txt, #input
+										gm_mif, #ouput
 
-										response_csf_txt,  # input
-										csf_mif, # ouput
+										response_csf_txt, #input
+										csf_mif, #ouput
 
-									   	'-mask', DiffusionBrainMask, # input
-									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),# input
+									   	'-mask', DiffusionBrainMask, #input
+									    '-fslgrad', os.path.join(OUT_DIFFUSION, "bvecs"),os.path.join(OUT_DIFFUSION, "bvals"),#input
 									    '-nthreads', str(nb_threads)]
 				
 				command.append('-shells')
@@ -1728,11 +1669,7 @@ with Tee(log_file):
 				if act_option: 
 					command.append('-act')
 					command.append(fivett_img)
-					
-				# Add common parameters: 
-				#command.append('-select')
-				#command.append(nb_fibers) # =2 !
-				
+									
 				command.append('-fslgrad')
 				command.append(os.path.join(OUT_DIFFUSION, "bvecs"))
 				command.append(os.path.join(OUT_DIFFUSION, "bvals"))
@@ -1746,19 +1683,18 @@ with Tee(log_file):
 				out, err = run.communicate()
 				print("MRtrix tractography", "out: ", colored("\n" + str(out) + "\n", 'green')) 
 				print("MRtrix tractography", "err: ", colored("\n" + str(err) + "\n", 'red'))	   
-				
-
 			
 				# *****************************************
 				# Convert tractography tck file to vtk format    FOR VISUALIZATION
 				# *****************************************
-				
+				'''
 				output_track_tckgen_vtk = os.path.join(OUT_MRTRIX_vtk, "output_track_tckgen_tck_" + number_region  + ".vtk")
 				if os.path.exists(output_track_tckgen_vtk):
 				    print("conversion to vtk already done")
 				else:
 					print("Convert tck to vtk")									
 					run_command("Convert to vtk", [MRtrixPath + "/tckconvert", output_track_tckgen_tck, output_track_tckgen_vtk])
+				'''
 				
 				
 
@@ -1776,18 +1712,17 @@ with Tee(log_file):
 					print("Filtering Tractography with tcksift")  
 					run_command("tcksift ", [MRtrixPath + "/tcksift", output_track_tckgen_tck, FOD_nii, output_tcksift_tck, '-nthreads', str(nb_threads)])	
 
-				  
-				
 				# *****************************************
 				# Convert tcksif tck file to vtk format       FOR VISUALIZATION
 				# *****************************************
-				
+				'''
 				output_tcksift_vtk = os.path.join(tcksift_vtk,"output_tcksift_" + number_region  + ".vtk")
 				if os.path.exists(output_tcksift_vtk):
 				    print("conversion to vtk already done")
 				else:
 					print("Convert tck to vtk")									
 					run_command("Convert to vtk", [MRtrixPath + "/tckconvert", output_tcksift_tck, output_tcksift_vtk]) 
+				'''
 				
 				
 			
@@ -1939,7 +1874,6 @@ with Tee(log_file):
 
 
 	elif tractography_model == "DIPY":
-		# Doc: https://dipy.org/documentation/1.4.1./reference/ 
 
 		print("*****************************************")
 		print("Run tractography with DIPY")
@@ -1966,12 +1900,11 @@ with Tee(log_file):
 		    print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
 		else:
 			print("Convert DWI image to nifti format ")
-			run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA, #DWI_NRRD, #DWI after resampling
+			run_command("DWIConvert: convert DWI image to nifti format", [DWIConvertPath, "--inputVolume", DWI_DATA, 
 															                              "--conversionMode", "NrrdToFSL", 
 															                              "--outputVolume", DWI_nifti, 
 															                              "--outputBValues", os.path.join(OUT_DIPY, "DWI_nifti_bvals"), 
 															                              "--outputBVectors", os.path.join(OUT_DIPY, "DWI_nifti_bvecs")])
-		
 		
 		#*****************************************
 		# Data and gradient table
@@ -1986,14 +1919,9 @@ with Tee(log_file):
 
 
 
-
-
-
-
 		print("*****************************************")
 		print("tractography_mask resample in DWI space")
 		print("*****************************************")
-
 
 		tractography_mask = "/work/elodie/input_CONTINUITY/T0054-1-1-6yr-T1_SkullStripped_scaled_BiasCorr_labels_multi_atlas_label_1_threshMask_add.nrrd"
 		convertITKformatsPath = "/tools/bin_linux64/convertITKformats"
@@ -2053,11 +1981,6 @@ with Tee(log_file):
 				print("Resample wm mask out: ", colored("\n" + str(out) + "\n", 'green'))
 				print("Resample wm mask err: ", colored("\n" + str(err) + "\n", 'red'))
 
-
-			
-
-
-
 			# Conversion to nifti again 
 			tractography_mask_in_DWI_space_dowmsampling_nifti = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled_nifti.nii.gz")
 			if os.path.exists(tractography_mask_in_DWI_space_dowmsampling_nifti):
@@ -2080,7 +2003,6 @@ with Tee(log_file):
 			command.append(thres)
 
 			run_command("ImageMath ", command)
-
 
 
 			# Load_nifti_data: load only the data array from a nifti file
@@ -2122,8 +2044,6 @@ with Tee(log_file):
 									                                    "--outputBVectors", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_nifti_bvecs.nodif"), 
 									                                    "--outputBValues", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_nifti_bvals.temp")])
 
-	
-		
 		# Load_nifti_data: load only the data array from a nifti file
 		data_wm_mask_in_DWI_space_nifti = load_nifti_data(wm_mask_in_DWI_space_nifti)  
 
@@ -2176,13 +2096,6 @@ with Tee(log_file):
 			# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
 			print("data_wm_mask_in_DWI_space_dowmsampling_nifti after dowmsampling", data_wm_mask_in_DWI_space_dowmsampling_nifti.shape)
 			white_matter = data_wm_mask_in_DWI_space_dowmsampling_nifti.reshape(data_wm_mask_in_DWI_space_dowmsampling_nifti.shape[0:-1]) 
-
-
-
-
-
-
-
 
 		
 		if gm_mask != '': # gray matter mask provided by the user
@@ -2266,18 +2179,6 @@ with Tee(log_file):
 				gray_matter = data_gm_mask_in_DWI_space_dowmsampling_nifti.reshape(data_gm_mask_in_DWI_space_dowmsampling_nifti.shape[0:-1]) 
 
 		'''
-
-
-
-
-
-
-
-
-
-
-	
-
 
 		streamline_vtk = os.path.join(OUT_DIPY,"streamlines.vtk")
 		if not os.path.exists(streamline_vtk):
@@ -2370,7 +2271,7 @@ with Tee(log_file):
 			# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
 			#*****************************************
 
-			seed_mask = tractography_mask_reshape#white_matter #gray_matter #white_matter 
+			seed_mask = tractography_mask_reshape#white_matter #gray_matter
 			# Create seeds for fiber tracking from a binary mask: 
 			seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
 
@@ -2471,10 +2372,6 @@ with Tee(log_file):
 				index = sorted_indices[i]
 				list_region.append(list_region_unordered[index])
 
-			#print("list_region", list_region)
-
-
-
 
 			# Read the source file
 			reader = vtk.vtkPolyDataReader() 
@@ -2495,7 +2392,6 @@ with Tee(log_file):
 			
 			polydata = reader.GetOutput()
 			points = vtk_to_numpy( polydata.GetPoints().GetData() )
-			#print("after",points )
 
 
 			polydata = vtk.vtkPolyData()
@@ -2518,9 +2414,6 @@ with Tee(log_file):
 			except:
 				print("Error while saving file.")
 				exit()
-
-
-
 
 			
 			
@@ -2610,7 +2503,6 @@ with Tee(log_file):
 				reader_tube.Update()
 
 
-
 				intersectionPolyDataFilter = vtk.vtkIntersectionPolyDataFilter()
 				intersectionPolyDataFilter.SetInputConnection( 0, reader_streamlines.GetOutputPort())
 				intersectionPolyDataFilter.SetInputConnection( 1, reader_tube.GetOutputPort())
@@ -2633,8 +2525,6 @@ with Tee(log_file):
 				except:
 					print("Error while saving intersectionPolyDataFilter file.")
 					exit()
-
-
 
 
 				reader_intersection = vtk.vtkPolyDataReader() 
@@ -2667,13 +2557,7 @@ with Tee(log_file):
 
 			print("reader_intersection:", reader_intersection.GetOutput())
 
-					
-
 			exit()
-
-
-			
-
 
 			'''
 			# Save the connectivity matrix 

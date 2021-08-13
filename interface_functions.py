@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import json
 import os 
 import sys 
@@ -17,7 +16,6 @@ from CONTINUITY_functions import *
 
 
 class Ui(QtWidgets.QTabWidget):
-
     # *****************************************
     # Init interface
     # *****************************************
@@ -67,7 +65,6 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def setup_default_values(self, default_json_filename, user_json_filename):
-
         # Json file which contains values given by the user: 
         with open(user_json_filename, "r") as user_Qt_file:
             global json_user_object
@@ -103,10 +100,8 @@ class Ui(QtWidgets.QTabWidget):
 
         # Parcellation table for registration and non registration:
         self.PARCELLATION_TABLE_textEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE"]["default"])
-            
         self.parcellation_table_name_lineEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE_NAME"]["default"])
         self.parcellation_table_name_no_registration_lineEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE_NAME"]["default"])
-
         self.no_registration_parcellation_table_textEdit.setText(json_setup_object['Arguments']["PARCELLATION_TABLE"]["default"])
 
         # Labelset name: text and help: 
@@ -185,7 +180,6 @@ class Ui(QtWidgets.QTabWidget):
         # Only registration
         self.only_registration_checkBox.setChecked(json_setup_object['Parameters']["only_registration"]["default"])
 
-
         # Ignore label:
         self.ignore_label_checkBox.setChecked(False)
         self.value_ignore_label_label.setStyleSheet("color: lightGray")
@@ -257,7 +251,6 @@ class Ui(QtWidgets.QTabWidget):
 
             
 
-
     # *****************************************
     # Functions activate if a "classic" button is clicked
     # *****************************************  
@@ -298,18 +291,13 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
-    # Write the job name in user information json file
+    # Write the job name in user information json file for registration and no registration
     # *****************************************
 
     def job_name_textChanged(self):
         json_user_object['Arguments']["ID"]["value"] = self.job_name_lineEdit.text()
         Ui.update_user_json_file()
 
-
-
-    # *****************************************
-    # NO registration: Write the job name in user information json file
-    # *****************************************
 
     def job_name_no_registration_textChanged(self):
         json_user_object['Arguments']["ID"]["value"] = self.job_name_no_registration_lineEdit.text()
@@ -349,7 +337,7 @@ class Ui(QtWidgets.QTabWidget):
         self.second_metric_groupBox.setStyleSheet(color)
         self.second_fixed_img_comboBox.setStyleSheet(color)
         self.second_fixed_img_label.setStyleSheet(color)
-        
+
         self.second_moving_img_comboBox.setStyleSheet(color)
         self.second_moving_img_label.setStyleSheet(color)
 
@@ -358,7 +346,6 @@ class Ui(QtWidgets.QTabWidget):
 
         self.second_radius_label.setStyleSheet(color)
         self.second_radius_spinBox.setStyleSheet(color)
-
 
 
 
@@ -396,7 +383,6 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def remove_bval_groupBox_clicked(self):
-
         if self.remove_bval_groupBox.isChecked(): 
             if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
                 list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"])
@@ -425,7 +411,7 @@ class Ui(QtWidgets.QTabWidget):
                     print("Convert DWI image to nifti format")
                     print("*****************************************")
 
-                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) #ID
+                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) 
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
@@ -440,7 +426,7 @@ class Ui(QtWidgets.QTabWidget):
                         print("Convert DWI image to nifti format ")
                         
                         run_command("DWIConvert: convert DWI to nifti format", [json_user_object["Executables"]["DWIConvert"]['value'], 
-                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], #input data 
+                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], 
                                                                                 "--conversionMode", "NrrdToFSL", 
                                                                                 "--outputVolume", DWI_nifti, 
                                                                                 "--outputBValues", os.path.join(OUT_DWI, "bvals"), 
@@ -458,9 +444,7 @@ class Ui(QtWidgets.QTabWidget):
                     # call function again 
                     Ui.remove_bval_groupBox_clicked(self)
 
-
                 else: 
-
                     msg = QMessageBox()
                     msg.setWindowTitle("DWI bvals file missing")
                     msg.setText('Please provide a DWI bvals file (with a nifti file) (tab "Path to your data") ' + 
@@ -472,18 +456,16 @@ class Ui(QtWidgets.QTabWidget):
 
 
 
-
     # *****************************************
     # ADD bval for the tractography
     # *****************************************  
 
     def add_bval_for_tractography_groupBox_clicked(self):
-    
         if self.add_bval_groupBox.isChecked(): 
             if json_user_object['Arguments']["DWI_DATA_bvals"]["value"] != "":
                 list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"] )
 
-                # int to str: 
+                # Int to str: 
                 for i in range(len(list_bval)): 
                     list_bval[i] = str(list_bval[i])
 
@@ -491,7 +473,6 @@ class Ui(QtWidgets.QTabWidget):
                 list_bval_for_the_tractography = []
                 self.add_bval_in_bvalfile_listWidget.clear()
                 self.add_bval_in_bvalfile_listWidget.addItems(list_bval)
-
 
                 # Set parameters: 
                 list_checked = []
@@ -504,8 +485,6 @@ class Ui(QtWidgets.QTabWidget):
                         list_checked.append(int(item.text()))
                     else: 
                         item.setCheckState(not Qt.Checked)
-
-
 
                 # Set a signal to do something if the user click on a region: 
                 self.add_bval_in_bvalfile_listWidget.itemClicked.connect(self.add_change_bval)
@@ -526,10 +505,8 @@ class Ui(QtWidgets.QTabWidget):
                         text+= str(json_user_object['Parameters']["list_bval_that_will_be_deleted"]["value"][i]) + '   '
                     text += ")"
 
-
                 self.add_bval_removing_textEdit.setText(text)
                     
-
 
             else: 
                 if json_user_object['Arguments']["DWI_DATA"]["value"] != "" and  json_user_object['Parameters']["OUT_PATH"]["value"] != "":
@@ -537,7 +514,7 @@ class Ui(QtWidgets.QTabWidget):
                     print("Convert DWI image to nifti format")
                     print("*****************************************")
 
-                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) #ID
+                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) 
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
@@ -552,7 +529,7 @@ class Ui(QtWidgets.QTabWidget):
                         print("Convert DWI image to nifti format ")
                         
                         run_command("DWIConvert: convert DWI to nifti format", [json_user_object["Executables"]["DWIConvert"]['value'], 
-                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], #input data 
+                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], 
                                                                                 "--conversionMode", "NrrdToFSL", 
                                                                                 "--outputVolume", DWI_nifti, 
                                                                                 "--outputBValues", os.path.join(OUT_DWI, "bvals"), 
@@ -653,11 +630,7 @@ class Ui(QtWidgets.QTabWidget):
                 text += ")"
 
         self.add_bval_removing_textEdit.setText(text)
-
         self.add_bval_in_bvalfile_listWidget.blockSignals(False) 
-
-
-
 
 
 
@@ -670,7 +643,7 @@ class Ui(QtWidgets.QTabWidget):
             if json_user_object['Arguments']['DWI_DATA_bvals']['value'] != "":
                 no_registration_list_bval = extract_bvals(json_user_object['Arguments']["DWI_DATA_bvals"]["value"], json_user_object['Parameters']["size_of_bvals_groups_DWI"]["value"])
 
-                # int to str: 
+                # Int to str: 
                 for i in range(len(no_registration_list_bval)): 
                     no_registration_list_bval[i] = str(no_registration_list_bval[i])
 
@@ -693,7 +666,7 @@ class Ui(QtWidgets.QTabWidget):
                     print("Convert DWI image to nifti format")
                     print("*****************************************")
 
-                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) #ID
+                    OUT_FOLDER = os.path.join(json_user_object['Parameters']["OUT_PATH"]["value"],json_user_object['Arguments']["ID"]["value"]) 
                     if not os.path.exists( OUT_FOLDER ):
                         os.mkdir(OUT_FOLDER)
 
@@ -708,7 +681,7 @@ class Ui(QtWidgets.QTabWidget):
                         print("Convert DWI image to nifti format ")
                         
                         run_command("DWIConvert: convert DWI to nifti format", [json_user_object["Executables"]["DWIConvert"]['value'], 
-                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], #input data 
+                                                                                "--inputVolume", json_user_object['Arguments']["DWI_DATA"]["value"], 
                                                                                 "--conversionMode", "NrrdToFSL", 
                                                                                 "--outputVolume", DWI_nifti, 
                                                                                 "--outputBValues", os.path.join(OUT_DWI, "bvals"), 
@@ -730,7 +703,6 @@ class Ui(QtWidgets.QTabWidget):
 
 
                 else: 
-
                     msg = QMessageBox()
                     msg.setWindowTitle("DWI bvals file missing")
                     msg.setText('Please provide a DWI bvals file (with a nifti file) (tab "Path to your data") ' + 
@@ -766,17 +738,7 @@ class Ui(QtWidgets.QTabWidget):
             text+= str(no_registration_list_bval_that_will_be_deleted[i]) + '\n'
 
         self.no_registration_bval_removing_textEdit.setText(text)
-
         self.no_registration_bval_in_bvalfile_listWidget.blockSignals(False) 
-
-
-
-
-
-
-
-
-
 
 
 
@@ -792,7 +754,7 @@ class Ui(QtWidgets.QTabWidget):
 
 
     # *****************************************
-    # Button help which display explanations
+    # Button help which display explanations for registration and no registration
     # *****************************************
 
     def question_cortical_labeled_pushButton_clicked(self):
@@ -802,11 +764,6 @@ class Ui(QtWidgets.QTabWidget):
         msg.setIcon(QMessageBox.Information)
         x = msg.exec_()
 
-
-
-    # *****************************************
-    # Button help which display explanations
-    # *****************************************
 
     def NO_registration_question_cortical_labeled_pushButton_clicked(self):
         msg = QMessageBox()
@@ -827,7 +784,6 @@ class Ui(QtWidgets.QTabWidget):
     def no_registration_labelsetname_valuechanged(self):
         json_user_object['Arguments']["labelSetName"]["value"] = self.labelset_lineEdit_no_registration.text()
         Ui.update_user_json_file()
-
 
     def name_parcellation_table_no_registration(self): 
         json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"] = self.parcellation_table_name_no_registration_lineEdit.text()
@@ -881,7 +837,6 @@ class Ui(QtWidgets.QTabWidget):
             json_user_object['Parameters']["cortical_label_left"]["value"] = fileName
             Ui.update_user_json_file() 
 
-
     def NO_registration_cortical_labeled_right_Button_clicked(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
         if fileName:
@@ -907,7 +862,6 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def integrate_sc_data_groupBox_valueChanged(self):
-
         json_user_object['Parameters']["INTEGRATE_SC_DATA"]["value"] = False
         self.question_SALT_pushButton.setStyleSheet( "background-color: white")
         self.question_KWM_pushButton.setStyleSheet( "background-color: white")
@@ -935,7 +889,6 @@ class Ui(QtWidgets.QTabWidget):
                     except: 
                             list_subcortical.append(0)
                         
-
                 # Clear the list and add all names:
                 self.sc_regions_names_listWidget.clear()
                 self.sc_regions_names_listWidget.addItems(list_regions_name)
@@ -957,8 +910,6 @@ class Ui(QtWidgets.QTabWidget):
 
                 json_user_object['Parameters']["subcorticals_region_names"]["value"] = sc 
                 json_user_object['Parameters']["subcorticals_region_labels"]["value"] = labels_list
-
-
                 Ui.update_user_json_file() 
 
                 self.Subcortical_regions_textEdit.setText(text)
@@ -979,8 +930,6 @@ class Ui(QtWidgets.QTabWidget):
 
                 self.integrate_sc_data_groupBox.setChecked(False)
 
-
-
             
 
     # *****************************************
@@ -988,7 +937,6 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def subcortical_region_name_checkbox(self, item):
-
         self.sc_regions_names_listWidget.blockSignals(True)
         sc = json_user_object['Parameters']["subcorticals_region_names"]["value"]
        
@@ -1008,7 +956,6 @@ class Ui(QtWidgets.QTabWidget):
             text+= str(sc[i]) + '\n'
 
         self.Subcortical_regions_textEdit.setText(text)
-
         self.sc_regions_names_listWidget.blockSignals(False) 
         
 
@@ -1028,7 +975,6 @@ class Ui(QtWidgets.QTabWidget):
             self.question_KWM_pushButton.setStyleSheet( "background-color: blue")
             self.INTEGRATE_SC_DATA_by_generated_sc_surf_groupBox.setChecked(False)
 
-
         else: 
             self.INTEGRATE_SC_DATA_by_generated_sc_surf_groupBox.setChecked(True)
 
@@ -1039,7 +985,6 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************
 
     def INTEGRATE_SC_DATA_by_generated_sc_surf_groupBox_clicked(self):
-
         if self.INTEGRATE_SC_DATA_by_generated_sc_surf_groupBox.isChecked():
             self.own_sc_groupBox.setChecked(False)
 
@@ -1094,7 +1039,6 @@ class Ui(QtWidgets.QTabWidget):
             check_region = True
 
         if check_region:
-
             if self.job_name_lineEdit.text() != "" and self.SALTDir_textEdit.toPlainText() != "" and self.KWMDir_textEdit.toPlainText() != "":
 
                 # Extract name of the subcortical regions: 
@@ -1120,6 +1064,7 @@ class Ui(QtWidgets.QTabWidget):
                 self.color_sc_textEdit.setText('<font color="green">Checkbox in green</font>: file for this region in the SALT and KWM directory \n' + 
                                                '<font color="red">Checkbox in red</font>: file for this region only in the KWM directory \n' + '\n'
                                                '<font color="purple">Checkbox in purple</font>: file for this region only in the SALT directory') 
+                
                 # Clear the list and add all names
                 self.list_sc_listWidget.clear()
                 self.list_sc_listWidget.addItems(all_sc_region)
@@ -1132,7 +1077,6 @@ class Ui(QtWidgets.QTabWidget):
                     elif item.text() in region_only_SALTDir:                                                  item.setForeground(QtGui.QColor("purple"))
                     else:                                                                                     item.setForeground(QtGui.QColor("red"))
                     
-                    
             else: 
                 msg = QMessageBox()
                 msg.setWindowTitle("Need SALT and KWM folders")
@@ -1142,11 +1086,9 @@ class Ui(QtWidgets.QTabWidget):
                 x = msg.exec_()
 
 
-       
-
 
     # *****************************************
-    # Button help which display explanations
+    # Button help which display explanations for SALT and KWM files
     # *****************************************       
 
     def question_SALT_pushButton_clicked(self):
@@ -1157,15 +1099,7 @@ class Ui(QtWidgets.QTabWidget):
                     '<font color="red">region</font>_..." where "job_name" is the same name that specify in the first tab')
         msg.setIcon(QMessageBox.Information)
         x = msg.exec_()
-
-      
           
-
-
-
-    # *****************************************
-    # Button help which display explanations
-    # *****************************************             
 
     def question_KWM_pushButton_clicked(self):
         msg = QMessageBox()
@@ -1182,7 +1116,6 @@ class Ui(QtWidgets.QTabWidget):
     # *****************************************  
 
     def complete_label_name_sc_region(self): 
-
         # Clear the list: 
         self.sc_regions_labels_listWidget.clear()
 
@@ -1199,6 +1132,7 @@ class Ui(QtWidgets.QTabWidget):
             item = self.sc_regions_labels_listWidget.item(i) 
 
         self.sc_regions_labels_listWidget.itemDoubleClicked.connect(self.subcortical_label_changed )   
+
 
     
     # *****************************************
@@ -1242,10 +1176,8 @@ class Ui(QtWidgets.QTabWidget):
 
 
 
-
-
     # *****************************************
-    # SegPostProcessCLP function: enforced spacing in x, y and z direction
+    # SegPostProcessCLP function: enforced spacing in x, y and z direction and rescale or not
     # ***************************************** 
 
     def sx_valueChanged(self):
@@ -1266,6 +1198,7 @@ class Ui(QtWidgets.QTabWidget):
         if self.do_not_rescale_checkbox.isChecked():
             json_user_object['Parameters']["do_not_rescale"]["value"] = True       
         Ui.update_user_json_file()
+
 
 
     # *****************************************
@@ -1632,7 +1565,6 @@ class Ui(QtWidgets.QTabWidget):
     def bedpostx_gpu_checkbox_clicked(self):
         json_user_object['Parameters']["run_bedpostx_gpu"]["value"] = False
         if self.bedpostx_gpu_checkBox.isChecked():
-            
 
             if json_user_object['Executables']['bedpostx_gpu']['value'] == "" or json_user_object['Executables']['bedpostx_gpu']['value'] == "False":
                 msg = QMessageBox()
@@ -1665,7 +1597,6 @@ class Ui(QtWidgets.QTabWidget):
                 x = msg.exec_()
 
                 self.probtrackx2_gpu_checkBox.setChecked(False)
-
 
             else: 
                 json_user_object['Parameters']["run_probtrackx2_gpu"]["value"] = True
@@ -1813,8 +1744,6 @@ class Ui(QtWidgets.QTabWidget):
             Ui.update_user_json_file() 
 
 
-
-
     def wm_fa_thr_valueChanged(self):
         json_user_object['Parameters']["wm_fa_thr"]["value"] = self.wm_fa_thr_doubleSpinBox.value()
         Ui.update_user_json_file()
@@ -1835,9 +1764,6 @@ class Ui(QtWidgets.QTabWidget):
         json_user_object['Parameters']["csf_md_thr"]["value"] = self.csf_md_thr_doubleSpinBox.value()
         Ui.update_user_json_file()
 
-
-
-
     def select_wm_mask(self): 
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
         if fileName:
@@ -1845,16 +1771,12 @@ class Ui(QtWidgets.QTabWidget):
             json_user_object['Arguments']["wm_mask"]["value"] = fileName
             Ui.update_user_json_file()
 
-
-
     def select_gm_mask(self): 
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
         if fileName:
             self.gm_mask_textEdit.setText(fileName)
             json_user_object['Arguments']["gm_mask"]["value"] = fileName
             Ui.update_user_json_file()
-
-
 
 
 
@@ -2008,7 +1930,6 @@ class Ui(QtWidgets.QTabWidget):
 
 
 
-
     # *****************************************
     # Open log file
     # *****************************************
@@ -2023,7 +1944,6 @@ class Ui(QtWidgets.QTabWidget):
             msg.setText('Please be sure to provide an output path (Button "output directory") and a job name')
             msg.setIcon(QMessageBox.Warning)
             x = msg.exec_()
-
 
 
 
@@ -2062,7 +1982,6 @@ class Ui(QtWidgets.QTabWidget):
                 eval("self." + button_name + "_textEdit.setText(DirName)")
                 json_user_object['Executables'][button_name]["value"] = DirName
                 
-
         else: 
             fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()" , "", "ALL Files (*)", options=QFileDialog.Options())
             if fileName:
@@ -2071,8 +1990,6 @@ class Ui(QtWidgets.QTabWidget):
         
         Ui.update_user_json_file()
             
-
-
 
 
     # *****************************************

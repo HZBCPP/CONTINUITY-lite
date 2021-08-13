@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import json
 import os 
 import sys 
@@ -38,9 +37,9 @@ from CONTINUITY_functions import *
 
 
 ##########################################################################################################################################
-'''  
-     CONTINUITY QC interface: functions file
-'''  
+ 
+    #CONTINUITY QC interface: functions file
+
 ##########################################################################################################################################
 
 class Ui_visu(QtWidgets.QTabWidget):
@@ -71,7 +70,6 @@ class Ui_visu(QtWidgets.QTabWidget):
 
     def setup_default_values(self, default_json_filename, user_json_filename):
         # Open json files: 
-        
         # Json file which contains values given by the user: 
         with open(user_json_filename, "r") as user_Qt_file:
             global json_user_object
@@ -83,10 +81,9 @@ class Ui_visu(QtWidgets.QTabWidget):
             json_setup_object = json.load(default_Qt_file)
 
 
+        # Setup default path to access of created files for Slicer and Slicer:
         self.job_name_lineEdit.setText(json_user_object['Arguments']["ID"]["value"])
         self.parcellation_table_name_lineEdit.setText(json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"])
-
-        # Setup default path to access of created files for Slicer and Slicer:
         self.OUTPUT_path_textEdit.setText(json_user_object['Parameters']["OUT_PATH"]["value"])
         self.slicer_textEdit.setText(json_user_object['Executables']["slicer"]["value"])
 
@@ -99,12 +96,12 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.parcellation_table_textEdit.setText("")
 
 
+        # Setup default path to save the connectivity matrix with a specific name:
         global overlapName, loopcheckName
         overlapName = ""
         if json_user_object['Parameters']["overlapping"]["value"]: 
             overlapName = "_overlapping" 
 
-        # Setup default path to save the connectivity matrix with a specific name:
         loopcheckName = ""
         if json_user_object['Parameters']["loopcheck"]["value"]: 
             loopcheckName = "_loopcheck"
@@ -144,7 +141,7 @@ class Ui_visu(QtWidgets.QTabWidget):
         self.Layout_brain_connectome_3D = QGridLayout()
         self.brain_connectome_3D_groupBox.setLayout(self.Layout_brain_connectome_3D)   
 
-        # VTK fiber
+        # vtk fiber
         self.Layout_vtk_fiber = QGridLayout()
         self.Layout_vtk_fiber_groupBox.setLayout(self.Layout_vtk_fiber)
 
@@ -223,7 +220,6 @@ class Ui_visu(QtWidgets.QTabWidget):
                                                                           and json_user_object['Arguments']["ID"]["value"] != ""
                                                                           and json_user_object['Arguments']["PARCELLATION_TABLE_NAME"]["value"] != ""):
             Ui_visu.run_command("Open slicer WITH specific parameters", [sys.executable, os.path.realpath(os.path.dirname(__file__)) + "/slicer_QC.py", user_json_filename])
-
         else: 
             msg = QMessageBox()
             msg.setWindowTitle("Open Slicer with specific parameters")
@@ -232,11 +228,9 @@ class Ui_visu(QtWidgets.QTabWidget):
             x = msg.exec_()
 
 
-
     def open_slicer_only(self):
         if json_user_object['Executables']["slicer"]["value"] != "False" :
             Ui_visu.run_command("Open Slicer WITHOUT configuration", [json_user_object['Executables']["slicer"]["value"]])
-
         else: 
             msg = QMessageBox()
             msg.setWindowTitle("Open Slicer without configuration")
@@ -379,13 +373,11 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                 im = ax_matrix.imshow(a_matrix, interpolation='nearest', vmin = self.vmin_normalize_matrix_spinBox.value(), 
                                                                          vmax = self.vmax_normalize_matrix_spinBox.value())
-
                 divider = make_axes_locatable(ax_matrix)
                 cax = divider.new_vertical(size="3%", pad=0.7, pack_start=True)
                 self.fig_normalize_matrix.add_axes(cax)
                 self.fig_normalize_matrix.colorbar(im, cax=cax, orientation="horizontal" )
                 
-
             # Creating an annotating box
             global annot
             annot = ax_matrix.annotate("", xy=(0,0), xytext=(-60,-30), xycoords='data',textcoords="offset points",
@@ -396,7 +388,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             lhor, lver = (ax_matrix.axhline(0), ax_matrix.axvline(0))
             lhor.set_ydata(-1)
             lver.set_xdata(-1)
-
 
             # Get the parcellation table with Cortical and Subcortical regions: 
             with open(os.path.join(self.parcellation_table_textEdit.toPlainText()), "r") as table_json_file:
@@ -413,7 +404,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             # Sort regions by VisuHierarchy number: 
             sorted_indices = np.argsort(list_MatrixRow)
             
-
             for i in range(len(list_MatrixRow)):
                 index = sorted_indices[i]
                 list_name_matrix.append(list_name_unordered[index])
@@ -591,8 +581,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
                 if key["VisuHierarchy"] not in list_VisuHierarchy:
                     list_VisuHierarchy.append(key["VisuHierarchy"])
-
-               
+ 
             # Build 'list_of_list_VisuHierarchy'
             list_of_list_VisuHierarchy = [[] for i in range(len(list_VisuHierarchy))]
             for key in table_json_object:
@@ -603,7 +592,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             sorted_indices = np.argsort( VisuOrder_associated)
 
             # Build 'node_order' and 'VisuHierarchy_order'
-            global node_order
+            global node_order, name_boundaries 
             node_order, VisuHierarchy_order = ([],[])
 
             for i in range(len(VisuOrder_associated)):
@@ -611,9 +600,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                 node_order.append(label_names[index])
                 VisuHierarchy_order.append(VisuHierarchy_associated[index])
             
-
-            # Build 'list_boundaries' and 'list_name_boundaries': 
-            global name_boundaries
+            # Build 'list_boundaries' and 'list_name_boundaries':  
             list_boundaries, name_boundaries, list_name_boundaries, i  = ([0], [], [], 0)
 
             while i < len(VisuHierarchy_order)-1:   
@@ -625,12 +612,10 @@ class Ui_visu(QtWidgets.QTabWidget):
                     list_name_boundaries.append(current_elem)
                 i += 1
 
-
             # Get the middle of each number of element for each region 
             middle = [0 for x in range(len(list_of_list_VisuHierarchy))]
             for i in range(len(list_of_list_VisuHierarchy)):   
                 middle[i] = int(len(list_of_list_VisuHierarchy[i])/2)
-
 
             # Build 'name_boundaries': only the name of each group of region
             list_of_cpt = [0 for x in range(len(list_VisuHierarchy))]
@@ -904,7 +889,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                     fig=my_fig, axes=axes, indices=indices, n_nodes=len(label_names), node_angles=node_angles_copy)
 
 
-        # Right click
+        # Right click:
         elif event.button == 3: 
             # Remove previous node label: 
             loop = len(axes.texts)
@@ -1199,7 +1184,7 @@ class Ui_visu(QtWidgets.QTabWidget):
             
             # Extract data point for each view (axial, sagittal, coronal)
             for element in list_coord_2D_connectome:   
-                # Header of nrrd-file: array([146, 190, 165])     193 229 193
+                # Header of nrrd-file: 193 229 193
                 x = float("{:.2f}".format(-(float("{:.2f}".format(element[0]))) + 193/2))
                 y = float("{:.2f}".format(-(float("{:.2f}".format(element[1]))) + 193/2))
                 z = float("{:.2f}".format(-(float("{:.2f}".format(element[2]))) + 229/2))
@@ -1209,14 +1194,14 @@ class Ui_visu(QtWidgets.QTabWidget):
                 list_y.append(y)
                 list_z.append(z)
 
-                list_x_original.append(float("{:.2f}".format(element[0]))) #float("{:.2f}".format(-x + 146/2 ))) forget that 
-                list_y_original.append(float("{:.2f}".format(element[1]))) #float("{:.2f}".format(-y + 165/2 ))) forget that
-                list_z_original.append(float("{:.2f}".format(element[2]))) #float("{:.2f}".format(-z + 190/2 ))) forget that
+                list_x_original.append(float("{:.2f}".format(element[0])))  
+                list_y_original.append(float("{:.2f}".format(element[1]))) 
+                list_z_original.append(float("{:.2f}".format(element[2]))) 
 
                 # Sagittal left:
                 if x>= 193/2: #146/2 : 
                     list_x_sagittal_left.append(x)   
-                    list_y_sagittal_left.append(y) #-y + 229)#190)
+                    list_y_sagittal_left.append(y) 
                     list_z_sagittal_left.append(z)
 
                     list_x_sagittal_right.append(float('nan'))
@@ -1233,7 +1218,7 @@ class Ui_visu(QtWidgets.QTabWidget):
                     list_z_sagittal_left.append(float('nan'))
 
                     list_x_sagittal_right.append(x)    
-                    list_y_sagittal_right.append(-y+229)#y) 
+                    list_y_sagittal_right.append(-y+229)
                     list_z_sagittal_right.append(z)
 
 
@@ -1635,7 +1620,7 @@ class Ui_visu(QtWidgets.QTabWidget):
 
             # Create the renderer: 
             self.ren = vtk.vtkRenderer()
-            self.ren.AddActor(actor) #brain surfaces
+            self.ren.AddActor(actor)
 
 
             # *****************************************
@@ -1801,7 +1786,7 @@ class Ui_visu(QtWidgets.QTabWidget):
            
                     # Create the mapper per line:
                     mapper_lines = vtk.vtkPolyDataMapper()  
-                    mapper_lines.SetInputData(linesPolyData)#tubes.GetOutput())   
+                    mapper_lines.SetInputData(linesPolyData) 
                  
                     mapper_lines.SetScalarModeToUseCellData()
                     mapper_lines.SetColorModeToMapScalars()
@@ -2011,7 +1996,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.ren.GetActiveCamera().Zoom(1.3)
             self.iren.Initialize()
 
-
         except: 
             msg = QMessageBox()
             msg.setWindowTitle("Display brain connectome in 3D")
@@ -2074,7 +2058,6 @@ class Ui_visu(QtWidgets.QTabWidget):
             self.ren.ResetCamera()
             self.ren.GetActiveCamera().Zoom(1.3)
             self.iren.Initialize()
-
 
         except: 
             msg = QMessageBox()
