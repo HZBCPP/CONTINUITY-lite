@@ -24,4 +24,4 @@ To install all libraries required for CONTINUITY:
 
 --------------------------------------------------------------------------------------------------------------------
 For the next time, to run CONTINUITY, you just need to activate your environment:
-	conda env create -f CONTINUITY_env.yml
+	conda activate CONTINUITY_env
