@@ -4149,7 +4149,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="text">
-        <string>Run bedpostx_gpu function </string>
+        <string>Run bedpostx_gpu function (experimental) </string>
        </property>
       </widget>
      </widget>
@@ -4383,7 +4383,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="text">
-        <string>Run probtrackx2_gpu function  (Waiting librairy for testing)</string>
+        <string>Run probtrackx2_gpu function  (experimental)</string>
        </property>
       </widget>
      </widget>
@@ -4689,7 +4689,7 @@ p, li { white-space: pre-wrap; }
       </widget>
       <widget class="QWidget" name="tab_32">
        <attribute name="title">
-        <string>DIPY</string>
+        <string>DIPY (experimental)</string>
        </attribute>
        <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
@@ -6572,7 +6572,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>10</x>
          <y>177</y>
-         <width>305</width>
+         <width>461</width>
          <height>27</height>
         </rect>
        </property>
@@ -6587,7 +6587,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string>Bedpostx_gpu:</string>
+           <string>Bedpostx_gpu: (experimental)</string>
           </property>
          </widget>
         </item>
@@ -6674,7 +6674,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>540</x>
          <y>177</y>
-         <width>219</width>
+         <width>431</width>
          <height>27</height>
         </rect>
        </property>
@@ -6689,7 +6689,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string>probtrackx_gpu:  </string>
+           <string>probtrackx_gpu: (experimental) </string>
           </property>
          </widget>
         </item>
