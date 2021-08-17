@@ -126,7 +126,7 @@
            </item>
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -180,7 +180,7 @@
            </item>
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -234,7 +234,7 @@
            </item>
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -284,7 +284,7 @@
            </item>
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -338,7 +338,7 @@
            </item>
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -392,7 +392,7 @@
            </item>
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -422,7 +422,7 @@
           <widget class="QComboBox" name="Slice7_comboBox">
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -476,7 +476,7 @@
           <widget class="QComboBox" name="Slice8_comboBox">
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -530,7 +530,7 @@
           <widget class="QComboBox" name="Slice9_comboBox">
            <item>
             <property name="text">
-             <string>AD</string>
+             <string>A0</string>
             </property>
            </item>
            <item>
@@ -1570,7 +1570,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_21">
        <attribute name="title">
@@ -2388,7 +2388,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="tabBarAutoHide">
          <bool>false</bool>

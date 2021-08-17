@@ -45,10 +45,10 @@ if not os.path.exists(B0_with_biais):
 # Find data for T1 and T1_registered
 T1_registered = os.path.join( input_path, ID + "_T1_SkullStripped_scaled_DWISpace.nrrd")
 
-# Find data for AD: (AD_NRRD variable in the script)
-AD = os.path.join( input_path, ID +"_DTI_A0_resample.nrrd")
-if not os.path.exists(AD):
-	AD = os.path.join( input_path,  ID +"_DTI_A0_original.nrrd")
+# Find data for A0: (A0_NRRD variable in the script)
+A0 = os.path.join( input_path, ID +"_DTI_A0_resample.nrrd")
+if not os.path.exists(A0):
+	A0 = os.path.join( input_path,  ID +"_DTI_A0_original.nrrd")
 
 # Find data for FA: 
 FA = os.path.join( input_path, ID +"_DTI_FA_resample.nrrd")
@@ -88,7 +88,7 @@ output = apd.GetOutput()
 if os.path.exists(B0):            loadedVolumeNode_B0            = slicer.util.loadVolume(B0,            properties={'name': 'B0',            'show': False})
 if os.path.exists(B0_with_biais): loadedVolumeNode_B0_with_biais = slicer.util.loadVolume(B0_with_biais, properties={'name': 'B0_with_biais', 'show': False})
 if os.path.exists(T1_registered): loadedVolumeNode_T1_registered = slicer.util.loadVolume(T1_registered, properties={'name': 'T1_registered', 'show': False})
-if os.path.exists(AD):            loadedVolumeNode_AD            = slicer.util.loadVolume(AD,            properties={'name': 'AD',            'show': False})
+if os.path.exists(A0):            loadedVolumeNode_A0            = slicer.util.loadVolume(A0,            properties={'name': 'A0',            'show': False})
 if os.path.exists(FA):            loadedVolumeNode_FA            = slicer.util.loadVolume(FA,            properties={'name': 'FA',            'show': False})
 if os.path.exists(labeled_image): loadedVolumeNode_labeled_image = slicer.util.loadVolume(labeled_image, properties={'name': 'labeled_image', 'show': False})
 

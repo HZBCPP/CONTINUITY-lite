@@ -245,7 +245,7 @@ class Ui_visu(QtWidgets.QTabWidget):
     # *****************************************
 
     def convert_name_data(Qt_param):
-        dict_param = {"B0":"B0", "T1 registered":"T1_registered", "T2 registered":"T2_registered", "FA":"FA", "AD":"AD", "labeled image":"labeled_image"}
+        dict_param = {"B0":"B0", "T1 registered":"T1_registered", "T2 registered":"T2_registered", "FA":"FA", "A0":"A0", "labeled image":"labeled_image"}
         return dict_param[Qt_param]
 
 

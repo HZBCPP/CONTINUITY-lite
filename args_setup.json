@@ -545,17 +545,17 @@
         "Slice7": {
             "type": "str",
             "help": "slice7 param for view controllers in Slicer",
-            "default": "AD"
+            "default": "A0"
         },
         "Slice8": {
             "type": "str",
             "help": "slice8 param for view controllers in Slicer",
-            "default": "AD"
+            "default": "A0"
         },
         "Slice9": {
             "type": "str",
             "help": "slice9 param for view controllers in Slicer",
-            "default": "AD"
+            "default": "A0"
         }
     }
 }
