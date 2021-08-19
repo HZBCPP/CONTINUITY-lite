@@ -195,12 +195,12 @@ if __name__ == '__main__':
 
 
                     # Run CONTINUITY script
-                    if not args["cluster"]: # run in longleaf: -noGUI -csv_file -cluster 
+                    if not args["cluster"]:# Run localy: -noGUI -csv_file             
                         print("SUBJECT: ", row['ID'] )
                         CONTINUITY(user_filename)
 
 
-                    else: # Run localy: -noGUI -csv_file
+                    else: # run in longleaf: -noGUI -csv_file -cluster 
                         # Create the output folder
                         if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
                             os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
