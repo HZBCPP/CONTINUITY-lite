@@ -126,7 +126,7 @@
            </item>
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>
@@ -180,7 +180,7 @@
            </item>
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>
@@ -234,7 +234,7 @@
            </item>
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>
@@ -284,7 +284,7 @@
            </item>
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>
@@ -338,7 +338,7 @@
            </item>
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>
@@ -392,7 +392,7 @@
            </item>
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>
@@ -422,7 +422,7 @@
           <widget class="QComboBox" name="Slice7_comboBox">
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>
@@ -476,7 +476,7 @@
           <widget class="QComboBox" name="Slice8_comboBox">
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>
@@ -530,7 +530,7 @@
           <widget class="QComboBox" name="Slice9_comboBox">
            <item>
             <property name="text">
-             <string>A0</string>
+             <string>AD</string>
             </property>
            </item>
            <item>

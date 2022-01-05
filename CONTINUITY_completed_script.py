@@ -458,7 +458,7 @@ with Tee(log_file):
 
 		else: # no Upsampling DWI
 
-			command = [pathUnu,"3op", "clamp", "0", "10000000", DWI_DATA]
+			command = [pathUnu,"3op", "clamp", "0", DWI_DATA,"10000000"]
 			p2 = subprocess.Popen(command, stdout=subprocess.PIPE)
 			print( colored("\n"+" ".join(command)+"\n", 'blue'))
 
@@ -505,14 +505,14 @@ with Tee(log_file):
 		# Create different name according to upsampling parameter:
 		if UPSAMPLING_DWI:
 		    B0_NRRD             = os.path.join(OUT_00_QC_VISUALIZATION, ID + "_DTI_B0_resample.nrrd")
-		    A0_NRRD             = os.path.join(OUT_00_QC_VISUALIZATION, ID + "_DTI_A0_resample.nrrd")
+		    AD_NRRD             = os.path.join(OUT_00_QC_VISUALIZATION, ID + "_DTI_AD_resample.nrrd")
 		    DTI_NRRD            = os.path.join(OUT_DTI, ID + "_DTI_DTI_resample.nrrd")
 		    IDWI_NRRD           = os.path.join(OUT_DTI, ID + "_DTI_IDTI_resample.nrrd")
 		    B0_BiasCorrect_NRRD = os.path.join(OUT_DTI, ID + "_DTI_B0_BiasCorrect_resample.nrrd")
 		    FA_NRRD             = os.path.join(OUT_DTI, ID + "_DTI_FA_resample.nrrd")
 		else:
 		    B0_NRRD             = os.path.join(OUT_00_QC_VISUALIZATION, ID + "_DTI_B0_original.nrrd")
-		    A0_NRRD             = os.path.join(OUT_00_QC_VISUALIZATION, ID + "_DTI_A0_original.nrrd")
+		    AD_NRRD             = os.path.join(OUT_00_QC_VISUALIZATION, ID + "_DTI_AD_original.nrrd")
 		    DTI_NRRD            = os.path.join(OUT_DTI, ID + "_DTI_DTI_original.nrrd")
 		    IDWI_NRRD           = os.path.join(OUT_DTI, ID + "_DTI_IDTI_original.nrrd")
 		    B0_BiasCorrect_NRRD = os.path.join(OUT_DTI, ID + "_DTI_B0_BiasCorrect_original.nrrd")
@@ -570,13 +570,13 @@ with Tee(log_file):
 			print(last)
 
 			if last.endswith("1.0.3"): #version 1.0.3 on Pegasus
-				run_command("Dtiprocess: FA generation from DTI", [pathdtiprocess, "--inputDTIVolume", DTI_NRRD, "-f", FA_NRRD, "--lambda1_output", A0_NRRD])
+				run_command("Dtiprocess: FA generation from DTI", [pathdtiprocess, "--inputDTIVolume", DTI_NRRD, "-f", FA_NRRD, "--lambda1_output", AD_NRRD])
 			else:#version 1.0.2 on Longleaf
-				run_command("Dtiprocess: FA generation from DTI", [pathdtiprocess, "--dti_image", DTI_NRRD, "-f", FA_NRRD, "--lambda1_output", A0_NRRD])
+				run_command("Dtiprocess: FA generation from DTI", [pathdtiprocess, "--dti_image", DTI_NRRD, "-f", FA_NRRD, "--lambda1_output", AD_NRRD])
 
-			# Add FA_NRRD and A0_NRRD in INPUTDATA folder for visualization 
+			# Add FA_NRRD and AD_NRRD in INPUTDATA folder for visualization 
 			shutil.copy(FA_NRRD, OUT_SLICER) 
-			shutil.copy(A0_NRRD, OUT_SLICER) 
+			shutil.copy(AD_NRRD, OUT_SLICER) 
 
 
 
@@ -1123,6 +1123,9 @@ with Tee(log_file):
 	# *****************************************
 
 	if EXTRA_SURFACE_COLOR:
+		EXTRA_SURFACE_COLOR = SURFACE
+	# if surface was labeled then replace the extra color setting
+	if not surface_already_labeled:
 		EXTRA_SURFACE_COLOR = SURFACE
 
 	overlapFlag, overlapName, loopcheckFlag, loopcheckName = ("", "", "", "")

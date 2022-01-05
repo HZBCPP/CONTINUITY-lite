@@ -1,0 +1,1172 @@
+[
+  {
+    "VisuOrder": 78, 
+    "MatrixRow": 1, 
+    "name": "Precentral_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -38.649999999999999, 
+      -5.6799999999999997, 
+      50.939999999999998
+    ], 
+    "labelValue": "1", 
+    "AAL_ID": 1
+  }, 
+  {
+    "VisuOrder": 1, 
+    "MatrixRow": 2, 
+    "name": "Precentral_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      41.369999999999997, 
+      -8.2100000000000009, 
+      52.090000000000003
+    ], 
+    "labelValue": "2", 
+    "AAL_ID": 2
+  }, 
+  {
+    "VisuOrder": 77, 
+    "MatrixRow": 3, 
+    "name": "Frontal_Sup_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -18.449999999999999, 
+      34.810000000000002, 
+      42.200000000000003
+    ], 
+    "labelValue": "3", 
+    "AAL_ID": 3
+  }, 
+  {
+    "VisuOrder": 2, 
+    "MatrixRow": 4, 
+    "name": "Frontal_Sup_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      21.899999999999999, 
+      31.120000000000001, 
+      43.82
+    ], 
+    "labelValue": "4", 
+    "AAL_ID": 4
+  }, 
+  {
+    "VisuOrder": 76, 
+    "MatrixRow": 5, 
+    "name": "Frontal_Sup_Orb_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -16.559999999999999, 
+      47.32, 
+      -13.31
+    ], 
+    "labelValue": "5", 
+    "AAL_ID": 5
+  }, 
+  {
+    "VisuOrder": 3, 
+    "MatrixRow": 6, 
+    "name": "Frontal_Sup_Orb_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      18.489999999999998, 
+      48.100000000000001, 
+      -14.02
+    ], 
+    "labelValue": "6", 
+    "AAL_ID": 6
+  }, 
+  {
+    "VisuOrder": 75, 
+    "MatrixRow": 7, 
+    "name": "Frontal_Mid_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -33.43, 
+      32.729999999999997, 
+      35.460000000000001
+    ], 
+    "labelValue": "7", 
+    "AAL_ID": 7
+  }, 
+  {
+    "VisuOrder": 4, 
+    "MatrixRow": 8, 
+    "name": "Frontal_Mid_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      37.590000000000003, 
+      33.060000000000002, 
+      34.039999999999999
+    ], 
+    "labelValue": "8", 
+    "AAL_ID": 8
+  }, 
+  {
+    "VisuOrder": 74, 
+    "MatrixRow": 9, 
+    "name": "Frontal_Mid_Orb_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -30.649999999999999, 
+      50.43, 
+      -9.6199999999999992
+    ], 
+    "labelValue": "9", 
+    "AAL_ID": 9
+  }, 
+  {
+    "VisuOrder": 5, 
+    "MatrixRow": 10, 
+    "name": "Frontal_Mid_Orb_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      33.18, 
+      52.590000000000003, 
+      -10.73
+    ], 
+    "labelValue": "10", 
+    "AAL_ID": 10
+  }, 
+  {
+    "VisuOrder": 73, 
+    "MatrixRow": 11, 
+    "name": "Frontal_Inf_Oper_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -48.43, 
+      12.73, 
+      19.02
+    ], 
+    "labelValue": "11", 
+    "AAL_ID": 11
+  }, 
+  {
+    "VisuOrder": 6, 
+    "MatrixRow": 12, 
+    "name": "Frontal_Inf_Oper_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      50.200000000000003, 
+      14.98, 
+      21.41
+    ], 
+    "labelValue": "12", 
+    "AAL_ID": 12
+  }, 
+  {
+    "VisuOrder": 72, 
+    "MatrixRow": 13, 
+    "name": "Frontal_Inf_Tri_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -45.579999999999998, 
+      29.91, 
+      13.99
+    ], 
+    "labelValue": "13", 
+    "AAL_ID": 13
+  }, 
+  {
+    "VisuOrder": 7, 
+    "MatrixRow": 14, 
+    "name": "Frontal_Inf_Tri_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      50.329999999999998, 
+      30.16, 
+      14.17
+    ], 
+    "labelValue": "14", 
+    "AAL_ID": 14
+  }, 
+  {
+    "VisuOrder": 71, 
+    "MatrixRow": 15, 
+    "name": "Frontal_Inf_Orb_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -35.979999999999997, 
+      30.710000000000001, 
+      -12.109999999999999
+    ], 
+    "labelValue": "15", 
+    "AAL_ID": 15
+  }, 
+  {
+    "VisuOrder": 8, 
+    "MatrixRow": 16, 
+    "name": "Frontal_Inf_Orb_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      41.219999999999999, 
+      32.229999999999997, 
+      -11.91
+    ], 
+    "labelValue": "16", 
+    "AAL_ID": 16
+  }, 
+  {
+    "VisuOrder": 70, 
+    "MatrixRow": 17, 
+    "name": "Rolandic_Oper_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -47.159999999999997, 
+      -8.4800000000000004, 
+      13.949999999999999
+    ], 
+    "labelValue": "17", 
+    "AAL_ID": 17
+  }, 
+  {
+    "VisuOrder": 9, 
+    "MatrixRow": 18, 
+    "name": "Rolandic_Oper_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      52.649999999999999, 
+      -6.25, 
+      14.630000000000001
+    ], 
+    "labelValue": "18", 
+    "AAL_ID": 18
+  }, 
+  {
+    "VisuOrder": 69, 
+    "MatrixRow": 19, 
+    "name": "Supp_Motor_Area_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -5.3200000000000003, 
+      4.8499999999999996, 
+      61.380000000000003
+    ], 
+    "labelValue": "19", 
+    "AAL_ID": 19
+  }, 
+  {
+    "VisuOrder": 10, 
+    "MatrixRow": 20, 
+    "name": "Supp_Motor_Area_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      8.6199999999999992, 
+      0.17000000000000001, 
+      61.850000000000001
+    ], 
+    "labelValue": "20", 
+    "AAL_ID": 20
+  }, 
+  {
+    "VisuOrder": 68, 
+    "MatrixRow": 21, 
+    "name": "Olfactory_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -8.0600000000000005, 
+      15.050000000000001, 
+      -11.460000000000001
+    ], 
+    "labelValue": "21", 
+    "AAL_ID": 21
+  }, 
+  {
+    "VisuOrder": 11, 
+    "MatrixRow": 22, 
+    "name": "Olfactory_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      10.43, 
+      15.91, 
+      -11.26
+    ], 
+    "labelValue": "22", 
+    "AAL_ID": 22
+  }, 
+  {
+    "VisuOrder": 67, 
+    "MatrixRow": 23, 
+    "name": "Frontal_Sup_Medial_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -4.7999999999999998, 
+      49.170000000000002, 
+      30.890000000000001
+    ], 
+    "labelValue": "23", 
+    "AAL_ID": 23
+  }, 
+  {
+    "VisuOrder": 12, 
+    "MatrixRow": 24, 
+    "name": "Frontal_Sup_Medial_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      9.0999999999999996, 
+      50.840000000000003, 
+      30.219999999999999
+    ], 
+    "labelValue": "24", 
+    "AAL_ID": 24
+  }, 
+  {
+    "VisuOrder": 66, 
+    "MatrixRow": 25, 
+    "name": "Frontal_Med_Orb_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -5.1699999999999999, 
+      54.060000000000002, 
+      -7.4000000000000004
+    ], 
+    "labelValue": "25", 
+    "AAL_ID": 25
+  }, 
+  {
+    "VisuOrder": 13, 
+    "MatrixRow": 26, 
+    "name": "Frontal_Med_Orb_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      8.1600000000000001, 
+      51.670000000000002, 
+      -7.1299999999999999
+    ], 
+    "labelValue": "26", 
+    "AAL_ID": 26
+  }, 
+  {
+    "VisuOrder": 65, 
+    "MatrixRow": 27, 
+    "name": "Rectus_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -5.0800000000000001, 
+      37.07, 
+      -18.140000000000001
+    ], 
+    "labelValue": "27", 
+    "AAL_ID": 27
+  }, 
+  {
+    "VisuOrder": 14, 
+    "MatrixRow": 28, 
+    "name": "Rectus_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      8.3499999999999996, 
+      35.640000000000001, 
+      -18.039999999999999
+    ], 
+    "labelValue": "28", 
+    "AAL_ID": 28
+  }, 
+  {
+    "VisuOrder": 64, 
+    "MatrixRow": 29, 
+    "name": "Insula_L", 
+    "VisuHierarchy": "seed.left.frontal.", 
+    "coord": [
+      -35.130000000000003, 
+      6.6500000000000004, 
+      3.4399999999999999
+    ], 
+    "labelValue": "29", 
+    "AAL_ID": 29
+  }, 
+  {
+    "VisuOrder": 15, 
+    "MatrixRow": 30, 
+    "name": "Insula_R", 
+    "VisuHierarchy": "seed.right.frontal.", 
+    "coord": [
+      39.020000000000003, 
+      6.25, 
+      2.0800000000000001
+    ], 
+    "labelValue": "30", 
+    "AAL_ID": 30
+  }, 
+  {
+    "VisuOrder": 63, 
+    "MatrixRow": 31, 
+    "name": "Cingulum_Ant_L", 
+    "VisuHierarchy": "seed.left.cingulate.", 
+    "coord": [
+      -4.04, 
+      35.399999999999999, 
+      13.949999999999999
+    ], 
+    "labelValue": "31", 
+    "AAL_ID": 31
+  }, 
+  {
+    "VisuOrder": 16, 
+    "MatrixRow": 32, 
+    "name": "Cingulum_Ant_R", 
+    "VisuHierarchy": "seed.right.cingulate.", 
+    "coord": [
+      8.4600000000000009, 
+      37.009999999999998, 
+      15.84
+    ], 
+    "labelValue": "32", 
+    "AAL_ID": 32
+  }, 
+  {
+    "VisuOrder": 62, 
+    "MatrixRow": 33, 
+    "name": "Cingulum_Mid_L", 
+    "VisuHierarchy": "seed.left.cingulate.", 
+    "coord": [
+      -5.4800000000000004, 
+      -14.92, 
+      41.57
+    ], 
+    "labelValue": "33", 
+    "AAL_ID": 33
+  }, 
+  {
+    "VisuOrder": 17, 
+    "MatrixRow": 34, 
+    "name": "Cingulum_Mid_R", 
+    "VisuHierarchy": "seed.right.cingulate.", 
+    "coord": [
+      8.0199999999999996, 
+      -8.8300000000000001, 
+      39.789999999999999
+    ], 
+    "labelValue": "34", 
+    "AAL_ID": 34
+  }, 
+  {
+    "VisuOrder": 61, 
+    "MatrixRow": 35, 
+    "name": "Cingulum_Post_L", 
+    "VisuHierarchy": "seed.left.cingulate.", 
+    "coord": [
+      -4.8499999999999996, 
+      -42.920000000000002, 
+      24.670000000000002
+    ], 
+    "labelValue": "35", 
+    "AAL_ID": 35
+  }, 
+  {
+    "VisuOrder": 18, 
+    "MatrixRow": 36, 
+    "name": "Cingulum_Post_R", 
+    "VisuHierarchy": "seed.right.cingulate.", 
+    "coord": [
+      7.4400000000000004, 
+      -41.810000000000002, 
+      21.870000000000001
+    ], 
+    "labelValue": "36", 
+    "AAL_ID": 36
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Hippocampus_L", 
+    "VisuHierarchy": "seed.left.", 
+    "coord": [
+      -25.030000000000001, 
+      -20.739999999999998, 
+      -10.130000000000001
+    ], 
+    "labelValue": "37", 
+    "AAL_ID": 37
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Hippocampus_R", 
+    "VisuHierarchy": "seed.right.", 
+    "coord": [
+      29.23, 
+      -19.780000000000001, 
+      -10.33
+    ], 
+    "labelValue": "38", 
+    "AAL_ID": 38
+  }, 
+  {
+    "VisuOrder": 60, 
+    "MatrixRow": 37, 
+    "name": "Parahippocampus_L", 
+    "VisuHierarchy": "seed.left.temporal.", 
+    "coord": [
+      -21.170000000000002, 
+      -15.949999999999999, 
+      -20.699999999999999
+    ], 
+    "labelValue": "39", 
+    "AAL_ID": 39
+  }, 
+  {
+    "VisuOrder": 19, 
+    "MatrixRow": 38, 
+    "name": "Parahippocampus_R", 
+    "VisuHierarchy": "seed.right.temporal.", 
+    "coord": [
+      25.379999999999999, 
+      -15.15, 
+      -20.469999999999999
+    ], 
+    "labelValue": "40", 
+    "AAL_ID": 40
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Amygdala_L", 
+    "VisuHierarchy": "seed.left.", 
+    "coord": [
+      -23.27, 
+      -0.67000000000000004, 
+      -17.140000000000001
+    ], 
+    "labelValue": "41", 
+    "AAL_ID": 41
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Amygdala_R", 
+    "VisuHierarchy": "seed.right.", 
+    "coord": [
+      27.32, 
+      0.64000000000000001, 
+      -17.5
+    ], 
+    "labelValue": "42", 
+    "AAL_ID": 42
+  }, 
+  {
+    "VisuOrder": 45, 
+    "MatrixRow": 39, 
+    "name": "Calcarine_L", 
+    "VisuHierarchy": "seed.left.occipital.", 
+    "coord": [
+      -7.1399999999999997, 
+      -78.670000000000002, 
+      6.4400000000000004
+    ], 
+    "labelValue": "43", 
+    "AAL_ID": 43
+  }, 
+  {
+    "VisuOrder": 34, 
+    "MatrixRow": 40, 
+    "name": "Calcarine_R", 
+    "VisuHierarchy": "seed.right.occipital.", 
+    "coord": [
+      15.99, 
+      -73.150000000000006, 
+      9.4000000000000004
+    ], 
+    "labelValue": "44", 
+    "AAL_ID": 44
+  }, 
+  {
+    "VisuOrder": 44, 
+    "MatrixRow": 41, 
+    "name": "Cuneus_L", 
+    "VisuHierarchy": "seed.left.occipital.", 
+    "coord": [
+      -5.9299999999999997, 
+      -80.129999999999995, 
+      27.219999999999999
+    ], 
+    "labelValue": "45", 
+    "AAL_ID": 45
+  }, 
+  {
+    "VisuOrder": 35, 
+    "MatrixRow": 42, 
+    "name": "Cuneus_R", 
+    "VisuHierarchy": "seed.right.occipital.", 
+    "coord": [
+      13.51, 
+      -79.359999999999999, 
+      28.23
+    ], 
+    "labelValue": "46", 
+    "AAL_ID": 46
+  }, 
+  {
+    "VisuOrder": 43, 
+    "MatrixRow": 43, 
+    "name": "Lingual_L", 
+    "VisuHierarchy": "seed.left.occipital.", 
+    "coord": [
+      -14.619999999999999, 
+      -67.560000000000002, 
+      -4.6299999999999999
+    ], 
+    "labelValue": "47", 
+    "AAL_ID": 47
+  }, 
+  {
+    "VisuOrder": 36, 
+    "MatrixRow": 44, 
+    "name": "Lingual_R", 
+    "VisuHierarchy": "seed.right.occipital.", 
+    "coord": [
+      16.289999999999999, 
+      -66.930000000000007, 
+      -3.8700000000000001
+    ], 
+    "labelValue": "48", 
+    "AAL_ID": 48
+  }, 
+  {
+    "VisuOrder": 42, 
+    "MatrixRow": 45, 
+    "name": "Occipital_Sup_L", 
+    "VisuHierarchy": "seed.left.occipital.", 
+    "coord": [
+      -16.539999999999999, 
+      -84.260000000000005, 
+      28.170000000000002
+    ], 
+    "labelValue": "49", 
+    "AAL_ID": 49
+  }, 
+  {
+    "VisuOrder": 37, 
+    "MatrixRow": 46, 
+    "name": "Occipital_Sup_R", 
+    "VisuHierarchy": "seed.right.occipital.", 
+    "coord": [
+      24.289999999999999, 
+      -80.849999999999994, 
+      30.59
+    ], 
+    "labelValue": "50", 
+    "AAL_ID": 50
+  }, 
+  {
+    "VisuOrder": 41, 
+    "MatrixRow": 47, 
+    "name": "Occipital_Mid_L", 
+    "VisuHierarchy": "seed.left.occipital.", 
+    "coord": [
+      -32.390000000000001, 
+      -80.730000000000004, 
+      16.109999999999999
+    ], 
+    "labelValue": "51", 
+    "AAL_ID": 51
+  }, 
+  {
+    "VisuOrder": 38, 
+    "MatrixRow": 48, 
+    "name": "Occipital_Mid_R", 
+    "VisuHierarchy": "seed.right.occipital.", 
+    "coord": [
+      37.390000000000001, 
+      -79.700000000000003, 
+      19.420000000000002
+    ], 
+    "labelValue": "52", 
+    "AAL_ID": 52
+  }, 
+  {
+    "VisuOrder": 40, 
+    "MatrixRow": 49, 
+    "name": "Occipital_Inf_L", 
+    "VisuHierarchy": "seed.left.occipital.", 
+    "coord": [
+      -36.359999999999999, 
+      -78.290000000000006, 
+      -7.8399999999999999
+    ], 
+    "labelValue": "53", 
+    "AAL_ID": 53
+  }, 
+  {
+    "VisuOrder": 39, 
+    "MatrixRow": 50, 
+    "name": "Occipital_Inf_R", 
+    "VisuHierarchy": "seed.right.occipital.", 
+    "coord": [
+      38.159999999999997, 
+      -81.989999999999995, 
+      -7.6100000000000003
+    ], 
+    "labelValue": "54", 
+    "AAL_ID": 54
+  }, 
+  {
+    "VisuOrder": 59, 
+    "MatrixRow": 51, 
+    "name": "Fusiform_L", 
+    "VisuHierarchy": "seed.left.temporal.", 
+    "coord": [
+      -31.16, 
+      -40.299999999999997, 
+      -20.23
+    ], 
+    "labelValue": "55", 
+    "AAL_ID": 55
+  }, 
+  {
+    "VisuOrder": 20, 
+    "MatrixRow": 52, 
+    "name": "Fusiform_R", 
+    "VisuHierarchy": "seed.right.temporal.", 
+    "coord": [
+      33.969999999999999, 
+      -39.100000000000001, 
+      -20.18
+    ], 
+    "labelValue": "56", 
+    "AAL_ID": 56
+  }, 
+  {
+    "VisuOrder": 52, 
+    "MatrixRow": 53, 
+    "name": "Postcentral_L", 
+    "VisuHierarchy": "seed.left.parietal.", 
+    "coord": [
+      -42.460000000000001, 
+      -22.629999999999999, 
+      48.920000000000002
+    ], 
+    "labelValue": "57", 
+    "AAL_ID": 57
+  }, 
+  {
+    "VisuOrder": 27, 
+    "MatrixRow": 54, 
+    "name": "Postcentral_R", 
+    "VisuHierarchy": "seed.right.parietal.", 
+    "coord": [
+      41.43, 
+      -25.489999999999998, 
+      52.549999999999997
+    ], 
+    "labelValue": "58", 
+    "AAL_ID": 58
+  }, 
+  {
+    "VisuOrder": 51, 
+    "MatrixRow": 55, 
+    "name": "Parietal_Sup_L", 
+    "VisuHierarchy": "seed.left.parietal.", 
+    "coord": [
+      -23.449999999999999, 
+      -59.560000000000002, 
+      58.960000000000001
+    ], 
+    "labelValue": "59", 
+    "AAL_ID": 59
+  }, 
+  {
+    "VisuOrder": 28, 
+    "MatrixRow": 56, 
+    "name": "Parietal_Sup_R", 
+    "VisuHierarchy": "seed.right.parietal.", 
+    "coord": [
+      26.109999999999999, 
+      -59.18, 
+      62.060000000000002
+    ], 
+    "labelValue": "60", 
+    "AAL_ID": 60
+  }, 
+  {
+    "VisuOrder": 50, 
+    "MatrixRow": 57, 
+    "name": "Parietal_Inf_L", 
+    "VisuHierarchy": "seed.left.parietal.", 
+    "coord": [
+      -42.799999999999997, 
+      -45.82, 
+      46.740000000000002
+    ], 
+    "labelValue": "61", 
+    "AAL_ID": 61
+  }, 
+  {
+    "VisuOrder": 29, 
+    "MatrixRow": 58, 
+    "name": "Parietal_Inf_R", 
+    "VisuHierarchy": "seed.right.parietal.", 
+    "coord": [
+      46.460000000000001, 
+      -46.289999999999999, 
+      49.539999999999999
+    ], 
+    "labelValue": "62", 
+    "AAL_ID": 62
+  }, 
+  {
+    "VisuOrder": 49, 
+    "MatrixRow": 59, 
+    "name": "SupraMarginal_L", 
+    "VisuHierarchy": "seed.left.parietal.", 
+    "coord": [
+      -55.789999999999999, 
+      -33.640000000000001, 
+      30.449999999999999
+    ], 
+    "labelValue": "63", 
+    "AAL_ID": 63
+  }, 
+  {
+    "VisuOrder": 30, 
+    "MatrixRow": 60, 
+    "name": "SupraMarginal_R", 
+    "VisuHierarchy": "seed.right.parietal.", 
+    "coord": [
+      57.609999999999999, 
+      -31.5, 
+      34.479999999999997
+    ], 
+    "labelValue": "64", 
+    "AAL_ID": 64
+  }, 
+  {
+    "VisuOrder": 48, 
+    "MatrixRow": 61, 
+    "name": "Angular_L", 
+    "VisuHierarchy": "seed.left.parietal.", 
+    "coord": [
+      -44.140000000000001, 
+      -60.82, 
+      35.590000000000003
+    ], 
+    "labelValue": "65", 
+    "AAL_ID": 65
+  }, 
+  {
+    "VisuOrder": 31, 
+    "MatrixRow": 62, 
+    "name": "Angular_R", 
+    "VisuHierarchy": "seed.right.parietal.", 
+    "coord": [
+      45.509999999999998, 
+      -59.979999999999997, 
+      38.630000000000003
+    ], 
+    "labelValue": "66", 
+    "AAL_ID": 66
+  }, 
+  {
+    "VisuOrder": 47, 
+    "MatrixRow": 63, 
+    "name": "Precuneus_L", 
+    "VisuHierarchy": "seed.left.parietal.", 
+    "coord": [
+      -7.2400000000000002, 
+      -56.07, 
+      48.009999999999998
+    ], 
+    "labelValue": "67", 
+    "AAL_ID": 67
+  }, 
+  {
+    "VisuOrder": 32, 
+    "MatrixRow": 64, 
+    "name": "Precuneus_R", 
+    "VisuHierarchy": "seed.right.parietal.", 
+    "coord": [
+      9.9800000000000004, 
+      -56.049999999999997, 
+      43.770000000000003
+    ], 
+    "labelValue": "68", 
+    "AAL_ID": 68
+  }, 
+  {
+    "VisuOrder": 46, 
+    "MatrixRow": 65, 
+    "name": "Paracentral_Lobule_L", 
+    "VisuHierarchy": "seed.left.parietal.", 
+    "coord": [
+      -7.6299999999999999, 
+      -25.359999999999999, 
+      70.069999999999993
+    ], 
+    "labelValue": "69", 
+    "AAL_ID": 69
+  }, 
+  {
+    "VisuOrder": 33, 
+    "MatrixRow": 66, 
+    "name": "Paracentral_Lobule_R", 
+    "VisuHierarchy": "seed.right.parietal.", 
+    "coord": [
+      7.4800000000000004, 
+      -31.59, 
+      68.090000000000003
+    ], 
+    "labelValue": "70", 
+    "AAL_ID": 70
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Caudate_L", 
+    "VisuHierarchy": "seed.left.", 
+    "coord": [
+      -11.460000000000001, 
+      11, 
+      9.2400000000000002
+    ], 
+    "labelValue": "71", 
+    "AAL_ID": 71
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Caudate_R", 
+    "VisuHierarchy": "seed.right.", 
+    "coord": [
+      14.84, 
+      12.07, 
+      9.4199999999999999
+    ], 
+    "labelValue": "72", 
+    "AAL_ID": 72
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Putamen_L", 
+    "VisuHierarchy": "seed.left.", 
+    "coord": [
+      -23.91, 
+      3.8599999999999999, 
+      2.3999999999999999
+    ], 
+    "labelValue": "73", 
+    "AAL_ID": 73
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Putamen_R", 
+    "VisuHierarchy": "seed.right.", 
+    "coord": [
+      27.780000000000001, 
+      4.9100000000000001, 
+      2.46
+    ], 
+    "labelValue": "74", 
+    "AAL_ID": 74
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Pallidum_L", 
+    "VisuHierarchy": "seed.left.", 
+    "coord": [
+      -17.75, 
+      -0.029999999999999999, 
+      0.20999999999999999
+    ], 
+    "labelValue": "75", 
+    "AAL_ID": 75
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Pallidum_R", 
+    "VisuHierarchy": "seed.right.", 
+    "coord": [
+      21.199999999999999, 
+      0.17999999999999999, 
+      0.23000000000000001
+    ], 
+    "labelValue": "76", 
+    "AAL_ID": 76
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Thalamus_L", 
+    "VisuHierarchy": "seed.left.", 
+    "coord": [
+      -10.85, 
+      -17.559999999999999, 
+      7.9800000000000004
+    ], 
+    "labelValue": "77", 
+    "AAL_ID": 77
+  }, 
+  {
+    "VisuOrder": -1, 
+    "MatrixRow": -1, 
+    "name": "Thalamus_R", 
+    "VisuHierarchy": "seed.right.", 
+    "coord": [
+      13, 
+      -17.550000000000001, 
+      8.0899999999999999
+    ], 
+    "labelValue": "78", 
+    "AAL_ID": 78
+  }, 
+  {
+    "VisuOrder": 58, 
+    "MatrixRow": 67, 
+    "name": "Heschl_L", 
+    "VisuHierarchy": "seed.left.temporal.", 
+    "coord": [
+      -41.990000000000002, 
+      -18.879999999999999, 
+      9.9800000000000004
+    ], 
+    "labelValue": "79", 
+    "AAL_ID": 79
+  }, 
+  {
+    "VisuOrder": 21, 
+    "MatrixRow": 68, 
+    "name": "Heschl_R", 
+    "VisuHierarchy": "seed.right.temporal.", 
+    "coord": [
+      45.859999999999999, 
+      -17.149999999999999, 
+      10.41
+    ], 
+    "labelValue": "80", 
+    "AAL_ID": 80
+  }, 
+  {
+    "VisuOrder": 57, 
+    "MatrixRow": 69, 
+    "name": "Temporal_Sup_L", 
+    "VisuHierarchy": "seed.left.temporal.", 
+    "coord": [
+      -53.159999999999997, 
+      -20.68, 
+      7.1299999999999999
+    ], 
+    "labelValue": "81", 
+    "AAL_ID": 81
+  }, 
+  {
+    "VisuOrder": 22, 
+    "MatrixRow": 70, 
+    "name": "Temporal_Sup_R", 
+    "VisuHierarchy": "seed.right.temporal.", 
+    "coord": [
+      58.149999999999999, 
+      -21.780000000000001, 
+      6.7999999999999998
+    ], 
+    "labelValue": "82", 
+    "AAL_ID": 82
+  }, 
+  {
+    "VisuOrder": 56, 
+    "MatrixRow": 71, 
+    "name": "Temporal_Pole_Sup_L", 
+    "VisuHierarchy": "seed.left.temporal.", 
+    "coord": [
+      -39.880000000000003, 
+      15.140000000000001, 
+      -20.18
+    ], 
+    "labelValue": "83", 
+    "AAL_ID": 83
+  }, 
+  {
+    "VisuOrder": 23, 
+    "MatrixRow": 72, 
+    "name": "Temporal_Pole_Sup_R", 
+    "VisuHierarchy": "seed.right.temporal.", 
+    "coord": [
+      48.25, 
+      14.75, 
+      -16.859999999999999
+    ], 
+    "labelValue": "84", 
+    "AAL_ID": 84
+  }, 
+  {
+    "VisuOrder": 55, 
+    "MatrixRow": 73, 
+    "name": "Temporal_Mid_L", 
+    "VisuHierarchy": "seed.left.temporal.", 
+    "coord": [
+      -55.520000000000003, 
+      -33.799999999999997, 
+      -2.2000000000000002
+    ], 
+    "labelValue": "85", 
+    "AAL_ID": 85
+  }, 
+  {
+    "VisuOrder": 24, 
+    "MatrixRow": 74, 
+    "name": "Temporal_Mid_R", 
+    "VisuHierarchy": "seed.right.temporal.", 
+    "coord": [
+      57.469999999999999, 
+      -37.229999999999997, 
+      -1.47
+    ], 
+    "labelValue": "86", 
+    "AAL_ID": 86
+  }, 
+  {
+    "VisuOrder": 54, 
+    "MatrixRow": 75, 
+    "name": "Temporal_Pole_Mid_L", 
+    "VisuHierarchy": "seed.left.temporal.", 
+    "coord": [
+      -36.32, 
+      14.59, 
+      -34.079999999999998
+    ], 
+    "labelValue": "87", 
+    "AAL_ID": 87
+  }, 
+  {
+    "VisuOrder": 25, 
+    "MatrixRow": 76, 
+    "name": "Temporal_Pole_Mid_R", 
+    "VisuHierarchy": "seed.right.temporal.", 
+    "coord": [
+      44.219999999999999, 
+      14.550000000000001, 
+      -32.229999999999997
+    ], 
+    "labelValue": "88", 
+    "AAL_ID": 88
+  }, 
+  {
+    "VisuOrder": 53, 
+    "MatrixRow": 77, 
+    "name": "Temporal_Inf_L", 
+    "VisuHierarchy": "seed.left.temporal.", 
+    "coord": [
+      -49.770000000000003, 
+      -28.050000000000001, 
+      -23.170000000000002
+    ], 
+    "labelValue": "89", 
+    "AAL_ID": 89
+  }, 
+  {
+    "VisuOrder": 26, 
+    "MatrixRow": 78, 
+    "name": "Temporal_Inf_R", 
+    "VisuHierarchy": "seed.right.temporal.", 
+    "coord": [
+      53.689999999999998, 
+      -31.07, 
+      -22.32
+    ], 
+    "labelValue": "90", 
+    "AAL_ID": 90
+  }
+]
