@@ -6,15 +6,15 @@
 2. Clone the repository, install environtment and activate environment
 
 ```
-	git clone https://github.com/NIRALUser/CONTINUITY.git
-	cd CONTINUITY
-	conda env create -f CONTINUITY_env.yml
-	conda activate CONTINUITY_env
+git clone https://github.com/NIRALUser/CONTINUITY.git
+cd CONTINUITY
+conda env create -f CONTINUITY_env.yml
+conda activate CONTINUITY_env
 ```
 3. Run CONTINUITY
 
 ```
-	python3 main_CONTINUITY.py
+python3 main_CONTINUITY.py
 ```
 
 ## Quality control - Connectome visualization  ##
