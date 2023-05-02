@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import argparse
 import json
 import os 
@@ -33,21 +32,12 @@ ID = json_user_object['Arguments']['ID']['value']
 NAME_PARCELLATION_TABLE = json_user_object['Arguments']['PARCELLATION_TABLE_NAME']['value']
 input_path = os.path.join( json_user_object['Parameters']['OUT_PATH']['value'], ID, "InputDataForSlicer")
 
-
-print(ID)
-print(NAME_PARCELLATION_TABLE)
-print(input_path)
-
-
-#find datas for B0_BiasCorrect
+# Find datas for B0_BiasCorrect
 B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_resample.nrrd")
 if not os.path.exists(B0):
 	B0 = os.path.join( input_path, ID +"_DTI_B0_BiasCorrect_original.nrrd")
 
-print(B0)
-
-
-#find datas for B0
+# Find datas for B0
 B0_with_biais = os.path.join( input_path, ID +"_DTI_B0_resample.nrrd")
 if not os.path.exists(B0_with_biais):
 	B0_with_biais = os.path.join( input_path, ID +"_DTI_B0_original.nrrd")
@@ -55,10 +45,10 @@ if not os.path.exists(B0_with_biais):
 # Find data for T1 and T1_registered
 T1_registered = os.path.join( input_path, ID + "_T1_SkullStripped_scaled_DWISpace.nrrd")
 
-# Find data for AD: (A0_NRRD variable in the script)
-AD = os.path.join( input_path, ID +"_DTI_A0_resample.nrrd")
+# Find data for AD: (AD_NRRD variable in the script)
+AD = os.path.join( input_path, ID +"_DTI_AD_resample.nrrd")
 if not os.path.exists(AD):
-	AD = os.path.join( input_path,  ID +"_DTI_A0_original.nrrd")
+	AD = os.path.join( input_path,  ID +"_DTI_AD_original.nrrd")
 
 # Find data for FA: 
 FA = os.path.join( input_path, ID +"_DTI_FA_resample.nrrd")
@@ -72,16 +62,24 @@ labeled_image = os.path.join( input_path, ID + "-T1_SkullStripped_scaled_label.n
 registered_combine_surface         = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + ".vtk")
 registered_combine_surface_with_sc = os.path.join( input_path, "stx_" + ID + "_T1_CombinedSurface_white_" + NAME_PARCELLATION_TABLE + "_WithSubcorticals.vtk")
 
-'''
-surface_left  = os.path.join( input_path, "stx_" + ID + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace.vtk")
-surface_right = os.path.join( input_path, "stx_" + ID + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace.vtk")
 
-surface_left_labeled  = os.path.join( input_path, "stx_" + ID 
-					    + "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_left_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
+# Read and build polydata: 
+reader = vtk.vtkPolyDataReader() #vtkPolyDataReader
+reader.SetFileName(registered_combine_surface_with_sc)
+reader.Update()
+polydata_input = reader.GetOutput()  
 
-surface_right_labeled = os.path.join(input_path, "stx_" + ID 
-						+ "-T1_SkullStripped_scaled_BiasCorr_corrected_multi_atlas_white_surface_rsl_right_327680_native_DWIspace_labeled_" + NAME_PARCELLATION_TABLE + ".vtk")
-'''
+polydata = vtk.vtkPolyData()
+apd = vtk.vtkAppendPolyData()
+
+if (vtk.VTK_MAJOR_VERSION < 6):
+    apd.AddInput(polydata)
+else:
+    apd.AddInputData(polydata_input)
+  
+apd.Update()
+output = apd.GetOutput()
+
 
 
 # *****************************************
@@ -94,17 +92,9 @@ if os.path.exists(AD):            loadedVolumeNode_AD            = slicer.util.l
 if os.path.exists(FA):            loadedVolumeNode_FA            = slicer.util.loadVolume(FA,            properties={'name': 'FA',            'show': False})
 if os.path.exists(labeled_image): loadedVolumeNode_labeled_image = slicer.util.loadVolume(labeled_image, properties={'name': 'labeled_image', 'show': False})
 
-
-
 if os.path.exists(registered_combine_surface):         loadedVolumeNode_registered_combine_surface         = slicer.util.loadModel(registered_combine_surface)
 if os.path.exists(registered_combine_surface_with_sc): loadedVolumeNode_registered_combine_surface_with_sc = slicer.util.loadModel(registered_combine_surface_with_sc)
 
-'''
-if os.path.exists(surface_left):                       loadedVolumeNode_surface_left                       = slicer.util.loadModel(surface_left)
-if os.path.exists(surface_left_labeled):               loadedVolumeNode_surface_left_labeled               = slicer.util.loadModel(surface_left_labeled)
-if os.path.exists(surface_right):                      loadedVolumeNode_surface_right                      = slicer.util.loadModel(surface_right)
-if os.path.exists(surface_right_labeled):              loadedVolumeNode_surface_right_labeled              = slicer.util.loadModel(surface_right_labeled)
-'''
 
 # *****************************************
 # Get not and display data in the good place
@@ -135,3 +125,22 @@ for sliceNode in sliceNodes:
 		
 	# Display foreground
 	slicer.app.layoutManager().sliceWidget(place).sliceLogic().GetSliceCompositeNode().SetForegroundVolumeID( node.GetID() )  
+
+
+# Create model node: 
+model = slicer.vtkMRMLModelNode()
+model.SetName('registered_combine_surface_with_sc_model')
+model = slicer.mrmlScene.AddNode(model)
+model.SetAndObservePolyData(output)
+
+# Create display node: 
+modelDisplay = slicer.vtkMRMLModelDisplayNode()
+slicer.mrmlScene.AddNode(modelDisplay)
+modelDisplay.VisibilityOn()
+modelDisplay.SetVisibility2D(True) 
+
+model.SetAndObserveDisplayNodeID(modelDisplay.GetID())
+model.GetDisplayNode().SetActiveScalarName('label')
+model.GetDisplayNode().SetAndObserveColorNodeID("vtkMRMLColorTableNodeLabels")
+model.GetDisplayNode().ScalarVisibilityOn()
+model.GetDisplayNode().AutoScalarRangeOn()

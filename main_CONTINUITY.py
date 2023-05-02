@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import argparse
 import json
 import os 
@@ -10,13 +9,25 @@ from csv import reader, DictReader
 from interface_functions import *
 from CONTINUITY_functions import *
 
+
 ##########################################################################################################################################
 
      # CONTINUITY : connectivity tools which include subcortical regions as seed and target for connectivity 
 
 ##########################################################################################################################################
 
-if __name__ == '__main__':
+def run_command(text_printed, command):
+    # Display command:
+    print(colored("\n"+" ".join(command)+"\n", 'blue'))
+    # Run command and display output and error:
+    run = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = run.communicate()
+    print(text_printed, "out: ", colored("\n" + str(out) + "\n", 'green')) 
+    print(text_printed, "err: ", colored("\n" + str(err) + "\n", 'red'))
+
+
+
+if __name__ == '__main__':   
 
     dir_path = os.path.realpath(os.path.dirname(__file__))
    
@@ -29,7 +40,7 @@ if __name__ == '__main__':
     parser.add_argument('-csv_file'               , nargs='?', type=str, help="csv file with data information for one or several subject") 
 
     # Intern default configuration json file to add all arguments even if the defaut json given by user is corrupted (= missed arguments)
-    default_config_filename = dir_path + "/args_setup.json" #"/work/elodie/testing/args_main_CONTINUITY_completed_test_no_create_SALT.json" #
+    default_config_filename = dir_path + "/args_setup.json"
    
     with open(default_config_filename) as default_file: 
         data_default = json.load(default_file)
@@ -85,9 +96,9 @@ if __name__ == '__main__':
             d['value'] = d.pop('default')
 
         with open(user_filename, "w+") as user_file: 
-                user_file.write(json.dumps(data_user, indent=4)) 
+            user_file.write(json.dumps(data_user, indent=4)) 
 
-    
+
 
     # *****************************************
     # Run CONTINUITY thanks to a command line: -noGUI / -cvs_file / -cluster
@@ -105,22 +116,13 @@ if __name__ == '__main__':
                     if str(args[key]) != " ":
                         data_user[categories][key]['value'] = args[key]
 
-                    with open(user_filename, "w+") as user_file: 
-                        user_file.write(json.dumps(data_user, indent=4)) 
+        with open(user_filename, "w+") as user_file: 
+            user_file.write(json.dumps(data_user, indent=4)) 
 
         # Find and write localisation of executables            
         executable_path(default_config_filename, user_filename)
 
 
-
-        # Create the output folder
-        if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
-            os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
-
-        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"]) #ID
-        if not os.path.exists( OUT_FOLDER ):
-            os.mkdir(OUT_FOLDER)
-    
 
         # *****************************************
         # Run CONTINUITY thanks to a command line ONLY: -noGUI
@@ -147,6 +149,14 @@ if __name__ == '__main__':
             if not args["cluster"]:  # Run localy: -noGUI  
                 CONTINUITY(user_filename)
             else: # run in longleaf: -noGUI -cluster 
+                # Create the output folder
+                if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
+                    print(data_user['Parameters']["OUT_PATH"]["value"], flush=True)
+                    os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
+
+                OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"])
+                if not os.path.exists( OUT_FOLDER ):
+                    os.mkdir(OUT_FOLDER)
                 cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
                         data_user['Parameters']["OUT_PATH"]["value"], data_user['Parameters']["ID"]["value"], user_filename)
 
@@ -161,26 +171,47 @@ if __name__ == '__main__':
 
             with open(args['csv_file'], 'r') as csv_file:
                 csv_dict_reader = DictReader(csv_file)
-
                 header = csv_dict_reader.fieldnames
-                print("header: ",header )
                 
                 # Iterate over each row after the header in the csv
                 for row in csv_dict_reader:
-                    print("info subject:",row)
                     for element in header: 
-                        data_user['Arguments'][element]['value'] = row[element]
+                        try:
+                            if data_user['Arguments'][element]['type'] == "bool":
+                                if row[element].lower() == "false": data_user['Arguments'][element]['value'] = False
+                                else:                               data_user['Arguments'][element]['value'] = True
+                            else:
+                                data_user['Arguments'][element]['value'] = row[element]
 
-                        with open(user_filename, "w+") as user_file: 
-                            user_file.write(json.dumps(data_user, indent=4)) 
+                        except: 
+                            if data_user['Parameters'][element]['type'] == "bool":
+                                if row[element].lower() == "false": data_user['Parameters'][element]['value'] = False
+                                else:                               data_user['Parameters'][element]['value'] = True                            
+                            else:
+                                data_user['Parameters'][element]['value'] = row[element]
+
+
+                    with open(user_filename, "w+") as user_file: 
+                        user_file.write(json.dumps(data_user, indent=4)) 
+
 
                     # Run CONTINUITY script
-                    if not args["cluster"]: # run in longleaf: -noGUI -csv_file -cluster 
+                    if not args["cluster"]:# Run localy: -noGUI -csv_file             
                         print("SUBJECT: ", row['ID'] )
                         CONTINUITY(user_filename)
-                    else: # Run localy: -noGUI -csv_file
+
+
+                    else: # run in longleaf: -noGUI -csv_file -cluster 
+                        # Create the output folder
+                        if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
+                            os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
+
+                        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"])
+                        if not os.path.exists( OUT_FOLDER ):
+                            os.mkdir(OUT_FOLDER)
                         cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
                                 data_user['Parameters']["OUT_PATH"]["value"], data_user['Parameters']["ID"]["value"], user_filename)
+
 
         
     # *****************************************

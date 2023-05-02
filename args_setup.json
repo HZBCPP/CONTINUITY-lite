@@ -98,6 +98,16 @@
             "type": "str",
             "help": "Set where the labels are stored with specific parcellation",
             "default": ""
+        },
+        "wm_mask": {
+            "type": "str",
+            "help": "white matter wask for DIPY",
+            "default": ""
+        },
+        "gm_mask": {
+            "type": "str",
+            "help": "gray matter wask for DIPY",
+            "default": ""
         }
     },
     "Parameters": {
@@ -105,7 +115,7 @@
         "cluster_command_line": {
             "type": "str",
             "help": "Run script in a cluster with this specific command line",
-            "default": "#!/bin/zsh \n#SBATCH -p general \n#SBATCH -N 1 \n#SBATCH --mem 5120 \n#SBATCH -n 6 \n#SBATCH --time=10-00:00:00 \n#SBATCH --mail-type=end \n#SBATCH --mail-user=elodie@email.unc.edu \n" 
+            "default": "#!/bin/zsh \n#SBATCH -p general \n#SBATCH -N 1 \n#SBATCH --mem 32G \n#SBATCH -n 4 \n#SBATCH --time=10-00:00:00 \n" 
         },
         "tractography_model": {
             "type": "str",
@@ -122,22 +132,31 @@
             "help": "Run only bedpostx (FSL)",
             "default": false
         },
+        "run_bedpostx_gpu": {
+            "type": "bool",
+            "help": "Run bedpostx_gpu function (FSL)",
+            "default": false
+        },
+        "run_probtrackx2_gpu": {
+            "type": "bool",
+            "help": "Run probtrackx2_gpu function (FSL)",
+            "default": false
+        },
         "filtering_with_tcksift": {
             "type": "bool",
             "help": "filtering_with_tcksift if Tractography model == MRtrix ",
-            "default": false
+            "default": true
         },
         "optimisation_with_tcksift2": {
             "type": "bool",
             "help": "Optimisation_with_tcksift2 if Tractography model == MRtrix",
-            "default": true
+            "default": false
         },
         "act_option": {
             "type": "bool",
             "help": "Use the Anatomically-Constrained Tractography framework during tracking",
             "default": false
         },
-        
         "DO_REGISTRATION": {
             "type": "bool",
             "help": "Do registration with this tool",
@@ -271,7 +290,12 @@
         "nb_threads": {
             "type": "int",
             "help": "ANTs: number of threads",
-            "default": 6
+            "default": 4
+        },
+        "nb_jobs_bedpostx_gpu": {
+            "type": "int",
+            "help": "Bedpostx_gpu: number of jobs to queue",
+            "default": 4
         },
         "overlapping": {
             "type": "bool",
@@ -303,6 +327,11 @@
             "help": "Lookcheck",
             "default": true
         },
+        "do_not_rescale": { 
+            "type": "bool",
+            "help": "SegProcessCLP param (generate SALT files): if false: both --rescale and --space were not specified and set to the internal default values ",
+            "default": true
+        }, 
         "sx": { 
             "type": "float",
             "help": "SegProcessCLP param (generate SALT files): rescale: enforced spacing in x direction ",
@@ -335,9 +364,49 @@
         },
         "json_config_file": {
             "type": "str",
-            "help": "json config file with user configuration",
+            "help": "path for json user configuration file (save thanks to the interface) ",
             "default": ""
         },
+        "list_bval_that_will_be_deleted": {
+            "type": "list",
+            "help": "List of bval that will be deleted in the DWI multi-shell",
+            "default": []
+        },         
+        "list_bval_for_the_tractography": {
+            "type": "list",
+            "help": "List of bval that will be used for the tractography",
+            "default": []
+        }, 
+        "size_of_bvals_groups_DWI": {
+            "type": "int",
+            "help": "Groups bvals with this value",
+            "default": 50
+        }, 
+        "wm_fa_thr": { 
+            "type": "float",
+            "help": "DIPY param: wm_fa_thr",
+            "default": 0.7
+        }, 
+        "gm_fa_thr": { 
+            "type": "float",
+            "help": "gm_fa_thr",
+            "default": 0.3
+        }, 
+        "csf_fa_thr": { 
+            "type": "float",
+            "help": "csf_fa_thr",
+            "default": 0.15
+        }, 
+        "gm_md_thr": { 
+            "type": "float",
+            "help": "gm_md_thr",
+            "default": 0.001
+        }, 
+        "csf_md_thr": { 
+            "type": "float",
+            "help": "csf_md_thr",
+            "default": 0.0032
+        }, 
         "OUT_PATH": {
             "type": "str",
             "help": "Path to out folder",
@@ -393,7 +462,7 @@
         "DWIConvert": {
             "type": "str",
             "help": "Path to DWIConvert",
-            "default": "required"
+            "default": "/proj/NIRAL/tools/DWIConvert"
         },
         "slicer": {
             "type": "str",
@@ -404,6 +473,16 @@
             "type": "str",
             "help": "Path to FSL",
             "default": "required"
+        },
+        "bedpostx_gpu": {
+            "type": "str",
+            "help": "Path to bedpostx_gpu",
+            "default": ""
+        },
+        "probtrackx2_gpu": {
+            "type": "str",
+            "help": "Path to probtrackx2_gpu",
+            "default": ""
         },
         "ExtractLabelSurfaces": {
             "type": "str",

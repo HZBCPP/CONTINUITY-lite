@@ -4,7 +4,7 @@ import numpy as np
 import argparse
 
 parser = argparse.ArgumentParser(description='CONTINUITY script: writeSeedList script')
-parser.add_argument("subject_dir", help = "Subject directorie", type = str) 
+parser.add_argument("subject_dir", help = "Subject directory", type = str) 
 parser.add_argument("jsonFile", help = "JsonFile", type = str)
 args = parser.parse_args()
 

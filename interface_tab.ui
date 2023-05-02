@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1128</width>
+    <width>1125</width>
     <height>631</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    <string>CONTINUITY</string>
   </property>
   <property name="currentIndex">
-   <number>1</number>
+   <number>0</number>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -116,68 +116,284 @@
            </rect>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_13">
            <attribute name="title">
             <string>DWI Image</string>
            </attribute>
-           <widget class="QWidget" name="layoutWidget">
+           <widget class="QTabWidget" name="tabWidget_10">
             <property name="geometry">
              <rect>
               <x>10</x>
               <y>10</y>
               <width>1011</width>
-              <height>105</height>
+              <height>261</height>
              </rect>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_27">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="tab_28">
+             <attribute name="title">
+              <string>Path to your data</string>
+             </attribute>
+             <widget class="QWidget" name="layoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>10</y>
+                <width>991</width>
+                <height>105</height>
+               </rect>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout">
                <item>
-                <widget class="QLabel" name="label_19">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                   <underline>true</underline>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>DWI image (.nrrd or .nii.gz): </string>
-                 </property>
-                </widget>
+                <layout class="QHBoxLayout" name="horizontalLayout_27">
+                 <item>
+                  <widget class="QLabel" name="label_19">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                     <underline>true</underline>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>DWI image (.nrrd or .nii.gz): </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="DWI_DATA_pushButton">
+                   <property name="text">
+                    <string>Browser...</string>
+                   </property>
+                   <property name="autoDefault">
+                    <bool>false</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_16">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
                </item>
                <item>
-                <widget class="QPushButton" name="DWI_DATA_pushButton">
-                 <property name="text">
-                  <string>Browser...</string>
+                <widget class="QTextEdit" name="DWI_DATA_textEdit">
+                 <property name="styleSheet">
+                  <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
                  </property>
-                 <property name="autoDefault">
-                  <bool>false</bool>
+                 <property name="readOnly">
+                  <bool>true</bool>
                  </property>
-                 <property name="flat">
-                  <bool>false</bool>
+                 <property name="html">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                 </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_16">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
                </item>
               </layout>
-             </item>
-             <item>
-              <widget class="QTextEdit" name="DWI_DATA_textEdit">
+             </widget>
+             <widget class="QGroupBox" name="groupBox_13">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>100</y>
+                <width>991</width>
+                <height>131</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>If DWI image in FSL format (.nii.gz), you had to provide two others files: </string>
+              </property>
+              <widget class="QWidget" name="layoutWidget">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>30</y>
+                 <width>971</width>
+                 <height>105</height>
+                </rect>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_8">
+                <item row="0" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_67">
+                  <item>
+                   <widget class="QLabel" name="label_18">
+                    <property name="font">
+                     <font>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                      <underline>true</underline>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>b-vectors:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="DWI_DATA_bvecs_pushButton">
+                    <property name="text">
+                     <string>Browser...</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_12">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_73">
+                  <item>
+                   <widget class="QLabel" name="label_37">
+                    <property name="font">
+                     <font>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                      <underline>true</underline>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>b-values:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="DWI_DATA_bvals_pushButton">
+                    <property name="text">
+                     <string>Browser...</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_52">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QTextEdit" name="DWI_DATA_bvecs_textEdit">
+                  <property name="styleSheet">
+                   <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                  <property name="html">
+                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QTextEdit" name="DWI_DATA_bvals_textEdit">
+                  <property name="styleSheet">
+                   <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                  <property name="html">
+                   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="tab_29">
+             <attribute name="title">
+              <string>Remove b-values from your DWI </string>
+             </attribute>
+             <widget class="QGroupBox" name="remove_bval_groupBox">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>10</y>
+                <width>1001</width>
+                <height>211</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Remove bval from your DWI (if multi-shell case)</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <widget class="QListWidget" name="bval_in_bvalfile_listWidget">
+               <property name="geometry">
+                <rect>
+                 <x>500</x>
+                 <y>40</y>
+                 <width>231</width>
+                 <height>171</height>
+                </rect>
+               </property>
+              </widget>
+              <widget class="QTextEdit" name="bval_removing_textEdit">
+               <property name="geometry">
+                <rect>
+                 <x>740</x>
+                 <y>30</y>
+                 <width>241</width>
+                 <height>171</height>
+                </rect>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QTextEdit {
 	background-color : transparent
@@ -191,149 +407,74 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bval that will be deleted: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QGroupBox" name="groupBox_13">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>120</y>
-              <width>1011</width>
-              <height>161</height>
-             </rect>
-            </property>
-            <property name="title">
-             <string>If DWI image in FSL format (.nii.gz), you had to provide two others files: </string>
-            </property>
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>30</y>
-               <width>991</width>
-               <height>121</height>
-              </rect>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_8">
-              <item row="0" column="0">
-               <layout class="QHBoxLayout" name="horizontalLayout_67">
-                <item>
-                 <widget class="QLabel" name="label_18">
-                  <property name="font">
-                   <font>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                    <underline>true</underline>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>b-vectors:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="DWI_DATA_bvecs_pushButton">
-                  <property name="text">
-                   <string>Browser...</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_12">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item row="0" column="1">
-               <layout class="QHBoxLayout" name="horizontalLayout_73">
-                <item>
-                 <widget class="QLabel" name="label_37">
-                  <property name="font">
-                   <font>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                    <underline>true</underline>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>b-values:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="DWI_DATA_bvals_pushButton">
-                  <property name="text">
-                   <string>Browser...</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_52">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item row="1" column="0">
-               <widget class="QTextEdit" name="DWI_DATA_bvecs_textEdit">
-                <property name="styleSheet">
-                 <string notr="true">QTextEdit {
-	background-color : transparent
+              <widget class="QTextEdit" name="color_sc_textEdit_5">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>40</y>
+                 <width>211</width>
+                 <height>71</height>
+                </rect>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QTextEdit {
+	background-color : rgb(243, 243, 243)
 }</string>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-                <property name="html">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+               <property name="html">
+                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QTextEdit" name="DWI_DATA_bvals_textEdit">
-                <property name="styleSheet">
-                 <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-                <property name="html">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check a b-value to remove it from your DWI &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;(b-value +- group size)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="label_79">
+               <property name="geometry">
+                <rect>
+                 <x>250</x>
+                 <y>40</y>
+                 <width>241</width>
+                 <height>41</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>b-values in your b-values file: </string>
+               </property>
+              </widget>
+              <widget class="QWidget" name="layoutWidget">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>130</y>
+                 <width>198</width>
+                 <height>28</height>
+                </rect>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_32">
+                <item>
+                 <widget class="QLineEdit" name="lineEdit">
+                  <property name="text">
+                   <string>Group size = </string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="size_of_bvals_groups_DWI_remove_spinBox"/>
+                </item>
+               </layout>
+              </widget>
+             </widget>
             </widget>
            </widget>
           </widget>
@@ -579,7 +720,7 @@ p, li { white-space: pre-wrap; }
               </font>
              </property>
              <property name="text">
-              <string>Job name (optional): </string>
+              <string>Job name: </string>
              </property>
             </widget>
            </item>
@@ -617,37 +758,6 @@ p, li { white-space: pre-wrap; }
            </item>
           </layout>
          </widget>
-         <widget class="QTextEdit" name="question_job_name_textEdit">
-          <property name="geometry">
-           <rect>
-            <x>396</x>
-            <y>24</y>
-            <width>651</width>
-            <height>71</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Specify the ID/name of the subject. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This ID/name gonna be the name of the directory containing all outputs of the tractography&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="acceptRichText">
-           <bool>false</bool>
-          </property>
-         </widget>
-         <zorder>question_job_name_textEdit</zorder>
-         <zorder>layoutWidget</zorder>
         </widget>
        </widget>
        <widget class="QWidget" name="tab_3">
@@ -1068,30 +1178,6 @@ p, li { white-space: pre-wrap; }
            </item>
           </layout>
          </widget>
-         <widget class="QTextEdit" name="question_cortical_labeled_textEdit">
-          <property name="geometry">
-           <rect>
-            <x>100</x>
-            <y>30</y>
-            <width>923</width>
-            <height>61</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-          </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Structure of each file: &amp;quot;NUMBER_OF_POINTS=&amp;quot;  then &amp;quot;DIMENSION=&amp;quot; then &amp;quot;TYPE=&amp;quot; then values&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
          <widget class="QPushButton" name="question_cortical_labeled_pushButton">
           <property name="geometry">
            <rect>
@@ -1111,31 +1197,6 @@ p, li { white-space: pre-wrap; }
            <string>Help</string>
           </property>
          </widget>
-         <zorder>question_cortical_labeled_textEdit</zorder>
-         <zorder>layoutWidget_10</zorder>
-         <zorder>question_cortical_labeled_pushButton</zorder>
-        </widget>
-        <widget class="QTextEdit" name="question_labelset_name_textEdit">
-         <property name="geometry">
-          <rect>
-           <x>580</x>
-           <y>380</y>
-           <width>461</width>
-           <height>71</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-         </property>
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In the VTK file containing labels, the labelset is identified by an ID. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
         </widget>
         <widget class="QPushButton" name="question_labelset_name_pushButton">
          <property name="geometry">
@@ -1162,7 +1223,7 @@ p, li { white-space: pre-wrap; }
            <x>14</x>
            <y>380</y>
            <width>341</width>
-           <height>71</height>
+           <height>21</height>
           </rect>
          </property>
          <property name="font">
@@ -1173,10 +1234,7 @@ p, li { white-space: pre-wrap; }
           </font>
          </property>
          <property name="text">
-          <string>Labelset name in vtk inner surface file: 
- 
- If you surfaces are not labeled you can put 
- the same name as your parcellation table </string>
+          <string>Labelset name in vtk inner surface file:</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="labelset_lineEdit">
@@ -1196,7 +1254,6 @@ p, li { white-space: pre-wrap; }
         <zorder>label_23</zorder>
         <zorder>groupBox_9</zorder>
         <zorder>surface_already_labeled_groupBox</zorder>
-        <zorder>question_labelset_name_textEdit</zorder>
         <zorder>question_labelset_name_pushButton</zorder>
        </widget>
       </widget>
@@ -1242,34 +1299,6 @@ p, li { white-space: pre-wrap; }
          <attribute name="title">
           <string>List of subcortical regions</string>
          </attribute>
-         <widget class="QTextEdit" name="color_sc_textEdit_4">
-          <property name="geometry">
-           <rect>
-            <x>440</x>
-            <y>10</y>
-            <width>221</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QTextEdit {
-	background-color : rgb(243, 243, 243)
-}</string>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check subcortical regions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
          <widget class="QListWidget" name="sc_regions_names_listWidget">
           <property name="geometry">
            <rect>
@@ -1318,6 +1347,19 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Subcortical regions: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
+         <widget class="QLabel" name="label_5">
+          <property name="geometry">
+           <rect>
+            <x>430</x>
+            <y>20</y>
+            <width>611</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Subcortical regions that will be integrated are in green in the list and listed below: </string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_23">
          <attribute name="title">
@@ -1333,7 +1375,7 @@ p, li { white-space: pre-wrap; }
            </rect>
           </property>
           <property name="title">
-           <string>Use your own dataset</string>
+           <string>Use your own dataset (first method to integrate subcortical regions) </string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -1630,7 +1672,7 @@ p, li { white-space: pre-wrap; }
            </rect>
           </property>
           <property name="title">
-           <string>Subcortical data creation</string>
+           <string>Subcortical data creation (second method to integrate subcortical regions) </string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -1648,7 +1690,7 @@ p, li { white-space: pre-wrap; }
             </rect>
            </property>
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_12">
             <attribute name="title">
@@ -1845,23 +1887,9 @@ p, li { white-space: pre-wrap; }
  (name in the parcellation table): </string>
              </property>
             </widget>
-            <widget class="QLabel" name="error_label">
-             <property name="geometry">
-              <rect>
-               <x>300</x>
-               <y>240</y>
-               <width>171</width>
-               <height>71</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
             <zorder>color_sc_textEdit_3</zorder>
             <zorder>label_4</zorder>
             <zorder>sc_regions_labels_listWidget</zorder>
-            <zorder>error_label</zorder>
            </widget>
            <widget class="QWidget" name="tab_18">
             <attribute name="title">
@@ -1877,7 +1905,7 @@ p, li { white-space: pre-wrap; }
               </rect>
              </property>
              <property name="currentIndex">
-              <number>2</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="tab_19">
               <attribute name="title">
@@ -1906,9 +1934,9 @@ p, li { white-space: pre-wrap; }
                <property name="geometry">
                 <rect>
                  <x>10</x>
-                 <y>160</y>
+                 <y>120</y>
                  <width>461</width>
-                 <height>101</height>
+                 <height>161</height>
                 </rect>
                </property>
                <property name="title">
@@ -1924,7 +1952,7 @@ p, li { white-space: pre-wrap; }
                 <property name="geometry">
                  <rect>
                   <x>10</x>
-                  <y>60</y>
+                  <y>120</y>
                   <width>437</width>
                   <height>28</height>
                  </rect>
@@ -1962,29 +1990,33 @@ p, li { white-space: pre-wrap; }
                  </item>
                 </layout>
                </widget>
-               <widget class="QTextEdit" name="KWMDir_textEdit_2">
+               <widget class="QCheckBox" name="do_not_rescale_checkbox">
                 <property name="geometry">
                  <rect>
                   <x>10</x>
                   <y>30</y>
-                  <width>451</width>
-                  <height>31</height>
+                  <width>441</width>
+                  <height>41</height>
                  </rect>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
+                <property name="text">
+                 <string>if checked: both --rescale and --space were not specified</string>
                 </property>
-                <property name="readOnly">
+                <property name="checked">
                  <bool>true</bool>
                 </property>
-                <property name="html">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enforced spacing in x,y and z direction before any processing: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </widget>
+               <widget class="QLabel" name="label_6">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>60</y>
+                  <width>341</width>
+                  <height>17</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>( and set to the internal default values)</string>
                 </property>
                </widget>
               </widget>
@@ -2769,7 +2801,7 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_25">
       <attribute name="title">
@@ -2781,7 +2813,7 @@ p, li { white-space: pre-wrap; }
          <x>10</x>
          <y>10</y>
          <width>1071</width>
-         <height>101</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
@@ -2807,7 +2839,7 @@ p, li { white-space: pre-wrap; }
             </font>
            </property>
            <property name="text">
-            <string>Job name (optional): </string>
+            <string>Job name: </string>
            </property>
           </widget>
          </item>
@@ -2844,35 +2876,6 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
         </layout>
-       </widget>
-       <widget class="QTextEdit" name="question_job_name_textEdit_2">
-        <property name="geometry">
-         <rect>
-          <x>446</x>
-          <y>24</y>
-          <width>611</width>
-          <height>71</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="html">
-         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Specify the ID/name of the subject. &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This ID/name gonna be the name of the directory containing all outputs of the tractography&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="acceptRichText">
-         <bool>false</bool>
-        </property>
        </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_20">
@@ -2964,207 +2967,284 @@ p, li { white-space: pre-wrap; }
          <x>10</x>
          <y>10</y>
          <width>1071</width>
-         <height>291</height>
+         <height>311</height>
         </rect>
        </property>
        <property name="title">
         <string>DWI data</string>
        </property>
-       <widget class="QGroupBox" name="groupBox_15">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>1051</width>
-          <height>151</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>If DWI image in FSL format (.nii.gz), you had to provide two others files: </string>
-        </property>
-        <widget class="QWidget" name="layoutWidget_9">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>1031</width>
-           <height>111</height>
-          </rect>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_9">
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_75">
-            <item>
-             <widget class="QLabel" name="label_45">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-                <underline>true</underline>
-               </font>
-              </property>
-              <property name="text">
-               <string>b-vectors:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="no_registration_DWI_DATA_bvecs_pushButton">
-              <property name="text">
-               <string>Browser...</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_13">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_76">
-            <item>
-             <widget class="QLabel" name="label_56">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-                <underline>true</underline>
-               </font>
-              </property>
-              <property name="text">
-               <string>b-values:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="no_registration_DWI_DATA_bvals_pushButton">
-              <property name="text">
-               <string>Browser...</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_54">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item row="1" column="0">
-           <widget class="QTextEdit" name="no_registration_DWI_DATA_bvecs_textEdit">
-            <property name="styleSheet">
-             <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QTextEdit" name="no_registration_DWI_DATA_bvals_textEdit">
-            <property name="styleSheet">
-             <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="layoutWidget_12">
+       <widget class="QTabWidget" name="tabWidget_11">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>30</y>
           <width>1051</width>
-          <height>105</height>
+          <height>271</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_9">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_78">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab_30">
+         <attribute name="title">
+          <string>Path to your data</string>
+         </attribute>
+         <widget class="QWidget" name="layoutWidget_18">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>1031</width>
+            <height>105</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_13">
            <item>
-            <widget class="QLabel" name="label_62">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-               <underline>true</underline>
-              </font>
-             </property>
-             <property name="text">
-              <string>DWI image (.nrrd or .nii.gz): </string>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_66">
+             <item>
+              <widget class="QLabel" name="label_80">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                 <underline>true</underline>
+                </font>
+               </property>
+               <property name="text">
+                <string>DWI image (.nrrd or .nii.gz): </string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="no_registration_DWI_DATA_pushButton">
+               <property name="text">
+                <string>Browser...</string>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_57">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="no_registration_DWI_pushButton">
-             <property name="text">
-              <string>Browser...</string>
+            <widget class="QTextEdit" name="no_registration_DWI_textEdit">
+             <property name="styleSheet">
+              <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
              </property>
-             <property name="autoDefault">
-              <bool>false</bool>
+             <property name="readOnly">
+              <bool>true</bool>
              </property>
-             <property name="flat">
-              <bool>false</bool>
+             <property name="html">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_17">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
-         </item>
-         <item>
-          <widget class="QTextEdit" name="no_registration_DWI_textEdit">
+         </widget>
+         <widget class="QGroupBox" name="groupBox_24">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>100</y>
+            <width>1031</width>
+            <height>131</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>If DWI image in FSL format (.nii.gz), you had to provide two others files: </string>
+          </property>
+          <widget class="QWidget" name="layoutWidget_19">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>1011</width>
+             <height>105</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_13">
+            <item row="0" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_85">
+              <item>
+               <widget class="QLabel" name="label_81">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <underline>true</underline>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>b-vectors:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="no_registration_DWI_DATA_bvecs_pushButton">
+                <property name="text">
+                 <string>Browser...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_58">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_86">
+              <item>
+               <widget class="QLabel" name="label_82">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                  <underline>true</underline>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>b-values:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="no_registration_DWI_DATA_bvals_pushButton">
+                <property name="text">
+                 <string>Browser...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_59">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <widget class="QTextEdit" name="no_registration_DWI_DATA_bvecs_textEdit">
+              <property name="styleSheet">
+               <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="html">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QTextEdit" name="no_registration_DWI_DATA_bvals_textEdit">
+              <property name="styleSheet">
+               <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="html">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_31">
+         <attribute name="title">
+          <string>Remove b-values from your DWI </string>
+         </attribute>
+         <widget class="QGroupBox" name="no_registration_remove_bval_groupBox">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>10</y>
+            <width>1041</width>
+            <height>221</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Remove bval from your DWI (if multi-shell case)</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <widget class="QListWidget" name="no_registration_bval_in_bvalfile_listWidget">
+           <property name="geometry">
+            <rect>
+             <x>420</x>
+             <y>30</y>
+             <width>271</width>
+             <height>161</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QTextEdit" name="no_registration_bval_removing_textEdit">
+           <property name="geometry">
+            <rect>
+             <x>700</x>
+             <y>30</y>
+             <width>281</width>
+             <height>171</height>
+            </rect>
+           </property>
            <property name="styleSheet">
             <string notr="true">QTextEdit {
 	background-color : transparent
@@ -3178,20 +3258,84 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bval that will be deleted: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
-         </item>
-        </layout>
+          <widget class="QLabel" name="label_83">
+           <property name="geometry">
+            <rect>
+             <x>180</x>
+             <y>30</y>
+             <width>241</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>b-values in your b-values file: </string>
+           </property>
+          </widget>
+          <widget class="QWidget" name="layoutWidget_3">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>160</y>
+             <width>198</width>
+             <height>28</height>
+            </rect>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_44">
+            <item>
+             <widget class="QLineEdit" name="lineEdit_2">
+              <property name="text">
+               <string>Group size = </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="size_of_bvals_groups_DWI_no_registration_remove_spinBox"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QTextEdit" name="color_sc_textEdit_6">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>70</y>
+             <width>211</width>
+             <height>71</height>
+            </rect>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QTextEdit {
+	background-color : rgb(243, 243, 243)
+}</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check a b-value to remove it from your DWI &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;(b-value +- group size)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
        </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_21">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>310</y>
+         <y>330</y>
          <width>1071</width>
-         <height>191</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
@@ -3200,9 +3344,9 @@ p, li { white-space: pre-wrap; }
        <widget class="QWidget" name="layoutWidget_15">
         <property name="geometry">
          <rect>
-          <x>0</x>
-          <y>150</y>
-          <width>431</width>
+          <x>10</x>
+          <y>140</y>
+          <width>371</width>
           <height>27</height>
          </rect>
         </property>
@@ -3228,28 +3372,15 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item>
-          <spacer name="horizontalSpacer_41">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>10</x>
           <y>30</y>
-          <width>1061</width>
-          <height>111</height>
+          <width>1051</width>
+          <height>105</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -3265,7 +3396,7 @@ p, li { white-space: pre-wrap; }
               </font>
              </property>
              <property name="text">
-              <string>Parcellation table (.json):</string>
+              <string>Parcellation table (.json): </string>
              </property>
             </widget>
            </item>
@@ -3329,7 +3460,7 @@ p, li { white-space: pre-wrap; }
         </rect>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_26">
         <attribute name="title">
@@ -3525,179 +3656,156 @@ p, li { white-space: pre-wrap; }
             <string>Help</string>
            </property>
           </widget>
-          <widget class="QTextEdit" name="NO_registration_question_cortical_labeled_textEdit">
-           <property name="geometry">
-            <rect>
-             <x>100</x>
-             <y>20</y>
-             <width>941</width>
-             <height>81</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-           </property>
-           <property name="html">
-            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Structure of each file: &amp;quot;NUMBER_OF_POINTS=&amp;quot;  then &amp;quot;DIMENSION=&amp;quot; then &amp;quot;TYPE=&amp;quot; then values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-          <zorder>NO_registration_question_cortical_labeled_textEdit</zorder>
-          <zorder>NO_registration_cortical_label_left_textEdit</zorder>
-          <zorder>NO_registration_cortical_label_right_textEdit</zorder>
-          <zorder>layoutWidget</zorder>
-          <zorder>NO_registration_question_cortical_labeled_pushButton</zorder>
          </widget>
          <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
-            <x>11</x>
+            <x>530</x>
             <y>220</y>
-            <width>1041</width>
-            <height>29</height>
+            <width>521</width>
+            <height>27</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_32">
+          <layout class="QHBoxLayout" name="horizontalLayout_42">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_42">
-             <item>
-              <widget class="QLabel" name="WMR_surface_diffusion_label">
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                 <underline>true</underline>
-                </font>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Right surface data&lt;span style=&quot; color:#ef2929;&quot;&gt; in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="WM_R_Surf_NON_REGISTRATION_pushButton">
-               <property name="text">
-                <string>Browser...</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_14">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+            <widget class="QLabel" name="WMR_surface_diffusion_label">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Right surface data&lt;span style=&quot; color:#ef2929;&quot;&gt; in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_43">
-             <item>
-              <widget class="QLabel" name="WML_surface_diffusion_label">
-               <property name="font">
-                <font>
-                 <pointsize>11</pointsize>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                 <underline>true</underline>
-                 <strikeout>false</strikeout>
-                </font>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Left surface data &lt;span style=&quot; color:#ef2929;&quot;&gt;in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="WM_L_Surf_NON_REGISTRATION_pushButton">
-               <property name="text">
-                <string>Browser...</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_15">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
+            <widget class="QPushButton" name="WM_R_Surf_NON_REGISTRATION_pushButton">
+             <property name="text">
+              <string>Browser...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
          <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
-            <x>11</x>
-            <y>250</y>
-            <width>1041</width>
-            <height>72</height>
+            <x>14</x>
+            <y>220</y>
+            <width>512</width>
+            <height>27</height>
            </rect>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_44">
+          <layout class="QHBoxLayout" name="horizontalLayout_43">
            <item>
-            <widget class="QTextEdit" name="WM_R_Surf_NON_REGISTRATION_textEdit">
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
+            <widget class="QLabel" name="WML_surface_diffusion_label">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+               <strikeout>false</strikeout>
+              </font>
              </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="overwriteMode">
-              <bool>true</bool>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;White Matter Left surface data &lt;span style=&quot; color:#ef2929;&quot;&gt;in diffusion space &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;(.vtk):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QTextEdit" name="WM_L_Surf_NON_REGISTRATION_textEdit">
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="overwriteMode">
-              <bool>true</bool>
+            <widget class="QPushButton" name="WM_L_Surf_NON_REGISTRATION_pushButton">
+             <property name="text">
+              <string>Browser...</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
+         </widget>
+         <widget class="QTextEdit" name="WM_R_Surf_NON_REGISTRATION_textEdit">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>250</y>
+            <width>517</width>
+            <height>70</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="overwriteMode">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QTextEdit" name="WM_L_Surf_NON_REGISTRATION_textEdit">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>250</y>
+            <width>516</width>
+            <height>70</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="overwriteMode">
+           <bool>true</bool>
+          </property>
          </widget>
         </widget>
         <widget class="QGroupBox" name="left_right_combined_groupBox">
@@ -3823,34 +3931,12 @@ p, li { white-space: pre-wrap; }
            <x>10</x>
            <y>90</y>
            <width>1061</width>
-           <height>121</height>
+           <height>71</height>
           </rect>
          </property>
          <property name="title">
           <string>Labelset name</string>
          </property>
-         <widget class="QTextEdit" name="question_labelset_name_textEdit_no_registration">
-          <property name="geometry">
-           <rect>
-            <x>570</x>
-            <y>30</y>
-            <width>461</width>
-            <height>71</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-          </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In the VTK file containing labels, the labelset is identified by an ID. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
          <widget class="QLineEdit" name="labelset_lineEdit_no_registration">
           <property name="geometry">
            <rect>
@@ -3870,7 +3956,7 @@ p, li { white-space: pre-wrap; }
             <x>4</x>
             <y>30</y>
             <width>341</width>
-            <height>71</height>
+            <height>21</height>
            </rect>
           </property>
           <property name="font">
@@ -3881,10 +3967,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="text">
-           <string>Labelset name in vtk inner surface file: 
- 
- If you surfaces are not labeled you can put 
- the same name as your parcellation table </string>
+           <string>Labelset name in vtk inner surface file: </string>
           </property>
          </widget>
          <widget class="QPushButton" name="question_labelset_name_pushButton_no_registration">
@@ -3920,9 +4003,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QTabWidget" name="tabWidget_3">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>10</y>
-      <width>1101</width>
+      <width>1111</width>
       <height>581</height>
      </rect>
     </property>
@@ -3939,7 +4022,7 @@ p, li { white-space: pre-wrap; }
         <x>10</x>
         <y>10</y>
         <width>1091</width>
-        <height>161</height>
+        <height>141</height>
        </rect>
       </property>
       <property name="title">
@@ -3950,8 +4033,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>10</x>
          <y>30</y>
-         <width>391</width>
-         <height>81</height>
+         <width>451</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="html">
@@ -3960,16 +4043,16 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Command line parameters :&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Default&lt;/span&gt; : &lt;span style=&quot; font-weight:600;&quot;&gt;bedpostx DiffusionDirectory&lt;/span&gt; -n=2 -NJOBS=1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Default&lt;/span&gt; : &lt;span style=&quot; font-weight:600;&quot;&gt;bedpostx DiffusionDirectory&lt;/span&gt; -n=2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
       <widget class="QGroupBox" name="modify_bedpostx_groupBox">
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>470</x>
          <y>30</y>
-         <width>671</width>
-         <height>81</height>
+         <width>611</width>
+         <height>101</height>
         </rect>
        </property>
        <property name="title">
@@ -3981,16 +4064,16 @@ p, li { white-space: pre-wrap; }
        <property name="checked">
         <bool>false</bool>
        </property>
-       <widget class="QWidget" name="layoutWidget_5">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>12</x>
-          <y>32</y>
-          <width>674</width>
-          <height>41</height>
+          <x>14</x>
+          <y>24</y>
+          <width>472</width>
+          <height>71</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_22">
+        <layout class="QVBoxLayout" name="verticalLayout_14">
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
@@ -4008,7 +4091,7 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer_47">
+            <spacer name="horizontalSpacer_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -4023,11 +4106,22 @@ p, li { white-space: pre-wrap; }
           </layout>
          </item>
          <item>
-          <widget class="QLabel" name="label_14">
-           <property name="text">
-            <string>NJOBS: number of threads setup in &quot;submit job and results&quot; tab</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_22">
+           <item>
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>NJOBS : number of jobs to queue ( bedpostx_gpu only) = </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="nb_jobs_bedpostx_gpu_spinBox">
+             <property name="maximum">
+              <number>10000</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -4036,13 +4130,26 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
-         <width>241</width>
+         <y>90</y>
+         <width>341</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
-        <string>Run only Bedpostx function </string>
+        <string>Run ONLY bedpostx / bedpostx_gpu function </string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="bedpostx_gpu_checkBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>451</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Run bedpostx_gpu function (experimental) </string>
        </property>
       </widget>
      </widget>
@@ -4123,9 +4230,9 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>180</y>
+        <y>160</y>
         <width>1091</width>
-        <height>251</height>
+        <height>271</height>
        </rect>
       </property>
       <property name="title">
@@ -4137,7 +4244,7 @@ p, li { white-space: pre-wrap; }
          <x>10</x>
          <y>30</y>
          <width>1071</width>
-         <height>91</height>
+         <height>81</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -4156,7 +4263,7 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>120</y>
          <width>1071</width>
          <height>111</height>
         </rect>
@@ -4170,12 +4277,12 @@ p, li { white-space: pre-wrap; }
        <property name="checked">
         <bool>false</bool>
        </property>
-       <widget class="QWidget" name="layoutWidget_3">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>1051</width>
+          <x>11</x>
+          <y>31</y>
+          <width>1006</width>
           <height>71</height>
          </rect>
         </property>
@@ -4253,169 +4360,605 @@ p, li { white-space: pre-wrap; }
           </layout>
          </item>
          <item>
-          <widget class="QCheckBox" name="loopcheck_checkBox">
-           <property name="text">
-            <string>Loopcheck : path can travel to a point where thez have already been</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_78">
+           <item>
+            <widget class="QCheckBox" name="loopcheck_checkBox">
+             <property name="text">
+              <string>Loopcheck : path can travel to a point where thez have already been</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
+      </widget>
+      <widget class="QCheckBox" name="probtrackx2_gpu_checkBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>240</y>
+         <width>498</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Run probtrackx2_gpu function  (experimental)</string>
+       </property>
       </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_6">
      <attribute name="title">
-      <string>MRtrix</string>
+      <string>MRtrix and DIPY</string>
      </attribute>
-     <widget class="QGroupBox" name="groupBox_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>280</y>
-        <width>1081</width>
-        <height>121</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>Single or multi shell</string>
-      </property>
-      <widget class="QCheckBox" name="checkBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>161</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Single-shell    OR </string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_2">
-       <property name="geometry">
-        <rect>
-         <x>170</x>
-         <y>30</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>multi-shell</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>80</y>
-         <width>522</width>
-         <height>30</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_66">
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>In case of single shell, please provide a b-value: </string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_45">
-          <item>
-           <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>(tolerance: +- 10)</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="groupBox_5">
+     <widget class="QTabWidget" name="tabWidget_12">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>1081</width>
-        <height>71</height>
+        <width>1091</width>
+        <height>531</height>
        </rect>
       </property>
-      <property name="title">
-       <string>SIFT or SIFT2 </string>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <widget class="QCheckBox" name="optimisation_with_tcksift2_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>230</x>
-         <y>30</y>
-         <width>291</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Use the optimation algorithm SIFT2</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
+      <widget class="QWidget" name="tab_33">
+       <attribute name="title">
+        <string>DWI bvals</string>
+       </attribute>
+       <widget class="QGroupBox" name="add_bval_groupBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>1071</width>
+          <height>361</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>specify bvals that will be used for the tractography ( all values will be used by default) </string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <widget class="QListWidget" name="add_bval_in_bvalfile_listWidget">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>30</y>
+           <width>281</width>
+           <height>321</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="add_bval_removing_textEdit">
+         <property name="geometry">
+          <rect>
+           <x>700</x>
+           <y>30</y>
+           <width>361</width>
+           <height>321</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;bval that will be used for the tractography: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QTextEdit" name="color_sc_textEdit_7">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>80</y>
+           <width>211</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : rgb(243, 243, 243)
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Check a b-value to add it to the list of bvals that will be used for the tractography &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;(b-value +- group size)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_85">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>30</y>
+           <width>241</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>b-values in your b-values file: </string>
+         </property>
+        </widget>
+        <widget class="QWidget" name="layoutWidget_20">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>190</y>
+           <width>198</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_87">
+          <item>
+           <widget class="QLineEdit" name="lineEdit_3">
+            <property name="text">
+             <string>Group size = </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="size_of_bvals_groups_DWI_add_spinBox"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </widget>
-      <widget class="QCheckBox" name="filtering_with_tcksift_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>191</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Filtering with SIFT       OR </string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
+      <widget class="QWidget" name="tab_24">
+       <attribute name="title">
+        <string>MRtrix</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox_12">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>1071</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>ACT and multi-shell</string>
+        </property>
+        <widget class="QCheckBox" name="act_checkBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>1051</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>'-act option': use the Anatomically-Constrained Tractography framework during tracking   ( Please do not use this option with multi-shell DWI)</string>
+         </property>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_23">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>70</y>
+           <width>1051</width>
+           <height>151</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>In case of no registration with this tool, CONTINUITY need a T1 image in DWI space to use -act option and integrate multi-shell DWI: </string>
+         </property>
+         <widget class="QTextEdit" name="act_option_T1_DATA_textEdit">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>64</y>
+            <width>1031</width>
+            <height>71</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+         <widget class="QWidget" name="layoutWidget_5">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>370</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_45">
+           <item>
+            <widget class="QLabel" name="label_78">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>T1 / first modality in DWI space (.nrrd):</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="act_option_T1_DATA_pushButton">
+             <property name="text">
+              <string>Browser...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_47">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>1071</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>SIFT or SIFT2 </string>
+        </property>
+        <widget class="QCheckBox" name="optimisation_with_tcksift2_checkBox">
+         <property name="geometry">
+          <rect>
+           <x>230</x>
+           <y>30</y>
+           <width>831</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Use the optimization algorithm SIFT2 (can take a long time)</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="filtering_with_tcksift_checkBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>211</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Filtering with SIFT         OR </string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_32">
+       <attribute name="title">
+        <string>DIPY (experimental)</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>1071</width>
+          <height>301</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Stopping criterion: </string>
+        </property>
+        <widget class="QWidget" name="layoutWidget_21">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>1011</width>
+           <height>271</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_93">
+            <item>
+             <widget class="QLabel" name="label_45">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+                <underline>true</underline>
+               </font>
+              </property>
+              <property name="text">
+               <string>White Matter mask/ tissue segmentation: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="wm_mask_pushButton">
+              <property name="text">
+               <string>Browser...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_61">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <widget class="QTextEdit" name="wm_mask_textEdit">
+            <property name="styleSheet">
+             <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_94">
+            <item>
+             <widget class="QLabel" name="label_90">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+                <underline>true</underline>
+               </font>
+              </property>
+              <property name="text">
+               <string>Gray matter mask (optional: don't provide a path if youdon't want to track to GM): </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="gm_mask_pushButton">
+              <property name="text">
+               <string>Browser...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_63">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
+           <widget class="QTextEdit" name="gm_mask_textEdit">
+            <property name="styleSheet">
+             <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_22">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>1061</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Automatic estimation response: </string>
+        </property>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>531</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_95">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_88">
+            <item>
+             <widget class="QLabel" name="label_56">
+              <property name="text">
+               <string>wm_fa_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="wm_fa_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_89">
+            <item>
+             <widget class="QLabel" name="label_86">
+              <property name="text">
+               <string>gm_fa_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="gm_fa_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_90">
+            <item>
+             <widget class="QLabel" name="label_87">
+              <property name="text">
+               <string>csf_fa_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="csf_fa_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>366</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_96">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_91">
+            <item>
+             <widget class="QLabel" name="label_88">
+              <property name="text">
+               <string>gm_md_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="gm_md_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_92">
+            <item>
+             <widget class="QLabel" name="label_89">
+              <property name="text">
+               <string>csf_md_thr: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="csf_md_thr_doubleSpinBox">
+              <property name="decimals">
+               <number>4</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_12">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>1081</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string>ACT</string>
-      </property>
-      <widget class="QCheckBox" name="act_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>711</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>-act option: use the Anatomically-Constrained Tractography framework during tracking</string>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_7">
-     <attribute name="title">
-      <string>DIPY</string>
-     </attribute>
     </widget>
    </widget>
   </widget>
@@ -5061,7 +5604,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_8">
      <attribute name="title">
@@ -5863,146 +6406,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>7</y>
-        <width>1091</width>
-        <height>171</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_6">
-       <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_70">
-         <item>
-          <widget class="QLabel" name="label_59">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-             <underline>true</underline>
-            </font>
-           </property>
-           <property name="text">
-            <string>FSL:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="fsl_pushButton">
-           <property name="text">
-            <string>Browser...</string>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_36">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item row="0" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_81">
-         <item>
-          <widget class="QLabel" name="label_70">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-             <underline>true</underline>
-            </font>
-           </property>
-           <property name="text">
-            <string>ExtractLabelSurfaces:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="ExtractLabelSurfaces_pushButton">
-           <property name="text">
-            <string>Browser...</string>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_62">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0">
-        <widget class="QTextEdit" name="fsl_textEdit">
-         <property name="styleSheet">
-          <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QTextEdit" name="ExtractLabelSurfaces_textEdit">
-         <property name="styleSheet">
-          <string notr="true">QTextEdit {
-	background-color : transparent
-}</string>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>190</y>
+        <x>550</x>
+        <y>350</y>
         <width>551</width>
         <height>191</height>
        </rect>
@@ -6054,6 +6459,325 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <widget class="QTextEdit" name="MRtrix_textEdit">
+         <property name="styleSheet">
+          <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_15">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>1091</width>
+        <height>331</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>FSL</string>
+      </property>
+      <widget class="QTextEdit" name="fsl_textEdit">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>542</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="html">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>27</y>
+         <width>310</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_70">
+        <item>
+         <widget class="QLabel" name="label_59">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+            <underline>true</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>FSL (bedpostx and probtrack):</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="fsl_pushButton">
+          <property name="text">
+           <string>Browser...</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_36">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget_9">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>177</y>
+         <width>461</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_75">
+        <item>
+         <widget class="QLabel" name="label_62">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+            <underline>true</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>Bedpostx_gpu: (experimental)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="bedpostx_gpu_pushButton">
+          <property name="text">
+           <string>Browser...</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_54">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QTextEdit" name="bedpostx_gpu_textEdit">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>210</y>
+         <width>511</width>
+         <height>111</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="html">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QTextEdit" name="probtrackx2_gpu_textEdit">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>210</y>
+         <width>541</width>
+         <height>111</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTextEdit {
+	background-color : transparent
+}</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="html">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;No file selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget_12">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>177</y>
+         <width>431</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_76">
+        <item>
+         <widget class="QLabel" name="label_84">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+            <underline>true</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>probtrackx_gpu: (experimental) </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="probtrackx2_gpu_pushButton">
+          <property name="text">
+           <string>Browser...</string>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_60">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>350</y>
+        <width>531</width>
+        <height>191</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_9">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_81">
+         <item>
+          <widget class="QLabel" name="label_70">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+             <underline>true</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>ExtractLabelSurfaces:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="ExtractLabelSurfaces_pushButton">
+           <property name="text">
+            <string>Browser...</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_62">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="ExtractLabelSurfaces_textEdit">
          <property name="styleSheet">
           <string notr="true">QTextEdit {
 	background-color : transparent
@@ -7135,118 +7859,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>nb_fibers_spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>nb_fibers_spinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>623</x>
-     <y>159</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>nb_fiber_per_seed_spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>nb_fibers_per_seed_spinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>287</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>steplength_doubleSpinBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>step_length_doubleSpinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>597</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>sampvox_doubleSpinBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>sample_doubleSpinBox_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1058</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ignore_label_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>ignore_label_checkBox_checked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>288</x>
-     <y>545</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ignore_label_lineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>ignore_label_lineEdit_valueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>852</x>
-     <y>545</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>overlapping_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>overlapping_checkBox_checked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>569</x>
-     <y>578</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>tractography_model_comboBox</sender>
    <signal>currentTextChanged(QString)</signal>
    <receiver>TabWidget</receiver>
@@ -7355,22 +7967,6 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>568</x>
      <y>353</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tab_name_label_tabWidget</sender>
-   <signal>currentChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>complete_label_name_sc_region()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>834</x>
-     <y>373</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>563</x>
-     <y>315</y>
     </hint>
    </hints>
   </connection>
@@ -7647,22 +8243,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>act_checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>act_checkBox_checked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>409</x>
-     <y>179</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>565</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>ExtractLabelSurfaces_pushButton</sender>
    <signal>clicked()</signal>
    <receiver>TabWidget</receiver>
@@ -7703,54 +8283,6 @@ p, li { white-space: pre-wrap; }
     <hint type="sourcelabel">
      <x>193</x>
      <y>450</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>565</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>no_registration_DWI_pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>no_registration_DWI_button_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>280</x>
-     <y>151</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>565</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>no_registration_DWI_DATA_bvecs_pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>no_registration_DWI_bvecs_pushButton()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>172</x>
-     <y>301</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>565</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>no_registration_DWI_DATA_bvals_pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>TabWidget</receiver>
-   <slot>no_registration_DWI_bvals_pushButton()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>692</x>
-     <y>301</y>
     </hint>
     <hint type="destinationlabel">
      <x>565</x>
@@ -7887,22 +8419,6 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>only_bedpostx_checkBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>TabWidget</receiver>
-   <slot>only_bedpostx_checkBox_stateChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>204</x>
-     <y>219</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>564</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>only_registration_checkBox</sender>
    <signal>stateChanged(int)</signal>
    <receiver>TabWidget</receiver>
@@ -7938,7 +8454,7 @@ p, li { white-space: pre-wrap; }
    <sender>question_job_name_no_registration_pushButton</sender>
    <signal>clicked()</signal>
    <receiver>TabWidget</receiver>
-   <slot>question_job_name_no_registration_pushButton_clicked()</slot>
+   <slot>question_job_name_pushButton_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>432</x>
@@ -7978,6 +8494,582 @@ p, li { white-space: pre-wrap; }
     </hint>
     <hint type="destinationlabel">
      <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remove_bval_groupBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>remove_bval_groupBox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>570</x>
+     <y>450</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>381</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>no_registration_remove_bval_groupBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>no_registration_remove_bval_groupBox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>545</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>no_registration_DWI_DATA_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>no_registration_DWI_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>298</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>no_registration_DWI_DATA_bvecs_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>no_registration_DWI_bvecs_pushButton()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>310</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>no_registration_DWI_DATA_bvals_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>no_registration_DWI_bvals_pushButton()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>664</x>
+     <y>310</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bedpostx_gpu_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>button_exec_path_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>187</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>question_labelset_name_pushButton_no_registration</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>question_labelset_name_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>554</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>probtrackx2_gpu_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>button_exec_path_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>735</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>MRtrix_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>button_exec_path_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>664</x>
+     <y>432</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nb_fibers_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>nb_fibers_spinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>623</x>
+     <y>159</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>act_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>act_checkBox_checked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>179</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>overlapping_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>overlapping_checkBox_checked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>569</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sampvox_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>sample_doubleSpinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1058</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ignore_label_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>ignore_label_checkBox_checked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>288</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filtering_with_tcksift_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>filtering_with_tcksift_checkBox_checked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>139</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>act_option_T1_DATA_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>act_option_T1_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>271</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>only_bedpostx_checkBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>only_bedpostx_checkBox_stateChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ignore_label_lineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>ignore_label_lineEdit_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>852</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nb_fiber_per_seed_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>nb_fibers_per_seed_spinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>steplength_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>step_length_doubleSpinBox_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>597</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>optimisation_with_tcksift2_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>optimisation_with_tcksift2_checkBox_checked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>399</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nb_jobs_bedpostx_gpu_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>nb_jobs_bedpostx_gpu_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>880</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bedpostx_gpu_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>bedpostx_gpu_checkbox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>564</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>probtrackx2_gpu_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>probtrackx2_gpu_checkbox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>799</x>
+     <y>463</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>add_bval_groupBox</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>add_bval_for_tractography_groupBox_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>571</x>
+     <y>297</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>size_of_bvals_groups_DWI_remove_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>size_of_bvals_groups_DWI_remove_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>252</x>
+     <y>488</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>size_of_bvals_groups_DWI_no_registration_remove_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>size_of_bvals_groups_DWI_remove_no_registration_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>227</x>
+     <y>349</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>size_of_bvals_groups_DWI_add_spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>size_of_bvals_groups_DWI_add_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>228</x>
+     <y>320</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wm_fa_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>wm_fa_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gm_fa_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>gm_fa_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>173</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>csf_fa_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>csf_fa_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gm_md_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>gm_md_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>164</x>
+     <y>241</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>csf_md_thr_doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>csf_md_thr_valueChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>163</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wm_mask_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>select_wm_mask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>393</x>
+     <y>341</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gm_mask_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TabWidget</receiver>
+   <slot>select_gm_mask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>678</x>
+     <y>478</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>do_not_rescale_checkbox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TabWidget</receiver>
+   <slot>do_not_rescale_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>830</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>562</x>
      <y>315</y>
     </hint>
    </hints>
@@ -8101,5 +9193,23 @@ p, li { white-space: pre-wrap; }
   <slot>job_name_no_registration_textChanged()</slot>
   <slot>question_job_name_no_registration_pushButton_clicked()</slot>
   <slot>no_registration_Brainmask_button_clicked()</slot>
+  <slot>remove_bval_groupBox_clicked()</slot>
+  <slot>act_option_T1_clicked()</slot>
+  <slot>no_registration_remove_bval_groupBox_clicked()</slot>
+  <slot>bedpostx_gpu_checkbox_clicked()</slot>
+  <slot>nb_jobs_bedpostx_gpu_valueChanged()</slot>
+  <slot>probtrackx2_gpu_checkbox_clicked()</slot>
+  <slot>add_bval_for_tractography_groupBox_clicked()</slot>
+  <slot>size_of_bvals_groups_DWI_remove_valueChanged()</slot>
+  <slot>size_of_bvals_groups_DWI_remove_no_registration_valueChanged()</slot>
+  <slot>size_of_bvals_groups_DWI_add_valueChanged()</slot>
+  <slot>wm_fa_thr_valueChanged()</slot>
+  <slot>gm_fa_thr_valueChanged()</slot>
+  <slot>csf_fa_thr_valueChanged()</slot>
+  <slot>gm_md_thr_valueChanged()</slot>
+  <slot>csf_md_thr_valueChanged()</slot>
+  <slot>select_wm_mask()</slot>
+  <slot>select_gm_mask()</slot>
+  <slot>do_not_rescale_clicked()</slot>
  </slots>
 </ui>
