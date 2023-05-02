@@ -310,7 +310,7 @@
         "nb_fiber_per_seed": {
             "type": "int",
             "help": "Tractography / Probtrackx2 options: P: Number of fibers per seed",
-            "default": 1000
+            "default": 100
         },
         "steplength": {
             "type": "float",

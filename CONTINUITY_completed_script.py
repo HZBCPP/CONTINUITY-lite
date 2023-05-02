@@ -176,7 +176,6 @@ csf_md_thr                              = json_user_object["Parameters"]["csf_md
 OUT_PATH                                = json_user_object["Parameters"]["OUT_PATH"]['value']
 
 # Executables
-<<<<<<< HEAD
 pathUnu                   = "/proj/NIRAL/tools/unu"
 pathN4BiasFieldCorrection = "/proj/NIRAL/tools/N4BiasFieldCorrection"
 pathBRAINSFit_CMD         = "/proj/NIRAL/tools/BRAINSFit"
@@ -195,26 +194,6 @@ MRtrixPath                = "/nas/longleaf/home/mdere/miniconda3/envs/CONTINUITY
 SegPostProcessCLPPath     = "/proj/NIRAL/tools/SegPostProcessCLP"
 GenParaMeshCLPPath        = "/proj/NIRAL/tools/GenParaMeshCLP_2.1"
 ParaToSPHARMMeshCLPPath   = "/proj/NIRAL/tools/ParaToSPHARMMeshCLP"
-=======
-pathUnu                   = json_user_object["Executables"]["unu"]['value']
-pathN4BiasFieldCorrection = json_user_object["Executables"]["N4BiasFieldCorrection"]['value']
-pathBRAINSFit_CMD         = json_user_object["Executables"]["BRAINSFit"]['value']
-pathdtiprocess            = json_user_object["Executables"]["dtiprocess"]['value']
-pathDtiestim              = json_user_object["Executables"]["dtiestim"]['value']
-pathANTS_CMD              = json_user_object["Executables"]["ANTS"]['value']
-pathITK_TRANSTOOL_EXE     = json_user_object["Executables"]["ITKTransformTools_v1"]['value']
-pathPOLY_TRANSTOOL_EXE    = json_user_object["Executables"]["polydatatransform_v1"]['value']
-pathWARP_TRANSFORM        = json_user_object["Executables"]["WarpImageMultiTransform"]['value']
-DWIConvertPath            = json_user_object["Executables"]["DWIConvert"]['value']
-FSLPath                   = json_user_object["Executables"]["fsl"]['value'] 
-bedpostx_gpuPath          = json_user_object["Executables"]["bedpostx_gpu"]['value'] 
-probtrackx2_gpuPath       = json_user_object["Executables"]["probtrackx2_gpu"]['value'] 
-ExtractLabelSurfaces      = json_user_object["Executables"]["ExtractLabelSurfaces"]['value']
-MRtrixPath                = json_user_object["Executables"]["MRtrix"]['value'] 
-SegPostProcessCLPPath     = json_user_object["Executables"]["SegPostProcessCLP"]['value']
-GenParaMeshCLPPath        = json_user_object["Executables"]["GenParaMeshCLP"]['value']
-ParaToSPHARMMeshCLPPath   = json_user_object["Executables"]["ParaToSPHARMMeshCLP"]['value'] 
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 
 writeSeedListScript       = os.path.realpath(os.path.dirname(__file__)) + "/writeSeedList.py" 
 
@@ -297,7 +276,6 @@ with Tee(log_file):
 	OUT_DWI = os.path.join(OUT_FOLDER,"DWI_files") #ID --> DWI files
 	if not os.path.exists(OUT_DWI): os.mkdir(OUT_DWI)
 
-<<<<<<< HEAD
 	print("UPSAMPLING_DWI: ", UPSAMPLING_DWI)
 	print("run_bedpostx_gpu: ", run_bedpostx_gpu)
 	print("run_probtrackx2_gpu: ", run_probtrackx2_gpu)
@@ -308,8 +286,6 @@ with Tee(log_file):
 	print("INTEGRATE_SC_DATA_by_generated_sc_surf: ", INTEGRATE_SC_DATA_by_generated_sc_surf)
 	print("subcorticals_region_names: ", subcorticals_region_names)
 	print("subcorticals_region_labels: ", subcorticals_region_labels)
-=======
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 
 	# *****************************************
 	# Function to run a specific command
@@ -385,7 +361,6 @@ with Tee(log_file):
 				for i in range(size_of_bvals_groups_DWI*2):
 					if int((listitem-size_of_bvals_groups_DWI)) + i in all_bval_with_duplicates:
 						filebval.write('%s\n' % int((listitem-size_of_bvals_groups_DWI)) + i)
-<<<<<<< HEAD
 
 
 		# Filtering DWI: 
@@ -401,23 +376,6 @@ with Tee(log_file):
 	[path, afile] = os.path.split(DWI_DATA) # split path and file name(nrrd)
 	if afile.endswith('nii.gz'):
 
-=======
-
-
-		# Filtering DWI: 
-		remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI_DATA, DWI_DATA_bvecs, DWI_DATA_bvals, OUT_DWI, ID, FSLPath)
-
-		# Update the path of DWI: 
-		DWI_DATA_bvals = os.path.join(OUT_DWI, ID + '_DWI_filtered.bval')
-		DWI_DATA_bvecs = os.path.join(OUT_DWI, ID + '_DWI_filtered.bvec')
-		DWI_DATA       = os.path.join(OUT_DWI, ID + '_DWI_filtered.nii.gz')
-
-
-
-	[path, afile] = os.path.split(DWI_DATA) # split path and file name(nrrd)
-	if afile.endswith('nii.gz'):
-
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 		print("*****************************************")
 		print("Preprocessing: Convert DWI FSL2Nrrd")
 		print("*****************************************") 
@@ -426,11 +384,7 @@ with Tee(log_file):
 		if os.path.exists(output_nrrd):
 			print("DWI_nifti file: Found Skipping Convert DWI image to nifti format ")
 		else:
-<<<<<<< HEAD
 			print("DWIConvertPath is ", DWIConvertPath)
-=======
-
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 			run_command("DWIConvert: convert input image in nifti to nrrd", [DWIConvertPath, "--inputVolume", DWI_DATA, 
 														                             	     "--conversionMode", "FSLToNrrd", 
 														                             	     "--outputVolume", output_nrrd, 
@@ -543,7 +497,7 @@ with Tee(log_file):
 
 		else: # no Upsampling DWI
 
-			command = [pathUnu,"3op", "clamp", "0", DWI_DATA,"10000000"]
+			command = [pathUnu,"3op", "clamp", "0", "10000000", DWI_DATA]
 			p2 = subprocess.Popen(command, stdout=subprocess.PIPE)
 			print( colored("\n"+" ".join(command)+"\n", 'blue'))
 
@@ -1155,6 +1109,7 @@ with Tee(log_file):
 			polydatamerge_ascii(RSL_WM_L_Surf_labeled, RSL_WM_R_Surf_labeled, SURFACE)
 			shutil.copy(SURFACE, OUT_SLICER)
 
+
 	if INTEGRATE_SC_DATA: 
 		print("*****************************************")
 		print("Start the integration of subcortical data: Combine subcortical with cortical vtk file in DWI Space of choice (Destrieux, AAL, etc)")
@@ -1209,9 +1164,6 @@ with Tee(log_file):
 	# *****************************************
 
 	if EXTRA_SURFACE_COLOR:
-		EXTRA_SURFACE_COLOR = SURFACE
-	# if surface was labeled then replace the extra color setting
-	if not surface_already_labeled:
 		EXTRA_SURFACE_COLOR = SURFACE
 
 	overlapFlag, overlapName, loopcheckFlag, loopcheckName = ("", "", "", "")
@@ -2047,7 +1999,6 @@ with Tee(log_file):
 
 		# In case of the user don't upsampling the DWI 
 		if data_tractography_mask_in_DWI_space_nifti.shape != data.shape[0:-1] : # need to downsampling tractography_mask
-<<<<<<< HEAD
 
 			# Preprocessing
 			tractography_mask_in_DWI_space_dowmsampling = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled.nrrd")
@@ -2080,54 +2031,7 @@ with Tee(log_file):
 				print("convertITKformats tractography downsampling mask to FSL format")
 				run_command("convertITKformats ", [convertITKformatsPath, tractography_mask_in_DWI_space_dowmsampling, tractography_mask_in_DWI_space_dowmsampling_nifti ])
 
-=======
 
-			# Preprocessing
-			tractography_mask_in_DWI_space_dowmsampling = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled.nrrd")
-
-
-			# Interpolation / upsampling DWI
-			if os.path.exists( tractography_mask_in_DWI_space_dowmsampling ):
-				print("Files Found: Skipping downsampling wm mask ")
-			else:
-				command = [pathUnu, "resample", "-i", tractography_mask_in_DWI_space, "-s", "x0.5", "x0.5", "x0.5", "-k", "cubic:0,0.5"]
-				    
-				p1 = subprocess.Popen(command, stdout=subprocess.PIPE)
-
-				command = [pathUnu,"3op", "clamp", "0",'-', "10000000"]
-				p2 = subprocess.Popen(command, stdin=p1.stdout, stdout=subprocess.PIPE)
-
-				command = [pathUnu,"save", "-e", "gzip", "-f", "nrrd", "-o", tractography_mask_in_DWI_space_dowmsampling]
-				p3 = subprocess.Popen(command,stdin=p2.stdout, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-				print( colored("\n"+" ".join(command)+"\n", 'blue'))
-				out, err = p3.communicate()
-				print("Resample wm mask out: ", colored("\n" + str(out) + "\n", 'green'))
-				print("Resample wm mask err: ", colored("\n" + str(err) + "\n", 'red'))
-
-			# Conversion to nifti again 
-			tractography_mask_in_DWI_space_dowmsampling_nifti = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled_nifti.nii.gz")
-			if os.path.exists(tractography_mask_in_DWI_space_dowmsampling_nifti):
-			    print("WM mask FSL file: Found Skipping conversion")
-			else: 
-				print("DWIConvert WM to FSL format")
-				print("convertITKformats tractography downsampling mask to FSL format")
-				run_command("convertITKformats ", [convertITKformatsPath, tractography_mask_in_DWI_space_dowmsampling, tractography_mask_in_DWI_space_dowmsampling_nifti ])
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
-
-			#threshold: 
-			tractography_mask_in_DWI_space_dowmsampling_threshold = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled_thres_nifti.nii.gz")
-
-<<<<<<< HEAD
-			command = ["/tools/bin_linux64/ImageMath", tractography_mask_in_DWI_space_dowmsampling_nifti, 
-														"-outfile", tractography_mask_in_DWI_space_dowmsampling_threshold, "-threshold"]
-			thres = ""	
-			thres += str(0.5)
-			thres += ","
-			thres += str(2)	
-			command.append(thres)
-
-			run_command("ImageMath ", command)
-=======
 			#threshold: 
 			tractography_mask_in_DWI_space_dowmsampling_threshold = os.path.join(OUT_DIPY, "tractography_mask_in_DWI_space_dowmsampled_thres_nifti.nii.gz")
 
@@ -2138,20 +2042,13 @@ with Tee(log_file):
 			thres += ","
 			thres += str(2)	
 			command.append(thres)
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 
 			run_command("ImageMath ", command)
 
-<<<<<<< HEAD
-			# Load_nifti_data: load only the data array from a nifti file
-			data_tractography_mask_in_DWI_space_dowmsampling_nifti = load_nifti_data(tractography_mask_in_DWI_space_dowmsampling_threshold)  
-
-=======
 
 			# Load_nifti_data: load only the data array from a nifti file
 			data_tractography_mask_in_DWI_space_dowmsampling_nifti = load_nifti_data(tractography_mask_in_DWI_space_dowmsampling_threshold)  
 
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 			# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
 			print("data_tractography_mask_in_DWI_space_dowmsampling_nifti after dowmsampling", data_tractography_mask_in_DWI_space_dowmsampling_nifti.shape)
 			try: 
@@ -2187,7 +2084,6 @@ with Tee(log_file):
 									                                    "--outputVolume", wm_mask_in_DWI_space_nifti, 
 									                                    "--outputBVectors", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_nifti_bvecs.nodif"), 
 									                                    "--outputBValues", os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_nifti_bvals.temp")])
-<<<<<<< HEAD
 
 		# Load_nifti_data: load only the data array from a nifti file
 		data_wm_mask_in_DWI_space_nifti = load_nifti_data(wm_mask_in_DWI_space_nifti)  
@@ -2196,25 +2092,10 @@ with Tee(log_file):
 		print("data_wm_mask_in_DWI_space_nifti before dowmsampling", data_wm_mask_in_DWI_space_nifti.shape)
 		white_matter = data_wm_mask_in_DWI_space_nifti.reshape(data_wm_mask_in_DWI_space_nifti.shape[0:-1]) 
 
-=======
-
-		# Load_nifti_data: load only the data array from a nifti file
-		data_wm_mask_in_DWI_space_nifti = load_nifti_data(wm_mask_in_DWI_space_nifti)  
-
-		# Reshape to have the same shape for DWI (128, 96, 67, 32) and white matter (128, 96, 67)   (before wm: (128, 96, 67,1)  )
-		print("data_wm_mask_in_DWI_space_nifti before dowmsampling", data_wm_mask_in_DWI_space_nifti.shape)
-		white_matter = data_wm_mask_in_DWI_space_nifti.reshape(data_wm_mask_in_DWI_space_nifti.shape[0:-1]) 
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 
 		# In case of the user don't upsampling the DWI 
 		if data_wm_mask_in_DWI_space_nifti.shape != data.shape[0:-1] : # need to downsampling wm_mask
 
-<<<<<<< HEAD
-=======
-		# In case of the user don't upsampling the DWI 
-		if data_wm_mask_in_DWI_space_nifti.shape != data.shape[0:-1] : # need to downsampling wm_mask
-
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 			# Preprocessing
 			wm_mask_in_DWI_space_dowmsampling = os.path.join(OUT_DIPY, "wm_mask_in_DWI_space_dowmsampled.nrrd")
 
@@ -2346,7 +2227,6 @@ with Tee(log_file):
 	        #*****************************************
 			# Method for getting directions from a diffusion data set
 			#*****************************************
-<<<<<<< HEAD
 
 			if len(list_bval_for_the_tractography) == 1: # single shell_DWI: 
 				print("single shell")
@@ -2469,130 +2349,6 @@ with Tee(log_file):
 		    # Generate streamlines
 		    #*****************************************
 
-=======
-
-			if len(list_bval_for_the_tractography) == 1: # single shell_DWI: 
-				print("single shell")
-				# auto_response_ssst: Automatic estimation of SINGLE-SHELL single-tissue (ssst) response
-				response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=wm_fa_thr) # 0.7: adult 
-
-				# Fit a Constrained Spherical Deconvolution (CSD) model: 
-				csd_model = ConstrainedSphericalDeconvModel(gtab, response, sh_order=6) 
-
-
-			else: # multi shell DWI
-				print("multi shell")
-
-				# Fiber response function estimation for multi-shell data: 
-				ubvals = unique_bvals_tolerance(gtab.bvals)
-				print("ubvals", ubvals) #[   0. 1004.] 
-
-				# Automatic estimation of multi-shell multi-tissue (msmt) response: 
-				auto_response_wm, auto_response_gm, auto_response_csf = auto_response_msmt(gtab, data, roi_radii=10, wm_fa_thr=wm_fa_thr,  # 0.7
-																													gm_fa_thr=gm_fa_thr,  # 0.3
-																													csf_fa_thr=csf_fa_thr, # 0.15
-																													gm_md_thr=gm_md_thr, # 0.001 
-																													csf_md_thr=csf_md_thr) # 0.0032
-				response_mcsd = multi_shell_fiber_response(sh_order=8, bvals=ubvals, wm_rf=auto_response_wm, gm_rf=auto_response_gm, csf_rf=auto_response_csf)
-
-				# Fit a Constrained Spherical Deconvolution (CSD) model: 
-				mcsd_model = MultiShellDeconvModel(gtab, response_mcsd)
-			
-
-			print("*****************************************")
-			print("End of getting directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-			print("*****************************************")
-
-
-	        #*****************************************
-			# Stopping criterion: a method for identifying when the tracking must stop: restricting the fiber tracking to areas with good directionality information
-			#*****************************************
-
-			# Conversion to nifti  
-			brain_nifti = os.path.join(OUT_DIPY, "brain.nii.gz")
-			if os.path.exists(brain_nifti):
-			    print("brain_nifti mask FSL file: Found Skipping conversion")
-			else: 
-				print("DWIConvert brain_nifti to FSL format")
-				run_command("DWIConvert ", [DWIConvertPath, "--inputVolume", BRAINMASK,
-										                                    "--conversionMode", "NrrdToFSL", 
-										                                    "--outputVolume", brain_nifti, 
-										                                    "--outputBVectors", os.path.join(OUT_DIPY, "brain_nifti_bvecs.nodif"), 
-										                                    "--outputBValues", os.path.join(OUT_DIPY, "brain_nifti_bvals.temp")])
-
-			# Load_nifti_data: load only the data array from a nifti file
-			data_brain= load_nifti_data(brain_nifti)  
-
-			# Reshape to have the same shape for DWI (128, 96, 67, 32) and gray matter (128, 96, 67)   (before gm: (128, 96, 67,1)  )
-			print("data_brain after dowmsampling", data_brain.shape)
-			brainmask_array = data_brain.reshape(data_brain.shape[0:-1]) 
-
-
-
-
-			# We use the GFA (similar to FA but ODF based models) of the CSA model to build a stopping criterion.
-			# Fit the data to a Constant Solid Angle ODF Model: estimate the Orientation Distribution Function (ODF) at each voxel
-			csa_model = CsaOdfModel(gtab, sh_order=6) 
-			gfa = csa_model.fit(data, mask= tractography_mask_reshape).gfa #brainmask_array).gfa 
-
-
-			# Restrict fiber tracking to white matter mask where the ODF shows significant restricted diffusion by thresholding on the Generalized Fractional Anisotropy (GFA)
-			# https://dipy.org/documentation/1.4.1./reference/dipy.tracking/#thresholdstoppingcriterion 
-			stopping_criterion = ThresholdStoppingCriterion(gfa, .25)  # default value: data < .25
-
-			
-			
-			#stopping_criterion = BinaryStoppingCriterion(brainmask_array ==1)
-
-
-
-			print("*****************************************")
-			print("End of stopping criterion method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-			print("*****************************************")
-
-
-	        #*****************************************
-			# A set of seeds from which to begin tracking: the seeds chosen will depend on the pathways one is interested in modeling
-			#*****************************************
-
-			seed_mask = tractography_mask_reshape#white_matter #gray_matter
-			# Create seeds for fiber tracking from a binary mask: 
-			seeds = utils.seeds_from_mask(seed_mask, affine, density=1) 
-
-			print("seeds", seeds ) 
-
-			# The peaks of an ODF are good estimates for the orientation of tract segments at a point in the image
-			# peaks_from_model: fit the data and calculated the fiber directions in all voxels of the white matter
-			# .peaks_from_model(model, data, sphere, relative_peak_threshold, min_separation_angle, mask=None, return_sh=True, gfa_thr=0, parallel=False ...)
-			if len(list_bval_for_the_tractography) == 1: # single shell: 
-				peaks = peaks_from_model(csd_model, data, default_sphere, .5, 25, mask=tractography_mask_reshape, return_sh=True, parallel=True) #white_matter, return_sh=True, parallel=True) 
-			else: 
-				peaks = peaks_from_model(mcsd_model, data, default_sphere, .5, 25, mask=tractography_mask_reshape, return_sh=True, parallel=True)  #white_matter, return_sh=True, parallel=True) 
-
-			# shm_coeff: the spherical harmonic coefficients of the odf: 
-			fod_coeff = peaks.shm_coeff
-
-
-			print("*****************************************")
-			print("End of peaks of an ODF method: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-			print("*****************************************")
-
-
-			# Discrete Fiber Orientation Distribution (FOD) used by the ProbabilisticDirectionGetter as a PMF for sampling tracking directions.
-			# ProbabilisticDirectionGetter: Randomly samples direction of a sphere based on probability mass function (PMF) 
-			# from_shcoeff: Probabilistic direction getter from a distribution of directions on the sphere
-			prob_dg = ProbabilisticDirectionGetter.from_shcoeff(fod_coeff, max_angle=30., sphere=default_sphere) 
-
-			print("*****************************************")
-			print("End of tracking directions: ",time.strftime("%H h: %M min: %S s",time.gmtime( time.time() - start )))
-			print("*****************************************")
-
-
-	        #*****************************************
-		    # Generate streamlines
-		    #*****************************************
-
->>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 			# Initialization of LocalTracking: Creates streamlines by using local fiber-tracking
 			streamlines_generator = LocalTracking(prob_dg, stopping_criterion, seeds, affine, step_size=.5, return_all=False)
 
