@@ -543,7 +543,7 @@ with Tee(log_file):
 
 		else: # no Upsampling DWI
 
-			command = [pathUnu,"3op", "clamp", "0", "10000000", DWI_DATA]
+			command = [pathUnu,"3op", "clamp", "0", DWI_DATA,"10000000"]
 			p2 = subprocess.Popen(command, stdout=subprocess.PIPE)
 			print( colored("\n"+" ".join(command)+"\n", 'blue'))
 
@@ -1209,6 +1209,9 @@ with Tee(log_file):
 	# *****************************************
 
 	if EXTRA_SURFACE_COLOR:
+		EXTRA_SURFACE_COLOR = SURFACE
+	# if surface was labeled then replace the extra color setting
+	if not surface_already_labeled:
 		EXTRA_SURFACE_COLOR = SURFACE
 
 	overlapFlag, overlapName, loopcheckFlag, loopcheckName = ("", "", "", "")

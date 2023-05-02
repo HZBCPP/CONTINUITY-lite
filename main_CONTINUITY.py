@@ -193,7 +193,6 @@ if __name__ == '__main__':
                             else:
                                 data_user['Parameters'][element]['value'] = row[element]
 
-
                     with open(user_filename, "w+") as user_file: 
                         user_file.write(json.dumps(data_user, indent=4)) 
 
@@ -209,11 +208,11 @@ if __name__ == '__main__':
                         if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
                             os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
 
-                        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"])
+                        OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Arguments']["ID"]["value"])
                         if not os.path.exists( OUT_FOLDER ):
                             os.mkdir(OUT_FOLDER)
                         cluster(OUT_FOLDER + "/slurm-job", data_user['Parameters']["cluster_command_line"]["value"], 
-                                data_user['Parameters']["OUT_PATH"]["value"], data_user['Parameters']["ID"]["value"], user_filename)
+                                data_user['Parameters']["OUT_PATH"]["value"], data_user['Arguments']["ID"]["value"], user_filename)
 
 
         
