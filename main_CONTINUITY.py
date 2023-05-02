@@ -151,7 +151,10 @@ if __name__ == '__main__':
             else: # run in longleaf: -noGUI -cluster 
                 # Create the output folder
                 if not os.path.exists( data_user['Parameters']["OUT_PATH"]["value"] ):
+<<<<<<< HEAD
                     print(data_user['Parameters']["OUT_PATH"]["value"], flush=True)
+=======
+>>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
                     os.mkdir(data_user['Parameters']["OUT_PATH"]["value"])
 
                 OUT_FOLDER = os.path.join(data_user['Parameters']["OUT_PATH"]["value"],data_user['Parameters']["ID"]["value"])

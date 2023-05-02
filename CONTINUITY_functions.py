@@ -707,7 +707,10 @@ def compute_point_destrieux(new_parcellation_table, subcorticals_list_checked_wi
 
                     reader = vtk.vtkPolyDataReader()
                     reader.SetFileName(out_surface_destrieux)
+<<<<<<< HEAD
                     print("out_surface_destrieux",out_surface_destrieux)
+=======
+>>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
                     reader.Update()
                     
                     # Get points of this region: 
@@ -816,7 +819,11 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
                 if do_not_rescale: 
                     command = [SegPostProcessCLPPath, labeled_image, # Input image to be filtered (Tissue segmentation file)
                                                   PPtarget, # Output filtered
+<<<<<<< HEAD
                                                   '--label', str(Labels[index]), '--Gauss'] # Extract this label before processing  #mdere, added --Gauss to prevent problem that occures in GenParaMeshCLP
+=======
+                                                  '--label', str(Labels[index])] # Extract this label before processing
+>>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
                 else: 
                     command = [SegPostProcessCLPPath, labeled_image, # Input image to be filtered (Tissue segmentation file)
                                                   PPtarget, # Output filtered
@@ -824,7 +831,11 @@ def generating_subcortical_surfaces(OUT_FOLDER, ID, labeled_image, Labels, Label
                                                   '--rescale',
                                                   '--space ' + str(sx) +',' + str(sy) + ',' + str(sz)]
             
+<<<<<<< HEAD
                 run_command("SegPostProcessCLP", command)
+=======
+                run_command("SegPostProcessCLP", command) 
+>>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
 
 
             # *****************************************
@@ -1068,4 +1079,8 @@ def remove_bval_from_DWI(txt_file_with_bval_that_will_be_deleted, DWI, bvec, bva
     RemoveCommand="rm -rf " + OutDir + "/" + "vol*.nii.gz"
     os.system(RemoveCommand)
 
+<<<<<<< HEAD
     print("Remove b-values from DWI done ! ") 
+=======
+    print("Remove b-values from DWI done ! ") 
+>>>>>>> 1404120bda5c4e0d0622b24ab6cbc1514f5fb69c
