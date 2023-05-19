@@ -10,12 +10,10 @@ VOLUMES=(aparc+aseg brain)
 
 echo Starting
 
-for SUBJ in `ls $FS_DIR`
-do
-	echo "Current subject: $SUBJ"
-	echo "Coverting .mgz to .nrrd..."
-    for VOL in ${VOLUMES[@]}
-    do
+for SUBJ in $(ls $FS_DIR); do
+    echo "Current subject: $SUBJ"
+    echo "Coverting .mgz to .nrrd..."
+    for VOL in ${VOLUMES[@]}; do
         VOL_FILE="${FS_DIR}/${SUBJ}/mri/${VOL}.mgz"
         OUT_VOL_FILE="${FS_DIR}/${SUBJ}/mri/${VOL}.nii"
         OUT_NRRD_FILE="${FS_DIR}/${SUBJ}/mri/${VOL}.nrrd"
@@ -24,14 +22,16 @@ do
         python ./check_nrrd.py ${FS_DIR}/${SUBJ}/mri
     done
 
-	echo "Generating surface label .vtk file..."
-	
-	for SURF in ${SURFACES[@]}
-	do
-        python ./convert_surf2vtk.py ${FS_DIR}/${SUBJ}/surf/${SURF} ${ANNOT_PREFIX}
-	done
+    echo "Generating surface label .vtk file..."
 
-	echo " done"
+    # for SURF in ${SURFACES[@]}; do
+    #     python ./convert_surf2vtk.py ${FS_DIR}/${SUBJ}/surf/${SURF} ${ANNOT_PREFIX}
+    # done
+    
+    python ./convert_surf2vtk.py --geometry_fn ${FS_DIR}/${SUBJ}/surf/lh.white --prefix ${ANNOT_PREFIX} --label-offset 10000
+    python ./convert_surf2vtk.py --geometry_fn ${FS_DIR}/${SUBJ}/surf/rh.white --prefix ${ANNOT_PREFIX} --label-offset 20000
+
+    echo " done"
 done
 
 echo Finished

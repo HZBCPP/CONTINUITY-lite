@@ -1,17 +1,25 @@
 import numpy as np
 import nibabel as nib
 import sys, os, json
+import argparse
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--geometry_fn', required=True)
+    parser.add_argument('--label-offset', dest='label_offset', type=int, default=0)
+    parser.add_argument('--prefix', default='aparc')
+    args = parser.parse_args()
+
     # geometry_fn = '/work/users/z/i/ziquanw/mri_data_proc/fs_out/subject_test_Yeo400/surf/rh.white'
-    geometry_fn = sys.argv[1]
+    geometry_fn = args.geometry_fn
     print(f'Converting {geometry_fn} to VTK format\n')
     label_fn = geometry_fn.replace('white', 'aparc.annot').replace('surf', 'label')
     verts, faces = nib.freesurfer.io.read_geometry(geometry_fn)
     labels = nib.freesurfer.io.read_annot(label_fn)[0]
+
     ## load atlas table .json
-    # prefix = sys.argv[2]    
+    # prefix = args.prefix
     # # prefix = 'aparc'
     # continuity_jsons = []
     # geo_fn = geometry_fn.split('/')[-1]
@@ -29,7 +37,7 @@ def main():
     #             term[0] = tag + pname
     #             ind = find_match_ctab(term, target_terms)
     #             if ind is not None: break
-            
+
     #         continuity_jsons.append({
     #             'name': pname.item() if ind is None else term[0].item(),
     #             'labelValue': num.item(),
@@ -39,30 +47,37 @@ def main():
     #     jsonf.write(json.dumps(continuity_jsons, indent=4))
     ##
 
-    invalid = np.where(labels==-1)[0]
+    invalid = np.where(labels == -1)[0]
+    labels = labels + args.label_offset
     labels[invalid] = 0
     print("There is ", np.unique(labels).shape, " labels in surface")
     new_faces = []
     for face in faces:
-        if len([f for f in face if f in invalid]) > 0: continue
+        if len([f for f in face if f in invalid]) > 0:
+            continue
         new_faces.append(face)
 
     lines = '# vtk DataFile Version 4.0\nvtk output\nASCII\nDATASET POLYDATA\n'
     lines += 'POINTS %d float\n' % len(verts)
     for vi, vert in enumerate(verts):
         lines += '%f %f %f ' % (vert[0], vert[1], vert[2])
-        if (vi+1) % 3 == 0: lines += '\n'
+        if (vi + 1) % 3 == 0:
+            lines += '\n'
 
-    lines += '\nPOLYGONS %d %d\n' % (len(new_faces), len(new_faces)*4)
+    lines += '\nPOLYGONS %d %d\n' % (len(new_faces), len(new_faces) * 4)
     for fi, face in enumerate(new_faces):
         lines += '3 %d %d %d \n' % (face[0], face[1], face[2])
 
-    lines += 'POINT_DATA %d\nFIELD FieldData 1\nlabel 1 %d float\n' % (len(verts), len(verts))
+    lines += 'POINT_DATA %d\nFIELD FieldData 1\nlabel 1 %d float\n' % (
+        len(verts),
+        len(verts),
+    )
     for li, label in enumerate(labels):
         lines += '%d ' % label
-        if (li+1) % 9 == 0: lines += '\n'
+        if (li + 1) % 9 == 0:
+            lines += '\n'
     lines += '\n'
-    with open(geometry_fn+ '_labeled.vtk', 'wt') as f:
+    with open(geometry_fn + '_labeled.vtk', 'wt') as f:
         f.write(lines)
 
 
@@ -73,19 +88,24 @@ def read_ctab(ctab_fn):
     for line in ctab:
         num = int(line[0])
         term1 = line[1]
-        term2 = line[2]+line[3]+line[4]+line[5]
+        term2 = line[2] + line[3] + line[4] + line[5]
         out.append([term1, term2])
         nums.append(num)
     return np.array(out, dtype=str), np.array(nums)
-    
+
+
 def find_match_ctab(terms, target_terms):
     valid = np.array([True for _ in range(len(target_terms))], dtype=bool)
     for find_dim, term in enumerate(terms):
-        valid = valid & np.array([term in target_terms[i, find_dim] for i in range(len(target_terms))], dtype=bool)
-    if valid.sum() == 1: 
+        valid = valid & np.array(
+            [term in target_terms[i, find_dim] for i in range(len(target_terms))],
+            dtype=bool,
+        )
+    if valid.sum() == 1:
         return np.where(valid)[0][0]
     else:
         return None
+
 
 if __name__ == "__main__":
     main()
