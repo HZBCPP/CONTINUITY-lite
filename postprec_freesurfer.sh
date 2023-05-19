@@ -18,7 +18,7 @@ for SUBJ in $(ls $FS_DIR); do
         OUT_VOL_FILE="${FS_DIR}/${SUBJ}/mri/${VOL}.nii"
         OUT_NRRD_FILE="${FS_DIR}/${SUBJ}/mri/${VOL}.nrrd"
         mri_convert ${VOL_FILE} ${OUT_VOL_FILE}
-        convertITKformats ${OUT_VOL_FILE} ${OUT_VOL_FILE}
+        convertITKformats ${OUT_VOL_FILE} ${OUT_NRRD_FILE}
         python ./check_nrrd.py ${FS_DIR}/${SUBJ}/mri
     done
 
@@ -27,7 +27,7 @@ for SUBJ in $(ls $FS_DIR); do
     # for SURF in ${SURFACES[@]}; do
     #     python ./convert_surf2vtk.py ${FS_DIR}/${SUBJ}/surf/${SURF} ${ANNOT_PREFIX}
     # done
-    
+
     python ./convert_surf2vtk.py --geometry_fn ${FS_DIR}/${SUBJ}/surf/lh.white --prefix ${ANNOT_PREFIX} --label-offset 10000
     python ./convert_surf2vtk.py --geometry_fn ${FS_DIR}/${SUBJ}/surf/rh.white --prefix ${ANNOT_PREFIX} --label-offset 20000
 
