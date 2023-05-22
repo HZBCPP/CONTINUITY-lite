@@ -40,7 +40,7 @@ def main():
             'name': name,
             'VisuHierarchy': 'seed.right.',
             'coord': [0, 0, 0],
-            'labelValue': i,
+            'labelValue': str(i),
             'AAL_ID': i,
         }
         for i, name in enumerate(rh_names, 1 + args.rh_label_offset)
