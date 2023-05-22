@@ -28,7 +28,7 @@ def main():
             'name': name,
             'VisuHierarchy': 'seed.left.',
             'coord': [0, 0, 0],
-            'labelValue': i,
+            'labelValue': str(i),
             'AAL_ID': i,
         }
         for i, name in enumerate(lh_names, 1 + args.lh_label_offset)
